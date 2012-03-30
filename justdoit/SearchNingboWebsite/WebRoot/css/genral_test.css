@@ -1,0 +1,9 @@
+@charset "UTF-8";
+.container .logo {
+	background-image:url(../images/Owl2b.png);
+	background-repeat:no-repeat;
+	margin-top:20px;
+	height:65px;
+	width:100%;
+	float:left;
+}

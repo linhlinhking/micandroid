@@ -5,7 +5,7 @@
 <urlrewrite use-query-string="true">
 	<rule>
 		<from>^/index_test.html/?$</from>
-		<to type="forward">/beta</to>
+		<to type="forward">/index</to>
 	</rule>
 	<rule>
 		<from>^/login.html/?$</from>

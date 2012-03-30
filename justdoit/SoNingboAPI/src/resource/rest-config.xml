@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rest-config>
+<project name="searchningbo">
+		<remote-address address="localhost" port="8080"/>
+		<context-url>api</context-url>	
+		<rest-root-url>rest</rest-root-url>
+		<modules>
+			<module-url name="user" path="usermgr"/>
+		</modules>	
+	</project>	
+</rest-config>

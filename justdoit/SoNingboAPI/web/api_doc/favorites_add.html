@@ -1,0 +1,125 @@
+<html>
+<head>
+<meta charset="UTF-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="test.css" />
+	<title>Favorites Add</title>
+</head>
+
+<body>
+	<h2>
+		<span class="mw-headline">
+			Sample Test </span>
+	</h2>
+	<form name="form1" method="post"
+		action="http://localhost:8080/resource/favorite/add">
+		<p>
+
+			key<br> <label for="key"></label> <input type="text" name="key"
+				id="key"> <br> <br> location_id<br> <label
+								for="locationId"></label> <input type="text" name="locationId"
+								id="locationId"> <br> <br> user_id<br> <label
+												for="user_id"></label> <input type="text" name="userId"
+												id="userId"> <br> <br> device_id<br>
+																<label for="device_id"></label> <input type="text"
+																name="deviceId" id="deviceId"> <br> <br>
+
+
+
+																			<input type="submit" name="POST" id="POST"
+																			value="Submit"> <br> <br>
+		</p>
+	</form>
+
+	<h2>
+		<span class="mw-headline">
+			Requests Instruction  </span>
+	</h2>
+
+	<table width="95%" cellpadding="0" cellspacing="2" border="0"
+		class="paratable">
+
+		<tr>
+			<td>url</td>
+			<td><a href="#"
+				class="external free" rel="nofollow">https://api.searchningbo.com/resource/favorite/add</a>
+			</td>
+		</tr>
+		<tr>
+			<td>format</td>
+			<td>json</td>
+		</tr>
+
+		<tr>
+			<td>http request method</td>
+			<td>post</td>
+		</tr>
+		<tr>
+			<td>need authorize</td>
+			<td>true</td>
+		</tr>
+	</table>
+	<h2>
+		<span class="mw-headline">
+			Parameter Description </span>
+	</h2>
+	<table border="1" cellspacing="0" cellpadding="0" width="95%"
+		class="paratable" style="border-color: #CCCCCC;">
+		<tr>
+			<th width="10%">&nbsp;</th>
+			<th width="5%">required</th>
+			<th width="10%">type & scope</th>
+			<th width="75%">Description</th>
+		</tr>
+		<tr>
+			<td>key</td>
+			<td>true</td>
+			<td>String</td>
+			<td>Authorized verification of API calls</td>
+		</tr>
+		<tr>
+			<td>userId</td>
+			<td>false</td>
+			<td>int</td>
+			<td>users' primary key</td>
+		</tr>
+		<tr>
+			<td>locationId</td>
+			<td>true</td>
+			<td>int</td>
+			<td>locations' primary key</td>
+		</tr>
+		<tr>
+			<td>deviceId</td>
+			<td>false</td>
+			<td>String</td>
+			<td>the serial number of the device of temporary users </td>
+		</tr>
+	</table>
+
+	<h2>
+		<span class="mw-headline">
+			Return results </span>
+	</h2>
+	<pre class="brush: js;">{
+		{"key":"Key is NULL!"} //
+	}
+</pre>
+
+	<h2>
+		<span class="mw-headline"> Return Code Lists </span>
+	</h2>
+	<pre class="brush: js;">{
+		0  : Success
+		1  : Key is Null
+		2  : Key is Invalid
+		3  : LocationId is NULL
+		4  : LocationId is not exists
+		5  : UserId is not exists
+		6  : Already Exists！
+		7  : Please get the serial number of the current equipment
+		8  : Input Invaid!
+	}
+	</pre>
+</body>
+</html>

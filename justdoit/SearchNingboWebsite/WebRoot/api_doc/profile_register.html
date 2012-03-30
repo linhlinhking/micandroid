@@ -1,0 +1,147 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="test.css" />
+<title>register</title>
+</head>
+
+<body>
+<form name="form1" method="post" action="https://api.searchningbo.com/user/register" enctype="multipart/form-data">
+  <p>
+  
+  key<br>
+  <label for="key"></label>
+  <input type="text" name="key" id="key">
+  <br>
+  <br>
+  
+  
+  username<br>
+  <label for="username"></label>
+  <input type="text" name="username" id="username">
+  <br>
+  <br>
+  
+  
+  password<br>
+  <label for="password"></label>
+  <input type="text" name="password" id="password">
+  <br>
+  <br>
+  
+  
+  email<br>
+  <label for="email"></label>
+  <input type="text" name="email" id="email">
+  <br>
+  <br>
+  
+  head_photo<br>
+  <label for="head_photo"></label>
+  <input type="file" name="head_photo" id="head_photo">
+  <br>
+  <br>
+  
+  
+  
+  <input type="submit" name="POST" id="POST" value="Submit">
+<br>
+    <br>
+  </p>
+</form>
+
+<h2>
+		<span class="mw-headline">
+			Requests Instruction </span>
+	</h2>
+
+	<table width="95%" cellpadding="0" cellspacing="2" border="0"
+		class="paratable">
+
+		<tr>
+			<td>url</td>
+			<td><a href="#"
+				class="external free" rel="nofollow">https://api.searchningbo.com/user/register</a>
+			</td>
+		</tr>
+		<tr>
+			<td>format</td>
+			<td>json</td>
+		</tr>
+
+		<tr>
+			<td>http request method</td>
+			<td>post</td>
+		</tr>
+		<tr>
+			<td>need authorize</td>
+			<td>true</td>
+		</tr>
+	</table>
+	<h2>
+		<span class="mw-headline">
+			Parameter Description </span>
+	</h2>
+	<table border="1" cellspacing="0" cellpadding="0" width="95%"
+		class="paratable" style="border-color: #CCCCCC;">
+		<tr>
+			<th width="10%">&nbsp;</th>
+			<th width="5%">required</th>
+			<th width="10%">type & scope</th>
+			<th width="75%">Description</th>
+		</tr>
+		<tr>
+			<td>key</td>
+			<td>true</td>
+			<td>String</td>
+			<td>Authorized verification of API calls</td>
+		</tr>
+		<tr>
+			<td>username</td>
+			<td>true</td>
+			<td>String</td>
+			<td>user's email</td>
+		</tr>
+		<tr>
+			<td>password</td>
+			<td>true</td>
+			<td>String</td>
+			<td>user's password</td>
+		</tr>
+			<tr>
+			<td>head_photo</td>
+			<td>false</td>
+			<td>String</td>
+			<td>user's photo</td>
+		</tr>
+	</table>
+
+	<h2>
+		<span class="mw-headline">
+			Return results </span>
+	</h2>
+	<pre class="brush: js;">{
+		{"key":"Key is NULL!"} //
+	}
+</pre>
+
+	<h2>
+		<span class="mw-headline">
+			Return Code Lists </span>
+	</h2>
+	<pre class="brush: js;">{
+		0  : Success
+		1  : Key is Null
+		2  : Key is Invalid
+		3  : Username is Null
+		4  : Email is Null
+		5  : Password is Null
+		6  : Username is already Exists
+		7  : Email is already Exists
+		8  : Throwable JSONException
+	}
+</pre>
+</body>
+</html>

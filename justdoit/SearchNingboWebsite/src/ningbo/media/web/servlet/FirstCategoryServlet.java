@@ -58,7 +58,6 @@ public class FirstCategoryServlet extends HttpServlet {
 			map.put("firstCategory", firstCategory) ;
 			map.put("secondCategorys", list) ;
 			
-			
 			Template template = conf.getTemplate("secondcategory.ftl");
 			response.setContentType("text/html; charset="
 					+ template.getEncoding());

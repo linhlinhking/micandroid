@@ -4,7 +4,6 @@
 		<meta charset="UTF-8">
 		<meta name="description" content="">
 		<title>搜索宁波 - So Ningbo</title>
-
 		<link rel="stylesheet" type="text/css"
 			href="${ctx}/css/global_test.css" />
 		<link rel="stylesheet" id="cssStyle" type="text/css"

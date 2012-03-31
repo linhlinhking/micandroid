@@ -20,9 +20,14 @@ public class JSONCode {
 	/**SystemUser-2*/
 	public static final String USERNAME_EXISTS = "20007" ; //用户名称存在
 	public static final String EMAIL_EXISTS = "20008" ; //用户email存在
+	public static final String USER_NOEXISTS = "20009" ; //用户不存在
 	
 	/**Locatioin-3*/
+	public static final String LOCATION_NOEXISTS = "20010" ; //位置不存在
 	
+	/**Comment-4*/
+	public static final String COMMENT_THROWEXCEPTION = "40001" ;
+	public static final String COMMENT_NOEXISTS = "20011" ; //位置不存在
 	
 	
 	

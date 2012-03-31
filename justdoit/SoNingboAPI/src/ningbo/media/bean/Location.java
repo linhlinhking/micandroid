@@ -51,7 +51,9 @@ public class Location implements Serializable {
 	
 	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "location")
 	private List<ImageFile> imageFiles ;
-
+	
+	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "location")
+	private List<Comment> comments ;
 	
 	public Location() {
 	}
@@ -146,6 +148,15 @@ public class Location implements Serializable {
 
 	public void setImageFiles(List<ImageFile> imageFiles) {
 		this.imageFiles = imageFiles;
+	}
+	
+	@XmlTransient
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
 	}
 
 	@Override

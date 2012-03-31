@@ -12,18 +12,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import ningbo.media.web.api.CategoryAPI;
-import ningbo.media.web.bean.FirstCategory;
-import ningbo.media.web.bean.SecondCategory;
-
+import ningbo.media.web.bean.Location;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 
-public class FirstCategoryServlet extends HttpServlet {
+public class SecondCategoryServlet extends HttpServlet {
 
 	private static final long serialVersionUID = -3168481919592988082L;
 
@@ -46,20 +42,17 @@ public class FirstCategoryServlet extends HttpServlet {
 		try {
 			request.setCharacterEncoding("UTF-8");
 			response.setCharacterEncoding("utf-8");
-			String id = request.getParameter("id");
+			String id = request.getParameter("secondId");
 			PrintWriter writer = response.getWriter();
-			List<SecondCategory> list = getSecondCategoryById(id) ;
-			FirstCategory firstCategory = getFirstCategoryById(id) ;
-			
+			List<Location> list = getLocationBySecondId(id) ;
 			Map<String, Object> map = new HashMap<String, Object>();
 			String ctx = request.getContextPath() ;
 			map.put("ctx", ctx) ;
-			map.put("categroyId", id);
-			map.put("firstCategory", firstCategory) ;
-			map.put("secondCategorys", list) ;
-			
-			
-			Template template = conf.getTemplate("secondcategory.ftl");
+			map.put("secondId", id);
+			if(list!=null){
+				map.put("locationList", list) ;
+			}
+			Template template = conf.getTemplate("locationlist.ftl");
 			response.setContentType("text/html; charset="
 					+ template.getEncoding());
 
@@ -76,21 +69,21 @@ public class FirstCategoryServlet extends HttpServlet {
 		super.doGet(request, response);
 	}
 
-	private List<SecondCategory> getSecondCategoryById(String id) {
-		List<SecondCategory> list = new ArrayList<SecondCategory>() ;
+	private List<Location> getLocationBySecondId(String id) {
+		List<Location> list = new ArrayList<Location>() ;
 		try {
-			String response = api.showCategory2(id);
+			String response = api.getLocationsBySecondCategoryId(id);
 			JSONObject json = new JSONObject(response);
 			
-			JSONArray array = json.getJSONArray("secondCategory");
+			JSONArray array = json.getJSONArray("location");
 			for (int i = 0, j = array.length(); i < j; i++) {
-				SecondCategory sc = new SecondCategory() ;
+				Location location = new Location() ;
 				JSONObject temp = array.getJSONObject(i) ;
-				sc.setId(Integer.valueOf(temp.getString("id"))) ;
-				sc.setName_cn(temp.getString("name_cn")) ;
-				sc.setName_en(temp.getString("name_en")) ;
+				location.setId(Integer.valueOf(temp.getString("id"))) ;
+				location.setName_cn(temp.getString("name_cn")) ;
+				location.setName_en(temp.getString("name_en")) ;
 				
-				list.add(sc) ;
+				list.add(location) ;
 			}
 
 		} catch (Exception e) {
@@ -98,27 +91,5 @@ public class FirstCategoryServlet extends HttpServlet {
 			return null ;
 		}
 		return list;
-	}
-	
-	
-	private FirstCategory getFirstCategoryById(String id){
-		FirstCategory first = new FirstCategory() ;
-		try {
-			String response = api.getFirstCategoryById(id) ;
-			if(null == response || response.length() < 0){
-				return null ;
-			}
-			JSONObject json = new JSONObject(response) ;
-			first.setId(Integer.valueOf(json.getString("id"))) ;
-			first.setName_cn(json.getString("name_cn")) ;
-			first.setName_en(json.getString("name_en")) ;
-			first.setDescription(json.getString("description")) ;
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null ;
-		}
-		
-		return first ;
 	}
 }

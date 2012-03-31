@@ -75,7 +75,7 @@ $(function(){
 			}
 		);
 	
-	
+	/**
 	var requestUrl ="/category/getCategory1";
     $.getJSON(requestUrl,
     function(data) {
@@ -87,6 +87,7 @@ $(function(){
     	$("#link_page").html(appendHtml);
    
     });
+    */
 	
 });
 

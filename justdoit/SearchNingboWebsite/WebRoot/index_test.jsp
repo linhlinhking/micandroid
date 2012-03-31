@@ -89,7 +89,7 @@
 </div>
 </div></section></div>
 <div class="link_page" id="link_page">
-<span><a href="${ctx}/category/showcategory?id=1">美容&amp;美发</a></span>
+<span><a href="${ctx}/category/first?id=1">美容&amp;美发</a></span>
 <span><a href="information.html">酒店&amp;住所</a></span>
 <span><a href="information.html">咖啡馆&amp;餐厅</a></span>
 <span><a href="information.html">运动&amp;休闲</a></span>

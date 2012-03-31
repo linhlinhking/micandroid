@@ -1,12 +1,10 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java" errorPage=""%>
-<%@ taglib prefix="c" uri="/WEB-INF/tld/c.tld"%>
-<c:set value="${pageContext.request.contextPath}" var="ctx" />
 <!DOCTYPE HTML>
 <html>
 	<head>
 		<meta charset="UTF-8">
 		<meta name="description" content="">
 		<title>搜索宁波 - So Ningbo</title>
+
 		<link rel="stylesheet" type="text/css"
 			href="${ctx}/css/global_test.css" />
 		<link rel="stylesheet" id="cssStyle" type="text/css"
@@ -53,10 +51,18 @@
 			<div class="content">
 				<section>
 				<div class="section_st">
+					<#-- -->
+					<font color="red">${firstCategory.name_cn}</font>&nbsp;&nbsp;
+					${firstCategory.description}
+					
 				</div>
 				</section>
 				<section>
 				<div class="section_nd">
+					<#list secondCategorys as being>
+						<a href="${ctx}/category/second?secondId=${being.id}">${being.name_cn}</a><br/>
+					</#list>
+				
 				</div>
 				</section>
 			</div>
@@ -74,7 +80,7 @@
 				</div>
 				<div class="report">
 					<a href="http://net.china.cn/" target="_blank"><img
-							src="images/ciirc.png" alt="不良信息举报" />
+							src="${ctx}/images/ciirc.png" alt="不良信息举报" />
 						<br />不良信息举报中心</a>
 				</div>
 			</div>

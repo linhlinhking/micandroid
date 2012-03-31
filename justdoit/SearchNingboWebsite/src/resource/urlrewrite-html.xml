@@ -8,6 +8,10 @@
 <urlrewrite use-query-string="true">
 	<rule match-type="regex">
 		<from>^/([a-z]+)$</from>
-		<to>/index_test.html</to>
+		<to>/index_test.jsp</to>
 	</rule>
+	
+
+	
 </urlrewrite>
+

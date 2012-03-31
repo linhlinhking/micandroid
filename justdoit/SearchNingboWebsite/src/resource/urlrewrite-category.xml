@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 3.1//EN"
+	"urlrewrite3.1.dtd">
+
+<urlrewrite use-query-string="true">
+
+	<!-- <rule>
+		<from>^/sysmgr/UserMgr/index\?start=[0-9]*&amp;limit=[0-9]*&amp;_dc=[0-9]*&amp;callback=(.*)/?$</from>
+		<to type="forward">/sysmgr_UserMgr_index!index.action</to>
+	</rule> -->
+	
+</urlrewrite>

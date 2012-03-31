@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 3.1//EN"
+	"urlrewrite3.1.dtd">
+
+
+<!-- 
+	the type:
+	forward: 默认. 请求匹配这个<rule />的所有<condition />, 
+			 并且URL使用内部跳转到”to”指定的地址
+			 (注意, 这里forward到的URL必须和UrlRewriteFilter位于同一个容器中)
+	passthrough: 和forward相同
+	redirect: 请求匹配所有<condition />和这个<rule />的<from />, 通知客户端跳转到<to />指定地址
+	permanent-redirect: 相当于做了以下事情
+
+
+
+ -->
+<urlrewrite use-query-string="true">
+	<rule>
+		<from>^/index_test.html/?$</from>
+		<to type="permanent-redirect">/index</to>
+	</rule>
+	<rule>
+		<from>^/login.html/?$</from>
+		<to type="forward">/general/login!loginIndex.action</to>
+	</rule>
+	
+	<rule>
+		<from>^/login/?$</from>
+		<to type="forward">/general/login!authIndex.action</to>
+	</rule>
+	
+	<rule>
+		<from>^/home.html/?$</from>
+		<to type="forward">/general/home!homeIndex.action</to>
+	</rule>
+	
+</urlrewrite>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.ssh2.vo.menu.MenuModel" table="sys_menu">
+		<id name="id" type="string">
+			<column name="menu_id" />
+			<generator class="native" />
+		</id>
+		<property name="menuTitle" type="string">
+			<column name="menu_title" />
+		</property>
+		<property name="menuIconClass" type="string">
+			<column name="menu_icon" />
+		</property>
+		<property name="menuDescription" type="string">
+			<column name="menu_description" />
+		</property>
+		<property name="menuURL" type="string">
+			<column name="menu_url" />
+		</property>
+		<property name="menuOrder" type="integer">
+			<column name="menu_order" />
+		</property>
+		<many-to-one name="menuParent" class="com.ssh2.vo.menu.MenuModel" lazy="false">
+        	<column name="menu_parent" />
+        </many-to-one>
+        
+        <set name="menuChildren" inverse="true" cascade="delete" lazy="false" order-by="menu_id asc" batch-size="3">
+        	<key column="menu_parent"/>
+        	<one-to-many class="com.ssh2.vo.menu.MenuModel"/>
+        </set>
+		
+	</class>
+	
+	<query name="menu.all">
+		<![CDATA[
+			from MenuModel as menu 
+			order by menu.id asc
+		]]>
+	</query>
+	
+	<query name="menu.all.root">
+		<![CDATA[
+			from MenuModel as menu where menu.menuParent is null
+			order by menu.menuOrder asc
+		]]>
+	</query>
+	
+</hibernate-mapping>

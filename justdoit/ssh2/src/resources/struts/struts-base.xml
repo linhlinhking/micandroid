@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+	"http://struts.apache.org/dtds/struts-2.0.dtd "> 
+<struts>
+	<package name="default" extends="tiles-default" namespace="/">
+		<action name="reg" class="com.ssh2.web.action.UserAction">
+			<result name="success" type="tiles">index.reg.success</result>
+			<result name="fail" type="tiles">index.reg.fail</result>
+		</action>
+	</package>
+</struts>

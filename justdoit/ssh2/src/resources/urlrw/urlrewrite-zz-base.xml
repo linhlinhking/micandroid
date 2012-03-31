@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 3.1//EN"
+	"urlrewrite3.1.dtd">
+
+<urlrewrite use-query-string="true">
+
+	<rule>
+		<from>^/([A-Za-z]*)/([A-Za-z]*)/([A-Za-z]*)/?$</from>
+		<to type="forward">/$1_$2_$3!$3.action</to>
+	</rule>
+	
+	<!--  rule>
+		<from>^/([A-Za-z]*)/([A-Za-z]*)/([A-Za-z]*)\?json=true(&amp;)?([^.]*)?/?$</from>
+		<to type="forward">/$1_$2_$3!$3.action</to>
+	</rule>-->
+	
+	<rule>
+		<from>^/([A-Za-z]*)/([A-Za-z]*)/([A-Za-z]*)\?([^.]*)?/?$</from>
+		<to type="forward">/$1_$2_$3!$3.action?ajax=true</to>
+	</rule>
+	
+</urlrewrite>

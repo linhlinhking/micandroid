@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+	
+	<!-- UserModel -->
+	<bean name="userDAO" class="com.ssh2.dao.user.impl.UserDAOImpl" scope="prototype">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean name="userService" class="com.ssh2.service.user.impl.UserServiceImpl" scope="prototype">
+	 	<property name="userDAO" ref="userDAO"></property>
+	 </bean>
+	 
+	 <!-- RoleModel -->
+	<bean name="roleDAO" class="com.ssh2.dao.user.impl.RoleDAOImpl" scope="prototype">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean name="roleService" class="com.ssh2.service.user.impl.RoleServiceImpl" scope="prototype">
+	 	<property name="roleDAO" ref="roleDAO"></property>
+	 </bean>
+	 
+	 <!-- MenuModel -->
+	<bean name="menuDAO" class="com.ssh2.dao.menu.impl.MenuDAOImpl" scope="prototype">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean name="menuService" class="com.ssh2.service.menu.impl.MenuServiceImpl" scope="prototype">
+	 	<property name="menuDAO" ref="menuDAO"></property>
+	 </bean>
+	 
+	 
+</beans>

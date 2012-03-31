@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+	"http://struts.apache.org/dtds/struts-2.0.dtd "> 
+<struts>
+	<package name="zz-base" namespace="/" extends="json-default">
+		<action name="*_*_*" class="com.ssh2.web.action.{1}.{2}Action" method="{3}">
+			<result name="success">/WEB-INF/jsp/{1}/{2}/index.jsp</result>
+			<result name="datagrid">/WEB-INF/jsp/{1}/{2}/datagrid/index.jsp</result>
+			<result name="view">/WEB-INF/jsp/{resultPath}.jsp</result>
+			<result name="redirect-action" type="redirectAction">{resultPath}</result>
+			<result name="json" type="json"></result>
+		</action>
+		
+		<!-- <action name="login" class="com.ssh2.web.action.general.UserLoginAction">
+			<result name="success" type="tiles">login.success</result>
+		</action>
+		
+		<action name="login" class="com.ssh2.web.action.general.UserLoginAction">
+			<result name="success" type="tiles">login.success</result>
+		</action> -->
+	</package>
+	
+	<!-- <package name="zz-base-json" namespace="/json" extends="json-default">
+		<action name="*_*_*" class="com.ssh2.web.action.{1}.{2}Action" method="{3}">
+			 <result name="json" type="json"></result>
+			 <result name="other" type="json"></result>
+		</action> 
+
+	</package>-->
+</struts>

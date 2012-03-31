@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.ssh2.vo.user.RoleModel" table="sys_roles">
+		<id name="id" type="string">
+			<column name="role_id" />
+			<generator class="native" />
+		</id>
+		<property name="roleName" type="string">
+			<column name="role_name" length="30" not-null="true"/>
+		</property>
+		<property name="roleDescription" type="string">
+			<column name="role_desc" length="100" not-null="true"/>
+		</property>
+		<property name="roleEditable" type="integer">
+			<column name="role_editable" />
+		</property>
+		<set name="menus" lazy="true" table="sys_role_menu" inverse="false" cascade="delete" order-by="menu_id asc">
+			<key column="role_id" not-null="true" />
+			<many-to-many column="menu_id" class="com.ssh2.vo.menu.MenuModel" /> 
+		</set>
+	</class>
+</hibernate-mapping>

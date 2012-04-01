@@ -27,6 +27,8 @@ public class FirstCategory implements Serializable {
 	private String name_en;
 
 	private String name_cn;
+	
+	private String description ;
 
 	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "firstCategory")
 	private List<SecondCategory> secondCategorys;
@@ -65,6 +67,15 @@ public class FirstCategory implements Serializable {
 
 	public void setSecondCategorys(List<SecondCategory> secondCategorys) {
 		this.secondCategorys = secondCategorys;
+	}
+	
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	@Override

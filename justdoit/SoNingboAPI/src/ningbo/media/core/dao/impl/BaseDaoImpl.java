@@ -155,10 +155,10 @@ public class BaseDaoImpl<E, PK extends Serializable> implements BaseDao<E, PK> {
 	}
 
 	public List<E> findByHql(final String hql, final Object... values) {
-			return findByHql(hql,false,values) ;
+			return findByHql(hql,false,null,values) ;
 	}
 
-	public List<E> findByHql(final String hql, final boolean isLike,
+	public List<E> findByHql(final String hql, final boolean isLike,final Integer limit,
 			final Object... values) {
 
 		return getHibernateTemplate().execute(new HibernateCallback<List<E>>() {
@@ -167,7 +167,10 @@ public class BaseDaoImpl<E, PK extends Serializable> implements BaseDao<E, PK> {
 			public List<E> doInHibernate(Session session)
 					throws HibernateException, SQLException {
 				Query query = session.createQuery(hql);
-				query.setMaxResults(10) ;
+				
+				if(limit != null){
+					query.setMaxResults(limit) ;
+				}
 				if (values != null) {
 					if (isLike) {
 						for (int i = 0, j = values.length; i < j; i++) {

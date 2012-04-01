@@ -22,7 +22,7 @@ public class LocationDaoImpl extends BaseDaoImpl<Location, Integer> implements
 			return null ;
 		}
 		String hql = "from Location m where m.name_cn like ? " ;
-		List<Location> list = this.findByHql(hql,true,locationName) ;
+		List<Location> list = this.findByHql(hql, true, 10, locationName) ;
 		return list ;
 	}
 }

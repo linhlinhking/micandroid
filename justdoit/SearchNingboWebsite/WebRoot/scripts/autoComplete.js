@@ -2,7 +2,7 @@
 	// 自动补全
 	var maxcount = 0;// 表示他最大的值
 	var thisCount =0;// 初始化他框的位置
-	$("body").prepend("<div style='width:220px; display:none; background:#FFFFFF; position: absolute;' id='autoTxt'></div>");
+	$("body").prepend("<div class='popup' id='autoTxt'></div>");
 	$("#address").keyup(function(even) {
 		var v = even.which;
 		if (v == 38 || v == 40 || v == 13)// 当点击上下键或者确定键时阻止他传送数据
@@ -27,12 +27,12 @@
 					data = eval(ls.location);
 					if(data.length>1){
 						$.each(data, function (i, o) {
-							 Candidate += "<li style='list-style:none;' id='" +maxcount+ "'>" + o.name + "</li>";
+							 Candidate += "<li class='popupli' id='" +maxcount+ "'>" + o.name + "<div class='arrow_bg'></div></li>";
 							 maxcount++;
 					 		});
 					}
 					else{
-						Candidate = "<li style='list-style:none;' id='" +maxcount+ "'>" + ls.location.name + "</li>";
+						Candidate = "<li class='popupli' id='" +maxcount+ "'>" + ls.location.name + "<div class='arrow_bg'></div></li>";
 						maxcount++;
 					}
 					$("#autoTxt").html(Candidate);

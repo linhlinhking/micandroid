@@ -5,19 +5,17 @@
 
 	<display-name>SearchNingbo-API</display-name>
 
-	<!-- 配置系统ROOT -->
+	<!--ROOT -->
 	<context-param>
 		<param-name>webAppRootKey</param-name>
 		<param-value>webapp.root</param-value>
 	</context-param>
 	
-	<!-- 加载spring的配置 -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:applicationContext.xml</param-value>
+		<param-value>classpath:resource/applicationContext.xml</param-value>
 	</context-param>
 
-	<!-- 对Spring容器进行实例化 -->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
@@ -54,7 +52,7 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
-	<!--配置openSessionInViewFilter -->
+	<!--��疆openSessionInViewFilter -->
 	<filter>
 		<filter-name>OpenSessionInViewFilter</filter-name>
 		<filter-class>

@@ -1,6 +1,7 @@
 package ningbo.media.rest.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -90,7 +91,7 @@ public class CommentRest {
 			}
 
 			comment.setCommentContent(commentContent);
-
+			comment.setDate_time(new Date());
 			Integer ids = commentService.save(comment);
 			json.put(Constant.COMMENTID, String.valueOf(ids));
 			json.put(Constant.CODE, JSONCode.SUCCESS);

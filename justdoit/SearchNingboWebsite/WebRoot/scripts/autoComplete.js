@@ -72,6 +72,31 @@
 		$("#autoTxt").hide();
 		thisCount=0;
 	});
+	
+	$("#autoTxt").mouseover(function(){
+		$("#autoTxt li").each(function(i,val){
+			$(this).mouseover(function(){
+				$("#autoTxt li:not(" + (i) + ")").css("background", "#FFF");
+                $("#autoTxt li:eq(" + (i) + ")").css("background", "#CCC");
+                thisCount=i;
+            }).mousedown(function(){
+            	var tt=$("#"+thisCount).text();
+				if(tt!="")
+					{
+						$("#address").val(tt);
+						$("#autoTxt").html("");
+						$("#autoTxt").hide();
+					}else
+					{
+						if($("#address").val()!="")
+						$("#sestart").click();
+					}
+            	
+            });
+
+		});
+	});
+	
 	// 写移动事件//上键３８ 下键４０ 确定键 １３
 	$("body").keyup(function(even) {
 		var v = even.which;

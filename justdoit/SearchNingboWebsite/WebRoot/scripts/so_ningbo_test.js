@@ -33,7 +33,7 @@ $(function(){
 	$.get("/location/getlocnum",
 			function(data){
 				data = funTrim(data);
-				var numpic = "";
+				var numpic = "<div class='total'></div>";
 				for(var i = 0; i < data.length; i++){
 					switch(data[i]*1){
 					case 1:
@@ -75,21 +75,24 @@ $(function(){
 			}
 		);
 	
-	/**
+	
 	var requestUrl ="/category/getCategory1";
     $.getJSON(requestUrl,
     function(data) {
     	data = eval(data.firstCategory)
     	var appendHtml = "";
 		$.each(data, function (i, o) {
-			appendHtml +="<span><a href='/category/showcategory?id="+o.id+"'>"+o.name_cn+"</a></span>";
+			appendHtml +="<span><a href='category/first?id="+o.id+"'>"+o.name_cn+"</a></span>";
 		});
     	$("#link_page").html(appendHtml);
    
     });
-    */
-	
+
+   
+    
 });
+
+
 
 function funTrim(_str)
 { 

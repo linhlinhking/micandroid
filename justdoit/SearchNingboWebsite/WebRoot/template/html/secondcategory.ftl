@@ -51,15 +51,24 @@
 				<section>
 				<div class="section_st">
 					<#-- -->
-					<font color="red">${firstCategory.name_cn}</font>&nbsp;&nbsp;
-					${firstCategory.description}
+					<div class="shop_title"><h1>${firstCategory.name_cn}</h1></div>
+					<div class="shop_content"><p>${firstCategory.description}</p></div>
 					
 				</div>
 				</section>
 				<section>
 				<div class="section_nd">
 					<#list secondCategorys as being>
+						<div class="red_arrow">
+							<div class="red_arrow_cap"></div>
+							<div class="red_arrow_bg">
+								${being.name_cn}
+							</div>
+							<div class="red_arrow_head"></div>
+						</div>
+						<#--
 						<a href="${ctx}/category/second?secondId=${being.id}">${being.name_cn}</a><br/>
+						-->
 					</#list>
 				
 				</div>

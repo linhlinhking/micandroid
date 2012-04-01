@@ -59,6 +59,32 @@
 				</section>
 				<section>
 				<div class="section_nd">
+
+
+					<div class="red_arrow">
+						<div class="red_arrow_cap"></div>
+						<div class="red_arrow_bg">
+							中等专科学校
+						</div>
+						<div class="red_arrow_head"></div>
+					</div>
+
+					<div class="red_arrow">
+						<div class="red_arrow_cap"></div>
+						<div class="red_arrow_bg">
+							出入境检验检疫局
+						</div>
+						<div class="red_arrow_head"></div>
+					</div>
+
+					<div class="red_arrow">
+						<div class="red_arrow_cap"></div>
+						<div class="red_arrow_bg">
+							浙江泰隆商业银行
+						</div>
+						<div class="red_arrow_head"></div>
+					</div>
+
 				</div>
 				</section>
 			</div>
@@ -76,8 +102,7 @@
 				</div>
 				<div class="report">
 					<a href="http://net.china.cn/" target="_blank"><img
-							src="${ctx}/images/ciirc.png" alt="不良信息举报" />
-						<br />不良信息举报中心</a>
+							src="${ctx}/images/ciirc.png" alt="不良信息举报" /> <br />不良信息举报中心</a>
 				</div>
 			</div>
 			</footer>

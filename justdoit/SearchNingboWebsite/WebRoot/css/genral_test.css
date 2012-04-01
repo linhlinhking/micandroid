@@ -7,3 +7,45 @@
 	width:100%;
 	float:left;
 }
+
+
+.popup{
+	border:1px solid #ccc;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	-khtml-border-radius: 6px;
+	border-radius: 6px;
+	width:320px;
+	display:none;
+	line-height:35px;
+	position:absolute;
+	background:#FFF;
+}
+
+.showStyle{
+	background: rgb(220,220,220);
+    background: -moz-linear-gradient(top, rgba(220,220,220,1) 0%, rgba(255,255,255,1) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(220,220,220,1)), color-stop(100%,rgba(255,255,255,1)));
+    background: -webkit-linear-gradient(top, rgba(220,220,220,1) 0%,rgba(255,255,255,1) 100%);
+    background: -o-linear-gradient(top, rgba(220,220,220,1) 0%,rgba(255,255,255,1) 100%);
+    background: -ms-linear-gradient(top, rgba(220,220,220,1) 0%,rgba(255,255,255,1) 100%);
+    background: linear-gradient(top, rgba(220,220,220,1) 0%,rgba(255,255,255,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dcdcdc', endColorstr='#ffffff',GradientType=0 );
+}
+
+.popupli {
+	display:block;
+	width:320px;
+	height:35px;
+	line-height:35px;
+	list-style-type:none;
+	padding-left:8px;
+	border-top:1px solid #CCC;
+}
+.arrow_bg{
+	background:url(../images/arrow.gif) no-repeat right;
+	background-position:center;
+	float:right;
+	width:30px;
+	height:35px;
+}

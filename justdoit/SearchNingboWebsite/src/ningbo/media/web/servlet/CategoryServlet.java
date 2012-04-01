@@ -16,14 +16,19 @@ public class CategoryServlet extends HttpServlet {
 
 	private static final long serialVersionUID = -3168481919592988082L;
 
+	private CategoryAPI api ;
+	
+	public void init(){
+		api = new CategoryAPI() ;
+	}
+	
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		try {
 			response.setContentType("text/plain");
 			response.setCharacterEncoding("utf-8");
-			CategoryAPI api = new CategoryAPI();
-			String res = api.showAllCategory();
+			String res = api.getFirstCategory();
 			JSONObject json = new JSONObject(res) ;
 			PrintWriter writer = response.getWriter();
 	        writer.println(json);

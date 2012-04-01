@@ -12,9 +12,15 @@ import ningbo.media.web.api.CategoryAPI;
 
 import org.json.JSONObject;
 
-public class Category2Servlet extends HttpServlet {
+public class IndexServlet extends HttpServlet {
 
 	private static final long serialVersionUID = -3168481919592988082L;
+	
+	private CategoryAPI api ;
+	
+	public void init(){
+		api = new CategoryAPI() ;
+	}
 
 	@Override
 	protected void doGet(HttpServletRequest request,
@@ -22,9 +28,7 @@ public class Category2Servlet extends HttpServlet {
 		try {
 			response.setContentType("text/plain");
 			response.setCharacterEncoding("utf-8");
-			String category1_id = request.getParameter("category1_id");
-			CategoryAPI api = new CategoryAPI();
-			String res = api.showCategory(category1_id);
+			String res = api.getFirstCategory() ;
 			JSONObject json = new JSONObject(res) ;
 			PrintWriter writer = response.getWriter();
 	        writer.println(json);

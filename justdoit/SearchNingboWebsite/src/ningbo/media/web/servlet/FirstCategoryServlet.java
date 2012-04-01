@@ -63,7 +63,7 @@ public class FirstCategoryServlet extends HttpServlet {
 					+ template.getEncoding());
 
 			template.process(map, writer);
-
+			//request.getRequestDispatcher("/category/meirongmeifa").forward(request, response) ;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -78,7 +78,7 @@ public class FirstCategoryServlet extends HttpServlet {
 	private List<SecondCategory> getSecondCategoryById(String id) {
 		List<SecondCategory> list = new ArrayList<SecondCategory>() ;
 		try {
-			String response = api.showCategory2(id);
+			String response = api.showCategory(id);
 			JSONObject json = new JSONObject(response);
 			
 			JSONArray array = json.getJSONArray("secondCategory");

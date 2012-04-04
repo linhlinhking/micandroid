@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import ningbo.media.web.api.CategoryAPI;
 import ningbo.media.web.bean.FirstCategory;
 import ningbo.media.web.bean.SecondCategory;
+import ningbo.media.web.util.JSONUtils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -48,22 +49,21 @@ public class FirstCategoryServlet extends HttpServlet {
 			response.setCharacterEncoding("utf-8");
 			String id = request.getParameter("id");
 			PrintWriter writer = response.getWriter();
-			List<SecondCategory> list = getSecondCategoryById(id) ;
-			FirstCategory firstCategory = getFirstCategoryById(id) ;
-			
+			List<SecondCategory> list = getSecondCategoryById(id);
+			FirstCategory firstCategory = getFirstCategoryById(id);
+
 			Map<String, Object> map = new HashMap<String, Object>();
-			String ctx = request.getContextPath() ;
-			map.put("ctx", ctx) ;
+			String ctx = request.getContextPath();
+			map.put("ctx", ctx);
 			map.put("categroyId", id);
-			map.put("firstCategory", firstCategory) ;
-			map.put("secondCategorys", list) ;
-			
+			map.put("firstCategory", firstCategory);
+			map.put("secondCategorys", list);
+
 			Template template = conf.getTemplate("secondcategory.ftl");
 			response.setContentType("text/html; charset="
 					+ template.getEncoding());
 
 			template.process(map, writer);
-			//request.getRequestDispatcher("/category/meirongmeifa").forward(request, response) ;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -76,48 +76,54 @@ public class FirstCategoryServlet extends HttpServlet {
 	}
 
 	private List<SecondCategory> getSecondCategoryById(String id) {
-		List<SecondCategory> list = new ArrayList<SecondCategory>() ;
+		List<SecondCategory> list = new ArrayList<SecondCategory>();
 		try {
 			String response = api.showCategory(id);
 			JSONObject json = new JSONObject(response);
-			
-			JSONArray array = json.getJSONArray("secondCategory");
-			for (int i = 0, j = array.length(); i < j; i++) {
-				SecondCategory sc = new SecondCategory() ;
-				JSONObject temp = array.getJSONObject(i) ;
-				sc.setId(Integer.valueOf(temp.getString("id"))) ;
-				sc.setName_cn(temp.getString("name_cn")) ;
-				sc.setName_en(temp.getString("name_en")) ;
-				
-				list.add(sc) ;
+			if (JSONUtils.isArray(json)) {
+				JSONArray array = json.getJSONArray("secondCategory");
+				for (int i = 0, j = array.length(); i < j; i++) {
+					SecondCategory sc = new SecondCategory();
+					JSONObject temp = array.getJSONObject(i);
+					sc.setId(Integer.valueOf(temp.getString("id")));
+					sc.setName_cn(temp.getString("name_cn"));
+					sc.setName_en(temp.getString("name_en"));
+					list.add(sc);
+				}
+			}else{
+				JSONObject jsonObj = json.getJSONObject("secondCategory") ;
+				SecondCategory sc = new SecondCategory();
+				sc.setId(Integer.valueOf(jsonObj.getString("id")));
+				sc.setName_cn(jsonObj.getString("name_cn"));
+				sc.setName_en(jsonObj.getString("name_en"));
+				list.add(sc);
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null ;
+			return null;
 		}
 		return list;
 	}
-	
-	
-	private FirstCategory getFirstCategoryById(String id){
-		FirstCategory first = new FirstCategory() ;
+
+	private FirstCategory getFirstCategoryById(String id) {
+		FirstCategory first = new FirstCategory();
 		try {
-			String response = api.getFirstCategoryById(id) ;
-			if(null == response || response.length() < 0){
-				return null ;
+			String response = api.getFirstCategoryById(id);
+			if (null == response || response.length() < 0) {
+				return null;
 			}
-			JSONObject json = new JSONObject(response) ;
-			first.setId(Integer.valueOf(json.getString("id"))) ;
-			first.setName_cn(json.getString("name_cn")) ;
-			first.setName_en(json.getString("name_en")) ;
-			first.setDescription(json.getString("description")) ;
-			
+			JSONObject json = new JSONObject(response);
+			first.setId(Integer.valueOf(json.getString("id")));
+			first.setName_cn(json.getString("name_cn"));
+			first.setName_en(json.getString("name_en"));
+			first.setDescription(json.getString("description"));
+
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null ;
+			return null;
 		}
-		
-		return first ;
+
+		return first;
 	}
 }

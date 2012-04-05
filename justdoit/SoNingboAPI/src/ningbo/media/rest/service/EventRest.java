@@ -60,6 +60,7 @@ public class EventRest {
 		return eventService.getAll();
 	}
 
+	
 	@Path("/delete")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)

@@ -69,6 +69,7 @@ public class SystemUser implements Serializable {
 	public SystemUser(){}
 	
 
+	@XmlTransient
 	public String getUserKey() {
 		return userKey;
 	}
@@ -93,6 +94,7 @@ public class SystemUser implements Serializable {
 		this.username = username;
 	}
 
+	@XmlTransient
 	public String getPassword() {
 		return password;
 	}
@@ -125,6 +127,7 @@ public class SystemUser implements Serializable {
 		this.photo_path = photo_path;
 	}
 
+	@XmlTransient
 	public Boolean getIsManager() {
 		return isManager;
 	}
@@ -141,6 +144,7 @@ public class SystemUser implements Serializable {
 		this.datetime = datetime;
 	}
 	
+	@XmlTransient
 	public boolean isStatus() {
 		return status;
 	}
@@ -149,7 +153,7 @@ public class SystemUser implements Serializable {
 		this.status = status;
 	}
 	
-
+	@XmlTransient
 	public boolean isGender() {
 		return gender;
 	}
@@ -158,6 +162,7 @@ public class SystemUser implements Serializable {
 		this.gender = gender;
 	}
 
+	@XmlTransient
 	public Date getBirthday() {
 		return birthday;
 	}

@@ -21,4 +21,7 @@ public class Constant {
 	public static final String EVENTID = "eventId" ;
 	public static final String RATEID = "rateId" ; 
 	
+	
+	public static final Integer LIMIT = 10  ;
+	
 }

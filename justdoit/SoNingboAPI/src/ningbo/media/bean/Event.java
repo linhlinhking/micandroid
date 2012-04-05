@@ -19,6 +19,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * 
@@ -38,6 +39,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "tb_events")
+@XmlRootElement
 public class Event implements Serializable {
 
 	private static final long serialVersionUID = -2772155327178236095L;

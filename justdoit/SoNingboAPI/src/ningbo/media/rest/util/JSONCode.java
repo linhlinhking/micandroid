@@ -30,6 +30,10 @@ public class JSONCode {
 	public static final String COMMENT_NOEXISTS = "20011" ; //位置不存在
 	
 	
+	/**Event-5*/
+	public static final String EVENT_NOEXISTS = "20012" ;
+	
+	
 	
 	/**最早的处理的方式(Favorite)*/
 	public static final String GLOBAL_KEYISNULL = "1" ;

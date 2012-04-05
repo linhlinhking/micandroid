@@ -1,5 +1,8 @@
 package ningbo.media.data.entity;
 
+import javax.xml.bind.annotation.XmlType;
+
+@XmlType(name="",propOrder={"id","title","subject","startDate","startTime","endDate","endTime"})
 public class EventData implements EntityData {
 	
 	private Integer id;
@@ -8,8 +11,6 @@ public class EventData implements EntityData {
 
 	private String subject;
 
-	private String address;
-
 	private String startDate;
 
 	private String startTime;
@@ -17,6 +18,7 @@ public class EventData implements EntityData {
 	private String endDate;
 
 	private String endTime;
+	
 
 	public Integer getId() {
 		return id;
@@ -42,13 +44,6 @@ public class EventData implements EntityData {
 		this.subject = subject;
 	}
 
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
 
 	public String getStartDate() {
 		return startDate;
@@ -81,5 +76,7 @@ public class EventData implements EntityData {
 	public void setEndTime(String endTime) {
 		this.endTime = endTime;
 	}
+
+	
 
 }

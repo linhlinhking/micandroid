@@ -15,6 +15,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 import ningbo.media.bean.Favorite;
 import ningbo.media.bean.SystemUser;
 import ningbo.media.oauth2.utils.StringCode;
@@ -24,10 +26,12 @@ import ningbo.media.service.FavoriteService;
 import ningbo.media.service.SendManagerService;
 import ningbo.media.service.SystemUserService;
 import ningbo.media.util.ApplicationContextUtil;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
 import com.sun.jersey.multipart.FormDataMultiPart;
 
 @Path("/user")
@@ -192,6 +196,26 @@ public class SystemUserRest {
 			ex.printStackTrace();
 			json.put(Constant.CODE, "8");
 			return json.toString();
+		}
+	}
+	
+	
+	@Path("/resend/email/{id}")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response resendEmail(@PathParam("id")String id) throws Exception{
+		SystemUser u = systemUserService.get(Integer.valueOf(id)) ;
+		JSONObject json = new JSONObject() ;
+		if(null == u){
+			json.put(Constant.CODE, JSONCode.USER_NOEXISTS) ;
+			return Response.ok(json.toString()).build() ;
+		}else{
+			StringCode code = new StringCode();
+			String tempKey = code.encrypt(Constant.KEY);
+			sendMgrService.sendHtmlMail(u.getEmail(), u.getUsername(), id,
+					tempKey);
+			json.put(Constant.CODE, JSONCode.SUCCESS) ;
+			return Response.ok(json.toString()).build() ;
 		}
 	}
 

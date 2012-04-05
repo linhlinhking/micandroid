@@ -1,5 +1,7 @@
 package ningbo.media.service.impl;
 
+import javax.annotation.Resource;
+
 import ningbo.media.bean.Code;
 import ningbo.media.core.service.impl.BaseServiceImpl;
 import ningbo.media.dao.CodeDao;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 public class CodeServiceImpl extends BaseServiceImpl<Code, Integer>
 		implements CodeService {
 
+	@Resource
 	private CodeDao codeDao ;
 	
 	@Autowired

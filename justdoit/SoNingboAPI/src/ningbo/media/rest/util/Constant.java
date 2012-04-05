@@ -19,5 +19,6 @@ public class Constant {
 	public static final String LOCATIONCOUNT = "count" ;
 	public static final String COMMENTID = "commentId" ;
 	public static final String EVENTID = "eventId" ;
+	public static final String RATEID = "rateId" ; 
 	
 }

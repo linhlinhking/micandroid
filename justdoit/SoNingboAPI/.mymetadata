@@ -3,11 +3,11 @@
   type="WEB"
   name="SoNingboAPI"
   id="myeclipse.1333145682953"
-  context-root="/api"
+  context-root="/"
   j2ee-spec="5.0"
   archive="SoNingboAPI.war">
   <attributes>
-    <attribute name="webrootdir" value="web" />
+    <attribute name="webrootdir" value="/web" />
   </attributes>
 </project-module>
 

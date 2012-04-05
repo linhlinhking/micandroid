@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Event get</title>
+<title>Event getUser</title>
 <link rel="stylesheet" href="test.css" />
 </head>
 
@@ -22,7 +22,7 @@
 
 		<tr>
 			<td>url</td>
-			<td><a href="#" class="external free" rel="nofollow">https://api.searchningbo.com/resource/event/get_event/{id}</a>
+			<td><a href="#" class="external free" rel="nofollow">https://api.searchningbo.com/resource/event/get_location/{id}</a>
 			</td>
 		</tr>
 		<tr>
@@ -54,7 +54,7 @@
 			<td>id</td>
 			<td>true</td>
 			<td>Integer</td>
-			<td>Get Event by Event {id} </td>
+			<td>Get All Event List by Location {id} </td>
 		</tr>
 	
 	</table>
@@ -64,26 +64,35 @@
 	</h2>
 	<pre class="brush: js;">{
 		{
-		    "events": {
-		        "id": "1",
-		        "title": "生日会",
-		        "subject": "生日会",
-		        "startDate": "2012年3月16日",
-		        "startTime": "18:00",
-		        "endDate": "2012年3月17日",
-		        "endTime": "23:59",
-		        "location": {
-		            "id": "33",
-		            "name": "武俊玲美容美体",
-		            "address": "慈溪市水门路167号",
-		            "latitude": "30.1738945",
-		            "longitude": "121.2381155"
+		    "locationId": "33",
+		    "events": [
+		        {
+		            "id": "1",
+		            "title": "生日会",
+		            "subject": "生日会",
+		            "startDate": "2012年3月16日",
+		            "startTime": "18:00",
+		            "endDate": "2012年3月17日",
+		            "endTime": "23:59",
+		            "user": {
+		                "id": "27",
+		                "username": "leyxan.nb@qq.com"
+		            }
 		        },
-		        "user": {
-		            "id": "27",
-		            "username": "test@qq.com"
+		        {
+		            "id": "32770",
+		            "title": "adffdafad",
+		            "subject": "dfadfaedfd",
+		            "startDate": "2012年4月19日",
+		            "startTime": "19:00",
+		            "endDate": "2012年4月19日",
+		            "endTime": "23:00",
+		            "user": {
+		                "id": "28",
+		                "username": "leyxan.nb@gmail.com"
+		            }
 		        }
-		    }
+		    ]
 		}
 	}
 	</pre>

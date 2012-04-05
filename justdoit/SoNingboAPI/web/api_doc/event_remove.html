@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Photo Add</title>
+<title>Event delete</title>
 <link rel="stylesheet" href="test.css" />
 </head>
 
 <body>
  
-<form name="event" method="post" action="http://localhost:8000/resource/event/add" enctype="multipart/form-data">
+<form name="event" method="post" action="https://api.searchningbo.com/resource/event/delete">
   <p>
   
   key<br>
@@ -17,50 +17,10 @@
   <br>
   
   
-   user_id<br>
-  <input type="text" name="userId" id="userId">
+   event_id<br>
+  <input type="text" name="eventId" id="eventId">
   <br>
   <br>
-
-  
-  location_id<br>
-   <input type="text" name="locationId" id="locationId">
-  <br>
-  <br>
-  
-   event_title<br>
-   <input type="text" name="eventTitle" id="eventTitle">
-  <br>
-  <br>
-  
-    event_subject<br>
-   <textarea  name="eventSubject" id="eventSubject" style="width: 200px;height: 100px"></textarea>
-  <br>
-  <br>
-  
-  start_date<br>
-  <input type="text" name="startDate" id="startDate">
-  <br>
-  <br>
-  
-  start_time<br>
-  <input type="text" name="startTime" id="startTime">
-  <br>
-  <br>
-  
-  end_date<br>
-  <input type="text" name="endDate" id="endDate">
-  <br>
-  <br>
-  
-  end_time<br>
-  <input type="text" name="endTime" id="endTime">
-  <br>
-  <br>
-  
-  
-  
-  
 
   <input type="submit" name="POST" id="POST" value="Submit">
 <br>
@@ -81,7 +41,7 @@
 
 		<tr>
 			<td>url</td>
-			<td><a href="#" class="external free" rel="nofollow">https://api.searchningbo.com/resource/event/add</a>
+			<td><a href="#" class="external free" rel="nofollow">https://api.searchningbo.com/resource/event/delete</a>
 			</td>
 		</tr>
 		<tr>
@@ -115,30 +75,14 @@
 			<td>String</td>
 			<td>Authorized verification of API calls</td>
 		</tr>
+	
 		<tr>
-			<td>deviceId</td>
+			<td>eventId</td>
 			<td>true</td>
 			<td>String</td>
-			<td>Device serial number</td>
+			<td>Event Id</td>
 		</tr>
-		<tr>
-			<td>userId</td>
-			<td>true</td>
-			<td>String</td>
-			<td>User Id</td>
-		</tr>
-		<tr>
-			<td>locationId</td>
-			<td>true</td>
-			<td>String</td>
-			<td>Be Comment Location</td>
-		</tr>
-			<tr>
-			<td>commentContent</td>
-			<td>false</td>
-			<td>String</td>
-			<td>Comment Content</td>
-		</tr>
+	
 	</table>
 
 	<h2>
@@ -156,11 +100,10 @@
 		0      : Success
 		20001  : Key is Null
 		20002  : Input Invalid
-		20004  : Location NO Input
-		20005  : DeviceId or UserId No Input
+		20005  : No Input
 		20009  : User NO Exists
-		20010  : Location NO Exists
-		40001  : Throws Exception.
+		20012  : Event NO Exists
+		10001  : Throws Exception.
 	}
 	</pre>
 

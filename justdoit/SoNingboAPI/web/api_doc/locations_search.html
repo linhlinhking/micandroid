@@ -2,41 +2,123 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Favorites Add</title>
+<title>Location Search</title>
+<link rel="stylesheet" href="test.css" />
 </head>
 
 <body>
-<form name="form1" method="post" action="https://api.searchningbo.com/favorite/add">
-  <p>
-  
-  key<br>
-  <label for="key"></label>
-  <input type="text" name="key" id="key">
-  <br>
-  <br>
-  
-  search<br>
-  <label for="key"></label>
-  <input type="text" name="key" id="key">
-  <br>
-  <br>
-  
-  category2_id<br>
-    <label for="key"></label>
-  <input type="text" name="key" id="key">
-  <br>
-  <br>
-  
-  
-  
-  
-  
-  
-  
-  <input type="submit" name="POST" id="POST" value="Submit">
-<br>
-    <br>
-  </p>
-</form>
+ 
+
+<h2>
+		<span class="mw-headline"> Method Summary </span>
+</h2>
+
+<h2>
+		<span class="mw-headline"> Requests Instruction </span>
+</h2>
+
+	<table width="95%" cellpadding="0" cellspacing="2" border="0"
+		class="paratable">
+
+		<tr>
+			<td>url</td>
+			<td><a href="#" class="external free" rel="nofollow">https://api.searchningbo.com/resource/location/search/{name}</a>
+			</td>
+		</tr>
+		<tr>
+			<td>format</td>
+			<td>json</td>
+		</tr>
+
+		<tr>
+			<td>httprequest method</td>
+			<td>get</td>
+		</tr>
+		<tr>
+			<td>need authorize</td>
+			<td>false</td>
+		</tr>
+	</table>
+<h2>
+		<span class="mw-headline"> Parameter Description </span>
+	</h2>
+	<table border="1" cellspacing="0" cellpadding="0" width="95%"
+		class="paratable" style="border-color: #CCCCCC;">
+		<tr>
+			<th width="10%">&nbsp;</th>
+			<th width="5%">required</th>
+			<th width="10%">type & scope</th>
+			<th width="75%">Description</th>
+		</tr>
+		<tr>
+			<td>name</td>
+			<td>true</td>
+			<td>String</td>
+			<td>Search Location by name </td>
+		</tr>
+	
+	</table>
+
+	<h2>
+		<span class="mw-headline"> Return Results </span>
+	</h2>
+	<pre class="brush: js;">{
+	example:<a href="https://api.searchningbo.com/resource/location/search/肯德基">https://api.searchningbo.com/resource/location/search/肯德基</a>
+	return JSON below:
+		{
+		    "location": [
+		        {
+		            "id": "6778",
+		            "name": "肯德基"
+		        },
+		        {
+		            "id": "6786",
+		            "name": "肯德基"
+		        },
+		        {
+		            "id": "6789",
+		            "name": "肯德基"
+		        },
+		        {
+		            "id": "6855",
+		            "name": "肯德基（天一店）"
+		        },
+		        {
+		            "id": "6856",
+		            "name": "肯德基（马园路店）"
+		        },
+		        {
+		            "id": "6857",
+		            "name": "肯德基（彩虹店）"
+		        },
+		        {
+		            "id": "6858",
+		            "name": "肯德基（江北万达店）"
+		        },
+		        {
+		            "id": "6859",
+		            "name": "肯德基（鼓楼店）"
+		        },
+		        {
+		            "id": "6860",
+		            "name": "肯德基（学府店）"
+		        },
+		        {
+		            "id": "6861",
+		            "name": "肯德基（欧尚店）"
+		        }
+		    ]
+		}
+	}
+	</pre>
+
+	<h2>
+		<span class="mw-headline"> Return Code Lists </span>
+	</h2>
+	<pre class="brush: js;">{
+	
+	}
+	</pre>
+
 </body>
 </html>

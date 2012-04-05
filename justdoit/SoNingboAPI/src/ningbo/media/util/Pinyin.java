@@ -9,6 +9,21 @@ import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombi
 
 
 public class Pinyin {  
+	
+	
+	public static boolean isChinese(String name){
+		boolean flag = false ; 
+		if(null == name){
+			return flag ;
+		}
+		char[] t1 = name.toCharArray() ;
+		for(int i=0,j=t1.length;i < j;i++){
+			if(Character.toString(t1[i]).matches("[\\u4E00-\\u9FA5]+")){
+				flag = true ;
+			}
+		}
+		return flag ;
+	}
     /** 
      * 将汉字转换为全拼 
      *  
@@ -87,9 +102,11 @@ public class Pinyin {
     }  
   
     public static void main(String[] args) {  
-        String cnStr = "宁波商外文化传媒有限公司";  
-        System.out.println(getPinYin(cnStr));  
-        System.out.println(getPinYinHeadChar(cnStr));  
+        //String cnStr = "宁波商外文化传媒有限公司";  
+    	String enStr = "ningboshang传媒waichmei" ;
+        System.out.println(isChinese(enStr)) ;
+        //System.out.println(getPinYin(cnStr));  
+        //System.out.println(getPinYinHeadChar(cnStr));  
 
     }  
   

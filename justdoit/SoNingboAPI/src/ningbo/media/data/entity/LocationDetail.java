@@ -2,7 +2,7 @@ package ningbo.media.data.entity;
 
 import javax.xml.bind.annotation.XmlType;
 
-@XmlType(name="location",propOrder={"id","name","address","latitude","longitude"})
+@XmlType(name="location",propOrder={"id","name","name_en","address","address_en","latitude","longitude"})
 public class LocationDetail {
 
 	private Integer id ;
@@ -10,6 +10,10 @@ public class LocationDetail {
 	private String name ;
 	
 	private String address; 
+	
+	private String name_en ;
+	
+	private String address_en ;
 	
 	private Double latitude ;
 	
@@ -57,5 +61,23 @@ public class LocationDetail {
 		this.longitude = longitude;
 	}
 
+	public String getName_en() {
+		return name_en;
+	}
+
+	public void setName_en(String name_en) {
+		this.name_en = name_en;
+	}
+
+	public String getAddress_en() {
+		return address_en;
+	}
+
+	public void setAddress_en(String address_en) {
+		this.address_en = address_en;
+	}
+
+	
+	
 	
 }

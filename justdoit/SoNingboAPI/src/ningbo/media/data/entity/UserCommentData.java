@@ -1,5 +1,6 @@
 package ningbo.media.data.entity;
 
+
 public class UserCommentData implements EntityData{
 
 	private Integer locationId ;

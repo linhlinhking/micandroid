@@ -14,4 +14,6 @@ public interface FavoriteDao extends BaseDao<Favorite, Integer> {
 	public List<Favorite> getListFavoriteByUserId(Integer userId);
 
 	public List<Favorite> getListFavoriteByDeviceId(String deviceId);
+	
+	public List<Favorite> findFavoriteByDeviceForUser(String deviceId) ;
 }

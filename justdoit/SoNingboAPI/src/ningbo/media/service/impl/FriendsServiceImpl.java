@@ -1,5 +1,7 @@
 package ningbo.media.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import ningbo.media.bean.Friends;
@@ -30,5 +32,10 @@ public class FriendsServiceImpl extends BaseServiceImpl<Friends, Integer>
 	
 	public Friends getRelationObject(Integer userA,Integer userB){
 		return friendsDao.getRelationObject(userA, userB) ;
+	}
+	
+	
+	public List<Friends> getFriendsForUserId(Integer userId){
+		return friendsDao.getFriendsForUserId(userId) ;
 	}
 }

@@ -15,6 +15,6 @@ public interface FavoriteService extends BaseService<Favorite, Integer> {
 	
 	public List<Favorite> getListFavoriteByDeviceId(String deviceId) ;
 	
-	public List<Favorite> findFavoriteByDeviceAndUser(String deviceId);
+	public List<Favorite> findFavoriteByDeviceForUser(String deviceId);
 	
 }

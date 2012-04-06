@@ -18,7 +18,7 @@ public class FavoriteDaoImpl extends BaseDaoImpl<Favorite, Integer> implements
 
 	public Favorite findFavoriteById(String userId, String locationId) {
 
-		final String hql = "from Favorite model where model.userId = ? and model.locationId = ? ";
+		final String hql = "from Favorite model where 1=1 and model.userId = ? and model.locationId = ? ";
 		Favorite favorite = null;
 		if ("".equals(userId) || "".equals(locationId) || userId == null
 				|| locationId == null) {
@@ -36,7 +36,7 @@ public class FavoriteDaoImpl extends BaseDaoImpl<Favorite, Integer> implements
 	}
 
 	public Favorite findFavoriteByDeviceId(String deviceId, String locationId) {
-		final String hql = "from Favorite model where model.deviceId = ? and model.locationId = ? ";
+		final String hql = "from Favorite model where 1=1 and model.deviceId = ? and model.locationId = ? ";
 		Favorite favorite = null;
 		if ("".equals(deviceId) || "".equals(locationId) || deviceId == null
 				|| locationId == null) {
@@ -53,20 +53,32 @@ public class FavoriteDaoImpl extends BaseDaoImpl<Favorite, Integer> implements
 	}
 
 	public List<Favorite> getListFavoriteByUserId(Integer userId) {
-		final String hql = "from Favorite model where model.userId = ? ";
+		final String hql = "from Favorite model where 1=1 and model.userId = ? ";
 		List<Favorite> list = findByHql(hql, userId);
-		if (list == null || list.size() < 1) {
+		if (null == list || list.size() < 1) {
 			return null;
 		}
 		return list;
 	}
 
 	public List<Favorite> getListFavoriteByDeviceId(String deviceId) {
-		final String hql = "from Favorite model where model.deviceId = ? ";
+		final String hql = "from Favorite model where 1=1 and model.deviceId = ? ";
 		List<Favorite> list = findByHql(hql, deviceId);
-		if (list == null || list.size() < 1) {
+		if (null == list || list.size() < 1) {
 			return null;
 		}
 		return list;
 	}
+
+	public List<Favorite> findFavoriteByDeviceForUser(String deviceId) {
+		List<Favorite> listFav = null;
+		String hql = "from Favorite model where 1=1 and model.userId is null and model.deviceId = ? ";
+		listFav = findByHql(hql, deviceId);
+		if (null == listFav || listFav.size() < 1) {
+			return null;
+		}
+		return listFav;
+	}
+	
+	
 }

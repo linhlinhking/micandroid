@@ -48,10 +48,8 @@ public class SystemUserRest {
 	private SendManagerService sendMgrService = (SendManagerService) ApplicationContextUtil
 			.getContext().getBean("sendMail");
 
-	// @Context
-	// private UriInfo info ;
 
-	/***
+	/**
 	 * description: access:/user/show/{id} example:/user/show/1 [return json.]
 	 * request method:get
 	 * 
@@ -61,7 +59,8 @@ public class SystemUserRest {
 	@Path("/show/{id : \\d+}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public SystemUser getSystemUserById(@PathParam("id") Integer id) {
+	public SystemUser getSystemUserById(@PathParam("id")
+	Integer id) {
 		SystemUser u = systemUserService.get(id);
 		return u;
 	}
@@ -82,8 +81,9 @@ public class SystemUserRest {
 	@Path("/verifystatus/{id : \\d+}/{key}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public String verifystatus(@PathParam("id") Integer id,
-			@PathParam("key") String key) throws Exception {
+	public String verifystatus(@PathParam("id")
+	Integer id, @PathParam("key")
+	String key) throws Exception {
 		JSONObject json = new JSONObject();
 		// the key is wrong
 		StringCode stringCode = new StringCode();
@@ -121,10 +121,12 @@ public class SystemUserRest {
 	@Path("/register")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public String addSystemUser(@FormParam("username") String username,
-			@FormParam("password") String password,
-			@FormParam("email") String email, @FormParam("key") String key,
-			@Context HttpServletRequest request) throws JSONException {
+	public String addSystemUser(@FormParam("username")
+	String username, @FormParam("password")
+	String password, @FormParam("email")
+	String email, @FormParam("key")
+	String key, @Context
+	HttpServletRequest request) throws JSONException {
 		JSONObject json = new JSONObject();
 		// the key is wrong
 		if (key.isEmpty()) {
@@ -198,24 +200,24 @@ public class SystemUserRest {
 			return json.toString();
 		}
 	}
-	
-	
+
 	@Path("/resend/email/{id}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response resendEmail(@PathParam("id")String id) throws Exception{
-		SystemUser u = systemUserService.get(Integer.valueOf(id)) ;
-		JSONObject json = new JSONObject() ;
-		if(null == u){
-			json.put(Constant.CODE, JSONCode.USER_NOEXISTS) ;
-			return Response.ok(json.toString()).build() ;
-		}else{
+	public Response resendEmail(@PathParam("id")
+	String id) throws Exception {
+		SystemUser u = systemUserService.get(Integer.valueOf(id));
+		JSONObject json = new JSONObject();
+		if (null == u) {
+			json.put(Constant.CODE, JSONCode.USER_NOEXISTS);
+			return Response.ok(json.toString()).build();
+		} else {
 			StringCode code = new StringCode();
 			String tempKey = code.encrypt(Constant.KEY);
 			sendMgrService.sendHtmlMail(u.getEmail(), u.getUsername(), id,
 					tempKey);
-			json.put(Constant.CODE, JSONCode.SUCCESS) ;
-			return Response.ok(json.toString()).build() ;
+			json.put(Constant.CODE, JSONCode.SUCCESS);
+			return Response.ok(json.toString()).build();
 		}
 	}
 
@@ -231,8 +233,8 @@ public class SystemUserRest {
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String editSystemUser(FormDataMultiPart form,
-			@Context HttpServletRequest request) throws JSONException {
+	public String editSystemUser(FormDataMultiPart form, @Context
+	HttpServletRequest request) throws JSONException {
 		Integer id = Integer.parseInt(form.getField("id").getValue());
 		String username = form.getField("username").getValue();
 		String password = form.getField("password").getValue();
@@ -260,7 +262,7 @@ public class SystemUserRest {
 		// return true if the email is exists
 		final boolean bool_email = systemUserService.isExist("email", email);
 		if (bool_email) {
-			json.put(Constant.CODE, JSONCode.EMAIL_EXISTS).toString();
+			json.put(Constant.CODE, JSONCode.USER_EMAIL_EXISTS).toString();
 			return json.toString();
 		}
 
@@ -287,8 +289,9 @@ public class SystemUserRest {
 	@Path("/check/{property}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public String isExist(@PathParam("property") String property,
-			@QueryParam("value") String value) {
+	public String isExist(@PathParam("property")
+	String property, @QueryParam("value")
+	String value) {
 		Boolean flag = systemUserService.isExist(property, value);
 		return flag.toString();
 	}
@@ -296,51 +299,54 @@ public class SystemUserRest {
 	@Path("/login")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public String login(@FormParam("username") String username,
-			@FormParam("password") String password,
-			@FormParam("key") String key,
-			@FormParam("device_id") String device_id) throws JSONException {
+	public Response login(@FormParam("username")
+	String username, @FormParam("password")
+	String password, @FormParam("key")
+	String key, @FormParam("device_id")
+	String device_id) throws JSONException {
+
 		JSONObject json = new JSONObject();
 		if (key.isEmpty()) {
-			json.put(Constant.CODE, "1");
-			return json.toString();
+			json.put(Constant.CODE, JSONCode.GLOBAL_KEYISNULL);
+			return Response.ok(json.toString()).build();
 		} else if (!Constant.KEY.equals(key)) {
-			json.put(Constant.CODE, "2");
-			return json.toString();
+			json.put(Constant.CODE, JSONCode.GLOBAL_KEYINPUTINVALID);
+			return Response.ok(json.toString()).build();
 		}
 		if (username.isEmpty()) {
-			return json.put(Constant.CODE, "3").toString();
+			json.put(Constant.CODE, JSONCode.USERNAME_NOINPUT);
+			return Response.ok(json.toString()).build();
 		}
 		if (password.isEmpty()) {
-			return json.put(Constant.CODE, "4").toString();
+			json.put(Constant.CODE, JSONCode.USE_PASSWORD_NOINPUT);
+			return Response.ok(json.toString()).build();
 		}
 
 		try {
-			Integer user_id = systemUserService.login(username, password);
-			if (0 != user_id) {
-				json.put(Constant.USERID, user_id);
-				json.put(Constant.CODE, "0");
+			Integer tempUser = systemUserService.login(username, password);
+			if (0 != tempUser) {
+				json.put(Constant.USERID, tempUser);
+				json.put(Constant.CODE, JSONCode.SUCCESS);
 			} else {
-				json.put(Constant.CODE, "5");
+				json.put(Constant.CODE,JSONCode.USER_NOEXISTS);
 			}
-
 			//
 			List<Favorite> listFav = favoriteService
-					.findFavoriteByDeviceAndUser(device_id);
+					.findFavoriteByDeviceForUser(device_id);
 			if (null != listFav && listFav.size() > 0) {
 				for (int i = 0; i < listFav.size(); i++) {
 					Favorite entity = listFav.get(i);
 					entity.setId(listFav.get(i).getId());
-					entity.setUserId(user_id);
+					entity.setUserId(tempUser);
 					favoriteService.update(entity);
 				}
 			}
 
-			return json.toString();
+			return Response.ok(json.toString()).build();
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			json.put(Constant.CODE, "6");
-			return json.toString();
+			json.put(Constant.CODE,JSONCode.THROWEXCEPTION);
+			return Response.ok(json.toString()).build();
 		}
 
 	}

@@ -42,12 +42,8 @@ public class FavoriteServiceImpl extends BaseServiceImpl<Favorite, Integer>
 		return favoriteDao.getListFavoriteByDeviceId(deviceId);
 	}
 
-	public List<Favorite> findFavoriteByDeviceAndUser(String deviceId) {
-		List<Favorite> listFav = null;
-		String hql = "from Favorite model where model.userId is null and model.deviceId = ?";
-		listFav = findByHql(hql, deviceId);
-		return listFav;
-
+	public List<Favorite> findFavoriteByDeviceForUser(String deviceId) {
+		return favoriteDao.findFavoriteByDeviceForUser(deviceId) ;
 	}
 	
 }

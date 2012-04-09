@@ -2,13 +2,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Favorites Add</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" href="test.css" />
+<title>Friend Get</title>
 </head>
 
 <body>
-
 
 
 <h2>
@@ -22,7 +21,7 @@
 		<tr>
 			<td>url</td>
 			<td><a href="#"
-				class="external free" rel="nofollow">https://api.searchningbo.com/resource/user/resend/email/{userId}</a>
+				class="external free" rel="nofollow">https://api.searchningbo.com/resource/friend/user/{userId}</a>
 			</td>
 		</tr>
 		<tr>
@@ -61,7 +60,7 @@
 			<td>userId</td>
 			<td>true</td>
 			<td>int</td>
-			<td>User Id</td>
+			<td>query the user's favorites</td>
 		</tr>
 
 	</table>
@@ -71,7 +70,22 @@
 			return results </span>
 	</h2>
 	<pre class="brush: js;">{
-
+	example:<a href="https://api.searchningbo.com/resource/friend/user/27">https://api.searchningbo.com/resource/friend/user/27</a>
+	
+	{
+	    "userId": "27",
+	    "friends": [
+	        {
+	            "id": "31",
+	            "username": "tnyx2005@163.com"
+	        },
+	        {
+	            "id": "29",
+	            "username": "leyxan1@qq.com"
+	        }
+	    ]
+	}
+	
   }
 </pre>
 

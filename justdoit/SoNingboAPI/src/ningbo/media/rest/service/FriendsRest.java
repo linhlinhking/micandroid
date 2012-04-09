@@ -132,6 +132,8 @@ public class FriendsRest {
 		return Response.ok(getFriendsForUser(id)).build();
 	}
 
+	
+	
 	private FriendList getFriendsForUser(String id) {
 		List<Friends> list = friendsService.getFriendsForUserId(Integer
 				.valueOf(id));

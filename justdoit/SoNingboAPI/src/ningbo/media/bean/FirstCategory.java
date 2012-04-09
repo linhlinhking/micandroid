@@ -13,6 +13,8 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.dozer.Mapping;
+
 @Entity
 @Table(name = "category1")
 @XmlRootElement
@@ -30,6 +32,7 @@ public class FirstCategory implements Serializable {
 	
 	private String description ;
 
+	@Mapping("secondCategorysDto")
 	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "firstCategory")
 	private List<SecondCategory> secondCategorys;
 

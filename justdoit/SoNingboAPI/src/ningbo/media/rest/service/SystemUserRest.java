@@ -2,7 +2,6 @@ package ningbo.media.rest.service;
 
 import java.util.Date;
 import java.util.List;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -16,17 +15,17 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
+import javax.ws.rs.core.Response.Status;
 import ningbo.media.bean.Favorite;
 import ningbo.media.bean.SystemUser;
 import ningbo.media.oauth2.utils.StringCode;
 import ningbo.media.rest.util.Constant;
 import ningbo.media.rest.util.JSONCode;
+import ningbo.media.rest.util.Jerseys;
 import ningbo.media.service.FavoriteService;
 import ningbo.media.service.SendManagerService;
 import ningbo.media.service.SystemUserService;
 import ningbo.media.util.ApplicationContextUtil;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.context.annotation.Scope;
@@ -59,10 +58,14 @@ public class SystemUserRest {
 	@Path("/show/{id : \\d+}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public SystemUser getSystemUserById(@PathParam("id")
+	public Response getSystemUserById(@PathParam("id")
 	Integer id) {
 		SystemUser u = systemUserService.get(id);
-		return u;
+		if(null == u){
+			String message = "The User Id [" + id +"] No Exists." ;
+			throw Jerseys.buildException(Status.NOT_FOUND,message);
+		}
+		return Response.ok(u).build(); 
 	}
 
 	@Path("/showAll")

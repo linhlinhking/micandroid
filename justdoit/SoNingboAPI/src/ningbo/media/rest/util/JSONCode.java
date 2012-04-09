@@ -8,6 +8,9 @@ public class JSONCode {
 	/**系统级别异常*/
 	public static final String THROWEXCEPTION = "10001" ;//系统异常
 	public static final String LOCATION_COUNT_EXCEPTION = "13001" ;//获取位置数目异常
+	public static final String THROW_MESSAGE = "Request The Resource No Exists." ;
+	public static final String SERVER_EXCEPTION = "System Error." ;
+	
 	
 	/**应用级别的全局异常*/
 	public static final String KEYISNULL = "20001" ; //key输入为空
@@ -24,14 +27,12 @@ public class JSONCode {
 	public static final String USERNAME_NOINPUT = "30004" ;//用户名为空
 	public static final String USE_PASSWORD_NOINPUT = "30005" ;//用户密码为空
 	
-	
 	/**Locatioin-4*/
 	public static final String LOCATION_NOEXISTS = "20010" ; //位置不存在
 	
 	/**Comment-5*/
 	public static final String COMMENT_THROWEXCEPTION = "40001" ;
 	public static final String COMMENT_NOEXISTS = "20011" ; //位置不存在
-	
 	
 	/**Event-6*/
 	public static final String EVENT_NOEXISTS = "20012" ;

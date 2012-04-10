@@ -81,9 +81,6 @@ public class ModuleFileResource {
 			}
 			
 			
-			
-			
-			
 		} catch (Exception ex) {
 			throw Jerseys.buildException(Status.INTERNAL_SERVER_ERROR, ex
 					.getMessage());

@@ -37,6 +37,11 @@ public class JSONCode {
 	/**Event-6*/
 	public static final String EVENT_NOEXISTS = "20012" ;
 	
+	/**ModuleFile-7*/
+	public static final String MODULEFILE_TOOL_NOEXISTS = "70001" ;
+	public static final String MODULEFILE_TYPE_NOEXISTS = "70002" ;
+	
+	
 	
 	
 	/**最早的处理的方式(Favorite)*/

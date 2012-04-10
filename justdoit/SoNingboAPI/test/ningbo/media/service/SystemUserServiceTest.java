@@ -24,13 +24,11 @@ public class SystemUserServiceTest extends BaseTest{
 		return null ;
 	}
 	
+	
 	@Test
-	public void testEmailIsUnique(){
-		//String email = "leyxan@gmail.com" ;
-		//System.out.println(systemUserService.isExist("email", email)) ;
-		//SystemUser one = SystemUser.fromJson(testVerificationUser()) ;
-		//systemUserService.save(one) ;
-		//System.out.println("save success!") ;
+	public void testLogin(){
+		Integer u = systemUserService.login("leyxan.nb@qq.com", "123") ;
+		System.out.println(u) ;
 	}
 
 }

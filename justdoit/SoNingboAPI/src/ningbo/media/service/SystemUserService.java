@@ -7,5 +7,7 @@ public interface SystemUserService extends BaseService<SystemUser, Integer> {
 	
 	
 	public Integer login(String username, String password);
+	
+	public boolean isContainTool(Integer toolId) ;
 
 }

@@ -7,4 +7,5 @@ public interface SystemUserDao extends BaseDao<SystemUser, Integer>{
 	
 	public Integer login(String username, String password);
 	
+	public boolean isContainTool(Integer toolId) ;
 }

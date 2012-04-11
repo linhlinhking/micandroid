@@ -40,7 +40,7 @@ public class JSONCode {
 	/**ModuleFile-7*/
 	public static final String MODULEFILE_TOOL_NOEXISTS = "70001" ;
 	public static final String MODULEFILE_TYPE_NOEXISTS = "70002" ;
-	
+	public static final String MODULEFILE_USER_NOEXISTS = "70003" ;
 	
 	
 	

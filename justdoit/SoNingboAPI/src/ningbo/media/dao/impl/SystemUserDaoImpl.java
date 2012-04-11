@@ -31,5 +31,15 @@ public class SystemUserDaoImpl extends BaseDaoImpl<SystemUser, Integer>
 		return u;
 
 	}
+	
+	public boolean isContainTool(Integer toolId){
+		boolean flag = false; 
+		final String hql = "from SystemUser as m join m.toolses as n where 1=1 and n.id = ? " ;
+		SystemUser u = (SystemUser)findUnique(hql, toolId) ;
+		if(u != null){
+			flag = true ;
+		}
+		return flag ;
+	}
 
 }

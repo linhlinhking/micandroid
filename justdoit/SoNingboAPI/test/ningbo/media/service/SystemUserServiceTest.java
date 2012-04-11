@@ -25,10 +25,16 @@ public class SystemUserServiceTest extends BaseTest{
 	}
 	
 	
-	@Test
+	
 	public void testLogin(){
 		Integer u = systemUserService.login("leyxan.nb@qq.com", "123") ;
 		System.out.println(u) ;
+	}
+	
+	@Test
+	public void testIsContainTool(){
+		boolean flag = systemUserService.isContainTool(1) ;
+		System.out.println(flag) ;
 	}
 
 }

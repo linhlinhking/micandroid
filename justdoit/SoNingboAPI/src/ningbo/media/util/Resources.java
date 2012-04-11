@@ -6,7 +6,7 @@ import java.util.ResourceBundle;
 public class Resources {
 
 	 /** 本地化资源文件。 */
-    public static final String RESOURCE_LOCATION = "upload";
+    public static final String RESOURCE_LOCATION = "resource/upload";
     public static final String ACCESS_ERROR = "accessError" ;
     
     /** class 全名的资源ResourceBundle。 */

@@ -27,4 +27,8 @@ public class SystemUserServiceImpl extends BaseServiceImpl<SystemUser, Integer> 
 		return systemUserDao.login(username, password) ;
 	}
 
+	public boolean isContainTool(Integer toolId) {
+		return systemUserDao.isContainTool(toolId) ;
+	}
+
 }

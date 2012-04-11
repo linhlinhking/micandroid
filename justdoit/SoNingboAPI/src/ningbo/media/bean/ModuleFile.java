@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 
@@ -29,6 +30,10 @@ public class ModuleFile {
 	
 	private Date createTime;
 
+	@OneToOne
+	@JoinColumn(name = "infoId")
+	private ImageInformation imageInfo;
+	
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
 	@JoinColumn(name = "toolId")
 	private Tools tools ;
@@ -93,8 +98,14 @@ public class ModuleFile {
 	public void setModuleType(ModuleType moduleType) {
 		this.moduleType = moduleType;
 	}
-	
-	
+
+	public ImageInformation getImageInfo() {
+		return imageInfo;
+	}
+
+	public void setImageInfo(ImageInformation imageInfo) {
+		this.imageInfo = imageInfo;
+	}
 	
 	
 }

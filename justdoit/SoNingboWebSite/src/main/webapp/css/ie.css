@@ -1,0 +1,64 @@
+@charset "utf-8";
+@font-face{
+	font-family:'fashion';
+	src:url(../script/fashion.eot);}
+@font-face{
+	font-family:'FZSHJW';
+	src:url(../script/FZSHJW.eot);}
+.login form .box {
+	margin-top:45px;
+	margin-left:8px;
+	cursor:hand;
+	cursor:pointer;
+	float:left;
+	width:80px;
+	background-image:url(../images/v2.jpg);
+}
+.register_content form .box_register {
+	margin-left:9.5em;
+	margin-right:7.5em;
+	margin-top:10px;
+	cursor:hand;
+	cursor:pointer;
+	height:30px;
+	width:195px;
+	background-image:url(../images/v1.jpg);
+}
+.container .content #register .line {
+	border-top:1px solid #999;
+	border-bottom:1px solid #FFF;
+	margin-top:11px;
+}
+.logo { height:46px; width:180px; margin-top:22px; margin-bottom:22px; float:left; cursor:hand; cursor:pointer; background-image:url(../images/home_logo.gif);}
+.container .login form .login_distance {
+	float:left;
+	margin-top:22px;
+	margin-left:5px;
+	width:200px;
+}
+.container .login form .login_distance label {
+	font-family:'FZSHJW';
+	font-size:13px;
+	color:#FFF;
+}
+.container .login form .login_distance_nd label {
+	font-family:'FZSHJW';
+	font-size:13px;
+	color:#FFF;
+}
+.container .login form .login_distance_nd {
+	float:left;
+	margin-top:22px;
+	margin-left:5px;
+	width:75px;
+}
+.container .login form .slider img {
+	padding-top:1px;
+}
+.container .content #video {
+	width:450px;
+	height:500px;
+	display:block;
+	float:left;
+	text-align:center;
+}

@@ -1,0 +1,56 @@
+
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script src="../../scripts/jquery-1.7.min.js" type="text/javascript"></script>
+<script src="../../scripts/so_ningbo_category.js" type="text/javascript"></script>
+
+<title>地区添加</title>
+</head>
+<body>
+	<form name="form1" method="post"
+		action="https://api.searchningbo.com/resource/location/add"
+		enctype="multipart/form-data" onsubmit="return checkLocationForm()">
+        <h2>地区添加>></h2>
+        <font color="red">*表示必填</font>
+		<p><input type="hidden" name="key" id="key" value="soningbo" />
+            name_en（地区英文）: 
+            <input type="text" name="name_en" id="name_en" size="50"/><font color="red">*</font> <br> <br>
+			name_cn（地区中文）:
+			<input type="text" name="name_cn" id="name_cn" size="50"><font color="red">*</font><br> <br> 
+            address_en（地址英文）: 
+            <input type="text" name="address_en" id="address_en" size="50"><font color="red">*</font> <br> <br>
+			address_cn（地址中文）:
+			<input type="text" name="address_cn" id="address_cn" size="50"><font color="red">*</font> <br> <br> 
+            telephone（电话号码）: 
+            <input type="text" name="telephone" id="telephone"> <br> <br>
+			gps_lat（纬度）:
+			<input type="text" name="latitude" id="latitude"><font color="red">*</font> <br> <br> 
+            gps_lon（经度）: 
+            <input type="text" name="longitude" id="longitude"><font color="red">*</font> <br> <br> 
+            photo（地区照片）: 
+            <input type="file" name="photo_path" id="photo_path"> <br> <br> 
+            类目：
+            <select name="category1" id="category1" onchange="onChangeCategory1()"></select>
+            <hr/>
+            <div id="category2"></div>
+           
+            <!-- 
+             <select name="category_id" id="category_id">
+            	<option value="0" selected="selected">---请选择---</option>
+            </select><font color="red">*</font><br><br>
+            category2_id: <input type="text" name="category_id" id="category_id"><font color="red">*</font> <br> <br> -->
+          	<input type="reset" name="btn_cancel"  value=" 取 消 ">
+            <input type="submit" name="btn_submit" value=" 添 加 "> <br> <br>
+		</p>
+	</form>
+<h2>
+	<span class="mw-headline"> Return Code Lists </span>
+</h2>
+	<pre class="brush: js;">{
+		0  : Success 表示插入成功！
+	}
+</pre>
+</body>
+</html>

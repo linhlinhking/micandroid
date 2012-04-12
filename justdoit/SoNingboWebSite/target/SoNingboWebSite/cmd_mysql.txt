@@ -1,0 +1,10 @@
+# check character
+show variables like 'character_set_%';
+#copy the my-small.cnf to /etc
+sudo cp my-small.cnf /etc
+#rename the file
+sudo mv my-small.cnf my.cnf
+#stop mysql server
+sudo /Library/StartupItems/MySQLCOM/MySQLCOM stop
+#start mysql server
+sudo /Library/StartupItems/MySQLCOM/MySQLCOM start

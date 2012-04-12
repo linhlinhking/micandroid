@@ -3,6 +3,11 @@ package ningbo.media.core.dao;
 import java.io.Serializable;
 import java.util.List;
 
+import ningbo.media.core.page.Pagination;
+import ningbo.media.core.page.Finder ;
+
+
+
 public interface BaseDao<E, PK extends Serializable> {
 
 	/**
@@ -45,10 +50,8 @@ public interface BaseDao<E, PK extends Serializable> {
 	 */
 	public E get(String propertyName, Object value);
 
-	
 	public List<E> getList(String propertyName, Object value);
 
-	
 	public List<E> getAll();
 
 	public Long getTotalCount();
@@ -74,9 +77,14 @@ public interface BaseDao<E, PK extends Serializable> {
 	public Object findUnique(String hql, Object... values);
 
 	public List<E> findByHql(String hql, Object... values);
-	
-	public List<E> findByHql(String hql, boolean isLike,Integer limit,Object... values);
+
+	public List<E> findByHql(String hql, boolean isLike, Integer limit,
+			Object... values);
 
 	public List<String> findAllObject(String hql, Object... values);
+	
+	public Pagination<E> findByPage(Finder finder, int pageNo, int pageSize);
+	
+	public List<E> findByPage(final Finder finder);
 
 }

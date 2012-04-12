@@ -2,11 +2,14 @@ package ningbo.media.core.dao.impl;
 
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 
 import ningbo.media.core.dao.BaseDao;
+import ningbo.media.core.page.Finder;
+import ningbo.media.core.page.Pagination;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -155,11 +158,11 @@ public class BaseDaoImpl<E, PK extends Serializable> implements BaseDao<E, PK> {
 	}
 
 	public List<E> findByHql(final String hql, final Object... values) {
-			return findByHql(hql,false,null,values) ;
+		return findByHql(hql, false, null, values);
 	}
 
-	public List<E> findByHql(final String hql, final boolean isLike,final Integer limit,
-			final Object... values) {
+	public List<E> findByHql(final String hql, final boolean isLike,
+			final Integer limit, final Object... values) {
 
 		return getHibernateTemplate().execute(new HibernateCallback<List<E>>() {
 
@@ -167,15 +170,15 @@ public class BaseDaoImpl<E, PK extends Serializable> implements BaseDao<E, PK> {
 			public List<E> doInHibernate(Session session)
 					throws HibernateException, SQLException {
 				Query query = session.createQuery(hql);
-				
-				if(limit != null){
-					query.setMaxResults(limit) ;
+
+				if (limit != null) {
+					query.setMaxResults(limit);
 				}
 				if (values != null) {
 					if (isLike) {
 						for (int i = 0, j = values.length; i < j; i++) {
-							query.setParameter(i,
-									"%" + String.valueOf(values[i]) + "%");
+							query.setParameter(i, "%"
+									+ String.valueOf(values[i]) + "%");
 						}
 					} else {
 						for (int i = 0, j = values.length; i < j; i++) {
@@ -188,7 +191,6 @@ public class BaseDaoImpl<E, PK extends Serializable> implements BaseDao<E, PK> {
 
 		});
 	}
-
 
 	public List<String> findAllObject(final String hql, final Object... values) {
 		return getHibernateTemplate().execute(
@@ -215,6 +217,48 @@ public class BaseDaoImpl<E, PK extends Serializable> implements BaseDao<E, PK> {
 
 	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
 		this.hibernateTemplate = hibernateTemplate;
+	}
+
+	public Pagination<E> findByPage(final Finder finder, int pageNo,
+			int pageSize) {
+		int totalCount = getTotalCount().intValue();
+		final Pagination<E> p = new Pagination<E>(pageNo, pageSize, totalCount);
+		if (totalCount < 1) {
+			p.setList(new ArrayList<E>());
+			return p;
+		}
+		return getHibernateTemplate().execute(
+				new HibernateCallback<Pagination<E>>() {
+					@SuppressWarnings("unchecked")
+					public Pagination<E> doInHibernate(Session session)
+							throws HibernateException, SQLException {
+						Query query = session.createQuery(finder.getOrigHql());
+						finder.setParamsToQuery(query);
+						query.setFirstResult(p.getFirstResult());
+						query.setMaxResults(p.getPageSize());
+						if (finder.isCacheable()) {
+							query.setCacheable(true);
+						}
+						List<E> list = query.list();
+						p.setList(list);
+						return p;
+					}
+				});
+	}
+
+	
+	public List<E> findByPage(final Finder finder) {
+		return getHibernateTemplate().execute(new HibernateCallback<List<E>>() {
+			@SuppressWarnings("unchecked")
+			public List<E> doInHibernate(Session session)
+					throws HibernateException, SQLException {
+				Query query = finder.createQuery(session) ;
+				List<E> list = query.list() ;
+				return list;
+			}
+
+		});
+
 	}
 
 }

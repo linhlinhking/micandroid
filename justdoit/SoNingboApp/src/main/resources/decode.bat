@@ -1,0 +1,2 @@
+native2ascii jxstar.properties jxstar_zh_CN.properties
+pause

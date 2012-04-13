@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+
+
+
+        <mapping resource="hibernate/Customer.hbm.xml" />
+        <mapping resource="hibernate/CustomerInfo.hbm.xml" />
+        <mapping resource="hibernate/Category.hbm.xml" />
+        <mapping resource="hibernate/CategoryDescription.hbm.xml" />
+	    <mapping resource="hibernate/CoreModuleService.hbm.xml" />
+		<mapping resource="hibernate/CentralCountryStatus.hbm.xml" />
+		<mapping resource="hibernate/MerchantPaymentGatewayTrx.hbm.xml" />
+		<mapping resource="hibernate/MerchantConfiguration.hbm.xml" />
+		<mapping resource="hibernate/MerchantRegistrationDef.hbm.xml" />
+		<mapping resource="hibernate/MerchantUserInformation.hbm.xml" />
+		<mapping resource="hibernate/MerchantUserRole.hbm.xml" />
+		<mapping resource="hibernate/MerchantRegistration.hbm.xml" />
+		<mapping resource="hibernate/MerchantStore.hbm.xml" />
+		<mapping resource="hibernate/Language.hbm.xml" />
+		<mapping resource="hibernate/Currency.hbm.xml" />
+
+		<!-- System -->
+		<mapping resource="hibernate/CentralSequencer.hbm.xml" />
+		<mapping resource="hibernate/CentralIntegrationError.hbm.xml" />
+		<mapping resource="hibernate/OffsystemNotificationOrder.hbm.xml" />
+		<mapping resource="hibernate/OffsystemPendingOrder.hbm.xml" />
+
+		<!-- Catalog -->
+		<mapping resource="hibernate/Product.hbm.xml" />
+		<mapping resource="hibernate/ProductOption.hbm.xml" />
+		<mapping resource="hibernate/ProductOptionDescription.hbm.xml" />
+		<mapping resource="hibernate/ProductOptionValue.hbm.xml" />
+		<mapping resource="hibernate/ProductOptionValueDescription.hbm.xml" />
+		<mapping resource="hibernate/ProductOptionValueToProductOption.hbm.xml" />
+		<mapping resource="hibernate/ProductOptionType.hbm.xml" />
+		<mapping resource="hibernate/ProductType.hbm.xml" />
+		<mapping resource="hibernate/ProductAttribute.hbm.xml" />
+		<mapping resource="hibernate/ProductAttributeDownload.hbm.xml" />
+		<mapping resource="hibernate/ProductDescription.hbm.xml" />
+		<mapping resource="hibernate/Special.hbm.xml" />
+		<mapping resource="hibernate/ProductPrice.hbm.xml" />
+		<mapping resource="hibernate/ProductPriceDescription.hbm.xml" />
+		<mapping resource="hibernate/ProductPriceSpecial.hbm.xml" />
+		<mapping resource="hibernate/ProductRelationship.hbm.xml" />
+		<mapping resource="hibernate/Review.hbm.xml" />
+		<mapping resource="hibernate/ReviewDescription.hbm.xml" />
+
+		<!-- Tax -->
+
+		<mapping resource="hibernate/TaxRate.hbm.xml" />
+		<mapping resource="hibernate/TaxRateTaxTemplate.hbm.xml" />
+		<mapping resource="hibernate/TaxRateDescription.hbm.xml" />
+		<mapping resource="hibernate/TaxRateDescriptionTaxTemplate.hbm.xml" />
+		<mapping resource="hibernate/TaxClass.hbm.xml" />
+		<mapping resource="hibernate/GeoZone.hbm.xml" />
+		<mapping resource="hibernate/GeoZoneTaxTemplate.hbm.xml" />
+		<mapping resource="hibernate/ZoneToGeoZone.hbm.xml" />
+		<mapping resource="hibernate/ZoneToGeoZoneTaxTemplate.hbm.xml" />
+
+		<!-- Order -->
+
+	      <mapping resource="hibernate/OrderProductAttribute.hbm.xml" />
+		<mapping resource="hibernate/Order.hbm.xml" />
+		<mapping resource="hibernate/OrderTotal.hbm.xml" />
+		<mapping resource="hibernate/OrderProduct.hbm.xml" />
+		<mapping resource="hibernate/OrderProductPrice.hbm.xml" />
+		<mapping resource="hibernate/OrderProductPriceSpecial.hbm.xml" />
+		<mapping resource="hibernate/OrderProductDownload.hbm.xml" />
+		<mapping resource="hibernate/OrderStatus.hbm.xml" />
+		<mapping resource="hibernate/OrderStatusHistory.hbm.xml" />
+
+	    <mapping resource="hibernate/OrderAccount.hbm.xml" />
+	    <mapping resource="hibernate/OrderAccountProduct.hbm.xml" />
+
+
+
+		<mapping resource="hibernate/FileHistory.hbm.xml" />
+		<mapping resource="hibernate/CentralCreditCard.hbm.xml" />
+		<mapping resource="hibernate/ModuleConfiguration.hbm.xml" />
+		<mapping resource="hibernate/MerchantId.hbm.xml" />
+        <mapping resource="hibernate/CentralMeasureUnits.hbm.xml" />
+        
+        <!-- System -->
+
+
+        <mapping resource="hibernate/Zone.hbm.xml" />
+        <mapping resource="hibernate/ZoneDescription.hbm.xml" />
+        <mapping resource="hibernate/Country.hbm.xml" />
+		<mapping resource="hibernate/CountryDescription.hbm.xml" />
+		<mapping resource="hibernate/DynamicLabel.hbm.xml" />
+		<mapping resource="hibernate/DynamicLabelDescription.hbm.xml" />
+		<mapping resource="hibernate/Portlet.hbm.xml" />
+		<mapping resource="hibernate/Page.hbm.xml" />
+		<mapping resource="hibernate/MerchantUserRoleDef.hbm.xml" />
+		
+		
+		<mapping resource="hibernate/CentralFunction.hbm.xml" />
+		<mapping resource="hibernate/CentralGroup.hbm.xml" />
+		<mapping resource="hibernate/CentralRegistrationAssociation.hbm.xml" />
+
+
+
+
+		<!-- For the shopping cart -->
+
+		<!--
+		<mapping resource="hibernate/CustomerBasket.hbm.xml" />
+		<mapping resource="hibernate/CustomerBasketAttribute.hbm.xml" />
+
+		-->
+
+
+
+
+    </session-factory>
+</hibernate-configuration>

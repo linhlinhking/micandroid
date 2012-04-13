@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+
+
+
+
+
+	<beans:bean id="orderWorkflow" class="com.salesmanager.core.service.workflow.order.OrderWorkflowProcessor">
+		<beans:property name="activities">
+			<beans:list>
+				<beans:ref bean="processCustomer" />
+				<beans:ref bean="processPayment" />
+				<beans:ref bean="processOrder" />
+				<beans:ref bean="sendConfirmationEmail" />
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+	
+	<beans:bean id="invoiceWorkflow" class="com.salesmanager.core.service.workflow.order.OrderWorkflowProcessor">
+		<beans:property name="activities">
+			<beans:list>
+				<beans:ref bean="processPayment" />
+				<beans:ref bean="saveOrder" />
+				<beans:ref bean="sendConfirmationEmail" />
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+
+	<beans:bean id="processCustomer" class="com.salesmanager.core.service.workflow.order.ProcessCustomer"/>
+	<beans:bean id="processPayment" class="com.salesmanager.core.service.workflow.order.ProcessPayment"/>
+	<beans:bean id="processOrder" class="com.salesmanager.core.service.workflow.order.ProcessOrder"/>
+	<beans:bean id="saveOrder" class="com.salesmanager.core.service.workflow.order.SaveOrder"/>
+	<beans:bean id="sendConfirmationEmail" class="com.salesmanager.core.service.workflow.order.SendEmail"/>
+
+
+</beans:beans>

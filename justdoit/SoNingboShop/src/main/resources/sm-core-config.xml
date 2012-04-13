@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/tx  http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	
+	
+	<!--  external properties file -->
+	<beans:bean id="propertyConfigurer" 
+ 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    		<beans:property name="location">
+      			 <beans:value>classpath:systems.properties</beans:value>
+    		</beans:property>
+	</beans:bean>
+	
+	
+	  <!-- When using an external datasource -->
+	  <!-- <jee:jndi-lookup id="sm-dataSource" jndi-name="jdbc/salesmanager"/>-->
+
+	<!-- Data Source-->
+	<beans:bean id="sm-dataSource" class="${database.pool.class}" destroy-method="close">
+        <beans:property name="driverClass" value="${database.driver}" />
+		<beans:property name="jdbcUrl" value="${database.jdbcUrl}" />
+		<beans:property name="user" value="${database.user}" />
+		<beans:property name="password" value="${database.password}" />
+	</beans:bean>
+	 
+	
+
+	<beans:bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<beans:property name="configLocation">
+			<beans:value>classpath:hibernate.cfg.xml</beans:value>
+		</beans:property>
+		<beans:property name="dataSource">
+			<beans:ref bean="sm-dataSource" />
+		</beans:property>
+
+		<beans:property name="hibernateProperties">
+			<beans:props>
+				<beans:prop key="hibernate.show_sql">true</beans:prop>
+				<beans:prop key="hibernate.dialect">${hibernate.dialect}</beans:prop>
+				<beans:prop key="hibernate.connection.useUnicode">true</beans:prop>
+				<beans:prop key="hibernate.connection.characterEncoding">UTF-8</beans:prop>
+				<beans:prop key="hibernate.jdbc.batch_size">${database.hibernate.jdbc.batch_size}</beans:prop>
+				<beans:prop key="hibernate.cache.provider_class">${database.hibernate.cache.provider_class}</beans:prop>
+				
+				<beans:prop key="hibernate.c3p0.min_size">${database.pool.min_size}</beans:prop>
+				<beans:prop key="hibernate.c3p0.max_size">${database.pool.timeout}</beans:prop>
+				<beans:prop key="hibernate.c3p0.timeout">${database.pool.max_size}</beans:prop>
+				<beans:prop key="hibernate.c3p0.acquire_increment">${database.pool.acquire_increment}</beans:prop>
+				<beans:prop key="hibernate.c3p0.idle_test_period">100</beans:prop>
+				<beans:prop key="hibernate.c3p0.max_statements">0</beans:prop>
+				
+				
+				<beans:prop key="hibernate.search.default.directory_provider">org.hibernate.search.store.FSDirectoryProvider</beans:prop>
+                <beans:prop key="hibernate.search.default.indexBase">${search.indexbase}</beans:prop>
+                
+                <!-- Disable in production -->
+                <!--<beans:prop key="hibernate.generate_statistics">true</beans:prop>-->
+                
+				
+			</beans:props>
+		</beans:property>
+
+ 		<!-- Hibernate Search Events Listeners-->
+ 		<!--
+		<beans:property name="eventListeners">
+           <map>
+               <entry key="post-update" value-ref="searchListener" />
+               <entry key="post-insert" value-ref="searchListener" />
+               <entry key="post-delete" value-ref="searchListener" />
+               <entry key="post-collection-recreate" value-ref="searchCollectionListener" />
+               <entry key="post-collection-remove" value-ref="searchCollectionListener" />
+               <entry key="post-collection-update" value-ref="searchCollectionListener" />
+           </map>
+        </beans:property>
+        -->
+
+	</beans:bean>
+	
+	
+	<!-- MBeans statistics [disable in production] only one definition per web app-->
+	<!--
+ 	<beans:bean id="jmxExporter" class="org.springframework.jmx.export.MBeanExporter">
+		<beans:property name="beans">
+			<map>
+				<entry key="org.hibernate:name=statistics">
+					<beans:bean class="org.hibernate.jmx.StatisticsService">
+  						<beans:property name="statisticsEnabled" value="true" /> 
+  						<beans:property name="sessionFactory" ref="sessionFactory" /> 
+  					</beans:bean>
+  				</entry>
+  			</map>
+ 		 </beans:property>
+	</beans:bean>
+	-->
+
+	
+	<!-- Hibernate Search -->
+	<!--
+	<beans:bean id="searchListener" class="org.hibernate.search.event.FullTextIndexEventListener" />
+	<beans:bean id="searchCollectionListener" class="org.hibernate.search.event.FullTextIndexCollectionEventListener" />
+	-->
+
+	<!-- Define the transaction manager -->
+	<beans:bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<beans:property name="sessionFactory">
+			<beans:ref local="sessionFactory" />
+		</beans:property>
+	</beans:bean>
+
+
+	<!-- @Transactional annotation post-processor -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<!-- Exception translation bean post-processor -->
+	<beans:bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
+
+	<!-- Bean annotation scanning -->
+	<context:annotation-config />
+	<context:component-scan base-package="com.salesmanager.core.service" />
+    <context:component-scan base-package="com.salesmanager.core.module" />
+    <context:component-scan base-package="com.salesmanager.integration.modules" />
+	
+	
+
+</beans:beans>

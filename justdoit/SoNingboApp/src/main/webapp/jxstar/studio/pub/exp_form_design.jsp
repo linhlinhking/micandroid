@@ -1,0 +1,1 @@
+<%String funcid = request.getParameter("funid");response.setContentType("application/xml");response.setHeader("Content-Disposition", "attachment;filename="+funcid+"_form.xml");org.jxstar.fun.design.FormCanvasBO canvas = new org.jxstar.fun.design.FormCanvasBO();	canvas.readDesign(funcid);	out.print(canvas.getReturnData());%>

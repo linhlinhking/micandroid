@@ -21,8 +21,6 @@ public abstract class BaseResource {
 	@Context
 	private ResourceContext resource;
 	
-	//@Context
-	//private SecurityContext security;
 	
 	
 	protected URI getServletBaseUrl() {

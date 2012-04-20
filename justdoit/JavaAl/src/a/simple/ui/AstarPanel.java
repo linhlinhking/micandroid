@@ -41,9 +41,9 @@ public class AstarPanel extends JPanel implements MouseListener,
 	private static final Color BARRIER_COLOR = new Color(128, 128, 128);
 
 	/** 目标颜色 */
-	private final Color TARGET_COLOR = new Color(255, 0, 0);
+	private final Color TARGET_COLOR = Color.RED ;//new Color(255, 0, 0);
 	/** 源颜色 */
-	private final Color SOURCE_COLOR = new Color(0, 0, 255);
+	private final Color SOURCE_COLOR = Color.BLUE ;//new Color(0, 0, 255);
 
 	AStarMap astarMap;
 

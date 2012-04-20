@@ -2,10 +2,8 @@ package a.simple.core;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class AStarMap {
 
@@ -24,6 +22,7 @@ public class AStarMap {
 	
 	int[][] astarData;
 	
+	/**控制起点与终点位置*/
 	public AStarMap(int xGridNum, int yGridNum) {
 		astarData = new int[yGridNum][xGridNum];
 		source = new AStarNode(0, 0);

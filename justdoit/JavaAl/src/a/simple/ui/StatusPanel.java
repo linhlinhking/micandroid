@@ -3,11 +3,9 @@ package a.simple.ui;
 import java.awt.FlowLayout;
 
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
 /**
- * @author junhong.c
  *
  */
 public class StatusPanel extends JPanel {

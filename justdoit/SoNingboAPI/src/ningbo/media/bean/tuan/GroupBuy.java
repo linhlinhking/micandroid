@@ -2,10 +2,14 @@ package ningbo.media.bean.tuan;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -45,6 +49,10 @@ public class GroupBuy implements Serializable {
 	private boolean success;// 是否成功
 
 	private boolean finished;// 是否完成
+	
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
+	@JoinColumn(name = "shopId")
+	private Shop shop ;
 
 	public Integer getId() {
 		return id;
@@ -164,6 +172,14 @@ public class GroupBuy implements Serializable {
 
 	public void setFinished(boolean finished) {
 		this.finished = finished;
+	}
+
+	public Shop getShop() {
+		return shop;
+	}
+
+	public void setShop(Shop shop) {
+		this.shop = shop;
 	}
 
 }

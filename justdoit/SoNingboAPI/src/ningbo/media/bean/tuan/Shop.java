@@ -1,12 +1,19 @@
 package ningbo.media.bean.tuan;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import ningbo.media.bean.Location;
 
 @Entity
 @Table(name = "tb_shop")
@@ -18,18 +25,17 @@ public class Shop implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private String shopName;
+	private String shopArea; //商家区域
 
-	private String shopAddress;
+	private String shopTrafficinfo;//交通信息
 
-	private String shopArea;
-
-	private String shopTrafficinfo;
-
-	private Double shopLatitude;
-
-	private Double shopLongitude;
-
+	@OneToOne
+	@JoinColumn(name = "loctionId")
+	private Location location ;
+	
+	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "shop")
+	private List<GroupBuy> groupBuys ;
+	
 	public Long getId() {
 		return id;
 	}
@@ -38,21 +44,6 @@ public class Shop implements Serializable {
 		this.id = id;
 	}
 
-	public String getShopName() {
-		return shopName;
-	}
-
-	public void setShopName(String shopName) {
-		this.shopName = shopName;
-	}
-
-	public String getShopAddress() {
-		return shopAddress;
-	}
-
-	public void setShopAddress(String shopAddress) {
-		this.shopAddress = shopAddress;
-	}
 
 	public String getShopArea() {
 		return shopArea;
@@ -70,20 +61,23 @@ public class Shop implements Serializable {
 		this.shopTrafficinfo = shopTrafficinfo;
 	}
 
-	public Double getShopLatitude() {
-		return shopLatitude;
+	public Location getLocation() {
+		return location;
 	}
 
-	public void setShopLatitude(Double shopLatitude) {
-		this.shopLatitude = shopLatitude;
+	public void setLocation(Location location) {
+		this.location = location;
 	}
 
-	public Double getShopLongitude() {
-		return shopLongitude;
+	public List<GroupBuy> getGroupBuys() {
+		return groupBuys;
 	}
 
-	public void setShopLongitude(Double shopLongitude) {
-		this.shopLongitude = shopLongitude;
+	public void setGroupBuys(List<GroupBuy> groupBuys) {
+		this.groupBuys = groupBuys;
 	}
+	
+	
+
 
 }

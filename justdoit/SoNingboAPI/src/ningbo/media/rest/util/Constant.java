@@ -23,6 +23,8 @@ public class Constant {
 	public static final String FAVORITENUMBER = "total" ;
 	public static final String TOOLID = "toolId" ;
 	public static final String TYPEID = "typeId" ;
+	public static final String MENUTOOLID = "toolId" ;
+	public static final String MENUITEMID = "itemId" ;
 	
 	public static final Integer LIMIT = 10  ;
 	

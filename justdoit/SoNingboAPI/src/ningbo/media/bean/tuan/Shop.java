@@ -36,6 +36,7 @@ public class Shop implements Serializable {
 	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "shop")
 	private List<GroupBuy> groupBuys ;
 	
+	
 	public Long getId() {
 		return id;
 	}

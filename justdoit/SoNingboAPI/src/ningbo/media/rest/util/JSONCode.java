@@ -42,6 +42,10 @@ public class JSONCode {
 	public static final String MODULEFILE_TYPE_NOEXISTS = "70002" ;
 	public static final String MODULEFILE_USER_NOEXISTS = "70003" ;
 	
+	/**Menu-8*/
+	public static final String MENU_LOCATION_NOEXISTS = "80001" ;
+	public static final String MENU_TOOL_NOEXISTS = "80002" ;
+	
 	
 	
 	/**最早的处理的方式(Favorite)*/

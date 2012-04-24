@@ -8,10 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import ningbo.media.web.api.SystemUserAPI;
-
 import org.json.JSONObject;
-
-import com.sun.jersey.core.util.Base64;
 
 public class SystemUserServlet extends HttpServlet {
 
@@ -39,7 +36,7 @@ public class SystemUserServlet extends HttpServlet {
 			if(!code.endsWith("5")){
 				String userid = json.getString("userId");
 				//将获得的用户ID加密
-				String base64uid = new String(Base64.encode(userid));
+				//String base64uid = new String(Base64.encode(userid));
 //				String strOut2 = new String(Base64.decode(strOut.getBytes()));
 //				System.out.println(strOut2);
 				
@@ -49,9 +46,9 @@ public class SystemUserServlet extends HttpServlet {
 				}
 				
 				if("0".equals(code) && null != userid){
-				    Cookie uid = new Cookie("uid", base64uid); 
+				    //Cookie uid = new Cookie("uid", base64uid); 
 //				    uid.setDomain("soningbo.com");
-	                response.addCookie(uid);
+	                //response.addCookie(uid);
 				}
 			}
 			

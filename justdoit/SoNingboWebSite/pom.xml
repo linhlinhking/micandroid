@@ -9,21 +9,25 @@
 	<url>http://maven.apache.org</url>
 
 	<repositories>
-		<!-- 
+		<!-- <repository> <name>ocpsoft</name> <url>http://ocpsoft.org/repository/</url> 
+			</repository> -->
+
 		<repository>
-			<name>ocpsoft</name>
-			<url>http://ocpsoft.org/repository/</url>
+			<id>maven.java.net</id>
+			<name>maven.Java.net</name>
+			<url>http://maven.java.net</url>
 		</repository>
-		 -->
-		
+
 		<repository>
 			<id>emoving</id>
 			<url>https://emoving.googlecode.com/svn/trunk/zhoubian/~maven/</url>
 		</repository>
-		
+
 	</repositories>
 	<properties>
-		<jersey.version>1.12</jersey.version>
+		<spring.version>3.1.0.RELEASE</spring.version>
+		<spring.security.version>3.1.0.RELEASE</spring.security.version>
+		<httpclient.version>4.0.3</httpclient.version>
 	</properties>
 
 	<dependencies>
@@ -37,25 +41,59 @@
 			<artifactId>mail</artifactId>
 			<version>1.4</version>
 		</dependency>
+
 		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-server</artifactId>
-			<version>${jersey.version}</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-client</artifactId>
-			<version>${jersey.version}</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-json</artifactId>
-			<version>${jersey.version}</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<!-- spring end -->
+		<!-- spring security end -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>${spring.security.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${spring.security.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibs</artifactId>
+			<version>${spring.security.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-acl</artifactId>
+			<version>${spring.security.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>4.0.3</version>
+			<version>${httpclient.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>javaee</groupId>
@@ -106,13 +144,8 @@
 			<artifactId>pinyin4j</artifactId>
 			<version>2.5.0</version>
 		</dependency>
-		<!-- 
-		<dependency>
-			<groupId>org.ocpsoft.rewrite</groupId>
-			<artifactId>rewrite-servlet</artifactId>
-			<version>1.0.3.Final</version>
-		</dependency>
-		 -->
+		<!-- <dependency> <groupId>org.ocpsoft.rewrite</groupId> <artifactId>rewrite-servlet</artifactId> 
+			<version>1.0.3.Final</version> </dependency> -->
 	</dependencies>
 	<build>
 		<finalName>SoNingboWebSite</finalName>

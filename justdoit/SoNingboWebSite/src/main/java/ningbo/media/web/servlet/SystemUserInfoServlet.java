@@ -1,17 +1,11 @@
 package ningbo.media.web.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import ningbo.media.web.api.SystemUserAPI;
-
-import org.json.JSONObject;
-
-import com.sun.jersey.core.util.Base64;
 
 public class SystemUserInfoServlet extends HttpServlet {
 
@@ -29,12 +23,12 @@ public class SystemUserInfoServlet extends HttpServlet {
 				for (Cookie cookie : cookies) {
 					if("uid".equals(cookie.getName())){
 						//解码
-						String userid = new String(Base64.decode(cookie.getValue().getBytes()));
-						SystemUserAPI api = new SystemUserAPI();
-						String res = api.show(userid);
-						JSONObject json = new JSONObject(res) ;
-						PrintWriter writer = response.getWriter();
-				        writer.println(json);
+						//String userid = new String(Base64.decode(cookie.getValue().getBytes()));
+						//SystemUserAPI api = new SystemUserAPI();
+						//String res = api.show(userid);
+						//JSONObject json = new JSONObject(res) ;
+						//PrintWriter writer = response.getWriter();
+				        //writer.println(json);
 					}
 				}
 			}else{

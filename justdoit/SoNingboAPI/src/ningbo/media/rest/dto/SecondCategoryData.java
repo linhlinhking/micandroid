@@ -2,13 +2,11 @@ package ningbo.media.rest.dto;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
-import ningbo.media.bean.FirstCategory;
 import ningbo.media.rest.WsConstants;
 
 @XmlType(name = "SecondCategory", namespace = WsConstants.NS, propOrder = {
-		"id", "name_cn", "name_en", "firstCategory" })
-@XmlRootElement
+		"id", "name_cn", "name_en" })
+@XmlRootElement(name = "data")
 public class SecondCategoryData {
 
 	private Integer id;
@@ -17,7 +15,8 @@ public class SecondCategoryData {
 
 	private String name_cn;
 
-	private FirstCategory firstCategory;
+	public SecondCategoryData() {
+	}
 
 	public Integer getId() {
 		return id;
@@ -41,14 +40,6 @@ public class SecondCategoryData {
 
 	public void setName_cn(String name_cn) {
 		this.name_cn = name_cn;
-	}
-
-	public FirstCategory getFirstCategory() {
-		return firstCategory;
-	}
-
-	public void setFirstCategory(FirstCategory firstCategory) {
-		this.firstCategory = firstCategory;
 	}
 
 }

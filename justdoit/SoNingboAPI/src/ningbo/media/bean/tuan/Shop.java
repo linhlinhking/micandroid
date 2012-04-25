@@ -23,25 +23,25 @@ public class Shop implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Integer id;
 
 	private String shopArea; //商家区域
 
 	private String shopTrafficinfo;//交通信息
 
 	@OneToOne
-	@JoinColumn(name = "loctionId")
+	@JoinColumn(name = "loctionId",unique = true)
 	private Location location ;
 	
 	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "shop")
 	private List<GroupBuy> groupBuys ;
 	
 	
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

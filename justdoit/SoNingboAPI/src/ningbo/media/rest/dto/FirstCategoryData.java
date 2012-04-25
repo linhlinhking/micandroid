@@ -1,20 +1,11 @@
 package ningbo.media.rest.dto;
 
-import java.util.List;
-
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
-import ningbo.media.bean.SecondCategory;
 import ningbo.media.rest.WsConstants;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-
-import com.google.common.collect.Lists;
-
 @XmlType(name = "FirstCategory", namespace = WsConstants.NS, propOrder = {
-		"id", "name_cn", "name_en", "description", "secondCategorys" })
+		"id", "name_cn", "name_en", "description" })
 @XmlRootElement
 public class FirstCategoryData {
 
@@ -26,7 +17,8 @@ public class FirstCategoryData {
 
 	private String description;
 
-	private List<SecondCategory> secondCategorys = Lists.newArrayList();
+	public FirstCategoryData() {
+	}
 
 	public Integer getId() {
 		return id;
@@ -60,17 +52,4 @@ public class FirstCategoryData {
 		this.description = description;
 	}
 
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
-	}
-
-	
-	@XmlElement(name = "secondCategorys")
-	public List<SecondCategory> getSecondCategorys() {
-		return secondCategorys;
-	}
-
-	public void setSecondCategorys(List<SecondCategory> secondCategorys) {
-		this.secondCategorys = secondCategorys;
-	}
 }

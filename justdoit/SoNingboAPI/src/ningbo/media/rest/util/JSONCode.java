@@ -46,6 +46,9 @@ public class JSONCode {
 	public static final String MENU_LOCATION_NOEXISTS = "80001" ;
 	public static final String MENU_TOOL_NOEXISTS = "80002" ;
 	
+	/**Shop -9*/
+	public static final String SHOP_LOCATION_NOEXISTS = "90001" ;
+	
 	
 	
 	/**最早的处理的方式(Favorite)*/

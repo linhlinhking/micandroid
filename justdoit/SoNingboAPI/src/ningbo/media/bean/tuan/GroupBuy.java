@@ -36,13 +36,13 @@ public class GroupBuy implements Serializable {
 
 	private long endDate; // 结束时间
 
-	private long orderMix;// 最少团购
+	private long orderMinimum;// 最少团购
 
 	private long orderTotal;// 团购总数
 
 	private String tip; // 提示
 
-	private String light; // 亮的（特色）
+	private String light; // 亮点（特色）
 
 	private String detail; // 团购详细介绍
 
@@ -118,12 +118,13 @@ public class GroupBuy implements Serializable {
 		this.endDate = endDate;
 	}
 
-	public long getOrderMix() {
-		return orderMix;
+
+	public long getOrderMinimum() {
+		return orderMinimum;
 	}
 
-	public void setOrderMix(long orderMix) {
-		this.orderMix = orderMix;
+	public void setOrderMinimum(long orderMinimum) {
+		this.orderMinimum = orderMinimum;
 	}
 
 	public long getOrderTotal() {

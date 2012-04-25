@@ -54,7 +54,6 @@ public class SecondCategoryServiceImpl extends
 			temp.setId(sc.getId());
 			temp.setName_cn(sc.getName_cn());
 			temp.setName_en(sc.getName_en());
-			temp.setFirstCategory(sc.getFirstCategory());
 			list.add(temp);
 		}
 

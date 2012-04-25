@@ -7,7 +7,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import ningbo.media.service.FirstCategoryService;
 import ningbo.media.service.SecondCategoryService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -20,8 +19,6 @@ public class SecondCategoryRest {
 	@Resource
 	private SecondCategoryService secondCategoryService;
 
-	@Resource
-	private FirstCategoryService firstCategoryService;
 
 	@Path("/showAll")
 	@GET
@@ -39,7 +36,7 @@ public class SecondCategoryRest {
 		if (id == null) {
 			return null;
 		}
-		return Response.ok(firstCategoryService.getFirstCategoryById(id))
+		return Response.ok(secondCategoryService.querySecondCategoryData(id))
 				.build();
 	}
 

@@ -8,35 +8,24 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ningbo.media.web.api.CategoryAPI;
 
-import org.json.JSONObject;
+public class UrlServlet extends HttpServlet {
 
-public class ShowCategoryServlet extends HttpServlet {
-
-	private static final long serialVersionUID = -3168481919592988082L;
+	private static final long serialVersionUID = -2216431373229444038L;
 
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		try {
 			request.setCharacterEncoding("UTF-8");
-			String id = request.getParameter("id");
-			CategoryAPI api = new CategoryAPI();
-			String res = api.showCategory(id);
-			JSONObject json = new JSONObject(res);
-			json.append("category_id", id);
+			response.setCharacterEncoding("UTF-8") ;
+			//request.getRequestURI() ;
 			PrintWriter writer = response.getWriter();
-	        writer.println(json);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	        writer.println("Hello,Welcome!" + request.getRequestURI());
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		super.doGet(request, response);
+		doGet(request,response) ;
 	}
-
 }

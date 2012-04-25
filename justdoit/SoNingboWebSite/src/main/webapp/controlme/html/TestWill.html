@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Untitled Document</title>
+<style type="text/css">
+.num {
+     width: 120px;
+     height: 80px;
+	 margin-left:20px;
+     background: red;
+     position: relative;
+     -moz-border-radius:    10px;
+     -webkit-border-radius: 10px;
+     border-radius:         10px;
+
+
+
+}
+.num::after {
+      content:"";
+    position: absolute;
+    right: 100%;
+    top: 26px;
+    width: 0;
+    height: 0;
+    border-top: 13px solid transparent;
+    border-right: 26px solid red;
+    border-bottom: 13px solid transparent;
+
+}
+</style>
+</head>
+
+<body>
+<div class="num"></div>
+</body>
+</html>

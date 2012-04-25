@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>#sitename_en - #siteURL</title>
+<meta name="description" content="Welcome to Soningbo, its the most focused local searching functional site in Ningbo, stay connected & enjoy your life in Ningbo.">
+<meta name="keywords" content="Administration, Banks,Beauty & Spa, Building, Cafe & Restaurant, Companies, Education, Healthcare, Hotel & Accommodation, Media, Night Life, Services, Shopping, Sports & Leisure, Travel.">
+<link href="../css/global.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="../../js/base.js"></script>
+
+</head>
+<body bgcolor=#e5e5e5 link="#FFFFFF" onload='getFirstCategory("http://localhost:8000/resource/category/first/showAll","")'>
+<div class="container">
+  <header>
+    <div id="header" bgcolor="#333333"> <a href="http://www.soningbo.com" tabindex="1"><img src="http://controlme.co.uk/images/logo.gif" alt="搜宁波图标-红色猫头鹰" width="180" height="46" border="0" /></a>
+     #topMenusItems
+    </div>
+  </header>
+  <div class="body">
+    <navigation>
+      <div class="navigation">
+        <ul id="category_list">
+          <!-- <li>#all_category1_en</li> -->
+          
+        </ul>
+      </div>
+    </navigation>
+    <section>
+      <div class="tab" id="tab_left">
+        <div class="content_height">
+          <h1>Welcome to So Ningbo</h1>
+          <h2>We will be launching soon!</h2>
+          <p>Back when Ningbo was small, we all knew each other, and we knew where everything was and there was a great sense of community.</p>
+          <p>These days Ningbo is a huge model city with millions of residents and thousands of locations, exploring the city while staying connected to each other is a modern challenge.</p>
+          <p>It's like we're surrounded by everything and everyone we need in Ningbo but we're somehow not as connected as we used to be.</p>
+          <p>In fact we often stick to what we know. I mean think about it, there are thousands of places that we havent explored yet within Ningbo, not to mention the millions of fantastic people.</p>
+          <p>The problem is that we are lost in too many choices, So Ningbo is going to bring the places and the people of this great city together again.</p>
+          <p>You can find out more about us and our vision on our <a href="http://www.controlme.co.uk/en/aboutus">about us</a> page.</p>
+        </div>
+        <div class="location"> <span>Locations</span> #locationsCount </div>
+      </div>
+    </section>
+    <section>
+      <div class="tab">
+        <form name="entryBox">
+          <h1>Has your business registered?</h1>
+          <h2>Join thousands of other Ningbo business's today.</h2>
+          <p>If you haven't been visited by our teams of representatives yet please call us on 0574－87200625，87200617 to get your business, shop, factory or place of interest registered for free.</p>
+          <p>For more information about the benefits of joining us check out our <a href="http://www.controlme.co.uk/en/features">features</a> page.</p>
+          <div class="divider"></div>
+          <label for="username">Company Name<span class="detail">As you type, we will search</span></label>
+          <input type="text" id="locationSearch" name="locationSearch" onKeyUp="showSearchResult('en');" onBlur="timeMsg()" onFocus="showSearchResult('en');" required tabindex="4">
+		  
+        </form>
+        <div id="predict_dropdown"></div>
+				<div id="no_result" style="display:none;">No results Please call us to register on 01614320592 </div>
+      </div>
+    </section>
+  </div>
+</div>
+<input name="count_locations" type="hidden" value="$count_locations">
+</body>
+</html>

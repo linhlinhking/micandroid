@@ -5,110 +5,50 @@
 
 	<display-name>SearchNingbo_web</display-name>
 
+	<!-- <servlet> <servlet-name>SystemUser</servlet-name> <servlet-class>ningbo.media.web.servlet.SystemUserServlet</servlet-class> 
+		</servlet> <servlet-mapping> <servlet-name>SystemUser</servlet-name> <url-pattern>/user/login</url-pattern> 
+		</servlet-mapping> <servlet> <servlet-name>SystemUserReg</servlet-name> <servlet-class>ningbo.media.web.servlet.SystemUserRegisterServlet</servlet-class> 
+		</servlet> <servlet-mapping> <servlet-name>SystemUserReg</servlet-name> <url-pattern>/user/register</url-pattern> 
+		</servlet-mapping> <servlet> <servlet-name>CategoryGet</servlet-name> <servlet-class>ningbo.media.web.servlet.CategoryServlet</servlet-class> 
+		</servlet> <servlet-mapping> <servlet-name>CategoryGet</servlet-name> <url-pattern>/category/getCategory1</url-pattern> 
+		</servlet-mapping> <servlet> <servlet-name>Category2Get</servlet-name> <servlet-class>ningbo.media.web.servlet.Category2Servlet</servlet-class> 
+		</servlet> <servlet-mapping> <servlet-name>Category2Get</servlet-name> <url-pattern>/category/getCategory2</url-pattern> 
+		</servlet-mapping> <servlet> <servlet-name>addLovation</servlet-name> <servlet-class>ningbo.media.web.servlet.LocationServlet</servlet-class> 
+		</servlet> <servlet-mapping> <servlet-name>addLovation</servlet-name> <url-pattern>/location/add</url-pattern> 
+		</servlet-mapping> <servlet> <servlet-name>sysUserInfo</servlet-name> <servlet-class>ningbo.media.web.servlet.SystemUserInfoServlet</servlet-class> 
+		</servlet> <servlet-mapping> <servlet-name>sysUserInfo</servlet-name> <url-pattern>/user/getinfo</url-pattern> 
+		</servlet-mapping> <servlet> <servlet-name>userBeta</servlet-name> <servlet-class>ningbo.media.web.servlet.UserBetaServlet</servlet-class> 
+		</servlet> <servlet-mapping> <servlet-name>userBeta</servlet-name> <url-pattern>/userBeta/reg</url-pattern> 
+		</servlet-mapping> <servlet> <servlet-name>companyName</servlet-name> <servlet-class>ningbo.media.web.servlet.LocationNameServlet</servlet-class> 
+		</servlet> <servlet-mapping> <servlet-name>companyName</servlet-name> <url-pattern>/companyName/search</url-pattern> 
+		</servlet-mapping> <servlet> <servlet-name>locationCount</servlet-name> <servlet-class>ningbo.media.web.servlet.LocationCountServlet</servlet-class> 
+		</servlet> <servlet-mapping> <servlet-name>locationCount</servlet-name> <url-pattern>/location/getlocnum</url-pattern> 
+		</servlet-mapping> <servlet> <servlet-name>showCategory</servlet-name> <servlet-class>ningbo.media.web.servlet.ShowCategoryServlet</servlet-class> 
+		</servlet> <servlet-mapping> <servlet-name>showCategory</servlet-name> <url-pattern>/category/showcategory</url-pattern> 
+		</servlet-mapping> -->
 	<servlet>
-      <servlet-name>SystemUser</servlet-name>
-      <servlet-class>ningbo.media.web.servlet.SystemUserServlet</servlet-class>
-   </servlet>
-   <servlet-mapping>
-      <servlet-name>SystemUser</servlet-name>
-      <url-pattern>/user/login</url-pattern>
-   </servlet-mapping>
-   
-   <servlet>
-      <servlet-name>SystemUserReg</servlet-name>
-      <servlet-class>ningbo.media.web.servlet.SystemUserRegisterServlet</servlet-class>
-   </servlet>
-   <servlet-mapping>
-      <servlet-name>SystemUserReg</servlet-name>
-      <url-pattern>/user/register</url-pattern>
-   </servlet-mapping>
-   
-   <servlet>
-      <servlet-name>CategoryGet</servlet-name>
-      <servlet-class>ningbo.media.web.servlet.CategoryServlet</servlet-class>
-   </servlet>
-   <servlet-mapping>
-      <servlet-name>CategoryGet</servlet-name>
-      <url-pattern>/category/getCategory1</url-pattern>
-   </servlet-mapping>
-   
-   <servlet>
-      <servlet-name>Category2Get</servlet-name>
-      <servlet-class>ningbo.media.web.servlet.Category2Servlet</servlet-class>
-   </servlet>
-   <servlet-mapping>
-      <servlet-name>Category2Get</servlet-name>
-      <url-pattern>/category/getCategory2</url-pattern>
-   </servlet-mapping>
-   
-   <servlet>
-      <servlet-name>addLovation</servlet-name>
-      <servlet-class>ningbo.media.web.servlet.LocationServlet</servlet-class>
-   </servlet>
-   <servlet-mapping>
-      <servlet-name>addLovation</servlet-name>
-      <url-pattern>/location/add</url-pattern>
-   </servlet-mapping>
-   
-    <servlet>
-      <servlet-name>sysUserInfo</servlet-name>
-      <servlet-class>ningbo.media.web.servlet.SystemUserInfoServlet</servlet-class>
-   </servlet>
-   <servlet-mapping>
-      <servlet-name>sysUserInfo</servlet-name>
-      <url-pattern>/user/getinfo</url-pattern>
-   </servlet-mapping>
-   
-   <servlet>
-      <servlet-name>userBeta</servlet-name>
-      <servlet-class>ningbo.media.web.servlet.UserBetaServlet</servlet-class>
-   </servlet>
-   <servlet-mapping>
-      <servlet-name>userBeta</servlet-name>
-      <url-pattern>/userBeta/reg</url-pattern>
-   </servlet-mapping>
-   
-    <servlet>
-      <servlet-name>companyName</servlet-name>
-      <servlet-class>ningbo.media.web.servlet.LocationNameServlet</servlet-class>
-   </servlet>
-   <servlet-mapping>
-      <servlet-name>companyName</servlet-name>
-      <url-pattern>/companyName/search</url-pattern>
-   </servlet-mapping>
-   
-   <servlet>
-      <servlet-name>locationCount</servlet-name>
-      <servlet-class>ningbo.media.web.servlet.LocationCountServlet</servlet-class>
-   </servlet>
-   <servlet-mapping>
-      <servlet-name>locationCount</servlet-name>
-      <url-pattern>/location/getlocnum</url-pattern>
-   </servlet-mapping>
+		<servlet-name>proxyServlet</servlet-name>
+		<servlet-class>ningbo.media.web.servlet.ProxyServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>proxyServlet</servlet-name>
+		<url-pattern>/proxy</url-pattern>
+	</servlet-mapping>
 
-  <servlet>
-      <servlet-name>showCategory</servlet-name>
-      <servlet-class>ningbo.media.web.servlet.ShowCategoryServlet</servlet-class>
-   </servlet>
-   <servlet-mapping>
-      <servlet-name>showCategory</servlet-name>
-      <url-pattern>/category/showcategory</url-pattern>
-   </servlet-mapping>
-   
-     <servlet>
-      <servlet-name>proxyServlet</servlet-name>
-      <servlet-class>ningbo.media.web.servlet.ProxyServlet</servlet-class>
-   </servlet>
-   <servlet-mapping>
-      <servlet-name>proxyServlet</servlet-name>
-      <url-pattern>/proxy</url-pattern>
-   </servlet-mapping>
-
-
+<!-- 
+	<servlet>
+		<servlet-name>urlTest</servlet-name>
+		<servlet-class>ningbo.media.web.servlet.UrlServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>urlTest</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+ -->
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
-	
+
 </web-app>
 

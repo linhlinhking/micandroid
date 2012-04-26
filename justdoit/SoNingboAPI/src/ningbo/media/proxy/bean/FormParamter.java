@@ -12,9 +12,18 @@ public class FormParamter implements Serializable, Comparable<FormParamter> {
 	
 
 	public FormParamter(String name, String value) {
-		super();
 		this.name = name;
 		this.value = value;
+	}
+	
+	public FormParamter(String name, double value) {
+		this.name = name;
+		this.value = String.valueOf(value) ;
+	}
+	
+	public FormParamter(String name, int value) {
+		this.name = name;
+		this.value = String.valueOf(value) ;
 	}
 
 	public String getName() {

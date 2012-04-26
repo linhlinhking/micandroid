@@ -6,7 +6,7 @@ import ningbo.media.rest.WsConstants;
 
 @XmlType(name = "FirstCategory", namespace = WsConstants.NS, propOrder = {
 		"id", "name_cn", "name_en", "description" })
-@XmlRootElement
+@XmlRootElement(name = "data")
 public class FirstCategoryData {
 
 	private Integer id;

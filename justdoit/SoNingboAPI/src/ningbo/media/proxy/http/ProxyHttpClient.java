@@ -18,6 +18,14 @@ import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Description:
+ * @author Devon.Ning
+ * @2012-4-26下午02:27:54
+ * @version 1.0
+ * Copyright (c) 2012 宁波商外文化传媒有限公司,Inc. All Rights Reserved.
+ * 
+ */
 public class ProxyHttpClient {
 
 	private static final int CONNECTION_TIMEOUT = 2000000;

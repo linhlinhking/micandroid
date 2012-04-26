@@ -1,13 +1,16 @@
 package ningbo.media.rest.service;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import ningbo.media.rest.dto.SecondCategoryData;
 import ningbo.media.service.SecondCategoryService;
+
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -23,21 +26,21 @@ public class SecondCategoryRest {
 	@Path("/showAll")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAllSecondCategory() {
-		return Response.ok(secondCategoryService.querySecondCategoryData(null))
-				.build();
+	public List<SecondCategoryData> getAllSecondCategory() {
+		return secondCategoryService.querySecondCategoryData(null) ;
 	}
 
 	@Path("/show/{id}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getCategoryByFirst(@PathParam("id")
+	public List<SecondCategoryData> getCategoryByFirst(@PathParam("id")
 	Integer id) {
 		if (id == null) {
 			return null;
 		}
-		return Response.ok(secondCategoryService.querySecondCategoryData(id))
-				.build();
+		return secondCategoryService.querySecondCategoryData(id) ;
 	}
+	
+	
 
 }

@@ -24,17 +24,42 @@ public class FirstCategoryServiceImpl extends
 		BaseServiceImpl<FirstCategory, Integer> implements FirstCategoryService {
 
 	@Resource
-	private FirstCategoryDao firstCategoryDao ;
-	
+	private FirstCategoryDao firstCategoryDao;
+
 	@Autowired
 	public FirstCategoryServiceImpl(@Qualifier("firstCategoryDao")
 	FirstCategoryDao firstCategoryDao) {
 		super(firstCategoryDao);
 	}
 
+	public List<FirstCategoryData> getAllFirstCategory() {
+		try {
+			List<FirstCategory> list = firstCategoryDao.getAll();
+			if (null == list && list.size() < 0) {
+				return null;
+			}
+			List<FirstCategoryData> data = Lists.newArrayList();
+			for (FirstCategory first : list) {
+				FirstCategoryData d = new FirstCategoryData();
+				d.setId(first.getId());
+				d.setName_cn(first.getName_cn());
+				d.setName_en(first.getName_en());
+				d.setDescription(first.getDescription());
+
+				data.add(d);
+			}
+
+			return data;
+		} catch (Exception ex) {
+			throw Jerseys.buildException(Status.NOT_FOUND,
+					JSONCode.SERVER_EXCEPTION);
+		}
+
+	}
+
 	public FirstCategoryData getFirstCategoryById(Integer id) {
 		FirstCategoryData data = new FirstCategoryData();
-		
+
 		try {
 			FirstCategory first = firstCategoryDao.get(id);
 			if (null == first) {
@@ -54,29 +79,30 @@ public class FirstCategoryServiceImpl extends
 	}
 
 	public List<SecondCategoryData> getFristCategoryByName(String name) {
-		final String hql = "from FirstCategory as model where 1=1 and model.name_en = ? " ;
-		List<SecondCategoryData> datas = Lists.newArrayList() ;
-		try{
-			FirstCategory first = (FirstCategory)firstCategoryDao.findUnique(hql, name) ;
+		final String hql = "from FirstCategory as model where 1=1 and model.name_en = ? ";
+		List<SecondCategoryData> datas = Lists.newArrayList();
+		try {
+			FirstCategory first = (FirstCategory) firstCategoryDao.findUnique(
+					hql, name);
 			if (null == first) {
 				throw Jerseys.buildException(Status.NOT_FOUND,
 						JSONCode.THROW_MESSAGE);
 			}
-			List<SecondCategory> list = first.getSecondCategorys() ;
-			if(null == list && list.size() < 0){
+			List<SecondCategory> list = first.getSecondCategorys();
+			if (null == list && list.size() < 0) {
 				throw Jerseys.buildException(Status.NOT_FOUND,
 						JSONCode.THROW_MESSAGE);
 			}
-			for(SecondCategory s : list){
-				SecondCategoryData data = new SecondCategoryData() ;
-				data.setId(s.getId()) ;
-				data.setName_cn(s.getName_cn()) ;
-				data.setName_en(s.getName_en()) ;
-				
-				datas.add(data) ;
+			for (SecondCategory s : list) {
+				SecondCategoryData data = new SecondCategoryData();
+				data.setId(s.getId());
+				data.setName_cn(s.getName_cn());
+				data.setName_en(s.getName_en());
+
+				datas.add(data);
 			}
-			return datas ;
-		}catch(Exception ex){
+			return datas;
+		} catch (Exception ex) {
 			ex.printStackTrace();
 			throw Jerseys.buildException(Status.NOT_FOUND,
 					JSONCode.SERVER_EXCEPTION);

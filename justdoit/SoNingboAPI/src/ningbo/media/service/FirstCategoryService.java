@@ -13,4 +13,6 @@ public interface FirstCategoryService extends
 	public FirstCategoryData getFirstCategoryById(Integer id);
 
 	public List<SecondCategoryData> getFristCategoryByName(String name);
+	
+	public List<FirstCategoryData> getAllFirstCategory() ;
 }

@@ -10,7 +10,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import ningbo.media.bean.FirstCategory;
+import ningbo.media.rest.dto.FirstCategoryData;
 import ningbo.media.rest.dto.SecondCategoryData;
 import ningbo.media.rest.util.StringUtils;
 import ningbo.media.service.FirstCategoryService;
@@ -30,8 +30,8 @@ public class FirstCategoryRest {
 	@Path("/showAll")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<FirstCategory> getAllFirstCategory() {
-		return firstCategoryService.getAll();
+	public List<FirstCategoryData> getAllFirstCategory() {
+		return firstCategoryService.getAllFirstCategory() ;
 	}
 
 	@Path("/{name}")

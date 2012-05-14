@@ -20,7 +20,7 @@ public class ServerConnection {
 	public static void main(String args[]){
 		ServerConnection s = new ServerConnection() ;
 		long startTime = System.currentTimeMillis() ;
-		String temp = s.doGet(localURL) ;
+		String temp = s.doGet(args[0]) ;
 		long endTime = System.currentTimeMillis() ;
 		long used = endTime - startTime ;
 		System.out.println(temp) ;

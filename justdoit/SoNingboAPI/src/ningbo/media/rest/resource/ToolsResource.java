@@ -30,8 +30,8 @@ public class ToolsResource {
 	@Path("/add")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addTool(@FormParam("toolName")
-	String toolName, @FormParam("keyWords")
+	public Response addTool(@FormParam("toolNameCn")
+	String toolName, @FormParam("toolNameEn")
 	String keyWords, @FormParam("description")
 	String description, @FormParam("key")
 	String key) {
@@ -46,8 +46,8 @@ public class ToolsResource {
 				return Response.ok(json.toString()).build();
 			}
 			
-			t.setToolName(null == toolName ? null : toolName);
-			t.setToolKeyWords(null == keyWords ? null : keyWords);
+			t.setToolNameCn(null == toolName ? null : toolName);
+			t.setToolNameEn(null == keyWords ? null : keyWords);
 			t.setDescription(null == description ? null : description);
 
 			Integer toolId = toolsService.save(t);

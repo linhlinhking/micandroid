@@ -31,7 +31,7 @@ public class ModuleFile {
 	private Date createTime;
 
 	@OneToOne
-	@JoinColumn(name = "infoId")
+	@JoinColumn(name = "inforId")
 	private ImageInformation imageInfo;
 	
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)

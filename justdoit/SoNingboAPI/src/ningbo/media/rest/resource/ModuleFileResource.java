@@ -109,11 +109,11 @@ public class ModuleFileResource {
 			ImageInformation inforImage = new ImageInformation();
 			Map<String, Object> m = FileHashCode.writeToFile(uploadFile, sb
 					.toString());
-			inforImage.setImageWidth(Double.valueOf(m.get(Constant.WIDTH)
+			inforImage.setWidth(Double.valueOf(m.get(Constant.WIDTH)
 					.toString()));
-			inforImage.setImageHeight(Double.valueOf(m.get(Constant.HEIGHT)
+			inforImage.setHeight(Double.valueOf(m.get(Constant.HEIGHT)
 					.toString()));
-			inforImage.setImageSize(Long.valueOf(m.get(Constant.FILESIZE)
+			inforImage.setSize(Long.valueOf(m.get(Constant.FILESIZE)
 					.toString()));
 
 			String uuid = String.valueOf(m.get(Constant.UUID));

@@ -8,18 +8,22 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "tb_image_information")
+@Table(name = "tb_module_file_ext")
 public class ImageInformation {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id ;
 	
-	private Long imageSize;    //                    
+	private Long size;    //                    
 
-	private Double imageWidth;
+	private Double width;
 
-	private Double imageHeight;
+	private Double height;
+	
+	private Double longitude ;
+	
+	private Double latitude ;
 	
 	
 	public ImageInformation(){}
@@ -33,30 +37,56 @@ public class ImageInformation {
 		this.id = id;
 	}
 
-	public Long getImageSize() {
-		return imageSize;
+
+	public Long getSize() {
+		return size;
 	}
 
-	public void setImageSize(Long imageSize) {
-		this.imageSize = imageSize;
+
+	public void setSize(Long size) {
+		this.size = size;
 	}
 
-	public Double getImageWidth() {
-		return imageWidth;
+
+	public Double getWidth() {
+		return width;
 	}
 
-	public void setImageWidth(Double imageWidth) {
-		this.imageWidth = imageWidth;
+
+	public void setWidth(Double width) {
+		this.width = width;
 	}
 
-	public Double getImageHeight() {
-		return imageHeight;
+
+	public Double getHeight() {
+		return height;
 	}
 
-	public void setImageHeight(Double imageHeight) {
-		this.imageHeight = imageHeight;
+
+	public void setHeight(Double height) {
+		this.height = height;
 	}
-	
+
+
+	public Double getLongitude() {
+		return longitude;
+	}
+
+
+	public void setLongitude(Double longitude) {
+		this.longitude = longitude;
+	}
+
+
+	public Double getLatitude() {
+		return latitude;
+	}
+
+
+	public void setLatitude(Double latitude) {
+		this.latitude = latitude;
+	}
+
 	
 	
 }

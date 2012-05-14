@@ -24,9 +24,11 @@ public class Tools {
 	@Column(name = "toolId")
 	private Integer id ;
 	
-	private String toolName ;
+	@Column(name = "toolName_cn")
+	private String toolNameCn ;
 	
-	private String toolKeyWords ;
+	@Column(name = "toolName_en")
+	private String toolNameEn ;
 	
 	private String description ;
 	
@@ -42,20 +44,21 @@ public class Tools {
 		this.id = id;
 	}
 
-	public String getToolName() {
-		return toolName;
+
+	public String getToolNameCn() {
+		return toolNameCn;
 	}
 
-	public void setToolName(String toolName) {
-		this.toolName = toolName;
+	public void setToolNameCn(String toolNameCn) {
+		this.toolNameCn = toolNameCn;
 	}
 
-	public String getToolKeyWords() {
-		return toolKeyWords;
+	public String getToolNameEn() {
+		return toolNameEn;
 	}
 
-	public void setToolKeyWords(String toolKeyWords) {
-		this.toolKeyWords = toolKeyWords;
+	public void setToolNameEn(String toolNameEn) {
+		this.toolNameEn = toolNameEn;
 	}
 
 	public String getDescription() {

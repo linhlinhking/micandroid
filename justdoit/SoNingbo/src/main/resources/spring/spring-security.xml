@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:security="http://www.springframework.org/schema/security"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans	
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd	
+	http://www.springframework.org/schema/security	
+	http://www.springframework.org/schema/security/spring-security-3.1.xsd"
+	default-lazy-init="true">
+
+	<security:authentication-manager alias="authenticationManager">
+		<security:authentication-provider
+			user-service-ref="userDetailsService">
+			<security:password-encoder hash="md5">
+				<security:salt-source user-property="username" />
+			</security:password-encoder>
+		</security:authentication-provider>
+	</security:authentication-manager>
+
+
+	<!-- AffirmativeBased一票通过,UnanimousBased一票否决,ConsensusBased多数服从 -->
+	<bean id="accessDecisionManager"
+		class="org.springframework.security.access.vote.UnanimousBased">
+		<property name="decisionVoters">
+			<list>
+				<bean
+					class="org.springframework.security.access.vote.RoleVoter">
+					<property name="rolePrefix" value="RES_" />
+				</bean>
+				<bean
+					class="org.springframework.security.access.vote.AuthenticatedVoter" />
+				<bean class="ningbo.media.core.security.ip.IPAddressVoter">
+					<property name="ipAddressList">
+						<list>
+							<value>127.0.0.1</value>
+							<value>192.168.1.100-255</value>
+						</list>
+						
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	
+	<bean id="userDetailsService" class="ningbo.media.core.security.service.UserDetailServiceImpl"/>
+</beans>

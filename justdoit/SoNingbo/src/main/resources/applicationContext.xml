@@ -24,8 +24,8 @@
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 			<list>
-				<value>classpath:resource/db.properties</value>
-				<value>classpath:resource/mail.properties</value>
+				<value>classpath:db.properties</value>
+				<value>classpath:mail.properties</value>
 			</list>
 		</property>
 	</bean>

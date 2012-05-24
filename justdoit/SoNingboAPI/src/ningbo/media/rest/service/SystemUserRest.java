@@ -299,6 +299,24 @@ public class SystemUserRest {
 		return flag.toString();
 	}
 
+	/**
+	 * @Description 修改用户的头像
+	 * 
+	 * @param key
+	 * @param userId
+	 * @return
+	 */
+	@Path("/modify/avatar")
+	@POST
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response changeUserHeader(String key,String userId){
+		
+		return null ;
+	}
+	
+	
+	
 	@Path("/login")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)

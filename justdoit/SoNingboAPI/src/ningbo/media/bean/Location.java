@@ -42,6 +42,8 @@ public class Location implements Serializable {
 
 	private Double latitude;
 	
+	private String photo_path;
+	
 	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "location")
 	private List<Event> events ;
 	
@@ -50,10 +52,10 @@ public class Location implements Serializable {
 	private List<SecondCategory> secondCategorys;
 	
 	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "location")
-	private List<ImageFile> imageFiles ;
-	
-	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "location")
 	private List<Comment> comments ;
+	
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE },mappedBy = "loctions")
+	private List<ModuleFile> moduleFiles ;
 	
 	public Location() {
 	}
@@ -142,12 +144,12 @@ public class Location implements Serializable {
 	}
 
 	@XmlTransient
-	public List<ImageFile> getImageFiles() {
-		return imageFiles;
+	public List<ModuleFile> getModuleFiles() {
+		return moduleFiles;
 	}
 
-	public void setImageFiles(List<ImageFile> imageFiles) {
-		this.imageFiles = imageFiles;
+	public void setModuleFiles(List<ModuleFile> moduleFiles) {
+		this.moduleFiles = moduleFiles;
 	}
 	
 	@XmlTransient
@@ -166,5 +168,15 @@ public class Location implements Serializable {
 				+ address_cn + ", telephone=" + telephone + ", longitude="
 				+ longitude + ", latitude=" + latitude + "]";
 	}
+
+	public String getPhoto_path() {
+		return photo_path;
+	}
+
+	public void setPhoto_path(String photo_path) {
+		this.photo_path = photo_path;
+	}
+
+
 
 }

@@ -40,7 +40,6 @@ public abstract class CollectionUtils {
 	 * @param collection the Collection to check
 	 * @return whether the given Collection is empty
 	 */
-	@SuppressWarnings("rawtypes")
 	public static boolean isEmpty(Collection collection) {
 		return (collection == null || collection.isEmpty());
 	}
@@ -51,7 +50,6 @@ public abstract class CollectionUtils {
 	 * @param map the Map to check
 	 * @return whether the given Map is empty
 	 */
-	@SuppressWarnings("rawtypes")
 	public static boolean isEmpty(Map map) {
 		return (map == null || map.isEmpty());
 	}
@@ -65,7 +63,6 @@ public abstract class CollectionUtils {
 	 * @return the converted List result
 	 * @see ObjectUtils#toObjectArray(Object)
 	 */
-	@SuppressWarnings("rawtypes")
 	public static List arrayToList(Object source) {
 		return Arrays.asList(ObjectUtils.toObjectArray(source));
 	}
@@ -94,7 +91,7 @@ public abstract class CollectionUtils {
 	 * @param props the Properties instance to merge (may be <code>null</code>)
 	 * @param map the target Map to merge the properties into
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked"})
 	public static void mergePropertiesIntoMap(Properties props, Map map) {
 		if (map == null) {
 			throw new IllegalArgumentException("Map must not be null");
@@ -119,7 +116,6 @@ public abstract class CollectionUtils {
 	 * @param element the element to look for
 	 * @return <code>true</code> if found, <code>false</code> else
 	 */
-	@SuppressWarnings("rawtypes")
 	public static boolean contains(Iterator iterator, Object element) {
 		if (iterator != null) {
 			while (iterator.hasNext()) {
@@ -138,7 +134,6 @@ public abstract class CollectionUtils {
 	 * @param element the element to look for
 	 * @return <code>true</code> if found, <code>false</code> else
 	 */
-	@SuppressWarnings("rawtypes")
 	public static boolean contains(Enumeration enumeration, Object element) {
 		if (enumeration != null) {
 			while (enumeration.hasMoreElements()) {

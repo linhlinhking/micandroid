@@ -14,6 +14,13 @@ import ningbo.media.service.SecondCategoryService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+/**
+ * Description:
+ * @author Devon.Ning
+ * @2012-5-24上午11:14:43
+ * @version 1.0
+ * Copyright (c) 2012 宁波商外文化传媒有限公司,Inc. All Rights Reserved.
+ */
 @Path("/category/second")
 @Component
 @Scope("request")
@@ -30,6 +37,13 @@ public class SecondCategoryRest {
 		return secondCategoryService.querySecondCategoryData(null) ;
 	}
 
+	
+	/**
+	 * @description:查询一级栏目ID所属的二级栏目
+	 * 
+	 * @param id The first Category id
+	 * @return List<SecondCategoryData>
+	 */
 	@Path("/show/{id}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -41,6 +55,4 @@ public class SecondCategoryRest {
 		return secondCategoryService.querySecondCategoryData(id) ;
 	}
 	
-	
-
 }

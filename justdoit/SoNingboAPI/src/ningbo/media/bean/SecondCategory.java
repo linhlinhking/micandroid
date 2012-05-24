@@ -30,6 +30,16 @@ public class SecondCategory implements Serializable {
 	private String name_en;
 
 	private String name_cn;
+	
+	private String name_py ;
+	
+	private String keywords_en ;
+	
+	private String keywords_cn ;
+	
+	private String description_cn ;
+	
+	private String description_en ;
 
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
 	@JoinColumn(name = "category1_id")
@@ -63,6 +73,48 @@ public class SecondCategory implements Serializable {
 
 	public void setName_cn(String name_cn) {
 		this.name_cn = name_cn;
+	}
+	
+	
+
+	public String getName_py() {
+		return name_py;
+	}
+
+	public void setName_py(String name_py) {
+		this.name_py = name_py;
+	}
+
+	public String getKeywords_en() {
+		return keywords_en;
+	}
+
+	public void setKeywords_en(String keywords_en) {
+		this.keywords_en = keywords_en;
+	}
+
+	public String getKeywords_cn() {
+		return keywords_cn;
+	}
+
+	public void setKeywords_cn(String keywords_cn) {
+		this.keywords_cn = keywords_cn;
+	}
+
+	public String getDescription_cn() {
+		return description_cn;
+	}
+
+	public void setDescription_cn(String description_cn) {
+		this.description_cn = description_cn;
+	}
+
+	public String getDescription_en() {
+		return description_en;
+	}
+
+	public void setDescription_en(String description_en) {
+		this.description_en = description_en;
 	}
 
 	@XmlTransient

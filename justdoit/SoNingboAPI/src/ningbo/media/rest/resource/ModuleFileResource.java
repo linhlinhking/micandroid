@@ -1,7 +1,9 @@
 package ningbo.media.rest.resource;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -9,17 +11,16 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import ningbo.media.bean.ImageInformation;
 import ningbo.media.bean.ModuleFile;
-import ningbo.media.bean.ModuleType;
 import ningbo.media.bean.SystemUser;
-import ningbo.media.bean.Tools;
+import ningbo.media.rest.dto.ModuleFileData;
 import ningbo.media.rest.util.Constant;
 import ningbo.media.rest.util.FileHashCode;
 import ningbo.media.rest.util.JSONCode;
@@ -27,9 +28,7 @@ import ningbo.media.rest.util.Jerseys;
 import ningbo.media.rest.util.StringUtils;
 import ningbo.media.service.ImageInformationService;
 import ningbo.media.service.ModuleFileService;
-import ningbo.media.service.ModuleTypeService;
 import ningbo.media.service.SystemUserService;
-import ningbo.media.service.ToolsService;
 
 import org.json.JSONObject;
 import org.springframework.context.annotation.Scope;
@@ -48,12 +47,6 @@ public class ModuleFileResource {
 	private ModuleFileService moduleFileService;
 
 	@Resource
-	private ModuleTypeService moduleTypeService;
-
-	@Resource
-	private ToolsService toolsService;
-
-	@Resource
 	private SystemUserService systemUserService;
 
 	@Resource
@@ -70,11 +63,11 @@ public class ModuleFileResource {
 
 		try {
 			JSONObject json = new JSONObject();
+			List<SystemUser> listUsers = new ArrayList<SystemUser>();
 			ModuleFile moduleFile = new ModuleFile();
 			String key = form.getField("key").getValue();
 			String userId = form.getField("userId").getValue();
-			String toolId = form.getField("toolId").getValue();
-			String typeId = form.getField("typeId").getValue();
+			
 			if (!StringUtils.hasText(key)) {
 				json.put(Constant.CODE, JSONCode.KEYISNULL);
 				return Response.ok(json.toString()).build();
@@ -83,23 +76,12 @@ public class ModuleFileResource {
 				return Response.ok(json.toString()).build();
 			}
 
-			Tools tool = toolsService.get(Integer.valueOf(toolId));
-			if (null == tool) {
-				json.put(Constant.CODE, JSONCode.MODULEFILE_TOOL_NOEXISTS);
-				return Response.ok(json.toString()).build();
-			}
-
-			ModuleType type = moduleTypeService.get(Integer.valueOf(typeId));
-			if (null == type) {
-				json.put(Constant.CODE, JSONCode.MODULEFILE_TYPE_NOEXISTS);
-				return Response.ok(json.toString()).build();
-			}
-
 			SystemUser u = systemUserService.get(Integer.valueOf(userId));
 			if (null == u) {
 				json.put(Constant.CODE, JSONCode.MODULEFILE_TYPE_NOEXISTS);
 				return Response.ok(json.toString()).build();
 			}
+			listUsers.add(u) ;
 
 			String fileName = fileDetail.getFileName();
 			StringBuffer sb = new StringBuffer();
@@ -121,10 +103,9 @@ public class ModuleFileResource {
 
 			moduleFile.setFileName(fileName);
 			moduleFile.setFileHash(uuid);
-			moduleFile.setModuleType(type);
-			moduleFile.setTools(tool);
 			moduleFile.setCreateTime(new Date());
 			moduleFile.setImageInfo(inforImage);
+			moduleFile.setSystemUsers(listUsers) ;
 
 			Integer moduleFileId = moduleFileService.save(moduleFile);
 			json.put(Constant.CODE, JSONCode.SUCCESS);
@@ -137,15 +118,19 @@ public class ModuleFileResource {
 
 	}
 
-	@Path("/get/{userId}/{toolId}/{typeId}")
+	@Path("/file/{userId}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getUserHeadFile(@QueryParam("userId")
-	Integer userId, @QueryParam("toolId")
-	Integer toolId, @QueryParam("typeId")
-	Integer typeId) {
-		
-		return null;
+	public List<ModuleFileData> getUserHeadFile(@PathParam("userId")
+	String userId) {
+		return moduleFileService.queryModuleFileByUserHeader(Integer.valueOf(userId));
+	}
+	
+	@Path("/showAll")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<ModuleFileData> getAllFile(){
+		return moduleFileService.queryAllFile();
 	}
 
 }

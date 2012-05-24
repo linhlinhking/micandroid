@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlType;
 import ningbo.media.rest.WsConstants;
 
 @XmlType(name = "FirstCategory", namespace = WsConstants.NS, propOrder = {
-		"id", "name_cn", "name_en", "description" })
+		"id", "name_cn", "name_en", "keywords_en","keywords_cn","description_en","description_cn" })
 @XmlRootElement(name = "data")
 public class FirstCategoryData {
 
@@ -14,8 +14,14 @@ public class FirstCategoryData {
 	private String name_en;
 
 	private String name_cn;
+	
+	private String keywords_en ;
+	
+	private String keywords_cn ;
 
-	private String description;
+	private String description_en ;
+	
+	private String description_cn ;
 
 	public FirstCategoryData() {
 	}
@@ -43,13 +49,39 @@ public class FirstCategoryData {
 	public void setName_cn(String name_cn) {
 		this.name_cn = name_cn;
 	}
-
-	public String getDescription() {
-		return description;
+	
+	public String getKeywords_en() {
+		return keywords_en;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setKeywords_en(String keywords_en) {
+		this.keywords_en = keywords_en;
 	}
+
+	public String getKeywords_cn() {
+		return keywords_cn;
+	}
+
+	public void setKeywords_cn(String keywords_cn) {
+		this.keywords_cn = keywords_cn;
+	}
+
+	public String getDescription_en() {
+		return description_en;
+	}
+
+	public void setDescription_en(String description_en) {
+		this.description_en = description_en;
+	}
+
+	public String getDescription_cn() {
+		return description_cn;
+	}
+
+	public void setDescription_cn(String description_cn) {
+		this.description_cn = description_cn;
+	}
+
+
 
 }

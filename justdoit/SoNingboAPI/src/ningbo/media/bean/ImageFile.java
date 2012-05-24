@@ -1,6 +1,7 @@
 package ningbo.media.bean;
 
 import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,13 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 
-
 @Entity
-@Table(name = "tb_image_file")
 @XmlRootElement
 public class ImageFile {
 

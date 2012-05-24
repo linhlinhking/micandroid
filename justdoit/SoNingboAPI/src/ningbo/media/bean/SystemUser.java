@@ -55,12 +55,9 @@ public class SystemUser implements Serializable {
 	@Column(name="last_modify_time")
 	private Date lastModifyTime ;
 	
-	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "systemUser")
-	private List<ImageFile> imageFiles ;
-	
-	
+
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE },mappedBy = "systemUsers")
-	private List<Tools> toolses ;
+	private List<ModuleFile> moduleFiles ;
 	
 	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "systemUser")
 	private List<Comment> comments ;
@@ -180,23 +177,15 @@ public class SystemUser implements Serializable {
 		this.lastModifyTime = lastModifyTime;
 	}
 	
+	
 	@XmlTransient
-	public List<Tools> getToolses() {
-		return toolses;
-	}
-
-	public void setToolses(List<Tools> toolses) {
-		this.toolses = toolses;
+	public List<ModuleFile> getModuleFiles() {
+		return moduleFiles;
 	}
 
 
-	@XmlTransient
-	public List<ImageFile> getImageFiles() {
-		return imageFiles;
-	}
-
-	public void setImageFiles(List<ImageFile> imageFiles) {
-		this.imageFiles = imageFiles;
+	public void setModuleFiles(List<ModuleFile> moduleFiles) {
+		this.moduleFiles = moduleFiles;
 	}
 	
 	@XmlTransient
@@ -213,5 +202,7 @@ public class SystemUser implements Serializable {
 	public String toString(){
 		return "SystemUser[username:"+this.username+" ->password:"+this.password+"]" ;
 	}
+
+
 	
 }

@@ -5,10 +5,8 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.ws.rs.core.Response.Status;
 
-import ningbo.media.bean.FirstCategory;
 import ningbo.media.bean.SecondCategory;
 import ningbo.media.core.service.impl.BaseServiceImpl;
-import ningbo.media.dao.FirstCategoryDao;
 import ningbo.media.dao.SecondCategoryDao;
 import ningbo.media.rest.dto.SecondCategoryData;
 import ningbo.media.rest.util.JSONCode;
@@ -27,7 +25,7 @@ public class SecondCategoryServiceImpl extends
 		SecondCategoryService {
 
 	@Resource
-	private FirstCategoryDao firstCategoryDao;
+	private SecondCategoryDao secondCategoryDao;
 
 	@Autowired
 	public SecondCategoryServiceImpl(@Qualifier("secondCategoryDao")
@@ -38,16 +36,16 @@ public class SecondCategoryServiceImpl extends
 	public List<SecondCategoryData> querySecondCategoryData(Integer id) {
 		List<SecondCategory> tempList = null;
 		if (null == id) {
-			tempList = getAll();
+			tempList = secondCategoryDao.getAll();
 		} else {
-			FirstCategory firstCategory = firstCategoryDao.get(id);
-			if (firstCategory == null) {
-				throw Jerseys.buildException(Status.NOT_FOUND,
-						JSONCode.THROW_MESSAGE);
-			}
-			tempList = firstCategory.getSecondCategorys();
+			tempList = secondCategoryDao.queryByFirstCategoryId(id) ;
 		}
 
+		if(null == tempList || tempList.size() < 0){
+			throw Jerseys.buildException(Status.NOT_FOUND,
+					JSONCode.SERVER_EXCEPTION);
+		}
+		
 		List<SecondCategoryData> list = Lists.newArrayList();
 		for (SecondCategory sc : tempList) {
 			SecondCategoryData temp = new SecondCategoryData();

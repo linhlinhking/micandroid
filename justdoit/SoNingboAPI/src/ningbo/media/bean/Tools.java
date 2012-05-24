@@ -33,7 +33,7 @@ public class Tools {
 	private String description ;
 	
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
-	@JoinTable(name = "tb_tools_systemUser", joinColumns = @JoinColumn(name = "toolId"),inverseJoinColumns=@JoinColumn(name = "userId"))
+	@JoinTable(name = "tb_tools_user", joinColumns = @JoinColumn(name = "toolId"),inverseJoinColumns=@JoinColumn(name = "userId"))
 	private List<SystemUser> systemUsers ;
 
 	public Integer getId() {

@@ -86,6 +86,7 @@ public class FileHashCode {
 		return toHexString(md5.digest());
 	}
 
+	//9191809001898918
 	private static String toHexString(byte b[]) {
 		System.out.println(b.length);
 		StringBuilder sb = new StringBuilder(b.length * 2);
@@ -94,7 +95,6 @@ public class FileHashCode {
 			// System.out.println(b[i]) ;
 			sb.append(hexChar[b[i] & 0x9]);
 		}
-
 		return sb.toString();
 	}
 
@@ -128,10 +128,15 @@ public class FileHashCode {
 		return sb.toString();
 	}
 
+	//0009808890190001
+	//0989919081110811
 	public static void main(String args[]) {
-		String uuid = "1180801180998999";
+		String path = "/Users/ning/git/image1.jpg" ;
+		
+		System.out.println(getFileMD5(path)) ;
+		//String uuid = "1180801180998999";
 		// System.out.println(getUuidPath(uuid)) ;
-		System.out.println(makeFileDir(uuid));
+		//System.out.println(makeFileDir(uuid));
 		// System.out.println(FileHashCode.class.getClassLoader().getResource("").getPath())
 		// ;
 		// System.out.println(get) ;

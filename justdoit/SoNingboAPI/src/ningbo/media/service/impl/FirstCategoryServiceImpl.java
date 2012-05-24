@@ -12,6 +12,7 @@ import ningbo.media.rest.dto.SecondCategoryData;
 import ningbo.media.rest.util.JSONCode;
 import ningbo.media.rest.util.Jerseys;
 import ningbo.media.service.FirstCategoryService;
+import ningbo.media.util.Pinyin;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -44,8 +45,8 @@ public class FirstCategoryServiceImpl extends
 				d.setId(first.getId());
 				d.setName_cn(first.getName_cn());
 				d.setName_en(first.getName_en());
-				d.setDescription(first.getDescription());
-
+				d.setDescription_cn(first.getDescription_cn());
+				d.setDescription_en(first.getDescription_en());
 				data.add(d);
 			}
 
@@ -69,7 +70,8 @@ public class FirstCategoryServiceImpl extends
 			data.setId(first.getId());
 			data.setName_cn(first.getName_cn());
 			data.setName_en(first.getName_en());
-			data.setDescription(first.getDescription());
+			data.setDescription_cn(first.getDescription_cn());
+			data.setDescription_en(first.getDescription_en());
 			return data;
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -79,11 +81,21 @@ public class FirstCategoryServiceImpl extends
 	}
 
 	public List<SecondCategoryData> getFristCategoryByName(String name) {
-		final String hql = "from FirstCategory as model where 1=1 and model.name_en = ? ";
+		StringBuffer hql = new StringBuffer();
+		hql.append("from FirstCategory as model where 1=1") ;
+		if(null == name){
+			return null ;
+		}
+		if(Pinyin.isChinese(name)){
+			hql.append(" and model.name_cn = ? ") ;
+		}else{
+			hql.append(" and model.name_en = ? ") ;
+		}
+		
 		List<SecondCategoryData> datas = Lists.newArrayList();
 		try {
 			FirstCategory first = (FirstCategory) firstCategoryDao.findUnique(
-					hql, name);
+					hql.toString(), name);
 			if (null == first) {
 				throw Jerseys.buildException(Status.NOT_FOUND,
 						JSONCode.THROW_MESSAGE);

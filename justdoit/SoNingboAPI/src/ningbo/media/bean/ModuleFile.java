@@ -1,6 +1,7 @@
 package ningbo.media.bean;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -9,7 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -29,20 +31,21 @@ public class ModuleFile {
 	private Date uploadTime;
 	
 	private Date createTime;
+	
 
 	@OneToOne
 	@JoinColumn(name = "inforId")
 	private ImageInformation imageInfo;
 	
-	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
-	@JoinColumn(name = "toolId")
-	private Tools tools ;
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
+	@JoinTable(name = "tb_files_user", joinColumns = @JoinColumn(name = "fileId"),inverseJoinColumns=@JoinColumn(name = "userId"))
+	private List<SystemUser> systemUsers ;
 	
-	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
-	@JoinColumn(name = "typeId")
-	private ModuleType moduleType ;
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
+	@JoinTable(name = "tb_files_location", joinColumns = @JoinColumn(name = "fileId"),inverseJoinColumns=@JoinColumn(name = "locationId"))
+	private List<Location> loctions ;
 	
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -83,21 +86,6 @@ public class ModuleFile {
 		this.createTime = createTime;
 	}
 
-	public Tools getTools() {
-		return tools;
-	}
-
-	public void setTools(Tools tools) {
-		this.tools = tools;
-	}
-
-	public ModuleType getModuleType() {
-		return moduleType;
-	}
-
-	public void setModuleType(ModuleType moduleType) {
-		this.moduleType = moduleType;
-	}
 
 	public ImageInformation getImageInfo() {
 		return imageInfo;
@@ -105,6 +93,22 @@ public class ModuleFile {
 
 	public void setImageInfo(ImageInformation imageInfo) {
 		this.imageInfo = imageInfo;
+	}
+
+	public List<SystemUser> getSystemUsers() {
+		return systemUsers;
+	}
+
+	public void setSystemUsers(List<SystemUser> systemUsers) {
+		this.systemUsers = systemUsers;
+	}
+
+	public List<Location> getLoctions() {
+		return loctions;
+	}
+
+	public void setLoctions(List<Location> loctions) {
+		this.loctions = loctions;
 	}
 	
 	

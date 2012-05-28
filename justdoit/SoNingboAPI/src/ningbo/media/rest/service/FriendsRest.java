@@ -76,17 +76,17 @@ public class FriendsRest {
 				Friends follow = new Friends();
 				follow.setUserId(Integer.valueOf(userId));
 				follow.setFollowId(Integer.valueOf(followId));
-				follow.setIsFriend(FriendType.FOLLOWED);
+				follow.setIsFollowed(FriendType.FOLLOWED);
 
 				Friends fans = new Friends();
 				fans.setUserId(Integer.valueOf(followId));
 				fans.setFollowId(Integer.valueOf(userId));
-				fans.setIsFriend(FriendType.FANS);
+				fans.setIsFollowed(FriendType.FANS);
 
 				friendsService.save(follow);
 				friendsService.save(fans);
 			} else {
-				tempFriend.setIsFriend(FriendType.FOLLOWED);
+				tempFriend.setIsFollowed(FriendType.FOLLOWED);
 				friendsService.update(tempFriend);
 			}
 
@@ -111,7 +111,7 @@ public class FriendsRest {
 			Friends tempFriend = friendsService.getRelationObject(Integer
 					.valueOf(userId), Integer.valueOf(followId));
 			if (tempFriend != null) {
-				tempFriend.setIsFriend(FriendType.FANS);
+				tempFriend.setIsFollowed(FriendType.FANS);
 				friendsService.update(tempFriend);
 			}
 			json.put(Constant.CODE, JSONCode.SUCCESS);

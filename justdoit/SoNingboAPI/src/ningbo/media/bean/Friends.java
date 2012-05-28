@@ -16,10 +16,10 @@ import ningbo.media.bean.enums.FriendType;
  * @author Devon.Ning
  * @2012-3-30下午1:43:33
  * @version 1.0
- * <p>Copyright (c) 2012 宁波商外文化传媒有限公司,Inc. All Rights Reserved.</p>
+ * Copyright (c) 2012 宁波商外文化传媒有限公司,Inc. All Rights Reserved.
  */
 @Entity
-@Table(name = "tb_user_relation")
+@Table(name = "in_friends")
 public class Friends implements Serializable{
 
 	private static final long serialVersionUID = -590296924917498669L;
@@ -32,7 +32,7 @@ public class Friends implements Serializable{
 	
 	private Integer followId ;
 	
-	private FriendType isFriend ; 
+	private FriendType isFollowed ; 
 	
 	public Friends(){}
 
@@ -46,13 +46,12 @@ public class Friends implements Serializable{
 		this.id = id;
 	}
 
-	public FriendType getIsFriend() {
-		return isFriend;
+	public FriendType getIsFollowed() {
+		return isFollowed;
 	}
 
-
-	public void setIsFriend(FriendType isFriend) {
-		this.isFriend = isFriend;
+	public void setIsFollowed(FriendType isFollowed) {
+		this.isFollowed = isFollowed;
 	}
 
 

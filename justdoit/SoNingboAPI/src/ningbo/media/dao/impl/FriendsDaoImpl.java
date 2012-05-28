@@ -38,7 +38,7 @@ public class FriendsDaoImpl extends BaseDaoImpl<Friends, Integer> implements
 	}
 
 	public List<Friends> getFriendsForUserId(Integer userId) {
-		String hql = " from Friends as m where 1=1 and m.userId = ? and m.followId in (select n.userId from Friends as n where 1=1 and n.followId = ? and n.isFriend = 1 ) and m.isFriend = 1 ";
+		String hql = " from Friends as m where 1=1 and m.userId = ? and m.followId in (select n.userId from Friends as n where 1=1 and n.followId = ? and n.isFollowed = 1 ) and m.isFollowed = 1 ";
 		List<Friends> list = findByHql(hql, userId, userId);
 		if (null == list || list.size() < 0) {
 			return null;

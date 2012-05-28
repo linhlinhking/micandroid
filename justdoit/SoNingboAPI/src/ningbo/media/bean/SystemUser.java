@@ -6,9 +6,12 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -61,6 +64,13 @@ public class SystemUser implements Serializable {
 	
 	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "systemUser")
 	private List<Comment> comments ;
+	
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
+	@JoinTable(name = "in_favorite_user", joinColumns = @JoinColumn(name = "userId"),inverseJoinColumns=@JoinColumn(name = "locationId"))
+	private List<Location> loctions ;
+	
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE },mappedBy = "systemUsers")
+	private List<TempUser> tempUsers ;
 	
 	public SystemUser(){}
 	
@@ -201,6 +211,26 @@ public class SystemUser implements Serializable {
 
 	public String toString(){
 		return "SystemUser[username:"+this.username+" ->password:"+this.password+"]" ;
+	}
+
+	@XmlTransient
+	public List<Location> getLoctions() {
+		return loctions;
+	}
+
+
+	public void setLoctions(List<Location> loctions) {
+		this.loctions = loctions;
+	}
+
+	@XmlTransient
+	public List<TempUser> getTempUsers() {
+		return tempUsers;
+	}
+
+
+	public void setTempUsers(List<TempUser> tempUsers) {
+		this.tempUsers = tempUsers;
 	}
 
 

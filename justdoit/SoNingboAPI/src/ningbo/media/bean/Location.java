@@ -57,6 +57,13 @@ public class Location implements Serializable {
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE },mappedBy = "loctions")
 	private List<ModuleFile> moduleFiles ;
 	
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE },mappedBy = "loctions")
+	private List<SystemUser> systemUsers ;
+	
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE },mappedBy = "loctions")
+	private List<TempUser> tempUsers ;
+	
+	
 	public Location() {
 	}
 
@@ -159,6 +166,25 @@ public class Location implements Serializable {
 
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
+	}
+	
+	
+	@XmlTransient
+	public List<SystemUser> getSystemUsers() {
+		return systemUsers;
+	}
+
+	public void setSystemUsers(List<SystemUser> systemUsers) {
+		this.systemUsers = systemUsers;
+	}
+	
+	@XmlTransient
+	public List<TempUser> getTempUsers() {
+		return tempUsers;
+	}
+
+	public void setTempUsers(List<TempUser> tempUsers) {
+		this.tempUsers = tempUsers;
 	}
 
 	@Override

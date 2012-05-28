@@ -1,12 +1,18 @@
 package ningbo.media.bean;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 
@@ -20,11 +26,24 @@ public class TempUser implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id ;
 	
+	@Column(name = "temp_name")
+	private String tempName ;
+	
 	@Column(name = "device_id")
 	private String deviceId;
 	
+	private boolean isUserd ;
+	
 	@Column(name = "temp_key")
 	private String tempKey ;
+	
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
+	@JoinTable(name = "in_favorite_tempuser", joinColumns = @JoinColumn(name = "tempId"),inverseJoinColumns=@JoinColumn(name = "locationId"))
+	private List<Location> loctions ;
+	
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
+	@JoinTable(name = "ac_users_tempuser", joinColumns = @JoinColumn(name = "tempId"),inverseJoinColumns=@JoinColumn(name = "userId"))
+	private List<SystemUser> systemUsers ;
 
 	public Integer getId() {
 		return id;
@@ -48,6 +67,38 @@ public class TempUser implements Serializable{
 
 	public void setTempKey(String tempKey) {
 		this.tempKey = tempKey;
+	}
+
+	public String getTempName() {
+		return tempName;
+	}
+
+	public void setTempName(String tempName) {
+		this.tempName = tempName;
+	}
+
+	public boolean isUserd() {
+		return isUserd;
+	}
+
+	public void setUserd(boolean isUserd) {
+		this.isUserd = isUserd;
+	}
+
+	public List<Location> getLoctions() {
+		return loctions;
+	}
+
+	public void setLoctions(List<Location> loctions) {
+		this.loctions = loctions;
+	}
+
+	public List<SystemUser> getSystemUsers() {
+		return systemUsers;
+	}
+
+	public void setSystemUsers(List<SystemUser> systemUsers) {
+		this.systemUsers = systemUsers;
 	}
 
 	

@@ -181,7 +181,7 @@ public class FavoriteRest {
 
 					fav = new Favorite();
 					fav.setLocationId(Integer.valueOf(locationId));
-					fav.setDeviceId(deviceId);
+					
 					favoriteService.save(fav);
 
 					boolean temp = tempUserService.isExistsDeviceId(deviceId);

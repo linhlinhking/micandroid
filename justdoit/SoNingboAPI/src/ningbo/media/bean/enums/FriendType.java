@@ -12,5 +12,6 @@ public enum FriendType {
 	public Integer getValue() {
 		return value;
 	}
-
+	
+	
 }

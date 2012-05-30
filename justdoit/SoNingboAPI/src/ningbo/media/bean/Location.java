@@ -54,13 +54,13 @@ public class Location implements Serializable {
 	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "location")
 	private List<Comment> comments ;
 	
-	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE },mappedBy = "loctions")
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE },mappedBy = "locations")
 	private List<ModuleFile> moduleFiles ;
 	
-	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE },mappedBy = "loctions")
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE },mappedBy = "locations")
 	private List<SystemUser> systemUsers ;
 	
-	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE },mappedBy = "loctions")
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE },mappedBy = "locations")
 	private List<TempUser> tempUsers ;
 	
 	

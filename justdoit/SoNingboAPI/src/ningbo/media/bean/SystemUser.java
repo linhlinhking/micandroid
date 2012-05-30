@@ -67,7 +67,7 @@ public class SystemUser implements Serializable {
 	
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
 	@JoinTable(name = "in_favorite_user", joinColumns = @JoinColumn(name = "userId"),inverseJoinColumns=@JoinColumn(name = "locationId"))
-	private List<Location> loctions ;
+	private List<Location> locations ;
 	
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE },mappedBy = "systemUsers")
 	private List<TempUser> tempUsers ;
@@ -213,15 +213,8 @@ public class SystemUser implements Serializable {
 		return "SystemUser[username:"+this.username+" ->password:"+this.password+"]" ;
 	}
 
-	@XmlTransient
-	public List<Location> getLoctions() {
-		return loctions;
-	}
+	
 
-
-	public void setLoctions(List<Location> loctions) {
-		this.loctions = loctions;
-	}
 
 	@XmlTransient
 	public List<TempUser> getTempUsers() {
@@ -231,6 +224,17 @@ public class SystemUser implements Serializable {
 
 	public void setTempUsers(List<TempUser> tempUsers) {
 		this.tempUsers = tempUsers;
+	}
+
+
+	@XmlTransient
+	public List<Location> getLocations() {
+		return locations;
+	}
+
+
+	public void setLocations(List<Location> locations) {
+		this.locations = locations;
 	}
 
 

@@ -22,8 +22,6 @@ public class ModuleFileServiceImpl extends BaseServiceImpl<ModuleFile, Integer>
 
 	@Resource
 	private ModuleFileDao moduleFileDao;
-	
-	
 
 	@Autowired
 	public ModuleFileServiceImpl(@Qualifier("moduleFileDao")
@@ -31,29 +29,27 @@ public class ModuleFileServiceImpl extends BaseServiceImpl<ModuleFile, Integer>
 		super(moduleFileDao);
 	}
 
-	
-
 	public List<ModuleFileData> queryModuleFileByUserHeader(Integer userId) {
-		String hql = "select m from ModuleFile as m join m.systemUsers as u where 1=1 and u.id = ? " ;
-		
-		List<ModuleFile> list = moduleFileDao.findByHql(hql,userId) ;
+		String hql = "select m from ModuleFile as m join m.systemUsers as u where 1=1 and u.id = ? ";
+
+		List<ModuleFile> list = moduleFileDao.findByHql(hql, userId);
 		List<ModuleFileData> data = new ArrayList<ModuleFileData>();
-		if(null != list && list.size() > 0){
-			for(ModuleFile file : list){
+		if (null != list && list.size() > 0) {
+			for (ModuleFile file : list) {
 				ModuleFileData temp = new ModuleFileData();
-				temp.setId(file.getId()) ;
-				temp.setFileName(file.getFileName()) ;
-				temp.setFilePath(file.getFileHash()) ;
-				temp.setWidth(file.getImageInfo().getWidth()) ;
-				temp.setHeight(file.getImageInfo().getHeight()) ;
-				
-				data.add(temp) ;
+				temp.setId(file.getId());
+				temp.setFileName(file.getFileName());
+				temp.setFilePath(file.getFileHash());
+				temp.setWidth(file.getImageInfo().getWidth());
+				temp.setHeight(file.getImageInfo().getHeight());
+
+				data.add(temp);
 			}
-			return data ;
+			return data;
 		}
 		return null;
 	}
-	
+
 	public List<ModuleFile> queryModuleFileByType(Integer userId,
 			Integer toolId, Integer typeId) {
 		final String hql = "from ModuleFile as m where 1=1 and m.tools.id in (select id from Tools as t inner join SystemUser as u where 1=1 and u.id = ? and t.id = ?) and m.moduleType.id = ? ";
@@ -65,32 +61,49 @@ public class ModuleFileServiceImpl extends BaseServiceImpl<ModuleFile, Integer>
 		return null;
 	}
 
-
 	public List<ModuleFileData> queryAllFile() {
-		List<ModuleFile> listFiles = moduleFileDao.getAll() ;
-		List<ModuleFileData> data = new ArrayList<ModuleFileData>() ;
-		if(null == listFiles || listFiles.size() < 0){
-			return null ;
+		List<ModuleFile> listFiles = moduleFileDao.getAll();
+		List<ModuleFileData> data = new ArrayList<ModuleFileData>();
+		if (null == listFiles || listFiles.size() < 0) {
+			return null;
 		}
-		for(ModuleFile file : listFiles){
-			ModuleFileData temp = new ModuleFileData() ;
-			temp.setId(file.getId()) ;
-			temp.setFileName(file.getFileName()) ;
-			temp.setFilePath(file.getFileHash()) ;
-			
-			ImageInformation infor = file.getImageInfo() ;
-			if(null != infor){
-				temp.setWidth(infor.getWidth()) ;
-				temp.setHeight(infor.getHeight()) ;
-				temp.setSize(infor.getSize()) ;
-				temp.setLongitude(infor.getLongitude()) ;
-				temp.setLatitude(infor.getLatitude()) ;
+		for (ModuleFile file : listFiles) {
+			ModuleFileData temp = new ModuleFileData();
+			temp.setId(file.getId());
+			temp.setFileName(file.getFileName());
+			temp.setFilePath(file.getFileHash());
+
+			ImageInformation infor = file.getImageInfo();
+			if (null != infor) {
+				temp.setWidth(infor.getWidth());
+				temp.setHeight(infor.getHeight());
+				temp.setSize(infor.getSize());
+				temp.setLongitude(infor.getLongitude());
+				temp.setLatitude(infor.getLatitude());
 			}
-			data.add(temp) ;
+			data.add(temp);
 		}
 		return data;
 	}
 
+	public List<ModuleFileData> queryModuleFileByLocation(Integer locationId) {
+		String hql = "select m from ModuleFile as m join m.locations as u where 1=1 and u.id = ? ";
+		List<ModuleFile> list = moduleFileDao.findByHql(hql, locationId);
+		List<ModuleFileData> data = new ArrayList<ModuleFileData>();
+		if (null != list && list.size() > 0) {
+			for (ModuleFile file : list) {
+				ModuleFileData temp = new ModuleFileData();
+				temp.setId(file.getId());
+				temp.setFileName(file.getFileName());
+				temp.setFilePath(file.getFileHash());
+				temp.setWidth(file.getImageInfo().getWidth());
+				temp.setHeight(file.getImageInfo().getHeight());
 
-	
+				data.add(temp);
+			}
+			return data;
+		}
+		return null;
+	}
+
 }

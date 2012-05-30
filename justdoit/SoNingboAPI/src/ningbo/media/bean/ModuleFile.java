@@ -43,7 +43,7 @@ public class ModuleFile {
 	
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
 	@JoinTable(name = "tb_files_location", joinColumns = @JoinColumn(name = "fileId"),inverseJoinColumns=@JoinColumn(name = "locationId"))
-	private List<Location> loctions ;
+	private List<Location> locations ;
 	
 
 	public Integer getId() {
@@ -103,13 +103,15 @@ public class ModuleFile {
 		this.systemUsers = systemUsers;
 	}
 
-	public List<Location> getLoctions() {
-		return loctions;
+	public List<Location> getLocations() {
+		return locations;
 	}
 
-	public void setLoctions(List<Location> loctions) {
-		this.loctions = loctions;
+	public void setLocations(List<Location> locations) {
+		this.locations = locations;
 	}
+
+
 	
 	
 }

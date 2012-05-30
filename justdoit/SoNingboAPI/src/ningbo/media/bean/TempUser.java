@@ -39,7 +39,7 @@ public class TempUser implements Serializable{
 	
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
 	@JoinTable(name = "in_favorite_tempuser", joinColumns = @JoinColumn(name = "tempId"),inverseJoinColumns=@JoinColumn(name = "locationId"))
-	private List<Location> loctions ;
+	private List<Location> locations ;
 	
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
 	@JoinTable(name = "ac_users_tempuser", joinColumns = @JoinColumn(name = "tempId"),inverseJoinColumns=@JoinColumn(name = "userId"))
@@ -85,12 +85,13 @@ public class TempUser implements Serializable{
 		this.isUserd = isUserd;
 	}
 
-	public List<Location> getLoctions() {
-		return loctions;
+
+	public List<Location> getLocations() {
+		return locations;
 	}
 
-	public void setLoctions(List<Location> loctions) {
-		this.loctions = loctions;
+	public void setLocations(List<Location> locations) {
+		this.locations = locations;
 	}
 
 	public List<SystemUser> getSystemUsers() {

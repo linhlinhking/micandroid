@@ -46,6 +46,11 @@ public class BaseDaoImpl<E, PK extends Serializable> implements BaseDao<E, PK> {
 		Assert.notNull(id, "id is required.");
 		return (E) getHibernateTemplate().load(this.entityClass, id);
 	}
+	
+	public void persist(E entity){
+		Assert.notNull(entity, "entity is required");
+		getHibernateTemplate().persist(entity) ;
+	}
 
 	public List<E> get(final PK[] ids) {
 		Assert.notEmpty(ids, "ids must not be empty!");
@@ -106,8 +111,15 @@ public class BaseDaoImpl<E, PK extends Serializable> implements BaseDao<E, PK> {
 
 	public void update(E entity) {
 		Assert.notNull(entity, "entity is required");
-		getHibernateTemplate().update(entity);
-
+		try{
+			clear();
+			//getHibernateTemplate().merge(entity);
+			getHibernateTemplate().update(entity);
+			//getHibernateTemplate().saveOrUpdate(entity);
+			flush();
+		}catch(Exception ex){
+			ex.printStackTrace() ;
+		}
 	}
 
 	public void delete(E entity) {

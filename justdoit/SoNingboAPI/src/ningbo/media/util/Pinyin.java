@@ -50,10 +50,12 @@ public class Pinyin {
                 if (Character.toString(t1[i]).matches("[\\u4E00-\\u9FA5]+")) {  
                     t2 = PinyinHelper.toHanyuPinyinStringArray(t1[i], t3);// 将汉字的几种全拼都存到t2数组中  
                     t4 += t2[0];// 取出该汉字全拼的第一种读音并连接到字符串t4后  
+                    t4 += " ";
                 } else {  
                     // 如果不是汉字字符，直接取出字符并连接到字符串t4后  
                     t4 += Character.toString(t1[i]);  
-                }  
+                }
+                
             }  
         } catch (BadHanyuPinyinOutputFormatCombination e) {  
             // TODO Auto-generated catch block  
@@ -102,10 +104,10 @@ public class Pinyin {
     }  
   
     public static void main(String[] args) {  
-        //String cnStr = "宁波商外文化传媒有限公司";  
-    	String enStr = "ningboshang传媒waichmei" ;
-        System.out.println(isChinese(enStr)) ;
-        //System.out.println(getPinYin(cnStr));  
+        String cnStr = "八佰伴发艺沙廊(老银泰店)";  
+    	//String enStr = "ningboshang传媒waichmei" ;
+        //System.out.println(isChinese(enStr)) ;
+        System.out.println(getPinYin(cnStr));  
         //System.out.println(getPinYinHeadChar(cnStr));  
 
     }  

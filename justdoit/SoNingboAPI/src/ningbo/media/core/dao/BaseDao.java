@@ -19,6 +19,9 @@ public interface BaseDao<E, PK extends Serializable> {
 	 * 
 	 */
 	public E get(PK id);
+	
+	
+	public void persist(E entity);
 
 	/**
 	 * According to PK(id) query object(E)

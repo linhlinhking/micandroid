@@ -55,6 +55,7 @@ public class BaseServiceImpl<E, PK extends Serializable> implements
 		return baseDao.save(entity);
 	}
 
+	
 	public void update(E entity) {
 		baseDao.update(entity) ;
 	}

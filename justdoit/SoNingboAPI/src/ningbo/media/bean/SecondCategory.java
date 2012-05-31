@@ -45,8 +45,11 @@ public class SecondCategory implements Serializable {
 	@JoinColumn(name = "category1_id")
 	private FirstCategory firstCategory;
 
+	
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE },mappedBy = "secondCategorys")
 	private List<Location> locations;
+	
+	
 
 	public SecondCategory() {
 	}
@@ -126,6 +129,7 @@ public class SecondCategory implements Serializable {
 		this.firstCategory = firstCategory;
 	}
 
+	
 	@XmlTransient
 	public List<Location> getLocations() {
 		return locations;
@@ -134,5 +138,6 @@ public class SecondCategory implements Serializable {
 	public void setLocations(List<Location> locations) {
 		this.locations = locations;
 	}
+	
 
 }

@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
-@Table(name = "locations")
+@Table(name = "tb_locations")
 @XmlRootElement
 public class Location implements Serializable {
 
@@ -32,10 +32,12 @@ public class Location implements Serializable {
 
 	private String name_cn;
 
+	private String name_py ;
+	
 	private String address_en;
 
 	private String address_cn;
-
+	
 	private String telephone;
 
 	private Double longitude;
@@ -44,8 +46,10 @@ public class Location implements Serializable {
 	
 	private String photo_path;
 	
-	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "location")
-	private List<Event> events ;
+	private String description_en ;
+	
+	private String description_cn ;
+	
 	
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
 	@JoinTable(name = "locations_category", joinColumns = @JoinColumn(name = "location_id"),inverseJoinColumns=@JoinColumn(name = "category2_id"))
@@ -133,15 +137,6 @@ public class Location implements Serializable {
 	
 
 	@XmlTransient
-	public List<Event> getEvents() {
-		return events;
-	}
-
-	public void setEvents(List<Event> events) {
-		this.events = events;
-	}
-
-	@XmlTransient
 	public List<SecondCategory> getSecondCategorys() {
 		return secondCategorys;
 	}
@@ -187,13 +182,6 @@ public class Location implements Serializable {
 		this.tempUsers = tempUsers;
 	}
 
-	@Override
-	public String toString() {
-		return "Location [id=" + id + ", name_en=" + name_en + ", name_cn="
-				+ name_cn + ", address_en=" + address_en + ", address_cn="
-				+ address_cn + ", telephone=" + telephone + ", longitude="
-				+ longitude + ", latitude=" + latitude + "]";
-	}
 
 	public String getPhoto_path() {
 		return photo_path;
@@ -203,6 +191,30 @@ public class Location implements Serializable {
 		this.photo_path = photo_path;
 	}
 
+	public String getName_py() {
+		return name_py;
+	}
 
+	public void setName_py(String name_py) {
+		this.name_py = name_py;
+	}
 
+	public String getDescription_en() {
+		return description_en;
+	}
+
+	public void setDescription_en(String description_en) {
+		this.description_en = description_en;
+	}
+
+	public String getDescriptioin_cn() {
+		return description_cn;
+	}
+
+	public void setDescription_cn(String description_cn) {
+		this.description_cn = description_cn;
+	}
+
+	
+	
 }

@@ -5,7 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import ningbo.media.BaseTest;
-import ningbo.media.bean.ModuleFile;
+import ningbo.media.rest.dto.ModuleFileData;
 
 import org.junit.Test;
 
@@ -16,10 +16,11 @@ public class ModuleFileServiceTest extends BaseTest {
 	
 	@Test
 	public void testQuery(){
-		List<ModuleFile> files = moduleFileService.queryModuleFileByType(27, 2, 1) ;
+		List<ModuleFileData> files = moduleFileService.queryModuleFileByUserHeader(1) ;
 		if(null != files && files.size() > 0){
-			for(ModuleFile f : files){
-				System.out.println(f.getFileHash()) ;
+			for(ModuleFileData f : files){
+				System.out.println(f.getFileName()) ;
+				System.out.println(f.getWidth()) ;
 			}
 		}
 		

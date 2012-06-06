@@ -4,54 +4,12 @@
 <meta charset="UTF-8">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" href="test.css" />
-<title>register</title>
+<script type="text/javascript" src="/js/base.js"></script>
+<title>Test User</title>
 </head>
 
-<body><!-- https://api.searchningbo.com/resource/user/register -->
-<form name="form1" method="post" action="http://localhost:8080/resource/user/register">
-  <p>
-  
-  key<br>
-  <label for="key"></label>
-  <input type="text" name="key" id="key">
-  <br>
-  <br>
-  
-  
-  username<br>
-  <label for="username"></label>
-  <input type="text" name="username" id="username">
-  <br>
-  <br>
-  
-  
-  password<br>
-  <label for="password"></label>
-  <input type="text" name="password" id="password">
-  <br>
-  <br>
-  
-  
-  email<br>
-  <label for="email"></label>
-  <input type="text" name="email" id="email">
-  <br>
-  <br>
-  
- 
-  photo_path<br>
-  <label for="head_photo"></label>
-  <input type="file" name="photo_path" id="photo_path">
-  <br>
-  <br>
-   
-  
-  
-  <input type="submit" name="POST" id="POST" value="Submit">
-<br>
-    <br>
-  </p>
-</form>
+<body>
+	<input type="button" name="button" value="Click" onclick="test()">
 
 <h2>
 		<span class="mw-headline">
@@ -64,7 +22,7 @@
 		<tr>
 			<td>url</td>
 			<td><a href="#"
-				class="external free" rel="nofollow">https://api.searchningbo.com/resource/user/register</a>
+				class="external free" rel="nofollow"></a>
 			</td>
 		</tr>
 		<tr>
@@ -73,7 +31,7 @@
 		</tr>
 
 		<tr>
-			<td>http request method</td>
+			<td>httprequest method</td>
 			<td>post</td>
 		</tr>
 		<tr>
@@ -100,6 +58,12 @@
 			<td>Authorized verification of API calls</td>
 		</tr>
 		<tr>
+			<td>deviceId</td>
+			<td>true</td>
+			<td>String</td>
+			<td>The serial number of the current equipment</td>
+		</tr>
+		<tr>
 			<td>username</td>
 			<td>true</td>
 			<td>String</td>
@@ -111,26 +75,19 @@
 			<td>String</td>
 			<td>user's password</td>
 		</tr>
-			<tr>
-			<td>email</td>
-			<td>true</td>
-			<td>String</td>
-			<td>user's Email</td>
-		</tr>
 	</table>
 
 	<h2>
 		<span class="mw-headline">
-			Return results </span>
+			Return Results </span>
 	</h2>
-	<pre class="brush: js;">
-	{
-    	"userId": 22,
-    	"code": "0"
-	}
-	
+	<pre class="brush: js;">{
+		{
+    		"userId": 22,
+    		"code": "0"
+	    }
 	</pre>
-
+	
 	<h2>
 		<span class="mw-headline">
 			Return Code Lists </span>
@@ -140,12 +97,10 @@
 		1  : Key is Null
 		2  : Key is Invalid
 		3  : Username is Null
-		4  : Email is Null
-		5  : Password is Null
-		6  : Username is already Exists
-		7  : Email is already Exists
-		8  : Throwable JSONException
+		4  : Password is Null
+		5  : Login is Fail.
+		6  : Throwable JSONException
 	}
-</pre>
+	</pre>
 </body>
 </html>

@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+	<head>
+		<title>test.html</title>
+		<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+		<meta http-equiv="description" content="this is my page">
+		<meta http-equiv="content-type" content="text/html; charset=GB18030">
+		<script type="text/javascript" src="../js/jquery1.7.js"></script>
+		<script type="text/javascript">
+		
+		$(document).ready(function(){
+   			$('#test_api').click(function(){
+				$.getJSON('http://api.soningbo.com/resource/user/show/2',function(json){
+					alert(json.username);
+					
+				});
+			}) ;
+   				
+   	
+   	
+   	
+ 		});
+		
+			
+		</script>
+	</head>
+	
+	<body>
+		<div class="bshare-custom">
+			<a title="分享到新浪微博" class="bshare-sinaminiblog"
+				href="javascript:void(0);"></a>
+			<a title="分享到腾讯微博" class="bshare-qqmb" href="javascript:void(0);"></a>
+			<a title="分享到豆瓣" class="bshare-douban" href="javascript:void(0);"></a>
+			<a title="分享到人人网" class="bshare-renren" href="javascript:void(0);"></a>
+			<a title="分享到开心网" class="bshare-kaixin001" href="javascript:void(0);"></a>
+			<a title="分享到网易微博" class="bshare-neteasemb"
+				href="javascript:void(0);"></a>
+		</div>
+		<script type="text/javascript" charset="utf-8"
+			src="http://static.bshare.cn/b/buttonLite.js"></script>
+		<script type="text/javascript" charset="utf-8"
+			src="http://static.bshare.cn/b/bshareC0.js"></script>
+		
+		<div id="test_api">Call API</div>
+			
+	</body>
+</html>

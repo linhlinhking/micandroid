@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
-
 import magick.CompositeOperator;
 import magick.DrawInfo;
 import magick.ImageInfo;

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -18,7 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
-@Table(name = "tb_locations")
+@Table(name = "locations")
 @XmlRootElement
 public class Location implements Serializable {
 
@@ -28,26 +29,37 @@ public class Location implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
+	@Column(name="name_en",nullable=false)
 	private String name_en;
 
+	@Column(name="name_cn",nullable=false)
 	private String name_cn;
 
+	@Column(name="name_py",nullable=false)
 	private String name_py ;
 	
+	@Column(name="address_en")
 	private String address_en;
 
+	@Column(name="address_cn")
 	private String address_cn;
 	
+	@Column(name="telephone")
 	private String telephone;
 
+	@Column(name="longitude")
 	private Double longitude;
 
+	@Column(name="latitude")
 	private Double latitude;
 	
+	@Column(name="photo_path")
 	private String photo_path;
 	
+	@Column(name="description_en")
 	private String description_en ;
 	
+	@Column(name="description_cn")
 	private String description_cn ;
 	
 	

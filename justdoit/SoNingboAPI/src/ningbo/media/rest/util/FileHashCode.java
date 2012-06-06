@@ -10,6 +10,8 @@ import java.security.MessageDigest;
 import java.util.HashMap;
 import java.util.Map;
 
+import magick.MagickException;
+import ningbo.media.util.MagickImageScale;
 import ningbo.media.util.Resources;
 
 public class FileHashCode {
@@ -165,7 +167,7 @@ public class FileHashCode {
 	 * @return
 	 */
 	public static Map<String, Object> writeToFile(
-			InputStream uploadedInputStream, String uploadedFileLocation) {
+			InputStream uploadedInputStream, String uploadedFileLocation,int resizeWitdh,int resizeHeight) {
 		Map<String, Object> map = new HashMap<String, Object>(4);
 		try {
 			OutputStream out = new FileOutputStream(new File(
@@ -183,9 +185,22 @@ public class FileHashCode {
 			sb.append(tempPath).append(File.separator).append(
 					uuid.substring(12));
 			copyFile(uploadedFileLocation, sb.toString());
+			
+			File srcFile = new File(sb.toString());
+			StringBuffer temp = new StringBuffer();
+			sb.append(tempPath).append(File.separator).append(resizeWitdh) ;
+			File destFile = new File(temp.toString()) ;
+			
+			try {
+				MagickImageScale.resizeFix(srcFile, destFile, resizeWitdh, resizeHeight);
+			} catch (MagickException e) {
+				e.printStackTrace();
+			}
+			
 			map = ImageDetailInformation
 					.getImageInformation(uploadedFileLocation);
 			map.put(Constant.UUID, uuid);
+			
 			delFile(uploadedFileLocation);
 			out.flush();
 			out.close();

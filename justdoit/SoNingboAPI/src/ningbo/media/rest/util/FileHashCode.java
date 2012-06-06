@@ -186,7 +186,8 @@ public class FileHashCode {
 					uuid.substring(12));
 			copyFile(uploadedFileLocation, sb.toString());
 			
-			File srcFile = new File(sb.toString());
+			//同时生成原图的缩略图
+			File srcFile = new File(uploadedFileLocation);
 			StringBuffer temp = new StringBuffer();
 			sb.append(tempPath).append(File.separator).append(resizeWitdh) ;
 			File destFile = new File(temp.toString()) ;

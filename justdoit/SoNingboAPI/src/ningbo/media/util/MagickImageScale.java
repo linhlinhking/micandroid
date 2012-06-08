@@ -35,6 +35,7 @@ public class MagickImageScale {
 			int boxHeight) throws IOException, MagickException {
 		//System.out.println(srcFile.getPath()) ;
 		//System.out.println(srcFile.getAbsolutePath()) ;
+		System.setProperty("jmagick.systemclassloader","no");  
 		ImageInfo info = new ImageInfo(srcFile.getAbsolutePath());
 		MagickImage image = new MagickImage(info);
 		// 计算缩小宽高
@@ -187,11 +188,12 @@ public class MagickImageScale {
 	}
 
 	public static void main(String[] args) throws Exception {
-		System.setProperty("jmagick.systemclassloader","no");  
+		//System.setProperty("jmagick.systemclassloader","no");  
+		System.out.println(System.getProperty("java.library.path"));
 		long time = System.currentTimeMillis();
 		MagickImageScale.resizeFix(
 				new File("web/images/IMAG1368.jpg"), new File(
-						"web/images/96x96.jpg"), 96,96);
+						"web/images/105x105.jpg"), 96,96);
 		time = System.currentTimeMillis() - time;
 		System.out.println("resize new img in " + time + "ms");
 	}

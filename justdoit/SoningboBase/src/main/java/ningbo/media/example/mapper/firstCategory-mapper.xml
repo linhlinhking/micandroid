@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace the same Mapper interface -->
+<mapper namespace="ningbo.media.example.mapper.FirstCategoryMapper">
+
+	<!-- resultType use the typeAliases of sqlMapConfig.xml  -->
+	<select id="getAll" resultType="list" resultMap="firstCategoryResultMap">
+        <![CDATA[
+            select * from firstCategory
+        ]]>
+    </select>
+
+	<select id="getFirstCategoryById" parameterType="string" resultType="ningbo.media.example.entity.FirstCategory" resultMap="firstCategoryResultMap">
+		<![CDATA[
+			select * from firstCategory where 1=1 and id = #{id}
+		]]>
+	</select>
+	
+
+</mapper>

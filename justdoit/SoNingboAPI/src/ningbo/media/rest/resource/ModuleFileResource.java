@@ -50,12 +50,34 @@ public class ModuleFileResource {
 
 	@Resource
 	private SystemUserService systemUserService;
-	
+
 	@Resource
-	private LocationService locationService ;
+	private LocationService locationService;
 
 	@Resource
 	private ImageInformationService imageInformationService;
+
+	@Path("/show/{fileId}")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getModuleFile(@PathParam("fileId")
+	String fileId) {
+		try {
+			JSONObject json = new JSONObject();
+			if (null == fileId || fileId.length() < 0) {
+				json.put(Constant.CODE, JSONCode.MODULEFILE_FILEID_ERROR);
+				return Response.ok(json.toString()).build();
+			}
+			return Response.ok(
+					moduleFileService
+							.getModuleFileById(Integer.valueOf(fileId)))
+					.build();
+		} catch (Exception ex) {
+			throw Jerseys.buildException(Status.INTERNAL_SERVER_ERROR, ex
+					.getMessage());
+		}
+		
+	}
 
 	@Path("/user/upload")
 	@POST
@@ -72,7 +94,7 @@ public class ModuleFileResource {
 			ModuleFile moduleFile = new ModuleFile();
 			String key = form.getField("key").getValue();
 			String userId = form.getField("userId").getValue();
-			
+
 			if (!StringUtils.hasText(key)) {
 				json.put(Constant.CODE, JSONCode.KEYISNULL);
 				return Response.ok(json.toString()).build();
@@ -86,7 +108,7 @@ public class ModuleFileResource {
 				json.put(Constant.CODE, JSONCode.MODULEFILE_TYPE_NOEXISTS);
 				return Response.ok(json.toString()).build();
 			}
-			listUsers.add(u) ;
+			listUsers.add(u);
 
 			String fileName = fileDetail.getFileName();
 			StringBuffer sb = new StringBuffer();
@@ -94,16 +116,16 @@ public class ModuleFileResource {
 			sb.append(tempPath).append(fileName);
 
 			ImageInformation inforImage = new ImageInformation();
-			
+
 			Map<String, Object> m = FileHashCode.writeToFile(uploadFile, sb
-					.toString(),135,135);
-			
-			inforImage.setWidth(Double.valueOf(m.get(Constant.WIDTH)
-					.toString()));
+					.toString(), 135, 135);
+
+			inforImage.setWidth(Double
+					.valueOf(m.get(Constant.WIDTH).toString()));
 			inforImage.setHeight(Double.valueOf(m.get(Constant.HEIGHT)
 					.toString()));
-			inforImage.setSize(Long.valueOf(m.get(Constant.FILESIZE)
-					.toString()));
+			inforImage.setSize(Long
+					.valueOf(m.get(Constant.FILESIZE).toString()));
 
 			String uuid = String.valueOf(m.get(Constant.UUID));
 			imageInformationService.save(inforImage);
@@ -112,7 +134,7 @@ public class ModuleFileResource {
 			moduleFile.setFileHash(uuid);
 			moduleFile.setCreateTime(new Date());
 			moduleFile.setImageInfo(inforImage);
-			moduleFile.setSystemUsers(listUsers) ;
+			moduleFile.setSystemUsers(listUsers);
 
 			Integer moduleFileId = moduleFileService.save(moduleFile);
 			json.put(Constant.CODE, JSONCode.SUCCESS);
@@ -124,11 +146,7 @@ public class ModuleFileResource {
 		}
 
 	}
-	
-	
-	
-	
-	
+
 	@Path("/location/upload")
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -144,7 +162,7 @@ public class ModuleFileResource {
 			ModuleFile moduleFile = new ModuleFile();
 			String key = form.getField("key").getValue();
 			String locationId = form.getField("locationId").getValue();
-			
+
 			if (!StringUtils.hasText(key)) {
 				json.put(Constant.CODE, JSONCode.KEYISNULL);
 				return Response.ok(json.toString()).build();
@@ -158,7 +176,7 @@ public class ModuleFileResource {
 				json.put(Constant.CODE, JSONCode.MODULEFILE_TYPE_NOEXISTS);
 				return Response.ok(json.toString()).build();
 			}
-			listLocations.add(loc) ;
+			listLocations.add(loc);
 
 			String fileName = fileDetail.getFileName();
 			StringBuffer sb = new StringBuffer();
@@ -167,13 +185,13 @@ public class ModuleFileResource {
 
 			ImageInformation inforImage = new ImageInformation();
 			Map<String, Object> m = FileHashCode.writeToFile(uploadFile, sb
-					.toString(),135,135);
-			inforImage.setWidth(Double.valueOf(m.get(Constant.WIDTH)
-					.toString()));
+					.toString(), 135, 135);
+			inforImage.setWidth(Double
+					.valueOf(m.get(Constant.WIDTH).toString()));
 			inforImage.setHeight(Double.valueOf(m.get(Constant.HEIGHT)
 					.toString()));
-			inforImage.setSize(Long.valueOf(m.get(Constant.FILESIZE)
-					.toString()));
+			inforImage.setSize(Long
+					.valueOf(m.get(Constant.FILESIZE).toString()));
 
 			String uuid = String.valueOf(m.get(Constant.UUID));
 			imageInformationService.save(inforImage);
@@ -182,7 +200,7 @@ public class ModuleFileResource {
 			moduleFile.setFileHash(uuid);
 			moduleFile.setCreateTime(new Date());
 			moduleFile.setImageInfo(inforImage);
-			moduleFile.setLocations(listLocations) ;
+			moduleFile.setLocations(listLocations);
 
 			Integer moduleFileId = moduleFileService.save(moduleFile);
 			json.put(Constant.CODE, JSONCode.SUCCESS);
@@ -194,32 +212,29 @@ public class ModuleFileResource {
 		}
 
 	}
-	
-
-	
-	
 
 	@Path("/user/file/{userId}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<ModuleFileData> getUserHeadFile(@PathParam("userId")
 	String userId) {
-		return moduleFileService.queryModuleFileByUserHeader(Integer.valueOf(userId));
+		return moduleFileService.queryModuleFileByUserHeader(Integer
+				.valueOf(userId));
 	}
-	
-	
+
 	@Path("/location/file/{locationId}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<ModuleFileData> getLocationFile(@PathParam("locationId")
 	String locationId) {
-		return moduleFileService.queryModuleFileByLocation(Integer.valueOf(locationId)) ;
+		return moduleFileService.queryModuleFileByLocation(Integer
+				.valueOf(locationId));
 	}
-	
+
 	@Path("/showAll")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<ModuleFileData> getAllFile(){
+	public List<ModuleFileData> getAllFile() {
 		return moduleFileService.queryAllFile();
 	}
 

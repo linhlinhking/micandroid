@@ -14,4 +14,6 @@ public interface ModuleFileService extends BaseService<ModuleFile,Integer> {
 	
 	public List<ModuleFileData> queryAllFile();
 	
+	public ModuleFileData getModuleFileById(Integer fileId);
+	
 }

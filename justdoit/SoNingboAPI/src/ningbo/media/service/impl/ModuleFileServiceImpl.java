@@ -106,4 +106,23 @@ public class ModuleFileServiceImpl extends BaseServiceImpl<ModuleFile, Integer>
 		return null;
 	}
 
+	
+	public ModuleFileData getModuleFileById(Integer fileId) {
+		try{
+			ModuleFile tempFile = moduleFileDao.get(fileId) ;
+			ModuleFileData data = new ModuleFileData();
+			if(null != tempFile){
+				data.setFileName(tempFile.getFileName()) ;
+				data.setFilePath(tempFile.getFileHash()) ;
+				data.setWidth(tempFile.getImageInfo().getWidth()) ;
+				data.setHeight(tempFile.getImageInfo().getHeight()) ;
+				
+				return data ;
+			}
+		}catch(Exception ex){
+			ex.printStackTrace() ;
+		}
+		return null;
+	}
+
 }

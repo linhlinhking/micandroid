@@ -6,7 +6,6 @@ import java.util.Locale;
 /**
  * 图片辅助类
  * 
- * @author liufang
  * 
  */
 public abstract class ImageUtils {

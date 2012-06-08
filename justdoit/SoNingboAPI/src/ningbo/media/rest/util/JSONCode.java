@@ -41,6 +41,8 @@ public class JSONCode {
 	public static final String MODULEFILE_TOOL_NOEXISTS = "70001" ;
 	public static final String MODULEFILE_TYPE_NOEXISTS = "70002" ;
 	public static final String MODULEFILE_USER_NOEXISTS = "70003" ;
+	public static final String MODULEFILE_FILEID_ERROR = "70004" ;
+	
 	
 	/**Menu-8*/
 	public static final String MENU_LOCATION_NOEXISTS = "80001" ;

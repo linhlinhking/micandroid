@@ -65,7 +65,7 @@
 		<!--  
 		<property name="annotationClass" value="org.springframework.stereotype.Repository" />
 		-->
-		<property name="basePackage" value="ningbo.media" />
+		<property name="basePackage" value="ningbo.media.*.mapper" />
 		<property name="markerInterface" value="ningbo.media.core.mapper.SqlMapper"/>
 		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
 	</bean>

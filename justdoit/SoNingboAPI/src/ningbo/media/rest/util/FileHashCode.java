@@ -189,7 +189,7 @@ public class FileHashCode {
 			//同时生成原图的缩略图
 			File srcFile = new File(uploadedFileLocation);
 			StringBuffer temp = new StringBuffer();
-			sb.append(tempPath).append(File.separator).append(resizeWitdh) ;
+			temp.append(tempPath).append(resizeWitdh) ;
 			File destFile = new File(temp.toString()) ;
 			
 			try {

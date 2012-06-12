@@ -273,8 +273,8 @@ public class ModuleFileResource {
 					"-").append(width).append("x").append(height);
 			
 			File destFile = new File(destBuffer.toString());
-			System.out.println(buffer.toString()) ;
-			System.out.println(destBuffer.toString()) ;
+			//System.out.println(buffer.toString()) ;
+			//System.out.println(destBuffer.toString()) ;
 
 			MagickImageScale.resizeFix(srcFile, destFile,
 					width, height);

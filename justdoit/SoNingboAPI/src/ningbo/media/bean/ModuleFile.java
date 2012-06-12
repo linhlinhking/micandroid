@@ -1,5 +1,6 @@
 package ningbo.media.bean;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +19,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "tb_module_file")
-public class ModuleFile {
+public class ModuleFile implements Serializable{
+
+	private static final long serialVersionUID = 4367960607990937131L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,7 +47,6 @@ public class ModuleFile {
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
 	@JoinTable(name = "tb_files_location", joinColumns = @JoinColumn(name = "fileId"),inverseJoinColumns=@JoinColumn(name = "locationId"))
 	private List<Location> locations ;
-	
 
 	public Integer getId() {
 		return id;
@@ -86,7 +88,6 @@ public class ModuleFile {
 		this.createTime = createTime;
 	}
 
-
 	public ImageInformation getImageInfo() {
 		return imageInfo;
 	}
@@ -110,8 +111,6 @@ public class ModuleFile {
 	public void setLocations(List<Location> locations) {
 		this.locations = locations;
 	}
-
-
 	
-	
+
 }

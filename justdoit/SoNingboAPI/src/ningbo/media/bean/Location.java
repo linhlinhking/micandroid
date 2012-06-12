@@ -38,6 +38,9 @@ public class Location implements Serializable {
 	@Column(name="name_py",nullable=false)
 	private String name_py ;
 	
+	@Column(name="md5_value")
+	private String md5Value ;
+	
 	@Column(name="address_en")
 	private String address_en;
 
@@ -219,12 +222,21 @@ public class Location implements Serializable {
 		this.description_en = description_en;
 	}
 
-	public String getDescriptioin_cn() {
-		return description_cn;
-	}
 
 	public void setDescription_cn(String description_cn) {
 		this.description_cn = description_cn;
+	}
+
+	public String getMd5Value() {
+		return md5Value;
+	}
+
+	public void setMd5Value(String md5Value) {
+		this.md5Value = md5Value;
+	}
+
+	public String getDescription_cn() {
+		return description_cn;
 	}
 
 	

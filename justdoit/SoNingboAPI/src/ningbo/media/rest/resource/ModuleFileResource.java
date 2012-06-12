@@ -227,8 +227,7 @@ public class ModuleFileResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<ModuleFileData> getLocationFile(@PathParam("locationId")
 	String locationId) {
-		return moduleFileService.queryModuleFileByLocation(Integer
-				.valueOf(locationId));
+		return moduleFileService.queryModuleFileByLocation(locationId);
 	}
 
 	@Path("/showAll")

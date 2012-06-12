@@ -10,7 +10,7 @@ public interface ModuleFileService extends BaseService<ModuleFile,Integer> {
 
 	public List<ModuleFileData> queryModuleFileByUserHeader(Integer userId) ;
 	
-	public List<ModuleFileData> queryModuleFileByLocation(Integer locationId) ;
+	public List<ModuleFileData> queryModuleFileByLocation(String md5_id) ;
 	
 	public List<ModuleFileData> queryAllFile();
 	

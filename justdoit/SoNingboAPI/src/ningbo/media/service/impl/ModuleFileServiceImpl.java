@@ -86,9 +86,9 @@ public class ModuleFileServiceImpl extends BaseServiceImpl<ModuleFile, Integer>
 		return data;
 	}
 
-	public List<ModuleFileData> queryModuleFileByLocation(Integer locationId) {
-		String hql = "select m from ModuleFile as m join m.locations as u where 1=1 and u.id = ? ";
-		List<ModuleFile> list = moduleFileDao.findByHql(hql, locationId);
+	public List<ModuleFileData> queryModuleFileByLocation(String md5_id) {
+		String hql = "select m from ModuleFile as m join m.locations as u where 1=1 and u.md5Value = ? ";
+		List<ModuleFile> list = moduleFileDao.findByHql(hql, md5_id);
 		List<ModuleFileData> data = new ArrayList<ModuleFileData>();
 		if (null != list && list.size() > 0) {
 			for (ModuleFile file : list) {

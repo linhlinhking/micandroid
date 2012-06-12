@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-@Service("moduleFileServie")
+@Service("moduleFileService")
 public class ModuleFileServiceImpl extends BaseServiceImpl<ModuleFile, Integer>
 		implements ModuleFileService {
 
@@ -110,6 +110,7 @@ public class ModuleFileServiceImpl extends BaseServiceImpl<ModuleFile, Integer>
 	public ModuleFileData getModuleFileById(Integer fileId) {
 		try{
 			ModuleFile tempFile = moduleFileDao.get(fileId) ;
+			
 			ModuleFileData data = new ModuleFileData();
 			if(null != tempFile){
 				data.setFileName(tempFile.getFileName()) ;

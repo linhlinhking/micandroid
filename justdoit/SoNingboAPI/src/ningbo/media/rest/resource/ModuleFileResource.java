@@ -1,5 +1,6 @@
 package ningbo.media.rest.resource;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,7 +32,9 @@ import ningbo.media.service.ImageInformationService;
 import ningbo.media.service.LocationService;
 import ningbo.media.service.ModuleFileService;
 import ningbo.media.service.SystemUserService;
+import ningbo.media.util.MagickImageScale;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -76,7 +79,7 @@ public class ModuleFileResource {
 			throw Jerseys.buildException(Status.INTERNAL_SERVER_ERROR, ex
 					.getMessage());
 		}
-		
+
 	}
 
 	@Path("/user/upload")
@@ -235,6 +238,58 @@ public class ModuleFileResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<ModuleFileData> getAllFile() {
 		return moduleFileService.queryAllFile();
+	}
+
+	@Path("/resize/{fileId}/{width}/{height}")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response resizeImageByCustomer(@PathParam("fileId")
+	Integer fileId, @PathParam("width")
+	Integer width, @PathParam("height")
+	Integer height) {
+		JSONObject json = new JSONObject();
+		try {
+			
+			ModuleFile tempFile = null;
+			if (null == fileId) {
+				json.put(Constant.CODE, JSONCode.MODULEFILE_FILEID_ERROR);
+				return Response.ok(json.toString()).build();
+			}
+			tempFile = moduleFileService.get(fileId);
+			if (null == tempFile) {
+				json.put(Constant.CODE, JSONCode.MODULEFILE_FILE_NOEXISTS);
+				return Response.ok(json.toString()).build();
+			}
+
+			String fileHash = tempFile.getFileHash();
+			StringBuffer buffer = new StringBuffer();
+			String filePath = FileHashCode.makeFileDir(fileHash);
+			buffer.append(filePath).append(fileHash.substring(12));
+			
+			File srcFile = new File(buffer.toString());
+
+			StringBuffer destBuffer = new StringBuffer();
+			destBuffer.append(filePath).append(fileHash.substring(12)).append(
+					"-").append(width).append("x").append(height);
+			
+			File destFile = new File(destBuffer.toString());
+			System.out.println(buffer.toString()) ;
+			System.out.println(destBuffer.toString()) ;
+
+			MagickImageScale.resizeFix(srcFile, destFile,
+					width, height);
+			
+			json.put(Constant.CODE, destBuffer.toString());
+			return Response.ok(json.toString()).build();
+		} catch (Exception ex) {
+			try {
+				json.put(Constant.CODE, JSONCode.SERVER_EXCEPTION) ;
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			return Response.ok(json.toString()).build();
+		}
+
 	}
 
 }

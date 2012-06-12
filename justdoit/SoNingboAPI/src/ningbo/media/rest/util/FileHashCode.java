@@ -111,7 +111,7 @@ public class FileHashCode {
 	public static String makeFileDir(String uuid) {
 
 		String path = getUuidPath(uuid);
-		System.out.println(path);
+		
 		File f = new File(path);
 		if (!f.exists()) {
 			f.mkdirs();

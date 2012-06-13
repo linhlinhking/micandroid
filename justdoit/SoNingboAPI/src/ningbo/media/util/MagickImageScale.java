@@ -84,6 +84,7 @@ public class MagickImageScale {
 	public static void resizeFix(File srcFile, File destFile, int boxWidth,
 			int boxHeight, int cutTop, int cutLeft, int cutWidth, int catHeight)
 			throws IOException, MagickException {
+		System.setProperty("jmagick.systemclassloader","no");  
 		ImageInfo info = new ImageInfo(srcFile.getAbsolutePath());
 		MagickImage image = new MagickImage(info);
 		// 剪切

@@ -42,4 +42,15 @@ public class LocationServiceImpl extends BaseServiceImpl<Location, Integer>
 		return page.getList() ;
 	}
 
+
+	public Location queryLocationByMd5(String md5Value) {
+		String hql = "from Location as model where 1=1 and model.md5Value = ? " ;
+		Location location = (Location)locationDao.findUnique(hql, md5Value) ;
+		
+		if(null != location){
+			return location ;
+		}
+		return null;
+	}
+
 }

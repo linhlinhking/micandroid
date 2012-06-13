@@ -174,7 +174,8 @@ public class ModuleFileResource {
 				return Response.ok(json.toString()).build();
 			}
 
-			Location loc = locationService.get(Integer.valueOf(locationId));
+			Location loc = locationService.queryLocationByMd5(locationId);
+			
 			if (null == loc) {
 				json.put(Constant.CODE, JSONCode.MODULEFILE_TYPE_NOEXISTS);
 				return Response.ok(json.toString()).build();

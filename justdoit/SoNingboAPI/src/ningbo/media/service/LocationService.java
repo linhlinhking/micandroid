@@ -10,4 +10,6 @@ public interface LocationService extends BaseService<Location,Integer> {
 	public List<Location> queryLocationByName(String locationName) ;
 	
 	public List<Location> queryLocationByPage(int pageNo,int pageSize) ;
+	
+	public Location queryLocationByMd5(String md5Value) ;
 }

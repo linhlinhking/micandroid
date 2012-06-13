@@ -121,7 +121,7 @@ public class ModuleFileResource {
 			ImageInformation inforImage = new ImageInformation();
 
 			Map<String, Object> m = FileHashCode.writeToFile(uploadFile, sb
-					.toString(), 135, 135);
+					.toString());
 
 			inforImage.setWidth(Double
 					.valueOf(m.get(Constant.WIDTH).toString()));
@@ -189,7 +189,8 @@ public class ModuleFileResource {
 
 			ImageInformation inforImage = new ImageInformation();
 			Map<String, Object> m = FileHashCode.writeToFile(uploadFile, sb
-					.toString(), 135, 135);
+					.toString());
+			
 			inforImage.setWidth(Double
 					.valueOf(m.get(Constant.WIDTH).toString()));
 			inforImage.setHeight(Double.valueOf(m.get(Constant.HEIGHT)

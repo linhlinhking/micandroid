@@ -88,7 +88,7 @@ public class FileHashCode {
 		return toHexString(md5.digest());
 	}
 
-	//9191809001898918
+	// 9191809001898918
 	private static String toHexString(byte b[]) {
 		System.out.println(b.length);
 		StringBuilder sb = new StringBuilder(b.length * 2);
@@ -111,7 +111,7 @@ public class FileHashCode {
 	public static String makeFileDir(String uuid) {
 
 		String path = getUuidPath(uuid);
-		
+
 		File f = new File(path);
 		if (!f.exists()) {
 			f.mkdirs();
@@ -130,15 +130,15 @@ public class FileHashCode {
 		return sb.toString();
 	}
 
-	//0009808890190001
-	//0989919081110811
+	// 0009808890190001
+	// 0989919081110811
 	public static void main(String args[]) {
-		String path = "/Users/ning/git/image1.jpg" ;
-		
-		System.out.println(getFileMD5(path)) ;
-		//String uuid = "1180801180998999";
+		String path = "/Users/ning/git/image1.jpg";
+
+		System.out.println(getFileMD5(path));
+		// String uuid = "1180801180998999";
 		// System.out.println(getUuidPath(uuid)) ;
-		//System.out.println(makeFileDir(uuid));
+		// System.out.println(makeFileDir(uuid));
 		// System.out.println(FileHashCode.class.getClassLoader().getResource("").getPath())
 		// ;
 		// System.out.println(get) ;
@@ -167,7 +167,7 @@ public class FileHashCode {
 	 * @return
 	 */
 	public static Map<String, Object> writeToFile(
-			InputStream uploadedInputStream, String uploadedFileLocation,int resizeWitdh,int resizeHeight) {
+			InputStream uploadedInputStream, String uploadedFileLocation) {
 		Map<String, Object> map = new HashMap<String, Object>(4);
 		try {
 			OutputStream out = new FileOutputStream(new File(
@@ -185,23 +185,31 @@ public class FileHashCode {
 			sb.append(tempPath).append(File.separator).append(
 					uuid.substring(12));
 			copyFile(uploadedFileLocation, sb.toString());
-			
-			//同时生成原图的缩略图
+
+			// 同时生成原图的缩略图
 			File srcFile = new File(uploadedFileLocation);
-			StringBuffer temp = new StringBuffer();
-			temp.append(tempPath).append(resizeWitdh) ;
-			File destFile = new File(temp.toString()) ;
 			
 			try {
-				MagickImageScale.resizeFix(srcFile, destFile, resizeWitdh, resizeHeight);
+				ResizeEnum[] resizes = ResizeEnum.values();
+				for (ResizeEnum re : resizes) {
+					StringBuffer temp = new StringBuffer();
+					temp.append(tempPath).append(uuid.substring(12)).append("-");
+					String tmp = re.getName();
+					String[] tmps = tmp.split("x");
+					
+					temp.append(tmp) ;
+					File destFile = new File(temp.toString());
+					MagickImageScale.resizeFix(srcFile, destFile, Integer
+							.valueOf(tmps[0]), Integer.valueOf(tmps[1]));
+				}
 			} catch (MagickException e) {
 				e.printStackTrace();
 			}
-			
+
 			map = ImageDetailInformation
 					.getImageInformation(uploadedFileLocation);
 			map.put(Constant.UUID, uuid);
-			
+
 			delFile(uploadedFileLocation);
 			out.flush();
 			out.close();
@@ -225,7 +233,7 @@ public class FileHashCode {
 	public static void delFile(String filePathAndName) {
 		try {
 			File myDelFile = new File(filePathAndName);
-			
+
 			myDelFile.delete();
 
 		} catch (Exception e) {

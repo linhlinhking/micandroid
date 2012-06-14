@@ -4,7 +4,7 @@ public class Constant {
 
 	public static final String KEY = "soningbo" ;
 	
-	public static final String FOLDER = "images" ;
+	public static final String FOLDER = "upload" ;
 	
 	public static final String globalPath = "/Users/ning/upload" ;
 	

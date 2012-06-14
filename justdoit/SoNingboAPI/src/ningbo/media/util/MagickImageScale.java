@@ -33,8 +33,6 @@ public class MagickImageScale {
 	 */
 	public static void resizeFix(File srcFile, File destFile, int boxWidth,
 			int boxHeight) throws IOException, MagickException {
-		//System.out.println(srcFile.getPath()) ;
-		//System.out.println(srcFile.getAbsolutePath()) ;
 		System.setProperty("jmagick.systemclassloader","no");  
 		ImageInfo info = new ImageInfo(srcFile.getAbsolutePath());
 		//info.setQuality(35) ;
@@ -72,23 +70,17 @@ public class MagickImageScale {
 	 *            缩略图最大宽度
 	 * @param boxHeight
 	 *            缩略图最大高度
-	 * @param cutTop
-	 *            裁剪TOP
-	 * @param cutLeft
-	 *            裁剪LEFT
-	 * @param cutWidth
-	 *            裁剪宽度
-	 * @param catHeight
-	 *            裁剪高度
+	 * @param isScale 是否缩放
+	 * 
 	 * @throws IOException
 	 * @throws MagickException
 	 */
 	public static void resizeFix(File srcFile, File destFile, int boxWidth,
-			int boxHeight, int cutWidth, int cutHeight)
+			int boxHeight,boolean isScale)
 			throws IOException, MagickException {
 		System.setProperty("jmagick.systemclassloader","no");  
 		ImageInfo info = new ImageInfo(srcFile.getAbsolutePath());
-		info.setQuality(35);
+		//info.setQuality(80);
 		MagickImage image = new MagickImage(info);
 		image.profileImage("*", null);
 		Dimension orinDim = image.getDimension() ;
@@ -96,7 +88,8 @@ public class MagickImageScale {
 		int oriHeight = (int)orinDim.getHeight() ;
 		int pointX = 0 ;
 		int pointY = 0 ;
-		Rectangle rect ;
+		
+		Rectangle rect = null ;
 		if(oriWidth > oriHeight){
 			pointX = (oriWidth - oriHeight)/2 ;
 			rect = new Rectangle(pointX,pointY,oriHeight,oriHeight);
@@ -110,17 +103,23 @@ public class MagickImageScale {
 		Dimension dim = cropped.getDimension();
 		int width = (int) dim.getWidth();
 		int height = (int) dim.getHeight();
-		int zoomWidth;
-		int zoomHeight;
-		if ((float) width / height > (float) boxWidth / boxHeight) {
-			zoomWidth = boxWidth;
-			zoomHeight = Math.round((float) boxWidth * height / width);
-		} else {
-			zoomWidth = Math.round((float) boxHeight * width / height);
-			zoomHeight = boxHeight;
+		
+		MagickImage scaled = null;
+		if(width < boxWidth){
+			scaled = cropped.scaleImage(width, height) ;
+		}else{
+			int zoomWidth;
+			int zoomHeight;
+			if ((float) width / height > (float) boxWidth / boxHeight) {
+				zoomWidth = boxWidth;
+				zoomHeight = Math.round((float) boxWidth * height / width);
+			} else {
+				zoomWidth = Math.round((float) boxHeight * width / height);
+				zoomHeight = boxHeight;
+			}
+			scaled = cropped.scaleImage(zoomWidth, zoomHeight);
 		}
-		// 缩小
-		MagickImage scaled = cropped.scaleImage(width, height);
+		
 		// 输出
 		scaled.setFileName(destFile.getAbsolutePath());
 		scaled.writeImage(info);
@@ -265,8 +264,8 @@ public class MagickImageScale {
 		System.out.println(System.getProperty("java.library.path"));
 		long time = System.currentTimeMillis();
 		MagickImageScale.resizeFix(
-				new File("web/images/IMAG1368.jpg"), new File(
-						"web/images/96_cut96.jpg"),200,200,800,800);
+				new File("web/images/85_cut96.jpg"), new File(
+						"web/images/84_cut96.jpg"),300,300,false);
 		time = System.currentTimeMillis() - time;
 		System.out.println("resize new img in " + time + "ms");
 	}

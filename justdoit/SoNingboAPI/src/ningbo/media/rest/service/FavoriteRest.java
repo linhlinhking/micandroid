@@ -29,6 +29,8 @@ import ningbo.media.service.FavoriteService;
 import ningbo.media.service.LocationService;
 import ningbo.media.service.SystemUserService;
 import ningbo.media.service.TempUserService;
+import ningbo.media.util.MD5;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.context.annotation.Scope;
@@ -234,9 +236,9 @@ public class FavoriteRest {
 			Location tempLocation = null ;
 			if(null != locationId){
 				tempLocation = locationService.get(locationId) ;
-				detail.setId(tempLocation.getId()) ;
-				detail.setName(tempLocation.getName_cn()) ;
-				detail.setAddress(tempLocation.getAddress_cn()) ;
+				detail.setMd5Value(MD5.calcMD5(String.valueOf(tempLocation.getId()))) ;
+				detail.setName_cn(tempLocation.getName_cn()) ;
+				detail.setAddress_cn(tempLocation.getAddress_cn()) ;
 				detail.setLatitude(tempLocation.getLatitude()) ;
 				detail.setLongitude(tempLocation.getLongitude()) ;
 				locations.add(detail) ;
@@ -258,9 +260,9 @@ public class FavoriteRest {
 			Location tempLocation = null ;
 			if(null != locationId){
 				tempLocation = locationService.get(locationId) ;
-				detail.setId(tempLocation.getId()) ;
-				detail.setName(tempLocation.getName_cn()) ;
-				detail.setAddress(tempLocation.getAddress_cn()) ;
+				detail.setMd5Value(MD5.calcMD5(String.valueOf(tempLocation.getId()))) ;
+				detail.setName_cn(tempLocation.getName_cn()) ;
+				detail.setAddress_cn(tempLocation.getAddress_cn()) ;
 				detail.setLatitude(tempLocation.getLatitude()) ;
 				detail.setLongitude(tempLocation.getLongitude()) ;
 				locations.add(detail) ;

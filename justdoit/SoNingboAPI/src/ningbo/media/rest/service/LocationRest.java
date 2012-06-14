@@ -19,6 +19,7 @@ import ningbo.media.bean.Location;
 import ningbo.media.bean.SecondCategory;
 import ningbo.media.data.api.LocationList;
 import ningbo.media.data.entity.LocationData;
+import ningbo.media.data.entity.LocationDetail;
 import ningbo.media.rest.util.Constant;
 import ningbo.media.rest.util.FileUpload;
 import ningbo.media.rest.util.JSONCode;
@@ -47,42 +48,42 @@ public class LocationRest {
 
 	@Path("/showAll")
 	@GET
-	@Produces({ MediaType.APPLICATION_JSON })
+	@Produces( { MediaType.APPLICATION_JSON })
 	public List<Location> getAllLocations() {
 		return locationService.getAll();
 	}
 
 	@Path("/show/{id : \\d+}")
 	@GET
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Location getLocationById(@PathParam("id") String id) {
+	@Produces( { MediaType.APPLICATION_JSON })
+	public Location getLocationById(@PathParam("id")
+	String id) {
 		if (id == null) {
 			return null;
 		}
 		return locationService.get(Integer.valueOf(id));
 	}
-	
+
 	@Path("/number")
 	@GET
-	@Produces({ MediaType.APPLICATION_JSON })
-	public String getLocationCount() throws JSONException{
-		JSONObject json = new JSONObject() ;
-		try{
-			String temp = String.valueOf(locationService.getTotalCount()) ;
-			json.put(Constant.LOCATIONCOUNT, temp) ;
-		}catch(Exception ex){
-			json.put(Constant.CODE, JSONCode.LOCATION_COUNT_EXCEPTION) ;
+	@Produces( { MediaType.APPLICATION_JSON })
+	public String getLocationCount() throws JSONException {
+		JSONObject json = new JSONObject();
+		try {
+			String temp = String.valueOf(locationService.getTotalCount());
+			json.put(Constant.LOCATIONCOUNT, temp);
+		} catch (Exception ex) {
+			json.put(Constant.CODE, JSONCode.LOCATION_COUNT_EXCEPTION);
 			return json.toString();
 		}
-		return json.toString() ;
+		return json.toString();
 	}
-	
 
 	@Path("/category/{id : \\d+}")
 	@GET
-	@Produces({ MediaType.APPLICATION_JSON })
-	public List<Location> getAllLocationsBySecondCategory(
-			@PathParam("id") String id) {
+	@Produces( { MediaType.APPLICATION_JSON })
+	public List<Location> getAllLocationsBySecondCategory(@PathParam("id")
+	String id) {
 		if (id == null) {
 			return null;
 		}
@@ -112,8 +113,8 @@ public class LocationRest {
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String addLocation(FormDataMultiPart form,
-			@Context HttpServletRequest request) throws JSONException {
+	public String addLocation(FormDataMultiPart form, @Context
+	HttpServletRequest request) throws JSONException {
 		String key = form.getField("key").getValue();
 		JSONObject json = new JSONObject();
 		Location location = new Location();
@@ -134,16 +135,16 @@ public class LocationRest {
 		String lon = form.getField("longitude").getValue();
 		String lat = form.getField("latitude").getValue();
 		String name_py = form.getField("name_py").getValue();
-		
-		//List<String> listValues = FieldsData.getValue(form
-		//		.getFields("category_id"));
-		
+
+		// List<String> listValues = FieldsData.getValue(form
+		// .getFields("category_id"));
+
 		FormDataBodyPart part = form.getField("photo_path");
 		String fileName = part.getContentDisposition().getFileName();
-		
-		String photo_path = null ;
+
+		String photo_path = null;
 		try {
-			photo_path = FileUpload.upload(part, fileName,"upload", request);
+			photo_path = FileUpload.upload(part, fileName, "upload", request);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -153,36 +154,37 @@ public class LocationRest {
 		location.setAddress_cn(address_cn);
 		location.setAddress_en(address_en);
 		location.setTelephone(telephone);
-		location.setPhoto_path(photo_path) ;
-		location.setName_py(name_py) ;
+		location.setPhoto_path(photo_path);
+		location.setName_py(name_py);
 		if (!lon.isEmpty())
 			location.setLongitude(Double.parseDouble(lon));
 		if (!lat.isEmpty())
 			location.setLatitude(Double.parseDouble(lat));
-		//if (null == listValues || listValues.size() < 0) {
-		//	return json.put(Constant.CODE,
-		//			JSONCode.LOCATION_CATEGORY2ID_INVALID).toString();
-		//}
+		// if (null == listValues || listValues.size() < 0) {
+		// return json.put(Constant.CODE,
+		// JSONCode.LOCATION_CATEGORY2ID_INVALID).toString();
+		// }
 
 		try {
-			//List<SecondCategory> listSc = new ArrayList<SecondCategory>();
-			//for(String ids : listValues){
-			//	SecondCategory sc = secondCategoryService.get(Integer.valueOf(ids)) ;
-			//	if(sc == null){
-			//		return json.put(Constant.CODE,JSONCode.LOCATION_CATEGORY_NOEXISTS).toString(); 
-			//	}else{
-			//		listSc.add(sc) ;
-			//	}
-			//}
-			//location.setSecondCategorys(listSc) ;
-			
-			
+			// List<SecondCategory> listSc = new ArrayList<SecondCategory>();
+			// for(String ids : listValues){
+			// SecondCategory sc =
+			// secondCategoryService.get(Integer.valueOf(ids)) ;
+			// if(sc == null){
+			// return
+			// json.put(Constant.CODE,JSONCode.LOCATION_CATEGORY_NOEXISTS).toString();
+			// }else{
+			// listSc.add(sc) ;
+			// }
+			// }
+			// location.setSecondCategorys(listSc) ;
+
 			Integer locationId = locationService.save(location);
-			String md5Value = MD5.calcMD5(String.valueOf(locationId)) ;
-			location = locationService.get(locationId) ;
-			location.setMd5Value(md5Value) ;
-			locationService.update(location) ;
-			
+			String md5Value = MD5.calcMD5(String.valueOf(locationId));
+			location = locationService.get(locationId);
+			location.setMd5Value(md5Value);
+			locationService.update(location);
+
 			json.put(Constant.LOCATIONID, locationId);
 			return json.put(Constant.CODE, JSONCode.SUCCESS).toString();
 		} catch (Exception ex) {
@@ -205,8 +207,8 @@ public class LocationRest {
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String editLocation(FormDataMultiPart form,
-			@Context HttpServletRequest request) throws JSONException {
+	public String editLocation(FormDataMultiPart form, @Context
+	HttpServletRequest request) throws JSONException {
 		String key = form.getField("key").getValue();
 		JSONObject json = new JSONObject();
 		boolean b = false;
@@ -263,25 +265,27 @@ public class LocationRest {
 
 	@Path("/search/{name}")
 	@GET
-	@Produces({ MediaType.APPLICATION_JSON })
-	public LocationList getLocationByName(@PathParam("name")String locationName){
-		List<Location> list = locationService.queryLocationByName(locationName) ;
-		List<LocationData> listData = new ArrayList<LocationData>() ;
-		LocationData d = null ;
-		for(Location l : list){
-			 d = new LocationData() ;
-			 d.setId(l.getId()) ;
-			 d.setName(l.getName_cn()) ;
-			 
-			 listData.add(d) ;
+	@Produces( { MediaType.APPLICATION_JSON })
+	public LocationList getLocationByName(@PathParam("name")
+	String locationName) {
+		List<Location> list = locationService.queryLocationByName(locationName);
+		List<LocationData> listData = new ArrayList<LocationData>();
+		LocationData d = null;
+		for (Location l : list) {
+			d = new LocationData();
+			d.setId(l.getId());
+			d.setName(l.getName_cn());
+
+			listData.add(d);
 		}
-		return new LocationList(listData) ;
+		return new LocationList(listData);
 	}
-	
-	
+
 	@Path("/nearby/{latitude}/{longitude}")
-	public List<Location> getNearByLocations(){
-		
-		return null ;
+	@GET
+	@Produces( { MediaType.APPLICATION_JSON })
+	public List<LocationDetail> getNearByLocations(@PathParam("latitude")String latitude,@PathParam("longitude")String longitude){
+		List<LocationDetail> list = locationService.queryLoctionsByLat(Double.valueOf(latitude), Double.valueOf(longitude)) ;
+		return list ;
 	}
 }

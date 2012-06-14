@@ -58,6 +58,8 @@ public class SystemUser implements Serializable {
 	@Column(name="last_modify_time")
 	private Date lastModifyTime ;
 	
+	@Column(name = "md5_value")
+	private String md5Value ;
 
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE },mappedBy = "systemUsers")
 	private List<ModuleFile> moduleFiles ;
@@ -238,5 +240,13 @@ public class SystemUser implements Serializable {
 	}
 
 
-	
+	public String getMd5Value() {
+		return md5Value;
+	}
+
+
+	public void setMd5Value(String md5Value) {
+		this.md5Value = md5Value;
+	}
+
 }

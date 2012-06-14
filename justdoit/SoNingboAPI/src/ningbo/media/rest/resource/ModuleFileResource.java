@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -164,7 +165,9 @@ public class ModuleFileResource {
 			List<Location> listLocations = new ArrayList<Location>();
 			ModuleFile moduleFile = new ModuleFile();
 			String key = form.getField("key").getValue();
-			String locationId = form.getField("locationId").getValue();
+			String locationId = form.getField("locationId").getValue();// md5
+																		// value
+			String uploaderId = form.getField("uploaderId").getValue();
 
 			if (!StringUtils.hasText(key)) {
 				json.put(Constant.CODE, JSONCode.KEYISNULL);
@@ -174,8 +177,16 @@ public class ModuleFileResource {
 				return Response.ok(json.toString()).build();
 			}
 
+			// SystemUser sysUser =
+			// systemUserService.getSystemUserByMd5Value(uploaderId) ;
+			SystemUser sysUser = systemUserService.get(Integer
+					.valueOf(uploaderId));
+			if (null == sysUser) {
+				json.put(Constant.CODE, JSONCode.MODULEFILE_USER_NOEXISTS);
+				return Response.ok(json.toString()).build();
+			}
+
 			Location loc = locationService.queryLocationByMd5(locationId);
-			
 			if (null == loc) {
 				json.put(Constant.CODE, JSONCode.MODULEFILE_TYPE_NOEXISTS);
 				return Response.ok(json.toString()).build();
@@ -190,7 +201,7 @@ public class ModuleFileResource {
 			ImageInformation inforImage = new ImageInformation();
 			Map<String, Object> m = FileHashCode.writeToFile(uploadFile, sb
 					.toString());
-			
+
 			inforImage.setWidth(Double
 					.valueOf(m.get(Constant.WIDTH).toString()));
 			inforImage.setHeight(Double.valueOf(m.get(Constant.HEIGHT)
@@ -206,6 +217,7 @@ public class ModuleFileResource {
 			moduleFile.setCreateTime(new Date());
 			moduleFile.setImageInfo(inforImage);
 			moduleFile.setLocations(listLocations);
+			moduleFile.setUploaderId(uploaderId);
 
 			Integer moduleFileId = moduleFileService.save(moduleFile);
 			json.put(Constant.CODE, JSONCode.SUCCESS);
@@ -251,7 +263,7 @@ public class ModuleFileResource {
 	Integer height) {
 		JSONObject json = new JSONObject();
 		try {
-			
+
 			ModuleFile tempFile = null;
 			if (null == fileId) {
 				json.put(Constant.CODE, JSONCode.MODULEFILE_FILEID_ERROR);
@@ -267,31 +279,39 @@ public class ModuleFileResource {
 			StringBuffer buffer = new StringBuffer();
 			String filePath = FileHashCode.makeFileDir(fileHash);
 			buffer.append(filePath).append(fileHash.substring(12));
-			
+
 			File srcFile = new File(buffer.toString());
 
 			StringBuffer destBuffer = new StringBuffer();
 			destBuffer.append(filePath).append(fileHash.substring(12)).append(
 					"-").append(width).append("x").append(height);
-			
-			File destFile = new File(destBuffer.toString());
-			//System.out.println(buffer.toString()) ;
-			//System.out.println(destBuffer.toString()) ;
 
-			MagickImageScale.resizeFix(srcFile, destFile,
-					width, height);
-			
+			File destFile = new File(destBuffer.toString());
+
+			MagickImageScale.resizeFix(srcFile, destFile, width, height);
+
 			json.put(Constant.CODE, destBuffer.toString());
 			return Response.ok(json.toString()).build();
 		} catch (Exception ex) {
 			try {
-				json.put(Constant.CODE, JSONCode.SERVER_EXCEPTION) ;
+				json.put(Constant.CODE, JSONCode.SERVER_EXCEPTION);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 			return Response.ok(json.toString()).build();
 		}
 
+	}
+
+	@Path("/delete")
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteFileByUploader(@FormParam("key")
+	String key, @FormParam("uploaderId")
+	String uploaderId, @FormParam("locationId")
+	String locationId) {
+		
+		return null;
 	}
 
 }

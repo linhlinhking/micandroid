@@ -35,6 +35,7 @@ public class ModuleFile implements Serializable{
 	
 	private Date createTime;
 	
+	private String uploaderId ;
 
 	@OneToOne
 	@JoinColumn(name = "inforId")
@@ -111,6 +112,14 @@ public class ModuleFile implements Serializable{
 	public void setLocations(List<Location> locations) {
 		this.locations = locations;
 	}
-	
 
+	public String getUploaderId() {
+		return uploaderId;
+	}
+
+	public void setUploaderId(String uploaderId) {
+		this.uploaderId = uploaderId;
+	}
+	
+	
 }

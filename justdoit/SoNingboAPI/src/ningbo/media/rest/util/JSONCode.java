@@ -44,6 +44,7 @@ public class JSONCode {
 	public static final String MODULEFILE_FILEID_ERROR = "70004" ;
 	public static final String MODULEFILE_FILE_NOEXISTS = "70005" ;
 	public static final String MODULEFILE_VALID_CHARACTER = "70006" ;
+
 	
 	
 	/**Menu-8*/

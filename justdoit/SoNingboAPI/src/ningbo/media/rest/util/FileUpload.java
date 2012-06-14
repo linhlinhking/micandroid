@@ -20,29 +20,33 @@ public class FileUpload {
 	 */
 	public static String generateFolderName(String folderName) {
 		String date = DateUtil.date2String("yyyy-MM-dd");
-		folderName += "/" + date.substring(0, 7) + "/" + date.substring(8);
-		return folderName;
+		String strTime = String.valueOf(System.currentTimeMillis()) ;
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(folderName).append(File.separator).append(date.substring(0,4))
+		.append(File.separator).append(date.substring(5, 7)).append(File.separator)
+		.append(strTime.substring(0, 4)).append(File.separator)
+		.append(strTime.substring(4, 8)).append(File.separator)
+		.append(strTime.substring(8));
+		return buffer.toString();
+	}
+	
+	public static void main(String args[]){
+		
+		System.out.println(generateFolderName("upload"));
 	}
 
-	/**
-	 * generate file name
-	 * 
-	 * @param filename
-	 * @return
-	 */
-	public static String generateFileName(String ext) {
-		return System.currentTimeMillis() + "." + ext;
-	}
 
 	public static String createFolder(String folder, HttpServletRequest request) {
-		folder = request.getSession().getServletContext().getRealPath("") + "/"
-				+ folder + "/";
-		folder += DateUtil.date2String("yyyyMMdd") + "/";
-		File dic = new File(folder);
+		String tempPath = generateFolderName(folder) ;
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(request.getSession().getServletContext().getRealPath("")).append(File.separator)
+		.append(tempPath) ;
+				
+		File dic = new File(buffer.toString());
 		if (!dic.exists()) {
 			dic.mkdirs();
 		}
-		return folder;
+		return buffer.toString();
 	}
 
 	/**
@@ -56,39 +60,6 @@ public class FileUpload {
 		return ext;
 	}
 
-	/**
-	 * upload files
-	 * 
-	 * @param part
-	 * @param fileName
-	 * @param request
-	 * @return
-	 * @throws IOException
-	 */
-	@Deprecated
-	public static String upload(FormDataBodyPart part, String fileName,
-			HttpServletRequest request) throws IOException {
-		String ext = FileUpload.getFileExtension(fileName).toLowerCase();
-		if (!"jpg".equals(ext) && !"png".equals(ext)) {
-			return "";
-		}
-		String genereateFileName = FileUpload.generateFileName(ext);
-		String folder = Constant.FOLDER;
-		folder = createFolder(folder, request);
-		InputStream in = part.getValueAs(InputStream.class);
-		OutputStream os = new FileOutputStream(folder + "/" + genereateFileName);
-
-		byte[] buffer = new byte[1024];
-		int length = 0;
-		while (-1 != (length = in.read(buffer, 0, 1024))) {
-			os.write(buffer, 0, length);
-		}
-		os.close();
-		in.close();
-		String path = Constant.FOLDER + "/" + DateUtil.date2String("yyyyMMdd")
-				+ "/" + genereateFileName;
-		return path;
-	}
 
 	/**
 	 * upload files
@@ -105,11 +76,12 @@ public class FileUpload {
 		if (!"jpg".equals(ext) && !"png".equals(ext)) {
 			return "";
 		}
-		String genereateFileName = FileUpload.generateFileName(ext);
-		String folder = Constant.FOLDER + "/" + foldername;
-		folder = createFolder(folder, request);
+	
+		String filePath = createFolder(Constant.FOLDER, request);
+		StringBuffer temp = new StringBuffer();
+		temp.append(filePath).append(File.separator).append(fileName) ;
 		InputStream in = part.getValueAs(InputStream.class);
-		OutputStream os = new FileOutputStream(folder + "/" + genereateFileName);
+		OutputStream os = new FileOutputStream(temp.toString());
 
 		byte[] buffer = new byte[1024];
 		int length = 0;
@@ -118,9 +90,7 @@ public class FileUpload {
 		}
 		os.close();
 		in.close();
-		String path = Constant.FOLDER + "/" + foldername + "/"
-				+ DateUtil.date2String("yyyyMMdd") + "/" + genereateFileName;
-		return path;
+		return filePath;
 	}
 
 

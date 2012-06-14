@@ -1,50 +1,70 @@
 package ningbo.media.data.entity;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlType(name = "location", propOrder = { "id", "name", "name_en", "address",
-		"address_en", "latitude", "longitude" })
+@XmlType(name = "location", propOrder = { "md5Value", "name_cn", "name_en", "address_cn",
+		"address_en", "latitude", "longitude","name_py" })
+@XmlRootElement(name = "data")
 public class LocationDetail {
 
-	private Integer id;
+	private String md5Value;
 
-	private String name;
-
-	private String address;
+	private String name_cn;
 
 	private String name_en;
+	
+	private String address_cn;
 
 	private String address_en;
 
 	private Double latitude;
 
 	private Double longitude;
+	
+	private String name_py ;
 
 	public LocationDetail() {
 	}
 
-	public Integer getId() {
-		return id;
+	public String getMd5Value() {
+		return md5Value;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setMd5Value(String md5Value) {
+		this.md5Value = md5Value;
 	}
 
-	public String getName() {
-		return name;
+	public String getName_cn() {
+		return name_cn;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setName_cn(String name_cn) {
+		this.name_cn = name_cn;
 	}
 
-	public String getAddress() {
-		return address;
+	public String getName_en() {
+		return name_en;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public void setName_en(String name_en) {
+		this.name_en = name_en;
+	}
+
+	public String getAddress_cn() {
+		return address_cn;
+	}
+
+	public void setAddress_cn(String address_cn) {
+		this.address_cn = address_cn;
+	}
+
+	public String getAddress_en() {
+		return address_en;
+	}
+
+	public void setAddress_en(String address_en) {
+		this.address_en = address_en;
 	}
 
 	public Double getLatitude() {
@@ -63,20 +83,13 @@ public class LocationDetail {
 		this.longitude = longitude;
 	}
 
-	public String getName_en() {
-		return name_en;
+	public String getName_py() {
+		return name_py;
 	}
 
-	public void setName_en(String name_en) {
-		this.name_en = name_en;
+	public void setName_py(String name_py) {
+		this.name_py = name_py;
 	}
 
-	public String getAddress_en() {
-		return address_en;
-	}
-
-	public void setAddress_en(String address_en) {
-		this.address_en = address_en;
-	}
-
+	
 }

@@ -1,0 +1,242 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Location Search</title>
+<link rel="stylesheet" href="test.css" />
+</head>
+
+<body>
+ 
+
+<h2>
+		<span class="mw-headline"> Method Summary </span>
+</h2>
+
+<h2>
+		<span class="mw-headline"> Requests Instruction </span>
+</h2>
+
+	<table width="95%" cellpadding="0" cellspacing="2" border="0"
+		class="paratable">
+
+		<tr>
+			<td>url</td>
+			<td><a href="#" class="external free" rel="nofollow">http://api.soningbo.com/resource/location/{latitude}/{longitude}</a>
+			</td>
+		</tr>
+		<tr>
+			<td>format</td>
+			<td>json</td>
+		</tr>
+
+		<tr>
+			<td>httprequest method</td>
+			<td>get</td>
+		</tr>
+		<tr>
+			<td>need authorize</td>
+			<td>false</td>
+		</tr>
+	</table>
+<h2>
+		<span class="mw-headline"> Parameter Description </span>
+	</h2>
+	<table border="1" cellspacing="0" cellpadding="0" width="95%"
+		class="paratable" style="border-color: #CCCCCC;">
+		<tr>
+			<th width="10%">&nbsp;</th>
+			<th width="5%">required</th>
+			<th width="10%">type & scope</th>
+			<th width="75%">Description</th>
+		</tr>
+		<tr>
+			<td>latitude</td>
+			<td>true</td>
+			<td>Double</td>
+			<td>the latitude of location </td>
+		</tr>
+		<tr>
+			<td>longitude</td>
+			<td>true</td>
+			<td>Double</td>
+			<td>the longitude of location </td>
+		</tr>
+	
+	</table>
+
+	<h2>
+		<span class="mw-headline"> Return Results </span>
+	</h2>
+	<pre class="brush: js;">{
+	example:<a href="http://api.soningbo.com/resource/location/nearby/29.8701385/121.5323185">
+	http://api.soningbo.com/resource/location/nearby/29.8701385/121.5323185</a>
+	return JSON below:
+		
+		
+		{
+	data: [
+	{
+	md5Value: "9908279ebbf1f9b250ba689db6a0222b",
+	name_cn: "宁波港蝶网络通信技术有限公司",
+	name_en: "Ningbo Gangdie Network communication technology Co., LTD",
+	address_cn: "海曙区马园路262号马园大厦402 ",
+	address_en: "Room.402,Mayuan Building,NO.262,Mayuan Rd.,Haishu District",
+	latitude: "29.8704745",
+	longitude: "121.5322415",
+	name_py: "ning bo gang die wang luo tong xin ji shu you xian gong si"
+	},
+	{
+	md5Value: "d93591bdf7860e1e4ee2fca799911215",
+	name_cn: "宁波实泽电子有限公司",
+	name_en: "Ningbo shize Electronic Co., LTD",
+	address_cn: "海曙区马园路262号马园大厦",
+	address_en: "Mayuan building,NO.262,mayuan Rd.,haishu district",
+	latitude: "29.8704745",
+	longitude: "121.5322415",
+	name_py: "ning bo shi ze dian zi you xian gong si"
+	},
+	{
+	md5Value: "06358599b7afb2506e063c1ea0a09fbd",
+	name_cn: "宁波实泽电子有限公司",
+	name_en: "Ningbo shize Electronic Co., LTD",
+	address_cn: "海曙区马园路262号马园大厦",
+	address_en: "Mayuan building,NO.262,mayuan Rd.,haishu district",
+	latitude: "29.8704745",
+	longitude: "121.5322415",
+	name_py: "ning bo shi ze dian zi you xian gong si"
+	},
+	{
+	md5Value: "1b38735595369838f208dd2b25315195",
+	name_cn: "宁波静峰国际贸易有限公司",
+	name_en: "Joyful International Co., Ltd.",
+	address_cn: "宁波市马园大厦10楼B5",
+	address_en: "B5, F10, mayuan building, ningbo",
+	latitude: "29.8704725",
+	longitude: "121.5322365",
+	name_py: "ning bo jing feng guo ji mao yi you xian gong si"
+	},
+	{
+	md5Value: "ddfa8a1fa86914072eb6e3e55c253856",
+	name_cn: "宁波市循环经济促进会 ",
+	name_en: "Promotion of circular economy",
+	address_cn: "海曙区马园路262号",
+	address_en: "No.262,Mayuelu.,Haishu District",
+	latitude: "29.8704745",
+	longitude: "121.5322415",
+	name_py: "ning bo shi xun huan jing ji cu jin hui "
+	},
+	{
+	md5Value: "0d78f6439e652fdbf801d103430d2e12",
+	name_cn: "亚洲华园宾馆",
+	name_en: "Asia Garden Hotel",
+	address_cn: "海曙区马园路271号",
+	address_en: "No.271,Mayuan Rd.,Haishu District",
+	latitude: "29.8705755",
+	longitude: "121.5328165",
+	name_py: "ya zhou hua yuan bin guan"
+	},
+	{
+	md5Value: "23676d53987033371f526c5c6eb56150",
+	name_cn: "来必堡（柳汀店）",
+	name_en: "Lai Bi Bao (Liuting Branch)",
+	address_cn: "海曙区柳汀街296号",
+	address_en: "No.296,Liuting St.,Haishu District",
+	latitude: "29.8697765",
+	longitude: "121.5318595",
+	name_py: "lai bi bao （liu ting dian "
+	},
+	{
+	md5Value: "3f4243a6f681f2920ac3e95a63517274",
+	name_cn: "新四方（马园店）",
+	name_en: "Xin Si Fang (Mayuan Branch)",
+	address_cn: "海曙区马园路马园大厦",
+	address_en: "Mayuan Rd.,Haishu District",
+	latitude: "29.8704745",
+	longitude: "121.5322415",
+	name_py: "xin si fang （ma yuan dian "
+	},
+	{
+	md5Value: "27324bfa32fc43f34ea23a2b279c4992",
+	name_cn: "上岛咖啡",
+	name_en: "U.B.C Coffee",
+	address_cn: "海曙区柳汀街284号临",
+	address_en: "No.284,Liuting St.,Haishu District",
+	latitude: "29.8698325",
+	longitude: "121.5323505",
+	name_py: "shang dao ka fei"
+	},
+	{
+	md5Value: "6b45cf467a9c88001159a826e92c7437",
+	name_cn: "博诚汽车租赁",
+	name_en: "Bocheng Car Rental",
+	address_cn: "海曙区马园路262号马园大厦206号",
+	address_en: "Room 206,Mayuan building,262,Mayuan Rd.,Haishu District",
+	latitude: "29.8704745",
+	longitude: "121.5322415",
+	name_py: "bo cheng qi che zu lin"
+	},
+	{
+	md5Value: "a60c71bd110ebc4d6916e16b8ca24fda",
+	name_cn: "新国际海员俱乐部",
+	name_en: "Xin Guoji Haiyuan Club",
+	address_cn: "海曙区马园路218号",
+	address_en: "NO.218,mayuan Rd.,Haishu district",
+	latitude: "29.8697525",
+	longitude: "121.5321907",
+	name_py: "xin guo ji hai yuan ju le bu"
+	},
+	{
+	md5Value: "2fb5f91365317758045db9f19df5a522",
+	name_cn: "马园大厦",
+	name_en: "Ma Yuan Building",
+	address_cn: "海曙区马园路262号",
+	address_en: "No.262,Mayuan Rd.,Haishu District",
+	latitude: "29.8704745",
+	longitude: "121.5322415",
+	name_py: "ma yuan da sha"
+	},
+	{
+	md5Value: "4e9019139d9ad49f7983904b497d50b2",
+	name_cn: "阿义菜馆停车场",
+	name_en: "Ayi Restaurant parking lot",
+	address_cn: "海曙区马园路",
+	address_en: "Ma yuan lu, Haishu District",
+	latitude: "29.8699965",
+	longitude: "121.5323685",
+	name_py: "a yi cai guan ting che chang"
+	},
+	{
+	md5Value: "e2701537f72184bb152aa9d26a93ecca",
+	name_cn: "亚洲花园停车场",
+	name_en: "Asia Garden Hotel Parking lot",
+	address_cn: "海曙区马园路271号",
+	address_en: "No.271, Ma yuan lu, Haishu District",
+	latitude: "29.8700055",
+	longitude: "121.5326985",
+	name_py: "ya zhou hua yuan ting che chang"
+	},
+	{
+	md5Value: "3a95790514f43839f9aef7a3e9d00d5c",
+	name_cn: "停车场",
+	name_en: "Parking Lot",
+	address_cn: "海曙区马园路",
+	address_en: "Ma yuan lu, Haishu District",
+	latitude: "29.8701385",
+	longitude: "121.5323185",
+	name_py: "ting che chang"
+	}
+	]
+}
+	</pre>
+
+	<h2>
+		<span class="mw-headline"> Return Code Lists </span>
+	</h2>
+	<pre class="brush: js;">{
+	
+	}
+	</pre>
+
+</body>
+</html>

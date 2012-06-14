@@ -9,7 +9,7 @@
 
 <body>
 	<!-- enctype="multipart/form-data"-->
-	<form name="form1" method="post" action="https://api.searchningbo.com/resource/location/add">
+	<form name="form1" method="post" action="http://api.soningbo.com/resource/location/add" enctype="multipart/form-data">
 		<p>
 
 			key<br> 
@@ -24,6 +24,11 @@
 
 			name_cn<br> 
 			<input type="text" name="name_cn" id="name_cn">
+			<br> 
+			<br> 
+			
+			name_py<br> 
+			<input type="text" name="name_py" id="name_py">
 			<br> 
 			<br> 
 			address_en<br> 
@@ -48,16 +53,12 @@
 			<input type="text"	name="longitude" id="longitude"> 
 			<br> 
 			<br>
-			<!-- 
+			
 			 photo<br>
 			<input type="file" name="photo_path" id="photo_path"> 
 			<br>
 			<br> 
-			 -->
-			category2_id<br> 
-			<input type="text" name="category_id" id="category_id"> 
-			<br>
-		    <br> 
+			
 		    <input type="submit" name="POST" id="POST" value="Submit"> <br> <br>
 		</p>
 	</form>

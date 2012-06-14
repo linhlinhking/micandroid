@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "tb_files_location")
+@Table(name = "tb_files_location_tl")
 public class LocationFile implements Serializable{
 
 	private static final long serialVersionUID = 8723132171044380051L;

@@ -258,4 +258,11 @@ public class LocationRest {
 		}
 		return new LocationList(listData) ;
 	}
+	
+	
+	@Path("/nearby/{latitude}/{longitude}")
+	public List<Location> getNearByLocations(){
+		
+		return null ;
+	}
 }

@@ -1,5 +1,6 @@
 package ningbo.media.rest.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,16 +20,18 @@ import ningbo.media.bean.SecondCategory;
 import ningbo.media.data.api.LocationList;
 import ningbo.media.data.entity.LocationData;
 import ningbo.media.rest.util.Constant;
-import ningbo.media.rest.util.FieldsData;
+import ningbo.media.rest.util.FileUpload;
 import ningbo.media.rest.util.JSONCode;
 import ningbo.media.service.LocationService;
 import ningbo.media.service.SecondCategoryService;
+import ningbo.media.util.MD5;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.sun.jersey.multipart.FormDataBodyPart;
 import com.sun.jersey.multipart.FormDataMultiPart;
 
 @Path("/location")
@@ -130,40 +133,56 @@ public class LocationRest {
 		String telephone = form.getField("telephone").getValue();
 		String lon = form.getField("longitude").getValue();
 		String lat = form.getField("latitude").getValue();
-		List<String> listValues = FieldsData.getValue(form
-				.getFields("category_id"));
-		System.out.println(listValues);
+		String name_py = form.getField("name_py").getValue();
+		
+		//List<String> listValues = FieldsData.getValue(form
+		//		.getFields("category_id"));
+		
+		FormDataBodyPart part = form.getField("photo_path");
+		String fileName = part.getContentDisposition().getFileName();
+		
+		String photo_path = null ;
+		try {
+			photo_path = FileUpload.upload(part, fileName,"upload", request);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-
-		// FormDataBodyPart part = form.getField("photo_path");
-		// String fileName = part.getContentDisposition().getFileName();
 		location.setName_cn(name_cn);
 		location.setName_en(name_en);
 		location.setAddress_cn(address_cn);
 		location.setAddress_en(address_en);
 		location.setTelephone(telephone);
+		location.setPhoto_path(photo_path) ;
+		location.setName_py(name_py) ;
 		if (!lon.isEmpty())
 			location.setLongitude(Double.parseDouble(lon));
 		if (!lat.isEmpty())
 			location.setLatitude(Double.parseDouble(lat));
-		if (null == listValues || listValues.size() < 0) {
-			return json.put(Constant.CODE,
-					JSONCode.LOCATION_CATEGORY2ID_INVALID).toString();
-		}
+		//if (null == listValues || listValues.size() < 0) {
+		//	return json.put(Constant.CODE,
+		//			JSONCode.LOCATION_CATEGORY2ID_INVALID).toString();
+		//}
 
 		try {
-			List<SecondCategory> listSc = new ArrayList<SecondCategory>();
-			for(String ids : listValues){
-				SecondCategory sc = secondCategoryService.get(Integer.valueOf(ids)) ;
-				if(sc == null){
-					return json.put(Constant.CODE,JSONCode.LOCATION_CATEGORY_NOEXISTS).toString(); 
-				}else{
-					listSc.add(sc) ;
-				}
-			}
-			location.setSecondCategorys(listSc) ;
+			//List<SecondCategory> listSc = new ArrayList<SecondCategory>();
+			//for(String ids : listValues){
+			//	SecondCategory sc = secondCategoryService.get(Integer.valueOf(ids)) ;
+			//	if(sc == null){
+			//		return json.put(Constant.CODE,JSONCode.LOCATION_CATEGORY_NOEXISTS).toString(); 
+			//	}else{
+			//		listSc.add(sc) ;
+			//	}
+			//}
+			//location.setSecondCategorys(listSc) ;
+			
 			
 			Integer locationId = locationService.save(location);
+			String md5Value = MD5.calcMD5(String.valueOf(locationId)) ;
+			location = locationService.get(locationId) ;
+			location.setMd5Value(md5Value) ;
+			locationService.update(location) ;
+			
 			json.put(Constant.LOCATIONID, locationId);
 			return json.put(Constant.CODE, JSONCode.SUCCESS).toString();
 		} catch (Exception ex) {

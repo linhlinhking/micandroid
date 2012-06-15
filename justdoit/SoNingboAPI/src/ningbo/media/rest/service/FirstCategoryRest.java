@@ -43,6 +43,8 @@ public class FirstCategoryRest {
 		return firstCategoryService.getFristCategoryByName(name);
 	}
 
+	
+	
 	@Path("/show/{id}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)

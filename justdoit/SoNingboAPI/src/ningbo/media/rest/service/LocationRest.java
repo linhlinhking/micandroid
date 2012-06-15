@@ -144,7 +144,7 @@ public class LocationRest {
 
 		String photo_path = null;
 		try {
-			photo_path = FileUpload.upload(part, fileName, "upload", request);
+			photo_path = FileUpload.upload(part, fileName, request);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -286,6 +286,7 @@ public class LocationRest {
 	@Produces( { MediaType.APPLICATION_JSON })
 	public List<LocationDetail> getNearByLocations(@PathParam("latitude")String latitude,@PathParam("longitude")String longitude){
 		List<LocationDetail> list = locationService.queryLoctionsByLat(Double.valueOf(latitude), Double.valueOf(longitude)) ;
+		
 		return list ;
 	}
 }

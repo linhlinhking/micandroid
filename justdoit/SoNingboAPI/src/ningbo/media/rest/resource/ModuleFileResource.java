@@ -167,7 +167,7 @@ public class ModuleFileResource {
 			String key = form.getField("key").getValue();
 			String locationId = form.getField("locationId").getValue();// md5
 																		// value
-			String uploaderId = form.getField("uploaderId").getValue();
+			//String uploaderId = form.getField("uploaderId").getValue();
 
 			if (!StringUtils.hasText(key)) {
 				json.put(Constant.CODE, JSONCode.KEYISNULL);
@@ -179,12 +179,12 @@ public class ModuleFileResource {
 
 			// SystemUser sysUser =
 			// systemUserService.getSystemUserByMd5Value(uploaderId) ;
-			SystemUser sysUser = systemUserService.get(Integer
-					.valueOf(uploaderId));
-			if (null == sysUser) {
-				json.put(Constant.CODE, JSONCode.MODULEFILE_USER_NOEXISTS);
-				return Response.ok(json.toString()).build();
-			}
+			//SystemUser sysUser = systemUserService.get(Integer
+			//		.valueOf(uploaderId));
+			//if (null == sysUser) {
+			//	json.put(Constant.CODE, JSONCode.MODULEFILE_USER_NOEXISTS);
+			//	return Response.ok(json.toString()).build();
+			//}
 
 			Location loc = locationService.queryLocationByMd5(locationId);
 			if (null == loc) {
@@ -217,7 +217,7 @@ public class ModuleFileResource {
 			moduleFile.setCreateTime(new Date());
 			moduleFile.setImageInfo(inforImage);
 			moduleFile.setLocations(listLocations);
-			moduleFile.setUploaderId(uploaderId);
+			//moduleFile.setUploaderId(uploaderId);
 
 			Integer moduleFileId = moduleFileService.save(moduleFile);
 			json.put(Constant.CODE, JSONCode.SUCCESS);

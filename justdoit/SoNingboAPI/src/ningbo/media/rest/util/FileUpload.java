@@ -34,35 +34,6 @@ public class FileUpload {
 		return buffer.toString();
 	}
 
-	public static void main(String args[]) {
-
-		System.out.println(generateFolderName("upload"));
-	}
-
-	public static String createFolder(String folder, HttpServletRequest request) {
-		String tempPath = generateFolderName(folder);
-		StringBuffer buffer = new StringBuffer();
-		buffer.append(request.getSession().getServletContext().getRealPath(""))
-				.append(FILE_SEPARATOR).append(tempPath);
-
-		File dic = new File(buffer.toString());
-		if (!dic.exists()) {
-			dic.mkdirs();
-		}
-		return tempPath;
-	}
-
-	/**
-	 * get the extension of file
-	 * 
-	 * @param fileName
-	 * @return
-	 */
-	public static String getFileExtension(String fileName) {
-		String ext = fileName.substring(fileName.lastIndexOf(".") + 1);
-		return ext;
-	}
-
 	/**
 	 * upload files
 	 * 
@@ -74,9 +45,8 @@ public class FileUpload {
 	 */
 	public static String upload(FormDataBodyPart part, String fileName,
 			HttpServletRequest request) throws IOException {
-
+		/**创建特定要求的目录*/
 		String filePath = generateFolderName(Constant.FOLDER);
-
 		StringBuffer temp = new StringBuffer();
 		temp.append(request.getSession().getServletContext().getRealPath(""))
 		.append(FILE_SEPARATOR)
@@ -85,9 +55,10 @@ public class FileUpload {
 		if (!dic.exists()) {
 			dic.mkdirs();
 		}
-
-		temp.append(FILE_SEPARATOR).append(fileName);// 获取文件的绝对路径
-
+		/**获取文件的绝对路径*/
+		temp.append(FILE_SEPARATOR).append(fileName);
+		
+		/**文件上传*/
 		InputStream in = part.getValueAs(InputStream.class);
 		OutputStream os = new FileOutputStream(temp.toString());
 
@@ -99,7 +70,7 @@ public class FileUpload {
 		os.close();
 		in.close();
 
-		// 生成文件的上下文路径
+		/**返回文件的上下文路径 */
 		StringBuffer temp2 = new StringBuffer();
 		temp2.append(filePath).append(FILE_SEPARATOR).append(fileName);
 		return temp2.toString();

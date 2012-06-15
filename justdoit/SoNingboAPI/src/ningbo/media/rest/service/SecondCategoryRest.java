@@ -44,7 +44,7 @@ public class SecondCategoryRest {
 	 * @param id The first Category id
 	 * @return List<SecondCategoryData>
 	 */
-	@Path("/category1/{id}")
+	@Path("/show/{id}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<SecondCategoryData> getCategoryByFirst(@PathParam("id")

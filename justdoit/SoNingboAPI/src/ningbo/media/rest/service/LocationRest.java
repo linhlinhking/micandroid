@@ -21,6 +21,7 @@ import ningbo.media.data.api.LocationList;
 import ningbo.media.data.entity.LocationData;
 import ningbo.media.data.entity.LocationDetail;
 import ningbo.media.rest.util.Constant;
+import ningbo.media.rest.util.FieldsData;
 import ningbo.media.rest.util.FileUpload;
 import ningbo.media.rest.util.JSONCode;
 import ningbo.media.service.LocationService;
@@ -136,8 +137,8 @@ public class LocationRest {
 		String lat = form.getField("latitude").getValue();
 		String name_py = form.getField("name_py").getValue();
 
-		// List<String> listValues = FieldsData.getValue(form
-		// .getFields("category_id"));
+		List<String> listValues = FieldsData.getValue(form
+				.getFields("category2_id"));
 
 		FormDataBodyPart part = form.getField("photo_path");
 		String fileName = part.getContentDisposition().getFileName();
@@ -160,24 +161,25 @@ public class LocationRest {
 			location.setLongitude(Double.parseDouble(lon));
 		if (!lat.isEmpty())
 			location.setLatitude(Double.parseDouble(lat));
-		// if (null == listValues || listValues.size() < 0) {
-		// return json.put(Constant.CODE,
-		// JSONCode.LOCATION_CATEGORY2ID_INVALID).toString();
-		// }
+
+		if (null == listValues || listValues.size() < 0) {
+			return json.put(Constant.CODE,
+					JSONCode.LOCATION_CATEGORY2ID_INVALID).toString();
+		}
 
 		try {
-			// List<SecondCategory> listSc = new ArrayList<SecondCategory>();
-			// for(String ids : listValues){
-			// SecondCategory sc =
-			// secondCategoryService.get(Integer.valueOf(ids)) ;
-			// if(sc == null){
-			// return
-			// json.put(Constant.CODE,JSONCode.LOCATION_CATEGORY_NOEXISTS).toString();
-			// }else{
-			// listSc.add(sc) ;
-			// }
-			// }
-			// location.setSecondCategorys(listSc) ;
+			List<SecondCategory> listSc = new ArrayList<SecondCategory>();
+			for (String ids : listValues) {
+				SecondCategory sc = secondCategoryService.get(Integer
+						.valueOf(ids));
+				if (sc == null) {
+					return json.put(Constant.CODE,
+							JSONCode.LOCATION_CATEGORY_NOEXISTS).toString();
+				} else {
+					listSc.add(sc);
+				}
+			}
+			location.setSecondCategorys(listSc);
 
 			Integer locationId = locationService.save(location);
 			String md5Value = MD5.calcMD5(String.valueOf(locationId));
@@ -284,9 +286,12 @@ public class LocationRest {
 	@Path("/nearby/{latitude}/{longitude}")
 	@GET
 	@Produces( { MediaType.APPLICATION_JSON })
-	public List<LocationDetail> getNearByLocations(@PathParam("latitude")String latitude,@PathParam("longitude")String longitude){
-		List<LocationDetail> list = locationService.queryLoctionsByLat(Double.valueOf(latitude), Double.valueOf(longitude)) ;
-		
-		return list ;
+	public List<LocationDetail> getNearByLocations(@PathParam("latitude")
+	String latitude, @PathParam("longitude")
+	String longitude) {
+		List<LocationDetail> list = locationService.queryLoctionsByLat(Double
+				.valueOf(latitude), Double.valueOf(longitude));
+
+		return list;
 	}
 }

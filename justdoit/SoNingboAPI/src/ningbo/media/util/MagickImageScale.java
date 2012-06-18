@@ -265,8 +265,8 @@ public class MagickImageScale {
 		System.out.println(System.getProperty("java.library.path"));
 		long time = System.currentTimeMillis();
 		MagickImageScale.resizeFix(
-				new File("web/images/IMAG1368.jpg"), new File(
-						"web/images/84_cut96.jpg"),300,300,false);
+				new File("web/images/1000.jpg"), new File(
+						"web/images/16.jpg"),800,800);
 		time = System.currentTimeMillis() - time;
 		System.out.println("resize new img in " + time + "ms");
 	}

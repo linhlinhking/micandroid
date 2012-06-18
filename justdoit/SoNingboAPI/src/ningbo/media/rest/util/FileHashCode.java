@@ -199,6 +199,7 @@ public class FileHashCode {
 					
 					temp.append(tmp) ;
 					File destFile = new File(temp.toString());
+					
 					MagickImageScale.resizeFix(srcFile, destFile, Integer
 							.valueOf(tmps[0]), Integer.valueOf(tmps[1]),false);
 				}

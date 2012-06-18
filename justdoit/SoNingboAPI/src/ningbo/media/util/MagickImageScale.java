@@ -83,6 +83,7 @@ public class MagickImageScale {
 		//info.setQuality(80);
 		MagickImage image = new MagickImage(info);
 		image.profileImage("*", null);
+		
 		Dimension orinDim = image.getDimension() ;
 		int oriWidth = (int)orinDim.getWidth() ;
 		int oriHeight = (int)orinDim.getHeight() ;
@@ -264,7 +265,7 @@ public class MagickImageScale {
 		System.out.println(System.getProperty("java.library.path"));
 		long time = System.currentTimeMillis();
 		MagickImageScale.resizeFix(
-				new File("web/images/85_cut96.jpg"), new File(
+				new File("web/images/IMAG1368.jpg"), new File(
 						"web/images/84_cut96.jpg"),300,300,false);
 		time = System.currentTimeMillis() - time;
 		System.out.println("resize new img in " + time + "ms");

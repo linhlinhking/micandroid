@@ -7,7 +7,7 @@
 </head>
 
 <body>
-<form name="data" method="post" action="http://localhost:8080/resource/modulefile/location/upload" enctype="multipart/form-data">
+<form name="data" method="post" action="http://localhost:8080/resource/modulefile/location/base64/upload" enctype="multipart/form-data">
   <p>
   
   key<br>
@@ -20,15 +20,18 @@
   <br>
   <br>
 
-
+	base64_content<br>
+	<textarea name="imageBase64" id="imageBase64"></textarea>
+	
+	<br/>
+	<br/>
   
-  
+<!--   
   file<br>
   <input type="file" name="file">
   <br/>
-  
   <br/>
-
+-->
   <input type="submit" name="POST" id="POST" value="Submit">
 <br>
     <br>

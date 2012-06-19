@@ -36,7 +36,7 @@ public class Pinyin {
         // System.out.println(t1.length);  
         String[] t2 = new String[t1.length];  
         // System.out.println(t2.length);  
-        // 设置汉字拼音输出的格式  
+        // 设置汉字拼音输出的格式
         HanyuPinyinOutputFormat t3 = new HanyuPinyinOutputFormat();  
         t3.setCaseType(HanyuPinyinCaseType.LOWERCASE);  
         t3.setToneType(HanyuPinyinToneType.WITHOUT_TONE);  

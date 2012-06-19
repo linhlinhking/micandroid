@@ -5,6 +5,7 @@ public class Constant {
 	public static final String KEY = "soningbo" ;
 	
 	public static final String FOLDER = "upload" ;
+	public static final String TEMP = "temp" ;
 	
 	public static final String globalPath = "/Users/ning/upload" ;
 	
@@ -26,6 +27,7 @@ public class Constant {
 	public static final String MENUTOOLID = "toolId" ;
 	public static final String MENUITEMID = "itemId" ;
 	public static final String SHOPID = "shopId" ;
+	public static final String DATA = "data" ;
 	
 	public static final Integer LIMIT = 10  ;
 	

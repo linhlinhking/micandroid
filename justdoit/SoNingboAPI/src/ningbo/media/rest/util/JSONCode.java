@@ -45,6 +45,7 @@ public class JSONCode {
 	public static final String MODULEFILE_FILE_NOEXISTS = "70005" ;
 	public static final String MODULEFILE_VALID_CHARACTER = "70006" ;
 	public static final String MODULEFILE_BASE64_INVALID = "70007" ;
+	public static final String NO_DATA = "No Data." ;
 
 	
 	

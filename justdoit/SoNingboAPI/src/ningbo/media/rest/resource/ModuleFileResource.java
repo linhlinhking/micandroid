@@ -1,7 +1,6 @@
 package ningbo.media.rest.resource;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,6 +23,7 @@ import ningbo.media.bean.ImageInformation;
 import ningbo.media.bean.Location;
 import ningbo.media.bean.ModuleFile;
 import ningbo.media.bean.SystemUser;
+import ningbo.media.proxy.RequestURL;
 import ningbo.media.rest.dto.ModuleFileData;
 import ningbo.media.rest.util.Constant;
 import ningbo.media.rest.util.FileHashCode;
@@ -36,6 +36,7 @@ import ningbo.media.service.ModuleFileService;
 import ningbo.media.service.SystemUserService;
 import ningbo.media.util.Base64Image;
 import ningbo.media.util.MagickImageScale;
+import ningbo.media.util.Pinyin;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -62,6 +63,9 @@ public class ModuleFileResource {
 
 	@Resource
 	private ImageInformationService imageInformationService;
+
+	private static final String SERVICE_API_URL = "http://maps.googleapis.com/maps/api/geocode/json?";
+
 
 	@Path("/show/{fileId}")
 	@GET
@@ -164,10 +168,9 @@ public class ModuleFileResource {
 			List<Location> listLocations = new ArrayList<Location>();
 			ModuleFile moduleFile = new ModuleFile();
 			String key = form.getField("key").getValue();
-			String locationId = form.getField("locationId").getValue();// md5
-			String base64Value = form.getField("imageBase64").getValue() ;
-																		// value
-			//String uploaderId = form.getField("uploaderId").getValue();
+			String locationId = form.getField("locationId").getValue();
+			String base64Value = form.getField("imageBase64").getValue();
+			
 
 			if (!StringUtils.hasText(key)) {
 				json.put(Constant.CODE, JSONCode.KEYISNULL);
@@ -177,14 +180,6 @@ public class ModuleFileResource {
 				return Response.ok(json.toString()).build();
 			}
 
-			// SystemUser sysUser =
-			// systemUserService.getSystemUserByMd5Value(uploaderId) ;
-			//SystemUser sysUser = systemUserService.get(Integer
-			//		.valueOf(uploaderId));
-			//if (null == sysUser) {
-			//	json.put(Constant.CODE, JSONCode.MODULEFILE_USER_NOEXISTS);
-			//	return Response.ok(json.toString()).build();
-			//}
 
 			Location loc = locationService.queryLocationByMd5(locationId);
 			if (null == loc) {
@@ -198,16 +193,24 @@ public class ModuleFileResource {
 			String tempPath = FileHashCode.makeTempFileDir();
 			sb.append(tempPath).append(fileName);
 			
-			boolean flag = Base64Image.generateImage(base64Value, sb.toString()) ;
-			if(!flag){
+			boolean flag = Base64Image
+					.generateImage(base64Value, sb.toString());
+			System.out.println(base64Value);
+			System.out.println(sb.toString());
+			if (!flag) {
 				File file = new File(sb.toString());
-				file.delete() ;
+				file.delete();
 				json.put(Constant.CODE, JSONCode.MODULEFILE_BASE64_INVALID);
 				return Response.ok(json.toString()).build();
 			}
-			
-			InputStream uploadFile = new FileInputStream(sb.toString());
-			
+
+			InputStream uploadFile = FileHashCode.getFileNameInputStream(sb
+					.toString());
+			if (null == uploadFile) {
+				json.put(Constant.CODE, JSONCode.MODULEFILE_TYPE_NOEXISTS);
+				return Response.ok(json.toString()).build();
+			}
+
 			ImageInformation inforImage = new ImageInformation();
 			Map<String, Object> m = FileHashCode.writeToFile(uploadFile, sb
 					.toString());
@@ -227,7 +230,7 @@ public class ModuleFileResource {
 			moduleFile.setCreateTime(new Date());
 			moduleFile.setImageInfo(inforImage);
 			moduleFile.setLocations(listLocations);
-			//moduleFile.setUploaderId(uploaderId);
+			// moduleFile.setUploaderId(uploaderId);
 
 			Integer moduleFileId = moduleFileService.save(moduleFile);
 			json.put(Constant.CODE, JSONCode.SUCCESS);
@@ -239,7 +242,7 @@ public class ModuleFileResource {
 		}
 
 	}
-	
+
 	@Path("/location/upload")
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -255,8 +258,8 @@ public class ModuleFileResource {
 			ModuleFile moduleFile = new ModuleFile();
 			String key = form.getField("key").getValue();
 			String locationId = form.getField("locationId").getValue();// md5
-																		// value
-			//String uploaderId = form.getField("uploaderId").getValue();
+			// value
+			// String uploaderId = form.getField("uploaderId").getValue();
 
 			if (!StringUtils.hasText(key)) {
 				json.put(Constant.CODE, JSONCode.KEYISNULL);
@@ -268,12 +271,12 @@ public class ModuleFileResource {
 
 			// SystemUser sysUser =
 			// systemUserService.getSystemUserByMd5Value(uploaderId) ;
-			//SystemUser sysUser = systemUserService.get(Integer
-			//		.valueOf(uploaderId));
-			//if (null == sysUser) {
-			//	json.put(Constant.CODE, JSONCode.MODULEFILE_USER_NOEXISTS);
-			//	return Response.ok(json.toString()).build();
-			//}
+			// SystemUser sysUser = systemUserService.get(Integer
+			// .valueOf(uploaderId));
+			// if (null == sysUser) {
+			// json.put(Constant.CODE, JSONCode.MODULEFILE_USER_NOEXISTS);
+			// return Response.ok(json.toString()).build();
+			// }
 
 			Location loc = locationService.queryLocationByMd5(locationId);
 			if (null == loc) {
@@ -306,7 +309,7 @@ public class ModuleFileResource {
 			moduleFile.setCreateTime(new Date());
 			moduleFile.setImageInfo(inforImage);
 			moduleFile.setLocations(listLocations);
-			//moduleFile.setUploaderId(uploaderId);
+			// moduleFile.setUploaderId(uploaderId);
 
 			Integer moduleFileId = moduleFileService.save(moduleFile);
 			json.put(Constant.CODE, JSONCode.SUCCESS);
@@ -399,6 +402,40 @@ public class ModuleFileResource {
 	String key, @FormParam("uploaderId")
 	String uploaderId, @FormParam("locationId")
 	String locationId) {
+
+		return null;
+	}
+
+	@Path("/pinyin/{name_cn}")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getPinYinByNameCN(@PathParam("name_cn")
+	String name_cn) throws JSONException {
+		JSONObject json = new JSONObject();
+		if (null == name_cn) {
+			json.put(Constant.CODE, JSONCode.NO_DATA);
+			return Response.ok(json.toString()).build();
+		}
+		String name_py = Pinyin.getPinYin(name_cn);
+		json.put(Constant.DATA, name_py);
+		return Response.ok(json.toString()).build();
+	}
+
+	@Path("/address/{latitude}/{longitude}")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAddresByLatLng(@PathParam("latitude")
+	Double latitude, @PathParam("longitude")
+	Double longitude) {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(SERVICE_API_URL).append("sensor=false&").append("latlng=")
+				.append(latitude).append(",").append(longitude);
+		RequestURL req = new RequestURL();
+		try {
+			req.get(buffer.toString(), null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		return null;
 	}

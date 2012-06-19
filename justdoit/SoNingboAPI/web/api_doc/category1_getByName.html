@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Event get</title>
+<link rel="stylesheet" href="test.css" />
+</head>
+
+<body>
+ 
+
+<h2>
+		<span class="mw-headline"> Method Summary </span>
+</h2>
+
+<h2>
+		<span class="mw-headline"> Requests Instruction </span>
+</h2>
+
+	<table width="95%" cellpadding="0" cellspacing="2" border="0"
+		class="paratable">
+
+		<tr>
+			<td>url</td>
+			<td><a href="#" class="external free" rel="nofollow">http://api.soningbo.com/resource/category/first/{name}</a>
+			</td>
+		</tr>
+		<tr>
+			<td>format</td>
+			<td>json</td>
+		</tr>
+
+		<tr>
+			<td>httprequest method</td>
+			<td>get</td>
+		</tr>
+		<tr>
+			<td>need authorize</td>
+			<td>false</td>
+		</tr>
+	</table>
+<h2>
+		<span class="mw-headline"> Parameter Description </span>
+	</h2>
+	<table border="1" cellspacing="0" cellpadding="0" width="95%"
+		class="paratable" style="border-color: #CCCCCC;">
+		<tr>
+			<th width="10%">&nbsp;</th>
+			<th width="5%">required</th>
+			<th width="10%">type & scope</th>
+			<th width="75%">Description</th>
+		</tr>
+		<tr>
+			<th width="10%">name</th>
+			<th width="5%">true</th>
+			<th width="10%">String</th>
+			<th width="75%">By Category1's name_en(or name_cn) Get All Category2 Items</th>
+		</tr>
+	
+	</table>
+
+	<h2>
+		<span class="mw-headline"> Return Results </span>
+	</h2>
+	<pre class="brush: js;">{
+	example:<a href="http://api.soningbo.com/resource/category/first/美容&美发">http://api.soningbo.com/resource/category/first/美容&美发</a>
+		
+		  
+	{
+		data: [
+			{
+				id: "1",
+				name_cn: "美发",
+				name_en: "Hairdressing"
+			},
+			{
+				id: "2",
+				name_cn: "美容美体",
+				name_en: "SPA"
+			},
+			{
+				id: "3",
+				name_cn: "瘦身减肥",
+				name_en: "Slimming"
+			},
+			{
+				id: "4",
+				name_cn: "美甲",
+				name_en: "Nail Spa"
+			}
+		]
+	}
+		
+	}
+	</pre>
+
+	<h2>
+		<span class="mw-headline"> Return Code Lists </span>
+	</h2>
+	<pre class="brush: js;">{
+	
+	}
+	</pre>
+
+</body>
+</html>

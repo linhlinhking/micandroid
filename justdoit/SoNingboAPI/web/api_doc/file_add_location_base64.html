@@ -7,6 +7,7 @@
 </head>
 
 <body>
+<!-- enctype="multipart/form-data" -->
 <form name="data" method="post" action="http://localhost:8080/resource/modulefile/location/base64/upload" enctype="multipart/form-data">
   <p>
   
@@ -21,7 +22,7 @@
   <br>
 
 	base64_content<br>
-	<textarea name="imageBase64" id="imageBase64"></textarea>
+	<input type="text" name="imageBase64" id="imageBase64">
 	
 	<br/>
 	<br/>
@@ -51,7 +52,7 @@
 
 		<tr>
 			<td>url</td>
-			<td><a href="#" class="external free" rel="nofollow">http://api.soningbo.com/resource/modulefile/location/upload</a>
+			<td><a href="#" class="external free" rel="nofollow">http://api.soningbo.com/resource/modulefile/location/base64/upload</a>
 			</td>
 		</tr>
 		<tr>
@@ -93,10 +94,10 @@
 			<td>The Type of Module</td>
 		</tr>
 		<tr>
-			<td>file</td>
+			<td>imageBase64</td>
 			<td>true</td>
-			<td>File</td>
-			<td>The File of Upload</td>
+			<td>String</td>
+			<td>The File of Base64</td>
 		</tr>
 		
 	</table>

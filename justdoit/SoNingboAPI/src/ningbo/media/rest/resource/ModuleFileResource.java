@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -15,6 +16,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -27,6 +29,7 @@ import ningbo.media.proxy.RequestURL;
 import ningbo.media.rest.dto.ModuleFileData;
 import ningbo.media.rest.util.Constant;
 import ningbo.media.rest.util.FileHashCode;
+import ningbo.media.rest.util.FileUploadUtil;
 import ningbo.media.rest.util.JSONCode;
 import ningbo.media.rest.util.Jerseys;
 import ningbo.media.rest.util.StringUtils;
@@ -37,6 +40,7 @@ import ningbo.media.service.SystemUserService;
 import ningbo.media.util.Base64Image;
 import ningbo.media.util.MagickImageScale;
 import ningbo.media.util.Pinyin;
+import ningbo.media.util.StringUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -65,7 +69,6 @@ public class ModuleFileResource {
 	private ImageInformationService imageInformationService;
 
 	private static final String SERVICE_API_URL = "http://maps.googleapis.com/maps/api/geocode/json?";
-
 
 	@Path("/show/{fileId}")
 	@GET
@@ -161,8 +164,8 @@ public class ModuleFileResource {
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addLoctionFileByBase64(FormDataMultiPart form) {
-
+	public Response addLoctionFileByBase64(FormDataMultiPart form, @Context
+	HttpServletRequest request) {
 		try {
 			JSONObject json = new JSONObject();
 			List<Location> listLocations = new ArrayList<Location>();
@@ -170,7 +173,6 @@ public class ModuleFileResource {
 			String key = form.getField("key").getValue();
 			String locationId = form.getField("locationId").getValue();
 			String base64Value = form.getField("imageBase64").getValue();
-			
 
 			if (!StringUtils.hasText(key)) {
 				json.put(Constant.CODE, JSONCode.KEYISNULL);
@@ -179,7 +181,6 @@ public class ModuleFileResource {
 				json.put(Constant.CODE, JSONCode.KEYINPUTINVALID);
 				return Response.ok(json.toString()).build();
 			}
-
 
 			Location loc = locationService.queryLocationByMd5(locationId);
 			if (null == loc) {
@@ -190,29 +191,31 @@ public class ModuleFileResource {
 
 			String fileName = String.valueOf(System.currentTimeMillis());
 			StringBuffer sb = new StringBuffer();
-			String tempPath = FileHashCode.makeTempFileDir();
+			String tempPath = FileUploadUtil.makeFileDir(null, request, true);
 			sb.append(tempPath).append(fileName);
 			
-			boolean flag = Base64Image
-					.generateImage(base64Value, sb.toString());
-			System.out.println(base64Value);
-			System.out.println(sb.toString());
+			//String test1 = Base64Image.getImageBase64("C:/server/apache-tomcat-6.0.35/224") ;
+			
+			//System.out.println(base64Value);
+			//String dealValue = StringUtil.replaceBlank(base64Value) ;
+			//System.out.println(dealValue);
+			//System.out.println(base64Value.trim());
+			boolean flag = Base64Image.generateImage(base64Value, sb
+					.toString());
+			
+			
+			// System.out.println(sb.toString());
+			//System.out.println(base64Value.length());// 1064408
 			if (!flag) {
 				File file = new File(sb.toString());
 				file.delete();
 				json.put(Constant.CODE, JSONCode.MODULEFILE_BASE64_INVALID);
 				return Response.ok(json.toString()).build();
 			}
-
-			InputStream uploadFile = FileHashCode.getFileNameInputStream(sb
-					.toString());
-			if (null == uploadFile) {
-				json.put(Constant.CODE, JSONCode.MODULEFILE_TYPE_NOEXISTS);
-				return Response.ok(json.toString()).build();
-			}
-
+			
+			
 			ImageInformation inforImage = new ImageInformation();
-			Map<String, Object> m = FileHashCode.writeToFile(uploadFile, sb
+			Map<String, Object> m = FileHashCode.writeToFile(request, sb
 					.toString());
 
 			inforImage.setWidth(Double
@@ -428,15 +431,16 @@ public class ModuleFileResource {
 	Double latitude, @PathParam("longitude")
 	Double longitude) {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append(SERVICE_API_URL).append("sensor=false&").append("latlng=")
-				.append(latitude).append(",").append(longitude);
+		buffer.append(SERVICE_API_URL).append("sensor=false&")
+				.append("latlng=").append(latitude).append(",").append(
+						longitude);
 		RequestURL req = new RequestURL();
 		try {
 			req.get(buffer.toString(), null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
 

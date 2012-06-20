@@ -13,6 +13,8 @@ import java.security.MessageDigest;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import magick.MagickException;
 import ningbo.media.util.MagickImageScale;
 import ningbo.media.util.Resources;
@@ -22,8 +24,6 @@ public class FileHashCode {
 	private static char hexChar[] = { '0', '1', '2', '3', '4', '5', '6', '7',
 			'8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 
-	// private static char hexChar[] =
-	// {'0','1','2','3','4','5','6','7','8','9'};
 
 	private FileHashCode() {
 	}
@@ -312,6 +312,80 @@ public class FileHashCode {
 			e.printStackTrace();
 			return null ;
 		}
+	}
+	
+	
+	public static Map<String, Object> writeToFile(
+			HttpServletRequest request, String tempFilePath) {
+		Map<String, Object> map = new HashMap<String, Object>(4);
+		try {
+			String uuid = getFileMD5(tempFilePath);
+			String tempPath = FileUploadUtil.makeFileDir(uuid, request, false);
+			StringBuffer sb = new StringBuffer();
+			sb.append(tempPath).append(uuid.substring(12));
+			
+			copyFile(tempFilePath, sb.toString());
+
+			// 同时生成原图的缩略图
+			File srcFile = new File(tempFilePath);
+
+			try {
+				ResizeEnum[] resizes = ResizeEnum.values();
+				for (ResizeEnum re : resizes) {
+					StringBuffer temp = new StringBuffer();
+					temp.append(tempPath).append(uuid.substring(12))
+							.append("-");
+					String tmp = re.getName();
+					String[] tmps = tmp.split("x");
+
+					temp.append(tmp);
+					File destFile = new File(temp.toString());
+					Integer width = Integer.valueOf(tmps[0]);
+					Integer height = Integer.valueOf(tmps[1]);
+					if (width == height) {
+						MagickImageScale.resizeFix(srcFile, destFile, width,
+								height, false);
+					} else {
+						MagickImageScale.resizeFix(srcFile, destFile, width,
+								800);
+					}
+
+				}
+			} catch (MagickException e) {
+				e.printStackTrace();
+			}
+
+			map = ImageDetailInformation
+					.getImageInformation(tempFilePath);
+			map.put(Constant.UUID, uuid);
+
+			delFile(tempFilePath);
+			
+			return map;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+
+	}
+	
+	public static String writeBase64File(
+			HttpServletRequest request, String tempFilePath) {
+		try {
+			String uuid = getFileMD5(tempFilePath);
+			String tempPath = FileUploadUtil.makeFileDir(uuid, request, false);
+			StringBuffer sb = new StringBuffer();
+			sb.append(tempPath).append(uuid.substring(12));
+			
+			copyFile(tempFilePath, sb.toString());
+			delFile(tempFilePath);
+			
+			return uuid;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+
 	}
 
 }

@@ -9,7 +9,7 @@
 
 <body>
 	<!-- enctype="multipart/form-data"-->
-	<form name="form1" method="post" action="http://localhost:8080/resource/location/add" enctype="multipart/form-data">
+	<form name="form1" method="post" action="http://localhost:8080/resource/location/base64/add" enctype="multipart/form-data">
 		<p>
 
 			key<br> 
@@ -17,29 +17,35 @@
 			<input type="text" name="key" id="key"> 
 			<br> 
 			<br> 
+			<!-- 
 			name_en<br> 
 			<input type="text" name="name_en" id="name_en"> 
 			<br>
 			<br>
-
+	 		-->
 			name_cn<br> 
 			<input type="text" name="name_cn" id="name_cn">
 			<br> 
 			<br> 
 			
+			<!-- 
 			name_py<br> 
 			<input type="text" name="name_py" id="name_py">
 			<br> 
 			<br> 
+			 -->
+			 <!-- 
 			address_en<br> 
 			<input type="text"	name="address_en" id="address_en"> 
 			<br> 
 			<br>
+			-->
 
 			address_cn<br> 
 			<input type="text" name="address_cn" id="address_cn"> 
 			<br> 
 			<br> 
+			
 			telephone<br> 
 			<input type="text" name="telephone" id="telephone"> 
 			<br> 
@@ -59,12 +65,17 @@
 			<br> 
 			<br>
 			
+			base64_Value<br> 
+			<textarea name="base64Value" id="base64Value"> </textarea>
+			<br> 
+			<br>
 			
+			<!-- 
 			 photo<br>
 			<input type="file" name="photo_path" id="photo_path"> 
 			<br>
 			<br> 
-			
+			 -->
 		    <input type="submit" name="POST" id="POST" value="Submit"> <br> <br>
 		</p>
 	</form>
@@ -78,7 +89,7 @@
 
 		<tr>
 			<td>url</td>
-			<td><a href="#" class="external free" rel="nofollow">https://api.soningbo.com/resource/location/add</a>
+			<td><a href="#" class="external free" rel="nofollow">http://api.soningbo.com/resource/location/base64/add</a>
 			</td>
 		</tr>
 		<tr>
@@ -163,12 +174,19 @@
 			<td>the pinyin of name_cn</td>
 		</tr>
 		<tr>
+			<td>base64Value</td>
+			<td>true</td>
+			<td>String</td>
+			<td>the base64Value of Image</td>
+		</tr>
+		<!-- 
+		<tr>
 			<td>photo_path</td>
 			<td>true</td>
 			<td>String</td>
 			<td>Location's Avatar</td>
 		</tr>
-	
+		 -->
 	</table>
 
 	<h2>

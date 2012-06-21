@@ -32,6 +32,7 @@ import ningbo.media.service.LocationService;
 import ningbo.media.service.SecondCategoryService;
 import ningbo.media.util.Base64Image;
 import ningbo.media.util.MD5;
+import ningbo.media.util.Pinyin;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -228,14 +229,14 @@ public class LocationRest {
 				json.put(Constant.CODE, JSONCode.GLOBAL_KEYINPUTINVALID);
 				return Response.ok(json.toString()).build();
 			}
-			String name_en = form.getField("name_en").getValue();
+			//String name_en = form.getField("name_en").getValue();
 			String name_cn = form.getField("name_cn").getValue();
-			String address_en = form.getField("address_en").getValue();
+			//String address_en = form.getField("address_en").getValue();
 			String address_cn = form.getField("address_cn").getValue();
 			String telephone = form.getField("telephone").getValue();
 			String lon = form.getField("longitude").getValue();
 			String lat = form.getField("latitude").getValue();
-			String name_py = form.getField("name_py").getValue();
+			//String name_py = form.getField("name_py").getValue();
 			List<String> listValues = FieldsData.getValue(form
 					.getFields("category2_id"));
 			String base64Value = form.getField("base64Value").getValue();
@@ -257,12 +258,12 @@ public class LocationRest {
 					.toString());
 
 			location.setName_cn(name_cn);
-			location.setName_en(name_en);
+			location.setName_en("");
 			location.setAddress_cn(address_cn);
-			location.setAddress_en(address_en);
+			location.setAddress_en("");
 			location.setTelephone(telephone);
 			location.setPhoto_path(photo_path);
-			location.setName_py(name_py);
+			location.setName_py("");
 			if (!lon.isEmpty())
 				location.setLongitude(Double.parseDouble(lon));
 			if (!lat.isEmpty())
@@ -401,5 +402,20 @@ public class LocationRest {
 				.valueOf(latitude), Double.valueOf(longitude));
 
 		return list;
+	}
+	
+	@Path("/pinyin/{name_cn}")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getPinYinByNameCN(@PathParam("name_cn")
+	String name_cn) throws JSONException {
+		JSONObject json = new JSONObject();
+		if (null == name_cn) {
+			json.put(Constant.CODE, JSONCode.NO_DATA);
+			return Response.ok(json.toString()).build();
+		}
+		String name_py = Pinyin.getPinYin(name_cn);
+		json.put(Constant.DATA, name_py);
+		return Response.ok(json.toString()).build();
 	}
 }

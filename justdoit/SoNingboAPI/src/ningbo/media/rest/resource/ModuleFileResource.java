@@ -39,9 +39,6 @@ import ningbo.media.service.ModuleFileService;
 import ningbo.media.service.SystemUserService;
 import ningbo.media.util.Base64Image;
 import ningbo.media.util.MagickImageScale;
-import ningbo.media.util.Pinyin;
-import ningbo.media.util.StringUtil;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.context.annotation.Scope;
@@ -195,8 +192,9 @@ public class ModuleFileResource {
 			sb.append(tempPath).append(fileName);
 			
 			//String test1 = Base64Image.getImageBase64("C:/server/apache-tomcat-6.0.35/224") ;
-			
+			//1064408
 			//System.out.println(base64Value);
+			//System.out.println(testValue) ;
 			//String dealValue = StringUtil.replaceBlank(base64Value) ;
 			//System.out.println(dealValue);
 			//System.out.println(base64Value.trim());
@@ -409,20 +407,6 @@ public class ModuleFileResource {
 		return null;
 	}
 
-	@Path("/pinyin/{name_cn}")
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getPinYinByNameCN(@PathParam("name_cn")
-	String name_cn) throws JSONException {
-		JSONObject json = new JSONObject();
-		if (null == name_cn) {
-			json.put(Constant.CODE, JSONCode.NO_DATA);
-			return Response.ok(json.toString()).build();
-		}
-		String name_py = Pinyin.getPinYin(name_cn);
-		json.put(Constant.DATA, name_py);
-		return Response.ok(json.toString()).build();
-	}
 
 	@Path("/address/{latitude}/{longitude}")
 	@GET

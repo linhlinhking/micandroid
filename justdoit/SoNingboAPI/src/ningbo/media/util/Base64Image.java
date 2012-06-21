@@ -1,9 +1,10 @@
 package ningbo.media.util;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.RandomAccessFile;
+import java.io.OutputStream;
 
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
@@ -11,15 +12,16 @@ import sun.misc.BASE64Encoder;
 public class Base64Image {
 
 	public static void main(String args[]) {
-		String str = getImageBase64("C:\\images_test\\3.jpg");
+		String str = getImageBase64("C:\\images_test\\5.jpg");
 
-		//System.out.println(str);
-		System.out.println(StringUtil.replaceBlank(str));
-		//System.out.println(str.length()) ;//1064408
-		String temp = StringUtil.replaceBlank(str) ;
-		if (generateImage(temp,"C:/server/apache-tomcat-6.0.35/230")) {
-			System.out.println("ok");
-		}
+		System.out.println(str);
+		//String temp = StringUtil.replaceBlank(str) ;
+		//System.out.println(temp);
+		System.out.println(str.length()) ;//1064408
+		//boolean flag = generateImage(str,"C:/server/apache-tomcat-6.0.35/232");
+		//if (flag) {
+		//	System.out.println("ok");
+		//}
 
 	}
 
@@ -37,7 +39,7 @@ public class Base64Image {
 			in.read(data);
 			// 对字节数组Base64编码
 			BASE64Encoder encoder = new BASE64Encoder();
-			content = encoder.encode(data).trim() ;
+			content = encoder.encode(data) ;
 			in.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -47,7 +49,8 @@ public class Base64Image {
 	}
 
 	public static boolean generateImage(String imageCode, String savePath) {
-
+		
+		System.out.println(imageCode);
 		if (null == imageCode) {
 			return false;
 		}
@@ -55,19 +58,19 @@ public class Base64Image {
 		BASE64Decoder decoder = new BASE64Decoder();
 		try {
 			// Base64解码
-			byte[] b = decoder.decodeBuffer(imageCode.trim());
-			//for (int i = 0; i < b.length; ++i) {
-			//	if (b[i] < 0) {// 调整异常数据
-			//		b[i] += 256;
-			//	}
-			//}
-			RandomAccessFile inOut = new RandomAccessFile(savePath,"rw");
-			//OutputStream out = new FileOutputStream(savePath);
-			//out.write(b);
-			//out.flush();
-			//out.close();
-			inOut.write(b) ;
-			inOut.close();
+			byte[] b = decoder.decodeBuffer(imageCode);
+			for (int i = 0; i < b.length; ++i) {
+				if (b[i] < 0) {// 调整异常数据
+					b[i] += 256;
+				}
+			}
+			//RandomAccessFile inOut = new RandomAccessFile(savePath,"rw");
+			OutputStream out = new FileOutputStream(savePath);
+			out.write(b);
+			out.flush();
+			out.close();
+			//inOut.write(b) ;
+			//inOut.close();
 			return true;
 		} catch (Exception e) {
 			return false;

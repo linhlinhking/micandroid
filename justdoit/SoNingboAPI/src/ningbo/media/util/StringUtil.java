@@ -9,7 +9,7 @@ public class StringUtil {
 		String dest = "";
 		if (str != null) {
 			//\\s*|\t|\r|\n
-			Pattern p = Pattern.compile("\\s*|\t|\r|\n");
+			Pattern p = Pattern.compile("\\s*|\n");
 			Matcher m = p.matcher(str);
 			dest = m.replaceAll("");
 		}
@@ -18,6 +18,6 @@ public class StringUtil {
 
 	public static void main(String[] args) {
 
-		System.out.println(replaceBlank("just do it!"));
+		System.out.println(replaceBlank(" /Njust/n do/t it! "));
 	}
 }

@@ -1,10 +1,7 @@
 package ningbo.media.rest.util;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -264,21 +261,21 @@ public class FileHashCode {
 	 *            String copyPath
 	 * @return boolean
 	 */
-	@SuppressWarnings("unused")
 	private static void copyFile(String oldPath, String newPath) {
 		try {
-			int bytesum = 0;
+			//int bytesum = 0;
 			int byteread = 0;
 			File oldfile = new File(oldPath);
 			if (oldfile.exists()) { // 文件存在时
 				InputStream inStream = new FileInputStream(oldPath); // 读入原文件
 				FileOutputStream fs = new FileOutputStream(newPath);
-				byte[] buffer = new byte[1444];
+				byte[] buffer = new byte[1024];
 				while ((byteread = inStream.read(buffer)) != -1) {
-					bytesum += byteread;
+					//bytesum += byteread;
 					fs.write(buffer, 0, byteread);
 				}
 				inStream.close();
+				fs.close();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -287,33 +284,6 @@ public class FileHashCode {
 
 	}
 
-	public static InputStream getFileNameInputStream(String fileName) {
-		File file = new File(fileName);
-		FileInputStream inStream = null;
-		byte[] buffer = new byte[1024];
-		int len = 0;
-		try {
-			inStream = new FileInputStream(file);
-			ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-			if (file.exists()) {
-				while ((len = inStream.read(buffer)) != -1) {
-					outStream.write(buffer, 0, len);
-				}
-			}
-			 byte[] data = outStream.toByteArray();//得到文件的二进制数据
-		     InputStream is = new ByteArrayInputStream(data); 
-		     outStream.close();
-		     inStream.close();    
-		     return is;
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			return null ;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null ;
-		}
-	}
-	
 	
 	public static Map<String, Object> writeToFile(
 			HttpServletRequest request, String tempFilePath) {
@@ -329,6 +299,7 @@ public class FileHashCode {
 			// 同时生成原图的缩略图
 			File srcFile = new File(tempFilePath);
 
+			
 			try {
 				ResizeEnum[] resizes = ResizeEnum.values();
 				for (ResizeEnum re : resizes) {
@@ -378,7 +349,7 @@ public class FileHashCode {
 			sb.append(tempPath).append(uuid.substring(12));
 			
 			copyFile(tempFilePath, sb.toString());
-			delFile(tempFilePath);
+			//delFile(tempFilePath);
 			
 			return uuid;
 		} catch (Exception e) {

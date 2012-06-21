@@ -127,7 +127,7 @@ public class ModuleFileServiceImpl extends BaseServiceImpl<ModuleFile, Integer>
 	}
 
 	public boolean deleteModuleFileByUserId(Integer userId, String locationMd5) {
-		boolean flag = false ;
+		//boolean flag = false ;
 		
 		
 		return false;

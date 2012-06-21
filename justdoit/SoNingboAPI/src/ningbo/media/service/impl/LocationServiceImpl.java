@@ -57,7 +57,7 @@ public class LocationServiceImpl extends BaseServiceImpl<Location, Integer>
 	}
 
 	public List<LocationDetail> queryLoctionsByLat(Double latitude, Double longitude) {
-		double area = 0.0005;
+		double area = 0.0010;
 		double frontLat = latitude + area;
 		double backLat = latitude - area;
 		double frontlon = longitude + area;

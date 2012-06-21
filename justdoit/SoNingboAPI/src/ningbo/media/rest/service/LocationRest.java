@@ -385,7 +385,8 @@ public class LocationRest {
 		for (Location l : list) {
 			d = new LocationData();
 			d.setId(l.getId());
-			d.setName(l.getName_cn());
+			d.setName_cn(l.getName_cn());
+			d.setName_en(l.getName_en());
 
 			listData.add(d);
 		}

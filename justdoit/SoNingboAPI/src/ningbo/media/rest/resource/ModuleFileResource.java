@@ -238,8 +238,10 @@ public class ModuleFileResource {
 			json.put(Constant.FILEID, moduleFileId);
 			return Response.ok(json.toString()).build();
 		} catch (Exception ex) {
-			throw Jerseys.buildException(Status.INTERNAL_SERVER_ERROR, ex
-					.getMessage());
+			//throw Jerseys.buildException(Status.INTERNAL_SERVER_ERROR, ex
+			//		.getMessage());
+			ex.printStackTrace() ;
+			return Response.ok().build();
 		}
 
 	}

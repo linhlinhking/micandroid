@@ -61,15 +61,37 @@ public class LocationRest {
 		return locationService.getAll();
 	}
 
-	@Path("/show/{id : \\d+}")
+	@Path("/show/{id}")
 	@GET
 	@Produces( { MediaType.APPLICATION_JSON })
-	public Location getLocationById(@PathParam("id")
+	public LocationDetail getLocationById(@PathParam("id")
 	String id) {
-		if (id == null) {
-			return null;
+		try {
+			if (id == null) {
+				return null;
+			}
+			Location location = locationService.queryLocationByMd5(id);
+			if (null == location) {
+				return null;
+			}
+			LocationDetail detail = new LocationDetail();
+			detail.setMd5Value(location.getMd5Value()) ;
+			detail.setName_cn(location.getName_cn()) ;
+			detail.setName_en(location.getName_en()) ;
+			detail.setName_py(location.getName_py()) ;
+			detail.setAddress_cn(location.getAddress_cn()) ;
+			detail.setAddress_en(location.getName_en()) ;
+			detail.setLatitude(location.getLatitude()) ;
+			detail.setLongitude(location.getLongitude()) ;
+			detail.setTags_cn(location.getTags_cn()) ;
+			detail.setTags_en(location.getTags_en()) ;
+			
+			return detail;
+		} catch (Exception ex) {
+			ex.printStackTrace() ;
+			return null ;
 		}
-		return locationService.get(Integer.valueOf(id));
+		
 	}
 
 	@Path("/number")
@@ -222,22 +244,22 @@ public class LocationRest {
 				json.put(Constant.CODE, JSONCode.GLOBAL_KEYISNULL);
 				return Response.ok(json.toString()).build();
 
-			} 
+			}
 			if (!Constant.KEY.equals(key)) {
 				json.put(Constant.CODE, JSONCode.GLOBAL_KEYINPUTINVALID);
 				return Response.ok(json.toString()).build();
 			}
-			
+
 			String name_cn = form.getField("name_cn").getValue();
-			String name_en = TranslateUtil.getEnglishByChinese(name_cn) ;
-			String tags_cn = form.getField("tags_cn").getValue() ;
-			String tags_en = TranslateUtil.getEnglishByChinese(tags_cn) ;
-			
+			String name_en = TranslateUtil.getEnglishByChinese(name_cn);
+			String tags_cn = form.getField("tags_cn").getValue();
+			String tags_en = TranslateUtil.getEnglishByChinese(tags_cn);
+
 			String address_cn = form.getField("address_cn").getValue();
 			String telephone = form.getField("telephone").getValue();
 			String lon = form.getField("longitude").getValue();
 			String lat = form.getField("latitude").getValue();
-			String name_py = Pinyin.getPinYin(name_cn) ;
+			String name_py = Pinyin.getPinYin(name_cn);
 			String address_en = Pinyin.getPinYin(address_cn);
 			List<String> listValues = FieldsData.getValue(form
 					.getFields("category2_id"));
@@ -247,7 +269,7 @@ public class LocationRest {
 			StringBuffer sb = new StringBuffer();
 			String tempPath = FileUploadUtil.makeFileDir(null, request, true);
 			sb.append(tempPath).append(fileName);
-			
+
 			boolean flag = Base64Image
 					.generateImage(base64Value, sb.toString());
 			if (!flag) {
@@ -266,9 +288,9 @@ public class LocationRest {
 			location.setTelephone(telephone);
 			location.setPhoto_path(photo_path);
 			location.setName_py(name_py);
-			location.setTags_cn(tags_cn) ;
-			location.setTags_en(tags_en) ;
-			
+			location.setTags_cn(tags_cn);
+			location.setTags_en(tags_en);
+
 			if (!lon.isEmpty())
 				location.setLongitude(Double.parseDouble(lon));
 			if (!lat.isEmpty())
@@ -309,7 +331,7 @@ public class LocationRest {
 			return Response.ok(json.toString()).build();
 		}
 	}
-	
+
 	/**
 	 * @param form
 	 * @param request
@@ -329,69 +351,70 @@ public class LocationRest {
 				json.put(Constant.CODE, JSONCode.GLOBAL_KEYISNULL);
 				return Response.ok(json.toString()).build();
 
-			} 
+			}
 			if (!Constant.KEY.equals(key)) {
 				json.put(Constant.CODE, JSONCode.GLOBAL_KEYINPUTINVALID);
 				return Response.ok(json.toString()).build();
 			}
-			
-			String localId = form.getField("locationId").getValue() ;
-			if(null == localId){
+
+			String localId = form.getField("locationId").getValue();
+			if (null == localId) {
 				json.put(Constant.CODE, JSONCode.LOCATION_ID_INVALID);
 				return Response.ok(json.toString()).build();
 			}
-			Location location = locationService.get(Integer.valueOf(localId)) ;
-			if(null == location){
+			Location location = locationService.queryLocationByMd5(localId);
+			if (null == location) {
 				json.put(Constant.CODE, JSONCode.LOCATION_BASE64_NOEXISTS);
 				return Response.ok(json.toString()).build();
 			}
-			
+
 			String name_cn = form.getField("name_cn").getValue();
-			String name_en = TranslateUtil.getEnglishByChinese(name_cn) ;
-			String tags_cn = form.getField("tags_cn").getValue() ;
-			String tags_en = TranslateUtil.getEnglishByChinese(tags_cn) ;
-			
+			String name_en = TranslateUtil.getEnglishByChinese(name_cn);
+			String tags_cn = form.getField("tags_cn").getValue();
+			String tags_en = TranslateUtil.getEnglishByChinese(tags_cn);
+
 			String address_cn = form.getField("address_cn").getValue();
 			String telephone = form.getField("telephone").getValue();
-			//String lon = form.getField("longitude").getValue();
-			//String lat = form.getField("latitude").getValue();
-			String name_py = Pinyin.getPinYin(name_cn) ;
+			// String lon = form.getField("longitude").getValue();
+			// String lat = form.getField("latitude").getValue();
+			String name_py = Pinyin.getPinYin(name_cn);
 			String address_en = Pinyin.getPinYin(address_cn);
 			List<String> listValues = FieldsData.getValue(form
 					.getFields("category2_id"));
-			
-			//String base64Value = form.getField("base64Value").getValue();
 
-			//String fileName = String.valueOf(System.currentTimeMillis());
-			//StringBuffer sb = new StringBuffer();
-			//String tempPath = FileUploadUtil.makeFileDir(null, request, true);
-			//sb.append(tempPath).append(fileName);
-			
-			//boolean flag = Base64Image
-			//		.generateImage(base64Value, sb.toString());
-			//if (!flag) {
-			//	File file = new File(sb.toString());
-			//	file.delete();
-			//	json.put(Constant.CODE, JSONCode.MODULEFILE_BASE64_INVALID);
-			//	return Response.ok(json.toString()).build();
-			//}
-			//String photo_path = FileHashCode.writeBase64File(request, sb
-			//		.toString());
+			// String base64Value = form.getField("base64Value").getValue();
+
+			// String fileName = String.valueOf(System.currentTimeMillis());
+			// StringBuffer sb = new StringBuffer();
+			// String tempPath = FileUploadUtil.makeFileDir(null, request,
+			// true);
+			// sb.append(tempPath).append(fileName);
+
+			// boolean flag = Base64Image
+			// .generateImage(base64Value, sb.toString());
+			// if (!flag) {
+			// File file = new File(sb.toString());
+			// file.delete();
+			// json.put(Constant.CODE, JSONCode.MODULEFILE_BASE64_INVALID);
+			// return Response.ok(json.toString()).build();
+			// }
+			// String photo_path = FileHashCode.writeBase64File(request, sb
+			// .toString());
 
 			location.setName_cn(name_cn);
 			location.setName_en(name_en);
 			location.setAddress_cn(address_cn);
 			location.setAddress_en(address_en);
 			location.setTelephone(telephone);
-			//location.setPhoto_path(photo_path);
+			// location.setPhoto_path(photo_path);
 			location.setName_py(name_py);
-			location.setTags_cn(tags_cn) ;
-			location.setTags_en(tags_en) ;
-			
-			//if (!lon.isEmpty())
-			//	location.setLongitude(Double.parseDouble(lon));
-			//if (!lat.isEmpty())
-			//	location.setLatitude(Double.parseDouble(lat));
+			location.setTags_cn(tags_cn);
+			location.setTags_en(tags_en);
+
+			// if (!lon.isEmpty())
+			// location.setLongitude(Double.parseDouble(lon));
+			// if (!lat.isEmpty())
+			// location.setLatitude(Double.parseDouble(lat));
 
 			if (null == listValues || listValues.size() < 0) {
 				json.put(Constant.CODE, JSONCode.LOCATION_CATEGORY2ID_INVALID);
@@ -413,10 +436,10 @@ public class LocationRest {
 			}
 			location.setSecondCategorys(listSc);
 
-			//Integer locationId = locationService.save(location);
-			//String md5Value = MD5.calcMD5(String.valueOf(locationId));
-			//location = locationService.get(locationId);
-			//location.setMd5Value(md5Value);
+			// Integer locationId = locationService.save(location);
+			// String md5Value = MD5.calcMD5(String.valueOf(locationId));
+			// location = locationService.get(locationId);
+			// location.setMd5Value(md5Value);
 			locationService.update(location);
 
 			json.put(Constant.LOCATIONID, localId);
@@ -428,7 +451,6 @@ public class LocationRest {
 			return Response.ok(json.toString()).build();
 		}
 	}
-
 
 	/**
 	 * This method is judge whether the username and email is exists or not If
@@ -512,7 +534,7 @@ public class LocationRest {
 			d.setId(l.getId());
 			d.setName_cn(l.getName_cn());
 			d.setName_en(l.getName_en());
-			d.setMd5Value(l.getMd5Value()) ;
+			d.setMd5Value(l.getMd5Value());
 			listData.add(d);
 		}
 		return new LocationList(listData);
@@ -529,7 +551,7 @@ public class LocationRest {
 
 		return list;
 	}
-	
+
 	@Path("/pinyin/{name_cn}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -542,6 +564,26 @@ public class LocationRest {
 		}
 		String name_py = Pinyin.getPinYin(name_cn);
 		json.put(Constant.DATA, name_py);
+		return Response.ok(json.toString()).build();
+	}
+
+	@Path("/translate/{local}/{content}")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response translateByLanguage(@PathParam("local")
+	String local, @PathParam("content")
+	String content) throws JSONException {
+		JSONObject json = new JSONObject();
+		if (null == local) {
+			json.put(Constant.ERROR, "No Selected Language.");
+			return Response.ok(json.toString()).build();
+		}
+		if (null == content) {
+			json.put(Constant.ERROR, "No Translation Data.");
+			return Response.ok(json.toString()).build();
+		}
+		String temp = TranslateUtil.translationContent(content, local);
+		json.put(Constant.DATA, temp);
 		return Response.ok(json.toString()).build();
 	}
 }

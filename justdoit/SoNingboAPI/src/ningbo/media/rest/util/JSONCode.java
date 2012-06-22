@@ -30,6 +30,7 @@ public class JSONCode {
 	/**Locatioin-4*/
 	public static final String LOCATION_NOEXISTS = "20010" ; //位置不存在
 	
+	
 	/**Comment-5*/
 	public static final String COMMENT_THROWEXCEPTION = "40001" ;
 	public static final String COMMENT_NOEXISTS = "20011" ; //位置不存在

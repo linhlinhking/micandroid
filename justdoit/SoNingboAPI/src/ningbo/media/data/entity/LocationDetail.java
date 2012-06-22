@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlType(name = "location", propOrder = { "md5Value", "name_cn", "name_en", "address_cn",
-		"address_en", "latitude", "longitude","name_py" })
+		"address_en", "latitude", "longitude","name_py","tags_cn","tags_en" })
 @XmlRootElement(name = "data")
 public class LocationDetail {
 
@@ -23,6 +23,10 @@ public class LocationDetail {
 	private Double longitude;
 	
 	private String name_py ;
+	
+	private String tags_en ;
+	
+	private String tags_cn ;
 
 	public LocationDetail() {
 	}
@@ -89,6 +93,22 @@ public class LocationDetail {
 
 	public void setName_py(String name_py) {
 		this.name_py = name_py;
+	}
+
+	public String getTags_en() {
+		return tags_en;
+	}
+
+	public void setTags_en(String tags_en) {
+		this.tags_en = tags_en;
+	}
+
+	public String getTags_cn() {
+		return tags_cn;
+	}
+
+	public void setTags_cn(String tags_cn) {
+		this.tags_cn = tags_cn;
 	}
 
 	

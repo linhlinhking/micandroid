@@ -30,5 +30,6 @@ public class Constant {
 	public static final String DATA = "data" ;
 	
 	public static final Integer LIMIT = 10  ;
+	public static final String ERROR = "error" ;
 	
 }

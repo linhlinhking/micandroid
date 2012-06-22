@@ -72,5 +72,7 @@ public class JSONCode {
 	public static final String LOCATION_CATEGORY2ID_INVALID = "3" ;
 	public static final String LOCATION_CATEGORY_NOEXISTS = "4" ;
 	public static final String LOCATION_EXCEPTION = "5" ;
+	public static final String LOCATION_ID_INVALID = "6" ;
+	public static final String LOCATION_BASE64_NOEXISTS = "7" ;
 	
 }

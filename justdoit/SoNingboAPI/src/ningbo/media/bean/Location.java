@@ -56,6 +56,12 @@ public class Location implements Serializable {
 	@Column(name="latitude")
 	private Double latitude;
 	
+	@Column(name = "tags_cn")
+	private String tags_cn ;
+	
+	@Column(name="tags_en")
+	private String tags_en ;
+	
 	@Column(name="photo_path")
 	private String photo_path;
 	
@@ -237,6 +243,22 @@ public class Location implements Serializable {
 
 	public String getDescription_cn() {
 		return description_cn;
+	}
+
+	public String getTags_cn() {
+		return tags_cn;
+	}
+
+	public void setTags_cn(String tags_cn) {
+		this.tags_cn = tags_cn;
+	}
+
+	public String getTags_en() {
+		return tags_en;
+	}
+
+	public void setTags_en(String tags_en) {
+		this.tags_en = tags_en;
 	}
 
 	

@@ -387,7 +387,7 @@ public class LocationRest {
 			d.setId(l.getId());
 			d.setName_cn(l.getName_cn());
 			d.setName_en(l.getName_en());
-
+			d.setMd5Value(l.getMd5Value()) ;
 			listData.add(d);
 		}
 		return new LocationList(listData);

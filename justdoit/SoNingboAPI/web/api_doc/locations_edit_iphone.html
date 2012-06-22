@@ -9,12 +9,18 @@
 
 <body>
 	<!-- enctype="multipart/form-data"-->
-	<form name="form1" method="post" action="http://api.soningbo.com/resource/location/base64/add" enctype="multipart/form-data">
+	<form name="form1" method="post" action="http://api.soningbo.com/resource/location/base64/edit" enctype="multipart/form-data">
 		<p>
 
 			key<br> 
 			<label for="key"></label> 
 			<input type="text" name="key" id="key"> 
+			<br> 
+			<br> 
+			
+			location_id<br> 
+			<label for="key"></label> 
+			<input type="text" name="locationId" id="locationId"> 
 			<br> 
 			<br> 
 			<!-- 
@@ -46,16 +52,17 @@
 			<br> 
 			<br> 
 			
-			tags_cn<br>
-			<input type="text" name="tags_cn" id="tags_cn"> 
-			<br> 
-			<br> 
-			
 			telephone<br> 
 			<input type="text" name="telephone" id="telephone"> 
 			<br> 
 			<br>
+			
+			tags_cn<br>
+			<input type="text" name="tags_cn" id="tags_cn"> 
+			<br> 
+			<br>
 
+<!-- 
 			gps_lat<br>
 			<input type="text" name="latitude" id="latitude">
 			<br> 
@@ -64,16 +71,19 @@
 			<input type="text"	name="longitude" id="longitude"> 
 			<br> 
 			<br>
-			
+ -->
+ 
 			category2_id<br> 
 			<input type="text"	name="category2_id" id="category2_id"> 
 			<br> 
 			<br>
 			
+<!-- 
 			base64_Value<br> 
 			<textarea name="base64Value" id="base64Value"> </textarea>
 			<br> 
 			<br>
+ -->
 			
 			<!-- 
 			 photo<br>
@@ -94,7 +104,7 @@
 
 		<tr>
 			<td>url</td>
-			<td><a href="#" class="external free" rel="nofollow">http://api.soningbo.com/resource/location/base64/add</a>
+			<td><a href="#" class="external free" rel="nofollow">http://api.soningbo.com/resource/location/base64/edit</a>
 			</td>
 		</tr>
 		<tr>
@@ -129,10 +139,10 @@
 			<td>Authorized verification of API calls</td>
 		</tr>
 		<tr>
-			<td>name_en</td>
+			<td>locationId</td>
 			<td>true</td>
 			<td>String</td>
-			<td>Location English Name</td>
+			<td>The Location's Id</td>
 		</tr>
 		<tr>
 			<td>name_cn</td>
@@ -141,12 +151,6 @@
 			<td>Location Chinese Name</td>
 		</tr>
 
-		<tr>
-			<td>address_en</td>
-			<td>true</td>
-			<td>String</td>
-			<td>Location English Address</td>
-		</tr>
 		<tr>
 			<td>address_cn</td>
 			<td>true</td>
@@ -160,30 +164,7 @@
 			<td>String</td>
 			<td>Location Telephone</td>
 		</tr>
-		<tr>
-			<td>latitude</td>
-			<td>true</td>
-			<td>Double</td>
-			<td>Location's latitude</td>
-		</tr>
-		<tr>
-			<td>longitude</td>
-			<td>true</td>
-			<td>Double</td>
-			<td>Location's longitude</td>
-		</tr>
-		<tr>
-			<td>name_py</td>
-			<td>true</td>
-			<td>String</td>
-			<td>the pinyin of name_cn</td>
-		</tr>
-		<tr>
-			<td>base64Value</td>
-			<td>true</td>
-			<td>String</td>
-			<td>the base64Value of Image</td>
-		</tr>
+
 		<!-- 
 		<tr>
 			<td>photo_path</td>

@@ -3,11 +3,15 @@ package ningbo.media.data.entity;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlType(name = "location", propOrder = { "md5Value", "name_cn", "name_en", "address_cn",
-		"address_en", "latitude", "longitude","name_py","tags_cn","tags_en" })
+import ningbo.media.rest.dto.FirstCategoryData;
+
+@XmlType(name = "location", propOrder = { "locationId","md5Value", "name_cn", "name_en", "address_cn",
+		"address_en", "latitude", "longitude","name_py","tags_cn","tags_en","telephone","category2_id","firstCategoryData" })
 @XmlRootElement(name = "data")
 public class LocationDetail {
 
+	private Integer locationId ;
+	
 	private String md5Value;
 
 	private String name_cn;
@@ -27,6 +31,14 @@ public class LocationDetail {
 	private String tags_en ;
 	
 	private String tags_cn ;
+	
+	private String telephone ;
+	
+	private String category2_id;
+	
+	private FirstCategoryData firstCategoryData ;
+	
+	
 
 	public LocationDetail() {
 	}
@@ -109,6 +121,38 @@ public class LocationDetail {
 
 	public void setTags_cn(String tags_cn) {
 		this.tags_cn = tags_cn;
+	}
+
+	public Integer getLocationId() {
+		return locationId;
+	}
+
+	public void setLocationId(Integer locationId) {
+		this.locationId = locationId;
+	}
+
+	public String getTelephone() {
+		return telephone;
+	}
+
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
+	}
+
+	public String getCategory2_id() {
+		return category2_id;
+	}
+
+	public void setCategory2_id(String category2_id) {
+		this.category2_id = category2_id;
+	}
+
+	public FirstCategoryData getFirstCategoryData() {
+		return firstCategoryData;
+	}
+
+	public void setFirstCategoryData(FirstCategoryData firstCategoryData) {
+		this.firstCategoryData = firstCategoryData;
 	}
 
 	

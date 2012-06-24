@@ -39,6 +39,7 @@ import ningbo.media.service.ModuleFileService;
 import ningbo.media.service.SystemUserService;
 import ningbo.media.util.Base64Image;
 import ningbo.media.util.MagickImageScale;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.context.annotation.Scope;
@@ -159,17 +160,16 @@ public class ModuleFileResource {
 
 	@Path("/location/base64/upload")
 	@POST
-	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	// @Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addLoctionFileByBase64(FormDataMultiPart form, @Context
-	HttpServletRequest request) {
+	public Response addLoctionFileByBase64(@FormParam("key")
+	String key, @FormParam("locationId")
+	String locationId, @FormParam("imageBase64")
+	String imageBase64, @Context HttpServletRequest request) {
 		try {
 			JSONObject json = new JSONObject();
 			List<Location> listLocations = new ArrayList<Location>();
 			ModuleFile moduleFile = new ModuleFile();
-			String key = form.getField("key").getValue();
-			String locationId = form.getField("locationId").getValue();
-			String base64Value = form.getField("imageBase64").getValue();
 
 			if (!StringUtils.hasText(key)) {
 				json.put(Constant.CODE, JSONCode.KEYISNULL);
@@ -190,28 +190,28 @@ public class ModuleFileResource {
 			StringBuffer sb = new StringBuffer();
 			String tempPath = FileUploadUtil.makeFileDir(null, request, true);
 			sb.append(tempPath).append(fileName);
-			
-			//String test1 = Base64Image.getImageBase64("C:/server/apache-tomcat-6.0.35/224") ;
-			//1064408
-			//System.out.println(base64Value);
-			//System.out.println(testValue) ;
-			//String dealValue = StringUtil.replaceBlank(base64Value) ;
-			//System.out.println(dealValue);
-			//System.out.println(base64Value.trim());
-			boolean flag = Base64Image.generateImage(base64Value, sb
-					.toString());
-			
-			
+
+			// String test1 =
+			// Base64Image.getImageBase64("C:/server/apache-tomcat-6.0.35/224")
+			// ;
+			// 1064408
+			// System.out.println(base64Value);
+			// System.out.println(testValue) ;
+			// String dealValue = StringUtil.replaceBlank(base64Value) ;
+			// System.out.println(dealValue);
+			// System.out.println(base64Value.trim());
+			boolean flag = Base64Image
+					.generateImage(imageBase64, sb.toString());
+
 			// System.out.println(sb.toString());
-			//System.out.println(base64Value.length());// 1064408
+			// System.out.println(base64Value.length());// 1064408
 			if (!flag) {
 				File file = new File(sb.toString());
 				file.delete();
 				json.put(Constant.CODE, JSONCode.MODULEFILE_BASE64_INVALID);
 				return Response.ok(json.toString()).build();
 			}
-			
-			
+
 			ImageInformation inforImage = new ImageInformation();
 			Map<String, Object> m = FileHashCode.writeToFile(request, sb
 					.toString());
@@ -238,9 +238,9 @@ public class ModuleFileResource {
 			json.put(Constant.FILEID, moduleFileId);
 			return Response.ok(json.toString()).build();
 		} catch (Exception ex) {
-			//throw Jerseys.buildException(Status.INTERNAL_SERVER_ERROR, ex
-			//		.getMessage());
-			ex.printStackTrace() ;
+			// throw Jerseys.buildException(Status.INTERNAL_SERVER_ERROR, ex
+			// .getMessage());
+			ex.printStackTrace();
 			return Response.ok().build();
 		}
 
@@ -408,7 +408,6 @@ public class ModuleFileResource {
 
 		return null;
 	}
-
 
 	@Path("/address/{latitude}/{longitude}")
 	@GET

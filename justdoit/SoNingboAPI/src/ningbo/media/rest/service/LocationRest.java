@@ -8,6 +8,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -75,23 +76,23 @@ public class LocationRest {
 				return null;
 			}
 			LocationDetail detail = new LocationDetail();
-			detail.setMd5Value(location.getMd5Value()) ;
-			detail.setName_cn(location.getName_cn()) ;
-			detail.setName_en(location.getName_en()) ;
-			detail.setName_py(location.getName_py()) ;
-			detail.setAddress_cn(location.getAddress_cn()) ;
-			detail.setAddress_en(location.getName_en()) ;
-			detail.setLatitude(location.getLatitude()) ;
-			detail.setLongitude(location.getLongitude()) ;
-			detail.setTags_cn(location.getTags_cn()) ;
-			detail.setTags_en(location.getTags_en()) ;
-			
+			detail.setMd5Value(location.getMd5Value());
+			detail.setName_cn(location.getName_cn());
+			detail.setName_en(location.getName_en());
+			detail.setName_py(location.getName_py());
+			detail.setAddress_cn(location.getAddress_cn());
+			detail.setAddress_en(location.getName_en());
+			detail.setLatitude(location.getLatitude());
+			detail.setLongitude(location.getLongitude());
+			detail.setTags_cn(location.getTags_cn());
+			detail.setTags_en(location.getTags_en());
+
 			return detail;
 		} catch (Exception ex) {
-			ex.printStackTrace() ;
-			return null ;
+			ex.printStackTrace();
+			return null;
 		}
-		
+
 	}
 
 	@Path("/number")
@@ -234,11 +235,19 @@ public class LocationRest {
 	@POST
 	// @Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addLocationBase64(FormDataMultiPart form, @Context
+	public Response addLocationBase64(@FormParam("key")
+	String key, @FormParam("name_cn")
+	String name_cn, @FormParam("tags_cn")
+	String tags_cn, @FormParam("address_cn")
+	String address_cn, @FormParam("telephone")
+	String telephone, @FormParam("longitude")
+	String longitude, @FormParam("latitude")
+	String latitude, @FormParam("category2_id")
+	String category2_id, @FormParam("base64Value")
+	String base64Value, @Context
 	HttpServletRequest request) throws JSONException {
 		JSONObject json = new JSONObject();
 		try {
-			String key = form.getField("key").getValue();
 			Location location = new Location();
 			if (key.isEmpty()) {
 				json.put(Constant.CODE, JSONCode.GLOBAL_KEYISNULL);
@@ -250,20 +259,11 @@ public class LocationRest {
 				return Response.ok(json.toString()).build();
 			}
 
-			String name_cn = form.getField("name_cn").getValue();
 			String name_en = TranslateUtil.getEnglishByChinese(name_cn);
-			String tags_cn = form.getField("tags_cn").getValue();
 			String tags_en = TranslateUtil.getEnglishByChinese(tags_cn);
 
-			String address_cn = form.getField("address_cn").getValue();
-			String telephone = form.getField("telephone").getValue();
-			String lon = form.getField("longitude").getValue();
-			String lat = form.getField("latitude").getValue();
 			String name_py = Pinyin.getPinYin(name_cn);
 			String address_en = Pinyin.getPinYin(address_cn);
-			List<String> listValues = FieldsData.getValue(form
-					.getFields("category2_id"));
-			String base64Value = form.getField("base64Value").getValue();
 
 			String fileName = String.valueOf(System.currentTimeMillis());
 			StringBuffer sb = new StringBuffer();
@@ -291,29 +291,21 @@ public class LocationRest {
 			location.setTags_cn(tags_cn);
 			location.setTags_en(tags_en);
 
-			if (!lon.isEmpty())
-				location.setLongitude(Double.parseDouble(lon));
-			if (!lat.isEmpty())
-				location.setLatitude(Double.parseDouble(lat));
-
-			if (null == listValues || listValues.size() < 0) {
-				json.put(Constant.CODE, JSONCode.LOCATION_CATEGORY2ID_INVALID);
-				return Response.ok(json.toString()).build();
-			}
+			if (!longitude.isEmpty())
+				location.setLongitude(Double.parseDouble(longitude));
+			if (!latitude.isEmpty())
+				location.setLatitude(Double.parseDouble(latitude));
 
 			List<SecondCategory> listSc = new ArrayList<SecondCategory>();
-			for (String ids : listValues) {
-				SecondCategory sc = secondCategoryService.get(Integer
-						.valueOf(ids));
-				if (sc == null) {
-					json
-							.put(Constant.CODE,
-									JSONCode.LOCATION_CATEGORY_NOEXISTS);
-					Response.ok(json.toString()).build();
-				} else {
-					listSc.add(sc);
-				}
+			SecondCategory sc = secondCategoryService.get(Integer
+					.valueOf(category2_id));
+			if (sc == null) {
+				json.put(Constant.CODE, JSONCode.LOCATION_CATEGORY_NOEXISTS);
+				Response.ok(json.toString()).build();
+			} else {
+				listSc.add(sc);
 			}
+
 			location.setSecondCategorys(listSc);
 
 			Integer locationId = locationService.save(location);
@@ -342,11 +334,17 @@ public class LocationRest {
 	@POST
 	// @Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response editLocationBase64(FormDataMultiPart form, @Context
+	public Response editLocationBase64(@FormParam("key")
+	String key, @FormParam("locationId")
+	String locationId, @FormParam("name_cn")
+	String name_cn, @FormParam("tags_cn")
+	String tags_cn, @FormParam("address_cn")
+	String address_cn, @FormParam("telephone")
+	String telephone, @FormParam("category2_id")
+	String category2_id, @Context
 	HttpServletRequest request) throws JSONException {
 		JSONObject json = new JSONObject();
 		try {
-			String key = form.getField("key").getValue();
 			if (key.isEmpty()) {
 				json.put(Constant.CODE, JSONCode.GLOBAL_KEYISNULL);
 				return Response.ok(json.toString()).build();
@@ -357,30 +355,23 @@ public class LocationRest {
 				return Response.ok(json.toString()).build();
 			}
 
-			String localId = form.getField("locationId").getValue();
-			if (null == localId) {
+			if (null == locationId) {
 				json.put(Constant.CODE, JSONCode.LOCATION_ID_INVALID);
 				return Response.ok(json.toString()).build();
 			}
-			Location location = locationService.queryLocationByMd5(localId);
+			Location location = locationService.queryLocationByMd5(locationId);
 			if (null == location) {
 				json.put(Constant.CODE, JSONCode.LOCATION_BASE64_NOEXISTS);
 				return Response.ok(json.toString()).build();
 			}
 
-			String name_cn = form.getField("name_cn").getValue();
 			String name_en = TranslateUtil.getEnglishByChinese(name_cn);
-			String tags_cn = form.getField("tags_cn").getValue();
 			String tags_en = TranslateUtil.getEnglishByChinese(tags_cn);
 
-			String address_cn = form.getField("address_cn").getValue();
-			String telephone = form.getField("telephone").getValue();
 			// String lon = form.getField("longitude").getValue();
 			// String lat = form.getField("latitude").getValue();
 			String name_py = Pinyin.getPinYin(name_cn);
 			String address_en = Pinyin.getPinYin(address_cn);
-			List<String> listValues = FieldsData.getValue(form
-					.getFields("category2_id"));
 
 			// String base64Value = form.getField("base64Value").getValue();
 
@@ -416,24 +407,17 @@ public class LocationRest {
 			// if (!lat.isEmpty())
 			// location.setLatitude(Double.parseDouble(lat));
 
-			if (null == listValues || listValues.size() < 0) {
-				json.put(Constant.CODE, JSONCode.LOCATION_CATEGORY2ID_INVALID);
-				return Response.ok(json.toString()).build();
+			List<SecondCategory> listSc = new ArrayList<SecondCategory>();
+			SecondCategory sc = secondCategoryService.get(Integer
+					.valueOf(category2_id));
+			
+			if (sc == null) {
+				json.put(Constant.CODE, JSONCode.LOCATION_CATEGORY_NOEXISTS);
+				Response.ok(json.toString()).build();
+			} else {
+				listSc.add(sc);
 			}
 
-			List<SecondCategory> listSc = new ArrayList<SecondCategory>();
-			for (String ids : listValues) {
-				SecondCategory sc = secondCategoryService.get(Integer
-						.valueOf(ids));
-				if (sc == null) {
-					json
-							.put(Constant.CODE,
-									JSONCode.LOCATION_CATEGORY_NOEXISTS);
-					Response.ok(json.toString()).build();
-				} else {
-					listSc.add(sc);
-				}
-			}
 			location.setSecondCategorys(listSc);
 
 			// Integer locationId = locationService.save(location);
@@ -442,7 +426,7 @@ public class LocationRest {
 			// location.setMd5Value(md5Value);
 			locationService.update(location);
 
-			json.put(Constant.LOCATIONID, localId);
+			json.put(Constant.LOCATIONID, locationId);
 			json.put(Constant.CODE, JSONCode.SUCCESS);
 			return Response.ok(json.toString()).build();
 		} catch (Exception ex) {

@@ -18,11 +18,13 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import ningbo.media.bean.FirstCategory;
 import ningbo.media.bean.Location;
 import ningbo.media.bean.SecondCategory;
 import ningbo.media.data.api.LocationList;
 import ningbo.media.data.entity.LocationData;
 import ningbo.media.data.entity.LocationDetail;
+import ningbo.media.rest.dto.FirstCategoryData;
 import ningbo.media.rest.util.Constant;
 import ningbo.media.rest.util.FieldsData;
 import ningbo.media.rest.util.FileHashCode;
@@ -76,6 +78,7 @@ public class LocationRest {
 				return null;
 			}
 			LocationDetail detail = new LocationDetail();
+			detail.setLocationId(location.getId()) ;
 			detail.setMd5Value(location.getMd5Value());
 			detail.setName_cn(location.getName_cn());
 			detail.setName_en(location.getName_en());
@@ -86,6 +89,22 @@ public class LocationRest {
 			detail.setLongitude(location.getLongitude());
 			detail.setTags_cn(location.getTags_cn());
 			detail.setTags_en(location.getTags_en());
+			detail.setTelephone(location.getTelephone()) ;
+			List<SecondCategory> listSecondCategory = location.getSecondCategorys() ;
+			if(null != listSecondCategory && listSecondCategory.size() > 0){
+				SecondCategory sec = listSecondCategory.get(0) ;
+				detail.setCategory2_id(String.valueOf(sec.getId())) ;
+				FirstCategory firstData = sec.getFirstCategory() ;
+				FirstCategoryData tempData = new FirstCategoryData();
+				tempData.setId(firstData.getId()) ;
+				tempData.setName_cn(firstData.getName_cn()) ;
+				tempData.setName_en(firstData.getName_en()) ;
+				detail.setFirstCategoryData(tempData) ;
+			}else{
+				detail.setCategory2_id("") ;
+			}
+			
+			
 
 			return detail;
 		} catch (Exception ex) {

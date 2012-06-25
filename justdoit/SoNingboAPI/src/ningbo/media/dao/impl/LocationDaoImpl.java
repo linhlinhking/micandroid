@@ -5,7 +5,6 @@ import ningbo.media.bean.Location;
 import ningbo.media.core.dao.impl.BaseDaoImpl;
 import ningbo.media.core.page.Pagination;
 import ningbo.media.dao.LocationDao;
-import ningbo.media.rest.util.Constant;
 import ningbo.media.util.Pinyin;
 import org.springframework.stereotype.Repository;
 import ningbo.media.core.page.Finder ;
@@ -26,11 +25,11 @@ public class LocationDaoImpl extends BaseDaoImpl<Location, Integer> implements
 		StringBuffer sb = new StringBuffer() ;
 		sb.append("from Location m where 1=1 ") ;
 		if(Pinyin.isChinese(locationName)){
-			sb.append(" and m.name_cn like ? ") ;
+			sb.append(" and m.name_cn like ? or m.tags_cn like ? ") ;
 		}else{
-			sb.append(" and m.name_en like ? ") ;
+			sb.append(" and m.name_en like ? or m.tags_en like ? ") ;
 		}
-		List<Location> list = this.findByHql(sb.toString(), true, Constant.LIMIT, locationName) ;
+		List<Location> list = this.findByHql(sb.toString(), true, null, locationName,locationName) ;
 		return list ;
 	}
 

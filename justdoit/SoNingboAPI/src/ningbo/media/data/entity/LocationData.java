@@ -9,6 +9,11 @@ public class LocationData implements EntityData {
 	private String name_en;
 	
 	private String md5Value ;
+	
+	private String tags_en ;
+	
+	private String tags_cn ;
+	
 
 	public Integer getId() {
 		return id;
@@ -40,6 +45,22 @@ public class LocationData implements EntityData {
 
 	public void setMd5Value(String md5Value) {
 		this.md5Value = md5Value;
+	}
+
+	public String getTags_en() {
+		return tags_en;
+	}
+
+	public void setTags_en(String tags_en) {
+		this.tags_en = tags_en;
+	}
+
+	public String getTags_cn() {
+		return tags_cn;
+	}
+
+	public void setTags_cn(String tags_cn) {
+		this.tags_cn = tags_cn;
 	}
 	
 	

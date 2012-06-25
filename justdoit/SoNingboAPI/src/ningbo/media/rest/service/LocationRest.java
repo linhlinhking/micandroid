@@ -538,6 +538,8 @@ public class LocationRest {
 			d.setName_cn(l.getName_cn());
 			d.setName_en(l.getName_en());
 			d.setMd5Value(l.getMd5Value());
+			d.setTags_en(l.getTags_en()) ;
+			d.setTags_cn(l.getTags_cn()) ;
 			listData.add(d);
 		}
 		return new LocationList(listData);

@@ -90,6 +90,13 @@ public class LocationRest {
 			detail.setTags_cn(location.getTags_cn());
 			detail.setTags_en(location.getTags_en());
 			detail.setTelephone(location.getTelephone());
+			if(null == location.getPhoto_path() ){
+				detail.setPhoto_path("0") ;
+			}else{
+				detail.setPhoto_path(location.getPhoto_path()) ;
+			}
+			
+			
 			List<SecondCategory> listSecondCategory = location
 					.getSecondCategorys();
 			if (null != listSecondCategory && listSecondCategory.size() > 0) {
@@ -539,6 +546,8 @@ public class LocationRest {
 			d.setMd5Value(l.getMd5Value());
 			d.setTags_en(l.getTags_en());
 			d.setTags_cn(l.getTags_cn());
+			
+			
 			listData.add(d);
 		}
 		return new LocationList(listData);
@@ -547,27 +556,22 @@ public class LocationRest {
 	@Path("/nearby/{latitude}/{longitude}")
 	@GET
 	@Produces( { MediaType.APPLICATION_JSON })
-	public Response getNearByLocations(@PathParam("latitude")
+	public List<LocationDetail> getNearByLocations(@PathParam("latitude")
 	String latitude, @PathParam("longitude")
 	String longitude) throws JSONException {
-		// List<LocationDetail>
-		JSONObject json = new JSONObject();
 		try {
 			if (null == latitude || null == longitude) {
-				json.put(Constant.CODE, JSONCode.LOCATION_LATITUDE_IS_NULL);
-				return Response.ok(json.toString()).build();
+				return null;
 			}
 			List<LocationDetail> list = locationService.queryLoctionsByLat(Double
 					.valueOf(latitude), Double.valueOf(longitude));
 			if(null == list || list.size() < 0){
-				json.put(Constant.CODE, JSONCode.LOCATION_NEARBY_NODATA);
-				return Response.ok(json.toString()).build();
+				return null;
 			}
-			return Response.ok(list).build() ;
+			return list;
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			json.put(Constant.CODE, JSONCode.LOCATION_EXCEPTION);
-			return Response.ok(json.toString()).build();
+			return null;
 		}
 	}
 

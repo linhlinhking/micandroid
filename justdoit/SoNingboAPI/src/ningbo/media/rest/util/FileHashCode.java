@@ -311,11 +311,11 @@ public class FileHashCode {
 					Integer width = Integer.valueOf(tmps[0]);
 					Integer height = Integer.valueOf(tmps[1]);
 					if (width == height) {
-						MagickImageScale.resizeFix(srcFile, destFile, width,
-								height, false);
+						//MagickImageScale.resizeFix(srcFile, destFile, width,
+						//		height, false);
 					} else {
-						MagickImageScale.resizeFix(srcFile, destFile, width,
-								800);
+						//MagickImageScale.resizeFix(srcFile, destFile, width,
+						//		800);
 					}
 
 				}
@@ -327,7 +327,7 @@ public class FileHashCode {
 					.getImageInformation(tempFilePath);
 			map.put(Constant.UUID, uuid);
 
-			delFile(tempFilePath);
+			//delFile(tempFilePath);
 			
 			return map;
 		} catch (Exception e) {

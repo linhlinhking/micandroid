@@ -28,19 +28,21 @@ public class ImageDetailInformation {
 		Map<String, Object> map = new HashMap<String, Object>(6);
 		File imageFile = new File(imagePath);
 		try {
-			ExifAnalyzer exif = ExifAnalyzer.create(imageFile) ;
-			Geolocation loc = exif.getGeolocation() ;
-			Date takeTime = exif.getDateTime(TimeZone.getDefault());
-			String formatTemp = DateUtil.date2String(takeTime, "yyyy-MM-dd HH:mm:ss") ;
 			FileInputStream fis = new FileInputStream(imageFile);
 			BufferedImage buff = ImageIO.read(imageFile);
-			
 			map.put(Constant.WIDTH, buff.getWidth() * 1L);
 			map.put(Constant.HEIGHT, buff.getHeight() * 1L);
 			map.put(Constant.FILESIZE, imageFile.length());
-			map.put(Constant.LATITUDE, loc.getLatitude()) ;
-			map.put(Constant.LONGITUDE, loc.getLongitude()) ;
-			map.put(Constant.TAKE_PHOTO_DATE, formatTemp) ;
+			
+			ExifAnalyzer exif = ExifAnalyzer.create(imageFile) ;
+			if(null != exif){
+				Geolocation loc = exif.getGeolocation() ;
+				Date takeTime = exif.getDateTime(TimeZone.getDefault());
+				String formatTemp = DateUtil.date2String(takeTime, "yyyy-MM-dd HH:mm:ss") ;
+				map.put(Constant.LATITUDE, loc.getLatitude()) ;
+				map.put(Constant.LONGITUDE, loc.getLongitude()) ;
+				map.put(Constant.TAKE_PHOTO_DATE, formatTemp) ;
+			}
 			fis.close();
 		} catch (FileNotFoundException e) {
 			map = null;

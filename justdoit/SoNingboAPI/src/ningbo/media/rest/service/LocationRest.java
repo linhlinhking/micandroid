@@ -78,7 +78,7 @@ public class LocationRest {
 				return null;
 			}
 			LocationDetail detail = new LocationDetail();
-			detail.setLocationId(location.getId()) ;
+			detail.setLocationId(location.getId());
 			detail.setMd5Value(location.getMd5Value());
 			detail.setName_cn(location.getName_cn());
 			detail.setName_en(location.getName_en());
@@ -89,22 +89,21 @@ public class LocationRest {
 			detail.setLongitude(location.getLongitude());
 			detail.setTags_cn(location.getTags_cn());
 			detail.setTags_en(location.getTags_en());
-			detail.setTelephone(location.getTelephone()) ;
-			List<SecondCategory> listSecondCategory = location.getSecondCategorys() ;
-			if(null != listSecondCategory && listSecondCategory.size() > 0){
-				SecondCategory sec = listSecondCategory.get(0) ;
-				detail.setCategory2_id(String.valueOf(sec.getId())) ;
-				FirstCategory firstData = sec.getFirstCategory() ;
+			detail.setTelephone(location.getTelephone());
+			List<SecondCategory> listSecondCategory = location
+					.getSecondCategorys();
+			if (null != listSecondCategory && listSecondCategory.size() > 0) {
+				SecondCategory sec = listSecondCategory.get(0);
+				detail.setCategory2_id(String.valueOf(sec.getId()));
+				FirstCategory firstData = sec.getFirstCategory();
 				FirstCategoryData tempData = new FirstCategoryData();
-				tempData.setId(firstData.getId()) ;
-				tempData.setName_cn(firstData.getName_cn()) ;
-				tempData.setName_en(firstData.getName_en()) ;
-				detail.setFirstCategoryData(tempData) ;
-			}else{
-				detail.setCategory2_id("") ;
+				tempData.setId(firstData.getId());
+				tempData.setName_cn(firstData.getName_cn());
+				tempData.setName_en(firstData.getName_en());
+				detail.setFirstCategoryData(tempData);
+			} else {
+				detail.setCategory2_id("");
 			}
-			
-			
 
 			return detail;
 		} catch (Exception ex) {
@@ -429,7 +428,7 @@ public class LocationRest {
 			List<SecondCategory> listSc = new ArrayList<SecondCategory>();
 			SecondCategory sc = secondCategoryService.get(Integer
 					.valueOf(category2_id));
-			
+
 			if (sc == null) {
 				json.put(Constant.CODE, JSONCode.LOCATION_CATEGORY_NOEXISTS);
 				Response.ok(json.toString()).build();
@@ -538,8 +537,8 @@ public class LocationRest {
 			d.setName_cn(l.getName_cn());
 			d.setName_en(l.getName_en());
 			d.setMd5Value(l.getMd5Value());
-			d.setTags_en(l.getTags_en()) ;
-			d.setTags_cn(l.getTags_cn()) ;
+			d.setTags_en(l.getTags_en());
+			d.setTags_cn(l.getTags_cn());
 			listData.add(d);
 		}
 		return new LocationList(listData);
@@ -548,13 +547,28 @@ public class LocationRest {
 	@Path("/nearby/{latitude}/{longitude}")
 	@GET
 	@Produces( { MediaType.APPLICATION_JSON })
-	public List<LocationDetail> getNearByLocations(@PathParam("latitude")
+	public Response getNearByLocations(@PathParam("latitude")
 	String latitude, @PathParam("longitude")
-	String longitude) {
-		List<LocationDetail> list = locationService.queryLoctionsByLat(Double
-				.valueOf(latitude), Double.valueOf(longitude));
-
-		return list;
+	String longitude) throws JSONException {
+		// List<LocationDetail>
+		JSONObject json = new JSONObject();
+		try {
+			if (null == latitude || null == longitude) {
+				json.put(Constant.CODE, JSONCode.LOCATION_LATITUDE_IS_NULL);
+				return Response.ok(json.toString()).build();
+			}
+			List<LocationDetail> list = locationService.queryLoctionsByLat(Double
+					.valueOf(latitude), Double.valueOf(longitude));
+			if(null == list || list.size() < 0){
+				json.put(Constant.CODE, JSONCode.LOCATION_NEARBY_NODATA);
+				return Response.ok(json.toString()).build();
+			}
+			return Response.ok(list).build() ;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			json.put(Constant.CODE, JSONCode.LOCATION_EXCEPTION);
+			return Response.ok(json.toString()).build();
+		}
 	}
 
 	@Path("/pinyin/{name_cn}")

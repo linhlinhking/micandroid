@@ -14,6 +14,7 @@ public class LocationData implements EntityData {
 	
 	private String tags_cn ;
 	
+	
 
 	public Integer getId() {
 		return id;

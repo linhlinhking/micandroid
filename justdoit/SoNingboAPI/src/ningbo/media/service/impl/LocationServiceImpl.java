@@ -79,6 +79,11 @@ public class LocationServiceImpl extends BaseServiceImpl<Location, Integer>
 				detail.setLatitude(loc.getLatitude()) ;
 				detail.setLongitude(loc.getLongitude()) ;
 				detail.setName_py(loc.getName_py()) ;
+				if(null == loc.getPhoto_path()){
+					detail.setPhoto_path("0") ;
+				}else{
+					detail.setPhoto_path(loc.getPhoto_path()) ;
+				}
 				
 				datas.add(detail) ;
 			}

@@ -49,8 +49,6 @@ public class Base64Image {
 	}
 
 	public static boolean generateImage(String imageCode, String savePath) {
-		
-		System.out.println(imageCode);
 		if (null == imageCode) {
 			return false;
 		}

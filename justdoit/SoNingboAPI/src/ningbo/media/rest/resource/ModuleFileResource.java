@@ -25,7 +25,6 @@ import ningbo.media.bean.ImageInformation;
 import ningbo.media.bean.Location;
 import ningbo.media.bean.ModuleFile;
 import ningbo.media.bean.SystemUser;
-import ningbo.media.proxy.RequestURL;
 import ningbo.media.rest.dto.ModuleFileData;
 import ningbo.media.rest.util.Constant;
 import ningbo.media.rest.util.FileHashCode;
@@ -66,7 +65,6 @@ public class ModuleFileResource {
 	@Resource
 	private ImageInformationService imageInformationService;
 
-	private static final String SERVICE_API_URL = "http://maps.googleapis.com/maps/api/geocode/json?";
 
 	@Path("/show/{fileId}")
 	@GET
@@ -137,6 +135,16 @@ public class ModuleFileResource {
 					.toString()));
 			inforImage.setSize(Long
 					.valueOf(m.get(Constant.FILESIZE).toString()));
+			
+			if(null != m.get(Constant.LATITUDE)){
+				inforImage.setLatitude(Double.valueOf(m.get(Constant.LATITUDE).toString())) ;
+			}
+			if(null != m.get(Constant.LONGITUDE)){
+				inforImage.setLongitude(Double.valueOf(m.get(Constant.LONGITUDE).toString())) ;
+			}
+			if(null != m.get(Constant.TAKE_PHOTO_DATE)){
+				inforImage.setTakePhotoDate(m.get(Constant.TAKE_PHOTO_DATE).toString()) ;
+			}
 
 			String uuid = String.valueOf(m.get(Constant.UUID));
 			imageInformationService.save(inforImage);
@@ -160,7 +168,6 @@ public class ModuleFileResource {
 
 	@Path("/location/base64/upload")
 	@POST
-	// @Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addLoctionFileByBase64(@FormParam("key")
 	String key, @FormParam("locationId")
@@ -191,20 +198,9 @@ public class ModuleFileResource {
 			String tempPath = FileUploadUtil.makeFileDir(null, request, true);
 			sb.append(tempPath).append(fileName);
 
-			// String test1 =
-			// Base64Image.getImageBase64("C:/server/apache-tomcat-6.0.35/224")
-			// ;
-			// 1064408
-			// System.out.println(base64Value);
-			// System.out.println(testValue) ;
-			// String dealValue = StringUtil.replaceBlank(base64Value) ;
-			// System.out.println(dealValue);
-			// System.out.println(base64Value.trim());
 			boolean flag = Base64Image
 					.generateImage(imageBase64, sb.toString());
 
-			// System.out.println(sb.toString());
-			// System.out.println(base64Value.length());// 1064408
 			if (!flag) {
 				File file = new File(sb.toString());
 				file.delete();
@@ -222,6 +218,16 @@ public class ModuleFileResource {
 					.toString()));
 			inforImage.setSize(Long
 					.valueOf(m.get(Constant.FILESIZE).toString()));
+			if(null != m.get(Constant.LATITUDE)){
+				inforImage.setLatitude(Double.valueOf(m.get(Constant.LATITUDE).toString())) ;
+			}
+			if(null != m.get(Constant.LONGITUDE)){
+				inforImage.setLongitude(Double.valueOf(m.get(Constant.LONGITUDE).toString())) ;
+			}
+			if(null != m.get(Constant.TAKE_PHOTO_DATE)){
+				inforImage.setTakePhotoDate(m.get(Constant.TAKE_PHOTO_DATE).toString()) ;
+			}
+			
 
 			String uuid = String.valueOf(m.get(Constant.UUID));
 			imageInformationService.save(inforImage);
@@ -231,17 +237,14 @@ public class ModuleFileResource {
 			moduleFile.setCreateTime(new Date());
 			moduleFile.setImageInfo(inforImage);
 			moduleFile.setLocations(listLocations);
-			// moduleFile.setUploaderId(uploaderId);
 
 			Integer moduleFileId = moduleFileService.save(moduleFile);
 			json.put(Constant.CODE, JSONCode.SUCCESS);
 			json.put(Constant.FILEID, moduleFileId);
 			return Response.ok(json.toString()).build();
 		} catch (Exception ex) {
-			// throw Jerseys.buildException(Status.INTERNAL_SERVER_ERROR, ex
-			// .getMessage());
-			ex.printStackTrace();
-			return Response.ok().build();
+			throw Jerseys.buildException(Status.INTERNAL_SERVER_ERROR, ex
+			.getMessage());
 		}
 
 	}
@@ -261,9 +264,7 @@ public class ModuleFileResource {
 			ModuleFile moduleFile = new ModuleFile();
 			String key = form.getField("key").getValue();
 			String locationId = form.getField("locationId").getValue();// md5
-			// value
-			// String uploaderId = form.getField("uploaderId").getValue();
-
+			
 			if (!StringUtils.hasText(key)) {
 				json.put(Constant.CODE, JSONCode.KEYISNULL);
 				return Response.ok(json.toString()).build();
@@ -271,15 +272,6 @@ public class ModuleFileResource {
 				json.put(Constant.CODE, JSONCode.KEYINPUTINVALID);
 				return Response.ok(json.toString()).build();
 			}
-
-			// SystemUser sysUser =
-			// systemUserService.getSystemUserByMd5Value(uploaderId) ;
-			// SystemUser sysUser = systemUserService.get(Integer
-			// .valueOf(uploaderId));
-			// if (null == sysUser) {
-			// json.put(Constant.CODE, JSONCode.MODULEFILE_USER_NOEXISTS);
-			// return Response.ok(json.toString()).build();
-			// }
 
 			Location loc = locationService.queryLocationByMd5(locationId);
 			if (null == loc) {
@@ -303,7 +295,15 @@ public class ModuleFileResource {
 					.toString()));
 			inforImage.setSize(Long
 					.valueOf(m.get(Constant.FILESIZE).toString()));
-
+			if(null != m.get(Constant.LATITUDE)){
+				inforImage.setLatitude(Double.valueOf(m.get(Constant.LATITUDE).toString())) ;
+			}
+			if(null != m.get(Constant.LONGITUDE)){
+				inforImage.setLongitude(Double.valueOf(m.get(Constant.LONGITUDE).toString())) ;
+			}
+			if(null != m.get(Constant.TAKE_PHOTO_DATE)){
+				inforImage.setTakePhotoDate(m.get(Constant.TAKE_PHOTO_DATE).toString()) ;
+			}
 			String uuid = String.valueOf(m.get(Constant.UUID));
 			imageInformationService.save(inforImage);
 
@@ -312,7 +312,6 @@ public class ModuleFileResource {
 			moduleFile.setCreateTime(new Date());
 			moduleFile.setImageInfo(inforImage);
 			moduleFile.setLocations(listLocations);
-			// moduleFile.setUploaderId(uploaderId);
 
 			Integer moduleFileId = moduleFileService.save(moduleFile);
 			json.put(Constant.CODE, JSONCode.SUCCESS);
@@ -409,24 +408,5 @@ public class ModuleFileResource {
 		return null;
 	}
 
-	@Path("/address/{latitude}/{longitude}")
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAddresByLatLng(@PathParam("latitude")
-	Double latitude, @PathParam("longitude")
-	Double longitude) {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append(SERVICE_API_URL).append("sensor=false&")
-				.append("latlng=").append(latitude).append(",").append(
-						longitude);
-		RequestURL req = new RequestURL();
-		try {
-			req.get(buffer.toString(), null);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
 
 }

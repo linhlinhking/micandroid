@@ -12,6 +12,9 @@ public class Constant {
 	public static final String WIDTH = "w" ;
 	public static final String HEIGHT = "h" ;
 	public static final String FILESIZE = "s" ;
+	public static final String LATITUDE = "lat" ;
+	public static final String LONGITUDE  = "lon" ;
+	public static final String TAKE_PHOTO_DATE = "takeDate" ;
 	public static final String UUID = "uuid" ;
 	public static final String CODE = "code" ;
 	public static final String FILEID = "fileId" ;

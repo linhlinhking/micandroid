@@ -1,6 +1,9 @@
 package ningbo.media.rest.util;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -48,6 +51,23 @@ public class FileUploadUtil {
 				uuid.substring(4, 8)).append(FILE_SEPARATOR).append(
 				uuid.substring(8, 12)).append(FILE_SEPARATOR);
 		return sb.toString();
+	}
+	
+	public static String copy(InputStream inputstream,String newPath){
+		try{
+			OutputStream out = new FileOutputStream(new File(newPath));
+			int read = 0;
+			byte[] bytes = new byte[1024] ;
+			while((read = inputstream.read(bytes)) != -1){
+				out.write(bytes,0,read) ;
+			}
+			
+			out.close();
+		}catch(Exception ex){
+			ex.printStackTrace() ;
+			return null ;
+		}
+		return newPath ;
 	}
 
 }

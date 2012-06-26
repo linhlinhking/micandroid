@@ -3,16 +3,12 @@ package ningbo.media.rest.util;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
-
-import magick.MagickException;
 import ningbo.media.util.MagickImageScale;
 import ningbo.media.util.Resources;
 
@@ -159,6 +155,7 @@ public class FileHashCode {
 		}
 		return dir;
 	}
+	
 
 	/**
 	 * @param uploadedInputStream
@@ -168,7 +165,7 @@ public class FileHashCode {
 	 */
 	public static Map<String, Object> writeToFile(
 			InputStream uploadedInputStream, String uploadedFileLocation) {
-		Map<String, Object> map = new HashMap<String, Object>(4);
+		Map<String, Object> map = new HashMap<String, Object>(7);
 		try {
 			OutputStream out = new FileOutputStream(new File(
 					uploadedFileLocation));
@@ -211,7 +208,7 @@ public class FileHashCode {
 					}
 
 				}
-			} catch (MagickException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 
@@ -223,7 +220,7 @@ public class FileHashCode {
 			out.flush();
 			out.close();
 			return map;
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
@@ -287,7 +284,7 @@ public class FileHashCode {
 	
 	public static Map<String, Object> writeToFile(
 			HttpServletRequest request, String tempFilePath) {
-		Map<String, Object> map = new HashMap<String, Object>(4);
+		Map<String, Object> map = new HashMap<String, Object>(7);
 		try {
 			String uuid = getFileMD5(tempFilePath);
 			String tempPath = FileUploadUtil.makeFileDir(uuid, request, false);
@@ -322,7 +319,7 @@ public class FileHashCode {
 					}
 
 				}
-			} catch (MagickException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 
@@ -333,7 +330,7 @@ public class FileHashCode {
 			delFile(tempFilePath);
 			
 			return map;
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}

@@ -25,6 +25,8 @@ public class ImageInformation {
 	
 	private Double latitude ;
 	
+	private String takePhotoDate ;
+	
 	
 	public ImageInformation(){}
 	
@@ -85,6 +87,16 @@ public class ImageInformation {
 
 	public void setLatitude(Double latitude) {
 		this.latitude = latitude;
+	}
+
+
+	public String getTakePhotoDate() {
+		return takePhotoDate;
+	}
+
+
+	public void setTakePhotoDate(String takePhotoDate) {
+		this.takePhotoDate = takePhotoDate;
 	}
 
 	

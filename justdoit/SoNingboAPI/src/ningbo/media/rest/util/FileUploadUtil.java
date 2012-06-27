@@ -44,7 +44,7 @@ public class FileUploadUtil {
 		return buffer.toString();
 	}
 
-	private static String getUuidPath(String uuid) {
+	public static String getUuidPath(String uuid) {
 		StringBuffer sb = new StringBuffer();
 		sb.append(Constant.FOLDER).append(FILE_SEPARATOR).append(
 				uuid.substring(0, 4)).append(FILE_SEPARATOR).append(

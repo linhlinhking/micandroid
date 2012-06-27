@@ -18,4 +18,6 @@ public interface ModuleFileService extends BaseService<ModuleFile,Integer> {
 	
 	public boolean deleteModuleFileByUserId(Integer userId,String locationMd5);
 	
+	public boolean deleteModuleFile(Integer id);
+	
 }

@@ -29,7 +29,7 @@ public class LocationDaoImpl extends BaseDaoImpl<Location, Integer> implements
 		}else{
 			sb.append(" and m.name_en like ? or m.tags_en like ? ") ;
 		}
-		List<Location> list = this.findByHql(sb.toString(), true, null, locationName,locationName) ;
+		List<Location> list = findByHql(sb.toString(), true, null, locationName,locationName) ;
 		return list ;
 	}
 

@@ -311,16 +311,17 @@ public class FileHashCode {
 					Integer width = Integer.valueOf(tmps[0]);
 					Integer height = Integer.valueOf(tmps[1]);
 					if (width == height) {
-						//MagickImageScale.resizeFix(srcFile, destFile, width,
-						//		height, false);
+						MagickImageScale.resizeFix(srcFile, destFile, width,
+								height, false);
 					} else {
-						//MagickImageScale.resizeFix(srcFile, destFile, width,
-						//		800);
+						MagickImageScale.resizeFix(srcFile, destFile, width,
+								800);
 					}
 
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+				return null;
 			}
 
 			map = ImageDetailInformation
@@ -346,8 +347,35 @@ public class FileHashCode {
 			sb.append(tempPath).append(uuid.substring(12));
 			
 			copyFile(tempFilePath, sb.toString());
-			//delFile(tempFilePath);
+			File srcFile = new File(tempFilePath);
+			try {
+				ResizeEnum[] resizes = ResizeEnum.values();
+				for (ResizeEnum re : resizes) {
+					StringBuffer temp = new StringBuffer();
+					temp.append(tempPath).append(uuid.substring(12))
+							.append("-");
+					String tmp = re.getName();
+					String[] tmps = tmp.split("x");
+
+					temp.append(tmp);
+					File destFile = new File(temp.toString());
+					Integer width = Integer.valueOf(tmps[0]);
+					Integer height = Integer.valueOf(tmps[1]);
+					if (width == height) {
+						MagickImageScale.resizeFix(srcFile, destFile, width,
+								height, false);
+					} else {
+						MagickImageScale.resizeFix(srcFile, destFile, width,
+								800);
+					}
+
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
 			
+			delFile(tempFilePath);
 			return uuid;
 		} catch (Exception e) {
 			e.printStackTrace();

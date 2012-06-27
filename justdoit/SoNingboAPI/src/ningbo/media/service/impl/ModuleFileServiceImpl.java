@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import ningbo.media.bean.ImageInformation;
 import ningbo.media.bean.ModuleFile;
 import ningbo.media.core.service.impl.BaseServiceImpl;
+import ningbo.media.dao.ImageInformationDao;
 import ningbo.media.dao.ModuleFileDao;
 import ningbo.media.rest.dto.ModuleFileData;
 import ningbo.media.service.ModuleFileService;
@@ -22,6 +23,9 @@ public class ModuleFileServiceImpl extends BaseServiceImpl<ModuleFile, Integer>
 
 	@Resource
 	private ModuleFileDao moduleFileDao;
+	
+	@Resource
+	private ImageInformationDao imageInformationDao ;
 
 	@Autowired
 	public ModuleFileServiceImpl(@Qualifier("moduleFileDao")
@@ -131,6 +135,20 @@ public class ModuleFileServiceImpl extends BaseServiceImpl<ModuleFile, Integer>
 		
 		
 		return false;
+	}
+
+	public boolean deleteModuleFile(Integer id) {
+		boolean flag = false ;
+		try{
+			ModuleFile moduleFile = moduleFileDao.get(id) ;
+			ImageInformation info = moduleFile.getImageInfo() ;
+			imageInformationDao.delete(info) ;
+			moduleFileDao.delete(moduleFile) ;
+			flag = true ;
+		}catch(Exception ex){
+			ex.printStackTrace() ;
+		}
+		return flag;
 	}
 
 }

@@ -193,13 +193,15 @@ public class ModuleFileResource {
 			}
 			listLocations.add(loc);
 
+			
 			String fileName = String.valueOf(System.currentTimeMillis());
 			StringBuffer sb = new StringBuffer();
 			String tempPath = FileUploadUtil.makeFileDir(null, request, true);
 			sb.append(tempPath).append(fileName);
 
+			String tempBase64 = imageBase64.replaceAll(" ", "+") ;
 			boolean flag = Base64Image
-					.generateImage(imageBase64, sb.toString());
+					.generateImage(tempBase64, sb.toString());
 
 			if (!flag) {
 				File file = new File(sb.toString());
@@ -243,6 +245,7 @@ public class ModuleFileResource {
 			json.put(Constant.FILEID, moduleFileId);
 			return Response.ok(json.toString()).build();
 		} catch (Exception ex) {
+			//  FileHashCode.delFile(filePathAndName)
 			throw Jerseys.buildException(Status.INTERNAL_SERVER_ERROR, ex
 			.getMessage());
 		}

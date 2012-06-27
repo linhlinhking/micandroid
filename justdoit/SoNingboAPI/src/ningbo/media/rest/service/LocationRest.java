@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -17,9 +16,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 import ningbo.media.bean.FirstCategory;
 import ningbo.media.bean.Location;
+import ningbo.media.bean.ModuleFile;
 import ningbo.media.bean.SecondCategory;
 import ningbo.media.data.api.LocationList;
 import ningbo.media.data.entity.LocationData;
@@ -32,12 +31,12 @@ import ningbo.media.rest.util.FileUpload;
 import ningbo.media.rest.util.FileUploadUtil;
 import ningbo.media.rest.util.JSONCode;
 import ningbo.media.service.LocationService;
+import ningbo.media.service.ModuleFileService;
 import ningbo.media.service.SecondCategoryService;
 import ningbo.media.util.Base64Image;
 import ningbo.media.util.MD5;
 import ningbo.media.util.Pinyin;
 import ningbo.media.util.TranslateUtil;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.context.annotation.Scope;
@@ -56,6 +55,9 @@ public class LocationRest {
 
 	@Resource
 	private SecondCategoryService secondCategoryService;
+
+	@Resource
+	private ModuleFileService moduleFileService;
 
 	@Path("/showAll")
 	@GET
@@ -90,13 +92,12 @@ public class LocationRest {
 			detail.setTags_cn(location.getTags_cn());
 			detail.setTags_en(location.getTags_en());
 			detail.setTelephone(location.getTelephone());
-			if(null == location.getPhoto_path() ){
-				detail.setPhoto_path("0") ;
-			}else{
-				detail.setPhoto_path(location.getPhoto_path()) ;
+			if (null == location.getPhoto_path()) {
+				detail.setPhoto_path("0");
+			} else {
+				detail.setPhoto_path(location.getPhoto_path());
 			}
-			
-			
+
 			List<SecondCategory> listSecondCategory = location
 					.getSecondCategorys();
 			if (null != listSecondCategory && listSecondCategory.size() > 0) {
@@ -295,14 +296,18 @@ public class LocationRest {
 			String tempPath = FileUploadUtil.makeFileDir(null, request, true);
 			sb.append(tempPath).append(fileName);
 
-			boolean flag = Base64Image
-					.generateImage(base64Value, sb.toString());
+			String tempBase64Value = base64Value.replaceAll(" ", "+");
+
+			boolean flag = Base64Image.generateImage(tempBase64Value, sb
+					.toString());
+
 			if (!flag) {
 				File file = new File(sb.toString());
 				file.delete();
 				json.put(Constant.CODE, JSONCode.MODULEFILE_BASE64_INVALID);
 				return Response.ok(json.toString()).build();
 			}
+
 			String photo_path = FileHashCode.writeBase64File(request, sb
 					.toString());
 
@@ -311,7 +316,11 @@ public class LocationRest {
 			location.setAddress_cn(address_cn);
 			location.setAddress_en(address_en);
 			location.setTelephone(telephone);
-			location.setPhoto_path(photo_path);
+			if (null == photo_path) {
+				location.setPhoto_path("0");
+			} else {
+				location.setPhoto_path(photo_path);
+			}
 			location.setName_py(name_py);
 			location.setTags_cn(tags_cn);
 			location.setTags_en(tags_en);
@@ -546,8 +555,7 @@ public class LocationRest {
 			d.setMd5Value(l.getMd5Value());
 			d.setTags_en(l.getTags_en());
 			d.setTags_cn(l.getTags_cn());
-			
-			
+
 			listData.add(d);
 		}
 		return new LocationList(listData);
@@ -563,9 +571,9 @@ public class LocationRest {
 			if (null == latitude || null == longitude) {
 				return null;
 			}
-			List<LocationDetail> list = locationService.queryLoctionsByLat(Double
-					.valueOf(latitude), Double.valueOf(longitude));
-			if(null == list || list.size() < 0){
+			List<LocationDetail> list = locationService.queryLoctionsByLat(
+					Double.valueOf(latitude), Double.valueOf(longitude));
+			if (null == list || list.size() < 0) {
 				return null;
 			}
 			return list;
@@ -608,5 +616,47 @@ public class LocationRest {
 		String temp = TranslateUtil.translationContent(content, local);
 		json.put(Constant.DATA, temp);
 		return Response.ok(json.toString()).build();
+	}
+
+	@Path("/delete/{md5Value}")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteByMd5(@PathParam("md5Value")
+	String md5Value, @Context
+	HttpServletRequest request) {
+		JSONObject json = new JSONObject();
+		String realPath = request.getSession().getServletContext().getRealPath(
+				"");
+		try {
+			if (null == md5Value || md5Value.length() < 0) {
+				json.put(Constant.CODE, JSONCode.LOCATIONID_NOINPUT);
+				return Response.ok(json.toString()).build();
+			}
+			Location loc = locationService.queryLocationByMd5(md5Value);
+			if (null == loc) {
+				json.put(Constant.CODE, JSONCode.LOCATION_NOEXISTS);
+				return Response.ok(json.toString()).build();
+			}
+			List<ModuleFile> files = loc.getModuleFiles();
+			if (null != files && files.size() > 0) {
+				for (ModuleFile temp : files) {
+					StringBuffer buffer = new StringBuffer();
+					String hashValue = temp.getFileHash();
+					String path = FileUploadUtil.getUuidPath(hashValue);
+					buffer.append(realPath).append(File.separator).append(path)
+							.append(hashValue.substring(12));
+					
+					FileHashCode.delFile(buffer.toString()) ;//删除图片
+					moduleFileService.deleteModuleFile(temp.getId()) ;//删除记录
+				}
+			}
+			locationService.delete(loc) ;
+			json.put(Constant.CODE, JSONCode.SUCCESS);
+			return Response.ok(json.toString()).build();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return null;
+		}
+
 	}
 }

@@ -549,16 +549,19 @@ public class LocationRest {
 		LocationData d = null;
 		for (Location l : list) {
 			d = new LocationData();
-			d.setId(l.getId());
+			d.setPhoto_path(l.getPhoto_path()) ;
 			d.setName_cn(l.getName_cn());
 			d.setName_en(l.getName_en());
 			d.setMd5Value(l.getMd5Value());
 			d.setTags_en(l.getTags_en());
 			d.setTags_cn(l.getTags_cn());
+			d.setAddress_cn(l.getAddress_cn()) ;
+			d.setAddress_en(l.getAddress_en()) ;
+			d.setName_py(l.getName_py()) ;
 
 			listData.add(d);
 		}
-		return new LocationList(listData);
+		return new LocationList(listData) ;
 	}
 
 	@Path("/nearby/{latitude}/{longitude}")

@@ -158,8 +158,6 @@ public class LocationRest {
 	}
 
 	/**
-	 * This method is judge whether the username and email is exists or not If
-	 * exists returns true, and the register can't save the information
 	 * 
 	 * @param form
 	 * @param request
@@ -175,7 +173,6 @@ public class LocationRest {
 		String key = form.getField("key").getValue();
 		JSONObject json = new JSONObject();
 		Location location = new Location();
-		// the key is wrong
 		if (key.isEmpty()) {
 			json.put(Constant.CODE, JSONCode.GLOBAL_KEYISNULL);
 			return json.toString();
@@ -184,24 +181,36 @@ public class LocationRest {
 			json.put(Constant.CODE, JSONCode.GLOBAL_KEYINPUTINVALID);
 			return json.toString();
 		}
-		String name_en = form.getField("name_en").getValue();
+		
+		//String name_en = form.getField("name_en").getValue();
+		//String address_en = form.getField("address_en").getValue();
+		//String name_py = form.getField("name_py").getValue();
+		
 		String name_cn = form.getField("name_cn").getValue();
-		String address_en = form.getField("address_en").getValue();
+		String name_en = TranslateUtil.getEnglishByChinese(name_cn) ;
 		String address_cn = form.getField("address_cn").getValue();
+		String address_en = Pinyin.getPinYin(address_cn) ;
+		String name_py = Pinyin.getPinYin(name_cn);
+		
+		String tags_cn = form.getField("tags_cn").getValue() ;
+		String tags_en = TranslateUtil.getEnglishByChinese(tags_cn) ;
+		
 		String telephone = form.getField("telephone").getValue();
 		String lon = form.getField("longitude").getValue();
 		String lat = form.getField("latitude").getValue();
-		String name_py = form.getField("name_py").getValue();
+		
+		
 		List<String> listValues = FieldsData.getValue(form
 				.getFields("category2_id"));
 
 		FormDataBodyPart part = form.getField("photo_path");
 		String fileName = part.getContentDisposition().getFileName();
 
-		String photo_path = null;
+		String photo_path = "";
 		try {
-			photo_path = FileUpload.upload(part, fileName, request);
-		} catch (IOException e) {
+			//photo_path = FileUpload.upload(part, fileName, request);
+			photo_path = FileUpload.uploadLocation(part, fileName, request);
+		} catch (IOException e) { 
 			e.printStackTrace();
 		}
 
@@ -212,6 +221,9 @@ public class LocationRest {
 		location.setTelephone(telephone);
 		location.setPhoto_path(photo_path);
 		location.setName_py(name_py);
+		location.setTags_cn(tags_cn) ;
+		location.setTags_en(tags_en);
+		
 		if (!lon.isEmpty())
 			location.setLongitude(Double.parseDouble(lon));
 		if (!lat.isEmpty())
@@ -656,7 +668,7 @@ public class LocationRest {
 				}
 			}
 			String photoPath = loc.getPhoto_path() ;
-			if(null != photoPath){
+			if((null != photoPath) && (!(photoPath.equals("0")))){
 				StringBuffer temp = new StringBuffer();
 				String path = FileUploadUtil.getUuidPath(photoPath);
 				temp.append(realPath).append(File.separator).append(path)

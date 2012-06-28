@@ -14,6 +14,14 @@ public class LocationData implements EntityData {
 	
 	private String tags_cn ;
 	
+	private String photo_path ;
+	
+	private String address_cn ;
+	
+	private String address_en ;
+	
+	private String name_py ;
+	
 	
 
 	public Integer getId() {
@@ -62,6 +70,38 @@ public class LocationData implements EntityData {
 
 	public void setTags_cn(String tags_cn) {
 		this.tags_cn = tags_cn;
+	}
+
+	public String getPhoto_path() {
+		return photo_path;
+	}
+
+	public void setPhoto_path(String photo_path) {
+		this.photo_path = photo_path;
+	}
+
+	public String getAddress_cn() {
+		return address_cn;
+	}
+
+	public void setAddress_cn(String address_cn) {
+		this.address_cn = address_cn;
+	}
+
+	public String getAddress_en() {
+		return address_en;
+	}
+
+	public void setAddress_en(String address_en) {
+		this.address_en = address_en;
+	}
+
+	public String getName_py() {
+		return name_py;
+	}
+
+	public void setName_py(String name_py) {
+		this.name_py = name_py;
 	}
 	
 	

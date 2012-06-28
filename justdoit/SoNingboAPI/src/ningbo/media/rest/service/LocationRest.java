@@ -582,6 +582,8 @@ public class LocationRest {
 			return null;
 		}
 	}
+	
+	
 
 	@Path("/pinyin/{name_cn}")
 	@GET
@@ -647,9 +649,19 @@ public class LocationRest {
 							.append(hashValue.substring(12));
 					
 					FileHashCode.delFile(buffer.toString()) ;//删除图片
-					moduleFileService.deleteModuleFile(temp.getId()) ;//删除记录
+					moduleFileService.delete(temp);//删除记录
 				}
 			}
+			String photoPath = loc.getPhoto_path() ;
+			if(null != photoPath){
+				StringBuffer temp = new StringBuffer();
+				String path = FileUploadUtil.getUuidPath(photoPath);
+				temp.append(realPath).append(File.separator).append(path)
+						.append(photoPath.substring(12));
+				
+				FileHashCode.delFile(temp.toString());
+			}
+			
 			locationService.delete(loc) ;
 			json.put(Constant.CODE, JSONCode.SUCCESS);
 			return Response.ok(json.toString()).build();

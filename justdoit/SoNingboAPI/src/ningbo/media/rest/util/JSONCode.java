@@ -26,6 +26,7 @@ public class JSONCode {
 	public static final String USER_NOEXISTS = "30003" ; //用户不存在
 	public static final String USERNAME_NOINPUT = "30004" ;//用户名为空
 	public static final String USE_PASSWORD_NOINPUT = "30005" ;//用户密码为空
+	public static final String USER_INPUT_INVALID = "30006" ;
 	
 	/**Locatioin-4*/
 	public static final String LOCATION_NOEXISTS = "20010" ; //位置不存在

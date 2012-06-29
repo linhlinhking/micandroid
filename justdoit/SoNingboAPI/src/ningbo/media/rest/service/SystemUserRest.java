@@ -1,7 +1,9 @@
 package ningbo.media.rest.service;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -11,26 +13,33 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+
 import ningbo.media.bean.Favorite;
 import ningbo.media.bean.SystemUser;
+import ningbo.media.bean.enums.SendEmailType;
 import ningbo.media.oauth2.utils.StringCode;
+import ningbo.media.rest.dto.SystemUserData;
 import ningbo.media.rest.util.Constant;
+import ningbo.media.rest.util.FileUpload;
 import ningbo.media.rest.util.JSONCode;
 import ningbo.media.rest.util.Jerseys;
 import ningbo.media.service.FavoriteService;
 import ningbo.media.service.SendManagerService;
 import ningbo.media.service.SystemUserService;
 import ningbo.media.util.ApplicationContextUtil;
+import ningbo.media.util.MD5;
+import ningbo.media.util.StringUtil;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.sun.jersey.multipart.FormDataBodyPart;
 import com.sun.jersey.multipart.FormDataMultiPart;
 
 @Path("/user")
@@ -47,10 +56,7 @@ public class SystemUserRest {
 	private SendManagerService sendMgrService = (SendManagerService) ApplicationContextUtil
 			.getContext().getBean("sendMail");
 
-
 	/**
-	 * description: access:/user/show/{id} example:/user/show/1 [return json.]
-	 * request method:get
 	 * 
 	 * @param id
 	 * @return SystemUser
@@ -61,11 +67,11 @@ public class SystemUserRest {
 	public Response getSystemUserById(@PathParam("id")
 	Integer id) {
 		SystemUser u = systemUserService.get(id);
-		if(null == u){
-			String message = "The User Id [" + id +"] No Exists." ;
-			throw Jerseys.buildException(Status.NOT_FOUND,message);
+		if (null == u) {
+			String message = "The User Id [" + id + "] No Exists.";
+			throw Jerseys.buildException(Status.NOT_FOUND, message);
 		}
-		return Response.ok(u).build(); 
+		return Response.ok(getSystemUserData(u)).build();
 	}
 
 	@Path("/showAll")
@@ -81,11 +87,11 @@ public class SystemUserRest {
 	 * @return
 	 * @throws Exception
 	 */
-	@Path("/verifystatus/{id : \\d+}/{key}")
+	@Path("/verifystatus/{id}/{key}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public String verifystatus(@PathParam("id")
-	Integer id, @PathParam("key")
+	String id, @PathParam("key")
 	String key) throws Exception {
 		JSONObject json = new JSONObject();
 		// the key is wrong
@@ -100,7 +106,7 @@ public class SystemUserRest {
 			json.put(Constant.CODE, JSONCode.KEYINPUTINVALID);
 			return json.toString();
 		}
-		SystemUser u = systemUserService.get(id);
+		SystemUser u = systemUserService.getSystemUserByMd5Value(id);
 		u.setStatus(true);
 		try {
 			systemUserService.update(u);
@@ -113,8 +119,6 @@ public class SystemUserRest {
 	}
 
 	/**
-	 * This method is judge whether the username and email is exists or not If
-	 * exists returns true, and the register can't save the information
 	 * 
 	 * @param form
 	 * @param request
@@ -123,84 +127,88 @@ public class SystemUserRest {
 	 */
 	@Path("/register")
 	@POST
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String addSystemUser(@FormParam("username")
-	String username, @FormParam("password")
-	String password, @FormParam("email")
-	String email, @FormParam("key")
-	String key, @Context
+	public Response addSystemUser(FormDataMultiPart form, @Context
 	HttpServletRequest request) throws JSONException {
 		JSONObject json = new JSONObject();
-		// the key is wrong
+		String key = form.getField("key").getValue(); 
+		String username = form.getField("username").getValue(); 
+		String email = form.getField("email").getValue(); 
+		String password = form.getField("password").getValue();  
+		FormDataBodyPart part = form.getField("photo_path");
+		
 		if (key.isEmpty()) {
-			json.put(Constant.CODE, "1");
-			return json.toString();
+			json.put(Constant.CODE, JSONCode.USERNAME_NOINPUT);
+			return Response.ok(json.toString()).build();
 
 		} else if (!Constant.KEY.equals(key)) {
-			json.put(Constant.CODE, "2");
-			return json.toString();
+			json.put(Constant.CODE, JSONCode.USER_INPUT_INVALID);
+			return Response.ok(json.toString()).build();
 		}
 
 		if ("".equals(username) || username == null) {
-			json.put(Constant.CODE, "3");
-			return json.toString();
+			json.put(Constant.CODE, JSONCode.USER_INPUT_INVALID);
+			return Response.ok(json.toString()).build();
 		}
 		if ("".equals(email) || email == null) {
-			json.put(Constant.CODE, "4");
-			return json.toString();
+			json.put(Constant.CODE, JSONCode.USER_INPUT_INVALID);
+			return Response.ok(json.toString()).build();
 		}
 		if ("".equals(password) || password == null) {
-			json.put(Constant.CODE, "5");
-			return json.toString();
+			json.put(Constant.CODE, JSONCode.USER_INPUT_INVALID);
+			return Response.ok(json.toString()).build();
 		}
 
-		// return true if the username is exist
-		final boolean bool_username = systemUserService.isExist("username",
+		boolean bool_username = systemUserService.isExist(Constant.USERNAME,
 				username);
-		try {
-			if (bool_username) {
-				json.put(Constant.CODE, "6");
-				return json.toString();
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-			json.put(Constant.CODE, "8");
-			return json.toString();
-		}
-		// return true if the email is exists
-		final boolean bool_email = systemUserService.isExist("email", email);
-		try {
-			if (bool_email) {
-				json.put(Constant.CODE, "7");
-				return json.toString();
-			}
 
-		} catch (JSONException e) {
-			e.printStackTrace();
-			json.put(Constant.CODE, "8");
-			return json.toString();
+		if (bool_username) {
+			json.put(Constant.CODE, JSONCode.USERNAME_EXISTS);
+			return Response.ok(json.toString()).build();
 		}
-		// judge whether the username and email is exists or not
+
+		boolean bool_email = systemUserService.isExist(Constant.USER_EMAIL,
+				email);
+
+		if (bool_email) {
+			json.put(Constant.CODE, JSONCode.USER_EMAIL_EXISTS);
+			return Response.ok(json.toString()).build();
+		}
+		
+		String fileName = part.getContentDisposition().getFileName();
+		String photo_path = FileUpload.uploadLocation(part, fileName, request);
+
 		SystemUser u = new SystemUser();
+		String encodePassword = MD5.calcMD5(password);
 		u.setEmail(email);
-		u.setPassword(password);
+		u.setPassword(encodePassword);
 		u.setUsername(username);
 		u.setDatetime(new Date());
 		u.setIsManager(false);
 		u.setStatus(false);
+		if("".equals(photo_path) || null == photo_path){
+			u.setPhoto_path("0") ;
+		}else{
+			u.setPhoto_path(photo_path) ;
+		}
 		try {
 			Integer id = systemUserService.save(u);
+			String md5Value = MD5.calcMD5(String.valueOf(id));
+			u = systemUserService.get(id);
+			u.setMd5Value(md5Value);
+			systemUserService.update(u);
+
 			StringCode code = new StringCode();
 			String tempKey = code.encrypt(key);
-			sendMgrService.sendHtmlMail(email, username, String.valueOf(id),
-					tempKey);
+			sendMgrService.sendHtmlMail(email, username, md5Value, tempKey,SendEmailType.REGISTER);
 			json.put(Constant.USERID, id);
-			json.put(Constant.CODE, "0");
-			return json.toString();
+			json.put(Constant.CODE, JSONCode.SUCCESS);
+			return Response.ok(json.toString()).build();
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			json.put(Constant.CODE, "8");
-			return json.toString();
+			json.put(Constant.CODE, JSONCode.SERVER_EXCEPTION);
+			return Response.ok(json.toString()).build();
 		}
 	}
 
@@ -209,7 +217,10 @@ public class SystemUserRest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response resendEmail(@PathParam("id")
 	String id) throws Exception {
-		SystemUser u = systemUserService.get(Integer.valueOf(id));
+		SystemUser u = systemUserService.getSystemUserByMd5Value(id);
+		String md5Value = u.getMd5Value();
+		String email = u.getEmail();
+		String username = u.getUsername();
 		JSONObject json = new JSONObject();
 		if (null == u) {
 			json.put(Constant.CODE, JSONCode.USER_NOEXISTS);
@@ -217,16 +228,13 @@ public class SystemUserRest {
 		} else {
 			StringCode code = new StringCode();
 			String tempKey = code.encrypt(Constant.KEY);
-			sendMgrService.sendHtmlMail(u.getEmail(), u.getUsername(), id,
-					tempKey);
+			sendMgrService.sendHtmlMail(email, username, md5Value, tempKey,SendEmailType.REGISTER);
 			json.put(Constant.CODE, JSONCode.SUCCESS);
 			return Response.ok(json.toString()).build();
 		}
 	}
 
 	/**
-	 * This method is judge whether the username and email is exists or not If
-	 * exists returns true, and the register can't save the information
 	 * 
 	 * @param form
 	 * @param request
@@ -236,9 +244,9 @@ public class SystemUserRest {
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String editSystemUser(FormDataMultiPart form, @Context
+	public Response editSystemUser(FormDataMultiPart form, @Context
 	HttpServletRequest request) throws JSONException {
-		Integer id = Integer.parseInt(form.getField("id").getValue());
+		String md5Value = form.getField("id").getValue();
 		String username = form.getField("username").getValue();
 		String password = form.getField("password").getValue();
 		String email = form.getField("email").getValue();
@@ -246,57 +254,43 @@ public class SystemUserRest {
 		// FormDataBodyPart part = form.getField("head_photo");
 		// String fileName = part.getContentDisposition().getFileName();
 		JSONObject json = new JSONObject();
-		// the key is wrong
-		if (key.isEmpty()) {
-			json.put(Constant.CODE, JSONCode.KEYISNULL);
-			return json.toString();
-
-		} else if (!Constant.KEY.equals(key)) {
-			json.put(Constant.CODE, JSONCode.KEYINPUTINVALID);
-			return json.toString();
-		}
-		// return true if the username is exist
-		final boolean bool_username = systemUserService.isExist("username",
-				username);
-		if (bool_username) {
-			json.put(Constant.CODE, JSONCode.USERNAME_EXISTS).toString();
-			return json.toString();
-		}
-		// return true if the email is exists
-		final boolean bool_email = systemUserService.isExist("email", email);
-		if (bool_email) {
-			json.put(Constant.CODE, JSONCode.USER_EMAIL_EXISTS).toString();
-			return json.toString();
-		}
-
-		// judge whether the username and email is exists or not
-		SystemUser u = new SystemUser();
-		u.setId(id);
-		u.setEmail(email);
-		u.setPassword(password);
-		u.setUsername(username);
-		u.setLastModifyTime(new Date());
-		u.setIsManager(false);
 		try {
+			if (key.isEmpty()) {
+				json.put(Constant.CODE, JSONCode.KEYISNULL);
+				return Response.ok(json.toString()).build();
+
+			} else if (!Constant.KEY.equals(key)) {
+				json.put(Constant.CODE, JSONCode.KEYINPUTINVALID);
+				return Response.ok(json.toString()).build();
+			}
+			boolean bool_username = systemUserService.isExist(
+					Constant.USERNAME, username);
+			if (bool_username) {
+				json.put(Constant.CODE, JSONCode.USERNAME_EXISTS).toString();
+				return Response.ok(json.toString()).build();
+			}
+			boolean bool_email = systemUserService.isExist(Constant.USER_EMAIL,
+					email);
+			if (bool_email) {
+				json.put(Constant.CODE, JSONCode.USER_EMAIL_EXISTS).toString();
+				return Response.ok(json.toString()).build();
+			}
+
+			SystemUser u = systemUserService.getSystemUserByMd5Value(md5Value);
+			String encodePassword = MD5.calcMD5(password);
+			u.setEmail(email);
+			u.setPassword(encodePassword);
+			u.setUsername(username);
+			u.setLastModifyTime(new Date());
+			u.setIsManager(false);
 			systemUserService.update(u);
 			json.put(Constant.CODE, JSONCode.SUCCESS);
-			json.put(Constant.USERID, id);
-			return json.toString();
+			return Response.ok(json.toString()).build();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			json.put(Constant.CODE, JSONCode.THROWEXCEPTION);
-			return json.toString();
+			return Response.ok(json.toString()).build();
 		}
-	}
-
-	@Path("/check/{property}")
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	public String isExist(@PathParam("property")
-	String property, @QueryParam("value")
-	String value) {
-		Boolean flag = systemUserService.isExist(property, value);
-		return flag.toString();
 	}
 
 	/**
@@ -310,13 +304,11 @@ public class SystemUserRest {
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response changeUserHeader(String key,String userId){
-		
-		return null ;
+	public Response changeUserHeader(String key, String userId) {
+
+		return null;
 	}
-	
-	
-	
+
 	@Path("/login")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
@@ -344,32 +336,97 @@ public class SystemUserRest {
 		}
 
 		try {
-			Integer tempUser = systemUserService.login(username, password);
-			if (0 != tempUser) {
-				json.put(Constant.USERID, tempUser);
-				json.put(Constant.CODE, JSONCode.SUCCESS);
-			} else {
-				json.put(Constant.CODE,JSONCode.USER_NOEXISTS);
-			}
-			//
-			List<Favorite> listFav = favoriteService
-					.findFavoriteByDeviceForUser(device_id);
-			if (null != listFav && listFav.size() > 0) {
-				for (int i = 0; i < listFav.size(); i++) {
-					Favorite entity = listFav.get(i);
-					entity.setId(listFav.get(i).getId());
-					entity.setUserId(tempUser);
-					favoriteService.update(entity);
-				}
+			SystemUser tempUser = systemUserService.login(username, password);
+			if (null == tempUser) {
+				json.put(Constant.CODE, JSONCode.USER_NOEXISTS);
+				return Response.ok(json.toString()).build();
 			}
 
-			return Response.ok(json.toString()).build();
+			if (!"".equals(device_id.trim())) {
+				List<Favorite> listFav = favoriteService
+						.findFavoriteByDeviceForUser(device_id);
+				if (null != listFav && listFav.size() > 0) {
+					for (int i = 0; i < listFav.size(); i++) {
+						Favorite entity = listFav.get(i);
+						entity.setId(listFav.get(i).getId());
+						entity.setUserId(tempUser.getId());
+						favoriteService.update(entity);
+					}
+				}
+			}
+			return Response.ok(getSystemUserData(tempUser)).build();
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			json.put(Constant.CODE,JSONCode.THROWEXCEPTION);
+			json.put(Constant.CODE, JSONCode.THROWEXCEPTION);
 			return Response.ok(json.toString()).build();
 		}
 
+	}
+
+	@Path("/forgot/password")
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response forgetUserPassword(@FormParam("user_email")
+	String userEmail, @FormParam("key")
+	String key) throws JSONException {
+		JSONObject json = new JSONObject();
+		try {
+			if (key.isEmpty()) {
+				json.put(Constant.CODE, JSONCode.KEYISNULL);
+				return Response.ok(json.toString()).build();
+
+			} else if (!Constant.KEY.equals(key)) {
+				json.put(Constant.CODE, JSONCode.KEYINPUTINVALID);
+				return Response.ok(json.toString()).build();
+			}
+
+			SystemUser user = systemUserService.get(Constant.USER_EMAIL,
+					userEmail);
+			if (null == user) {
+				json.put(Constant.CODE, JSONCode.USER_NOEXISTS);
+				return Response.ok(json.toString()).build();
+			}
+			String randomPass = StringUtil.randomString();
+			String encodPass = MD5.calcMD5(randomPass);
+			user.setPassword(encodPass);
+			systemUserService.update(user);
+
+			String username = user.getUsername();
+			if (null == username) {
+				username = " ";
+			}
+
+			StringCode code = new StringCode();
+			String tempKey = code.encrypt(key);
+			sendMgrService.sendHtmlMail(userEmail, username,randomPass, tempKey,SendEmailType.FORGOTPASSWORD);
+			json.put(Constant.CODE, JSONCode.SUCCESS);
+			return Response.ok(json.toString()).build();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			json.put(Constant.CODE, JSONCode.SERVER_EXCEPTION);
+			return Response.ok(json.toString()).build();
+		}
+	}
+
+	private SystemUserData getSystemUserData(SystemUser user) {
+		if (null == user) {
+			return null;
+		}
+		SystemUserData data = new SystemUserData();
+		data.setMd5Value(user.getMd5Value());
+		data.setName_cn(user.getName_cn());
+		data.setName_en(user.getName_en());
+		data.setEmail(user.getEmail());
+		data.setUsername(user.getUsername());
+		data.setPhoto_path(user.getPhoto_path());
+		data.setGender(user.isGender());
+		data.setStatus(user.isStatus());
+		data.setWebsite(user.getWebsite());
+		data.setBirthday(user.getBirthday());
+		data.setDatetime(user.getDatetime());
+		data.setLastModifyTime(user.getLastModifyTime());
+
+		return data;
 	}
 
 }

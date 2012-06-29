@@ -28,12 +28,16 @@ public class SystemUser implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	
 	//用户名
 	private String username; 
+	
 	//密码
 	private String password;
 	//真实姓名
 	private String name_cn;
+	
+	private String name_en ;
 	//电子邮箱
 	private String email;
 	//是否已经通过验证（新注册的用户上否已经激活）
@@ -60,6 +64,14 @@ public class SystemUser implements Serializable {
 	
 	@Column(name = "md5_value")
 	private String md5Value ;
+	
+	private String website ;
+	
+	private String user_type ;
+	
+	private String qq ;
+	
+	private String msn ;
 
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE },mappedBy = "systemUsers")
 	private List<ModuleFile> moduleFiles ;
@@ -249,4 +261,56 @@ public class SystemUser implements Serializable {
 		this.md5Value = md5Value;
 	}
 
+
+	public String getWebsite() {
+		return website;
+	}
+
+
+	public void setWebsite(String website) {
+		this.website = website;
+	}
+
+
+	public String getUser_type() {
+		return user_type;
+	}
+
+
+	public void setUser_type(String user_type) {
+		this.user_type = user_type;
+	}
+
+
+	public String getQq() {
+		return qq;
+	}
+
+
+	public void setQq(String qq) {
+		this.qq = qq;
+	}
+
+
+	public String getMsn() {
+		return msn;
+	}
+
+
+	public void setMsn(String msn) {
+		this.msn = msn;
+	}
+
+
+	public String getName_en() {
+		return name_en;
+	}
+
+
+	public void setName_en(String name_en) {
+		this.name_en = name_en;
+	}
+
+	
+	
 }

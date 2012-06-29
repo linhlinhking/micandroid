@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import ningbo.media.bean.SystemUser;
 import ningbo.media.core.dao.impl.BaseDaoImpl;
 import ningbo.media.dao.SystemUserDao;
+import ningbo.media.util.MD5;
 
 @Repository("systemUserDao")
 public class SystemUserDaoImpl extends BaseDaoImpl<SystemUser, Integer>
@@ -14,32 +15,31 @@ public class SystemUserDaoImpl extends BaseDaoImpl<SystemUser, Integer>
 		super(SystemUser.class);
 	}
 
-	public Integer login(String username, String password) {
-		SystemUser u = verification(username, password) ;
-		if (null == u) {
-			return 0 ;
-		}
-		return u.getId() ;
+	public SystemUser login(String username, String password) {
+		return verification(username, password);
 	}
 
 	private SystemUser verification(String email, String password) {
+		String encodePassword = MD5.calcMD5(password);
 		final String hql = "from SystemUser as model where 1=1 and model.email = ? and model.password = ? ";
-		SystemUser u = (SystemUser) super.findUnique(hql, email, password);
+		SystemUser u = (SystemUser) findUnique(hql, email, encodePassword);
 		if (null == u) {
 			return null;
 		}
 		return u;
 
 	}
-	
-	public boolean isContainTool(Integer toolId){
-		boolean flag = false; 
-		final String hql = "from SystemUser as m join m.toolses as n where 1=1 and n.id = ? " ;
-		SystemUser u = (SystemUser)findUnique(hql, toolId) ;
-		if(u != null){
-			flag = true ;
+
+	public SystemUser getSystemUserByMD5Value(String value) {
+		if(null == value){
+			return null ;
 		}
-		return flag ;
+		String hql = "from SystemUser as model where 1=1 and model.md5Value = ? ";
+		SystemUser u = (SystemUser)findUnique(hql, value);
+		if (null != u) {
+			return u;
+		}
+		return null;
 	}
 
 }

@@ -17,7 +17,7 @@ import ningbo.media.bean.Friends;
 import ningbo.media.bean.SystemUser;
 import ningbo.media.bean.enums.FriendType;
 import ningbo.media.data.api.FriendList;
-import ningbo.media.data.entity.SystemUserData;
+import ningbo.media.rest.dto.SystemUserData;
 import ningbo.media.rest.util.Constant;
 import ningbo.media.rest.util.JSONCode;
 import ningbo.media.rest.util.StringUtils;
@@ -148,7 +148,7 @@ public class FriendsRest {
 			Integer followId = tmp.getFollowId();
 			SystemUser tmpUser = systemUserService.get(followId);
 			if (tmpUser != null) {
-				data.setId(tmpUser.getId());
+				//data.setId(tmpUser.getId());
 				data.setUsername(tmpUser.getUsername());
 			}
 			userData.add(data);

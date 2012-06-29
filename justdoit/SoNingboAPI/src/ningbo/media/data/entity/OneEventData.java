@@ -1,5 +1,7 @@
 package ningbo.media.data.entity;
 
+import ningbo.media.rest.dto.SystemUserData;
+
 
 
 public class OneEventData extends EventData {

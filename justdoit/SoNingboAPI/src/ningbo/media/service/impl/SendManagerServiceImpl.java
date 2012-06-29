@@ -3,9 +3,12 @@ package ningbo.media.service.impl;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+
+import ningbo.media.bean.enums.SendEmailType;
 import ningbo.media.service.SendManagerService;
 import ningbo.media.util.ApplicationContextUtil;
 
@@ -14,19 +17,18 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
+
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
 public class SendManagerServiceImpl implements SendManagerService {
 
-	
 	private FreeMarkerConfigurer freeMarker;
 	private JavaMailSender mailSender;
 	private SimpleMailMessage message;
 
-
 	public void sendHtmlMail(final String email, final String username,
-			final String userId, final String key) {
+			final String userId, final String key,SendEmailType type) {
 
 		MimeMessage mimeMessage = mailSender.createMimeMessage();
 		MimeMessageHelper helper;
@@ -35,25 +37,34 @@ public class SendManagerServiceImpl implements SendManagerService {
 			helper.setTo(new InternetAddress(email));
 			helper.setFrom(new InternetAddress(message.getFrom()));
 			helper.setSubject(message.getSubject());
-			helper.setText(getContentHtml(username, userId, key), true);
+			helper.setText(getContentHtml(username, userId, key,type), true);
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		}
 		mailSender.send(mimeMessage);
 	}
 
-
-	private String getContentHtml(String username, String userId, String key) {
+	private String getContentHtml(String username, String userId, String key,
+			SendEmailType type) {
 		String htmlText = "";
 		freeMarker = (FreeMarkerConfigurer) ApplicationContextUtil.getContext()
 				.getBean("freeMarker");
 		try {
-			Template tpl = freeMarker.getConfiguration().getTemplate(
-					"send_html.ftl");
+			Template tpl = null;
 			Map<String, String> map = new HashMap<String, String>();
-			map.put("username", username);
-			map.put("userId", userId);
-			map.put("key", key);
+			if (type.equals(SendEmailType.REGISTER)) {
+				tpl = freeMarker.getConfiguration()
+						.getTemplate("send_html.ftl");
+				map.put("username", username);
+				map.put("userId", userId);
+				map.put("key", key);
+			} else if (type.equals(SendEmailType.FORGOTPASSWORD)) {
+				tpl = freeMarker.getConfiguration()
+						.getTemplate("send_password.ftl");
+				map.put("username", username);
+				map.put("newpassword", userId);
+				//map.put("key", key);
+			}
 
 			htmlText = FreeMarkerTemplateUtils.processTemplateIntoString(tpl,
 					map);

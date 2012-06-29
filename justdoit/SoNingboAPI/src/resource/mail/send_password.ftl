@@ -22,11 +22,9 @@
 					style="padding: 12px 0 0 32px; font-size: 14px; font-family: Arial, Helvetica, sans-serif">
 					<div>
 						<p>
-							感谢您注册成为搜索宁波(<a href="http://www.soningbo.com" title="soningbo.com"
-								target="_blank" style="color: #b40000; text-decoration: none">soningbo.com</a>)的尊贵会员！请点击下面的链接完成注册:<br/><br/>
-
-								http://api.soningbo.com/resource/user/verifystatus/${userId}/${key} .<br/>
-							 <br>(如果链接无法点击，请将它拷贝到浏览器的地址栏中。)<br>
+							感谢您使用搜索宁波(<a href="http://www.soningbo.com" title="soningbo.com"
+								target="_blank" style="color: #b40000; text-decoration: none">soningbo.com，</a>)<br/><br/>
+							你重置后的密码为 ：${newpassword}
 						</p>
 					</div>
 

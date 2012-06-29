@@ -5,7 +5,7 @@ import ningbo.media.core.dao.BaseDao;
 
 public interface SystemUserDao extends BaseDao<SystemUser, Integer>{
 	
-	public Integer login(String username, String password);
-	
-	public boolean isContainTool(Integer toolId) ;
+	public SystemUser login(String username, String password);
+
+	public SystemUser getSystemUserByMD5Value(String value);
 }

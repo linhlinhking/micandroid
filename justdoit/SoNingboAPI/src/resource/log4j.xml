@@ -47,7 +47,7 @@
         <level value="WARN"/>
     </logger>
     
-    <logger name="com.htsoft">
+    <logger name="ningbo.media">
         <level value="DEBUG"/>
     </logger>
 

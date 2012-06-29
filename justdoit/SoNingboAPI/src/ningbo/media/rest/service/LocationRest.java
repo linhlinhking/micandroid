@@ -1,9 +1,9 @@
 package ningbo.media.rest.service;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -16,6 +16,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
 import ningbo.media.bean.FirstCategory;
 import ningbo.media.bean.Location;
 import ningbo.media.bean.ModuleFile;
@@ -37,6 +38,7 @@ import ningbo.media.util.Base64Image;
 import ningbo.media.util.MD5;
 import ningbo.media.util.Pinyin;
 import ningbo.media.util.TranslateUtil;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.context.annotation.Scope;
@@ -206,13 +208,8 @@ public class LocationRest {
 		FormDataBodyPart part = form.getField("photo_path");
 		String fileName = part.getContentDisposition().getFileName();
 
-		String photo_path = "";
-		try {
-			//photo_path = FileUpload.upload(part, fileName, request);
-			photo_path = FileUpload.uploadLocation(part, fileName, request);
-		} catch (IOException e) { 
-			e.printStackTrace();
-		}
+		String photo_path = FileUpload.uploadLocation(part, fileName, request);
+		
 
 		location.setName_cn(name_cn);
 		location.setName_en(name_en);

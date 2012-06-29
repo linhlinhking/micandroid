@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import ningbo.media.data.entity.SystemUserData;
+import ningbo.media.rest.dto.SystemUserData;
 
 @XmlType(propOrder = {"userId","friends"})
 @XmlRootElement

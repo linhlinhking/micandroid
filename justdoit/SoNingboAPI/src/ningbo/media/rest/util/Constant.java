@@ -6,6 +6,8 @@ public class Constant {
 	
 	public static final String FOLDER = "upload" ;
 	public static final String TEMP = "temp" ;
+	public static final String USERNAME = "username" ;
+	public static final String USER_EMAIL = "email" ;
 	
 	public static final String globalPath = "/Users/ning/upload" ;
 	

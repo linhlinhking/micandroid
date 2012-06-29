@@ -23,7 +23,6 @@ public class FavoriteServiceImpl extends BaseServiceImpl<Favorite, Integer>
 	@Autowired
 	public FavoriteServiceImpl(@Qualifier("favoriteDao")FavoriteDao favoriteDao) {
 		super(favoriteDao);
-		this.favoriteDao = favoriteDao ;
 	}
 
 	public Favorite findFavoriteById(String userId, String locationId) {

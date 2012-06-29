@@ -2,6 +2,8 @@ package ningbo.media.dao.impl;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import ningbo.media.bean.Favorite;
@@ -11,6 +13,8 @@ import ningbo.media.dao.FavoriteDao;
 @Repository("favoriteDao")
 public class FavoriteDaoImpl extends BaseDaoImpl<Favorite, Integer> implements
 		FavoriteDao {
+	
+	private Logger logger = LoggerFactory.getLogger(this.getClass()) ;
 
 	public FavoriteDaoImpl() {
 		super(Favorite.class);
@@ -71,13 +75,19 @@ public class FavoriteDaoImpl extends BaseDaoImpl<Favorite, Integer> implements
 	}
 
 	public List<Favorite> findFavoriteByDeviceForUser(String deviceId) {
-		List<Favorite> listFav = null;
-		String hql = "from Favorite model where 1=1 and model.userId is null and model.deviceId = ? ";
-		listFav = findByHql(hql, deviceId);
-		if (null == listFav || listFav.size() < 1) {
-			return null;
+		try{
+			List<Favorite> listFav = null;
+			String hql = "from Favorite model where 1=1 and model.userId is null and model.deviceId = ? ";
+			listFav = findByHql(hql, deviceId);
+			if (null == listFav || listFav.size() < 1) {
+				return null;
+			}
+			return listFav;
+		}catch(Exception ex){
+			logger.error("No Data for this DeviceId.(Throws by FavariteDaoImpl findFavoriteByDeviceForUser)") ;
+			return null ;
 		}
-		return listFav;
+		
 	}
 	
 	

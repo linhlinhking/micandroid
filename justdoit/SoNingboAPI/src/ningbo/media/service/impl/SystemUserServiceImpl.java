@@ -23,21 +23,13 @@ public class SystemUserServiceImpl extends BaseServiceImpl<SystemUser, Integer> 
 		super(systemUserDao);
 	}
 	
-	public Integer login(String username, String password) {
+	public SystemUser login(String username, String password) {
 		return systemUserDao.login(username, password) ;
 	}
 
-	public boolean isContainTool(Integer toolId) {
-		return systemUserDao.isContainTool(toolId) ;
-	}
 
 	public SystemUser getSystemUserByMd5Value(String md5Value) {
-		String hql = "from SystemUser as model where 1=1 and model.md5Value = ? " ;
-		SystemUser u = (SystemUser)systemUserDao.findUnique(hql,md5Value) ;
-		if( null != u){
-			return u ;
-		}
-		return null;
+		return systemUserDao.getSystemUserByMD5Value(md5Value) ;
 	}
 
 }

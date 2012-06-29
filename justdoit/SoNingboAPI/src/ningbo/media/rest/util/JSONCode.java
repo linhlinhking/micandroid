@@ -5,6 +5,9 @@ public class JSONCode {
 	
 	public static final String SUCCESS = "0" ; //操作成功
 	
+	public static final String RESULT_FAIL = "false" ;
+	public static final String RESULT_SUCCESS = "true" ;
+	
 	/**系统级别异常*/
 	public static final String THROWEXCEPTION = "10001" ;//系统异常
 	public static final String LOCATION_COUNT_EXCEPTION = "13001" ;//获取位置数目异常
@@ -27,6 +30,19 @@ public class JSONCode {
 	public static final String USERNAME_NOINPUT = "30004" ;//用户名为空
 	public static final String USE_PASSWORD_NOINPUT = "30005" ;//用户密码为空
 	public static final String USER_INPUT_INVALID = "30006" ;
+	
+	/**Message*/
+	public static final String MSG_USERNAME_EXISTS = "username already exist." ; //用户名称存在
+	public static final String MSG_USER_EMAIL_EXISTS = "email already exist." ; //用户名称存在
+	public static final String MSG_USER_NOEXISTS = "user no exists." ; //用户不存在
+	public static final String MSG_USER_PASSWORD_NOINPUT = "password no input." ;
+	public static final String MSG_USER_RESEND_EMAIL = "email resend successfully." ;
+	public static final String MSG_USER_ACTIVATED = "user has activated." ;
+	public static final String MSG_USER_USERNAME_NO_INPUT = "user no input." ;
+	public static final String MSG_USER_FORGOT_PASSWORD = "password had sended to your email." ;
+	
+	public static final String MSG_KEY_ISNULL = "key no input." ;
+	public static final String MSG_KEY_INVALID = "key input invalid." ;
 	
 	/**Locatioin-4*/
 	public static final String LOCATION_NOEXISTS = "20010" ; //位置不存在
@@ -62,6 +78,8 @@ public class JSONCode {
 	
 	
 	
+	
+	
 	/**最早的处理的方式(Favorite)*/
 	public static final String GLOBAL_KEYISNULL = "1" ;
 	public static final String GLOBAL_KEYINPUTINVALID = "2" ;
@@ -78,5 +96,7 @@ public class JSONCode {
 	public static final String LOCATION_EXCEPTION = "5" ;
 	public static final String LOCATION_ID_INVALID = "6" ;
 	public static final String LOCATION_BASE64_NOEXISTS = "7" ;
+	
+	
 	
 }

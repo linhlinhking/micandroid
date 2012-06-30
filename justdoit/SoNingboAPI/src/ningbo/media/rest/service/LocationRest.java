@@ -183,25 +183,24 @@ public class LocationRest {
 			json.put(Constant.CODE, JSONCode.GLOBAL_KEYINPUTINVALID);
 			return json.toString();
 		}
-		
-		//String name_en = form.getField("name_en").getValue();
-		//String address_en = form.getField("address_en").getValue();
-		//String name_py = form.getField("name_py").getValue();
-		
+
+		// String name_en = form.getField("name_en").getValue();
+		// String address_en = form.getField("address_en").getValue();
+		// String name_py = form.getField("name_py").getValue();
+
 		String name_cn = form.getField("name_cn").getValue();
-		String name_en = TranslateUtil.getEnglishByChinese(name_cn) ;
+		String name_en = TranslateUtil.getEnglishByChinese(name_cn);
 		String address_cn = form.getField("address_cn").getValue();
-		String address_en = Pinyin.getPinYin(address_cn) ;
+		String address_en = Pinyin.getPinYin(address_cn);
 		String name_py = Pinyin.getPinYin(name_cn);
-		
-		String tags_cn = form.getField("tags_cn").getValue() ;
-		String tags_en = TranslateUtil.getEnglishByChinese(tags_cn) ;
-		
+
+		String tags_cn = form.getField("tags_cn").getValue();
+		String tags_en = TranslateUtil.getEnglishByChinese(tags_cn);
+
 		String telephone = form.getField("telephone").getValue();
 		String lon = form.getField("longitude").getValue();
 		String lat = form.getField("latitude").getValue();
-		
-		
+
 		List<String> listValues = FieldsData.getValue(form
 				.getFields("category2_id"));
 
@@ -209,7 +208,6 @@ public class LocationRest {
 		String fileName = part.getContentDisposition().getFileName();
 
 		String photo_path = FileUpload.uploadLocation(part, fileName, request);
-		
 
 		location.setName_cn(name_cn);
 		location.setName_en(name_en);
@@ -218,9 +216,9 @@ public class LocationRest {
 		location.setTelephone(telephone);
 		location.setPhoto_path(photo_path);
 		location.setName_py(name_py);
-		location.setTags_cn(tags_cn) ;
+		location.setTags_cn(tags_cn);
 		location.setTags_en(tags_en);
-		
+
 		if (!lon.isEmpty())
 			location.setLongitude(Double.parseDouble(lon));
 		if (!lat.isEmpty())
@@ -384,7 +382,9 @@ public class LocationRest {
 	String tags_cn, @FormParam("address_cn")
 	String address_cn, @FormParam("telephone")
 	String telephone, @FormParam("category2_id")
-	String category2_id, @Context
+	String category2_id, @FormParam("latitude")
+	String latitude, @FormParam("longitude")
+	String longitude, @Context
 	HttpServletRequest request) throws JSONException {
 		JSONObject json = new JSONObject();
 		try {
@@ -411,8 +411,6 @@ public class LocationRest {
 			String name_en = TranslateUtil.getEnglishByChinese(name_cn);
 			String tags_en = TranslateUtil.getEnglishByChinese(tags_cn);
 
-			// String lon = form.getField("longitude").getValue();
-			// String lat = form.getField("latitude").getValue();
 			String name_py = Pinyin.getPinYin(name_cn);
 			String address_en = Pinyin.getPinYin(address_cn);
 
@@ -445,10 +443,12 @@ public class LocationRest {
 			location.setTags_cn(tags_cn);
 			location.setTags_en(tags_en);
 
-			// if (!lon.isEmpty())
-			// location.setLongitude(Double.parseDouble(lon));
-			// if (!lat.isEmpty())
-			// location.setLatitude(Double.parseDouble(lat));
+			if (!("".equals(latitude)) && null != latitude) {
+				location.setLongitude(Double.parseDouble(latitude));
+			}
+			if (!("".equals(longitude)) && null != longitude) {
+				location.setLatitude(Double.parseDouble(longitude));
+			}
 
 			List<SecondCategory> listSc = new ArrayList<SecondCategory>();
 			SecondCategory sc = secondCategoryService.get(Integer
@@ -558,19 +558,19 @@ public class LocationRest {
 		LocationData d = null;
 		for (Location l : list) {
 			d = new LocationData();
-			d.setPhoto_path(l.getPhoto_path()) ;
+			d.setPhoto_path(l.getPhoto_path());
 			d.setName_cn(l.getName_cn());
 			d.setName_en(l.getName_en());
 			d.setMd5Value(l.getMd5Value());
 			d.setTags_en(l.getTags_en());
 			d.setTags_cn(l.getTags_cn());
-			d.setAddress_cn(l.getAddress_cn()) ;
-			d.setAddress_en(l.getAddress_en()) ;
-			d.setName_py(l.getName_py()) ;
+			d.setAddress_cn(l.getAddress_cn());
+			d.setAddress_en(l.getAddress_en());
+			d.setName_py(l.getName_py());
 
 			listData.add(d);
 		}
-		return new LocationList(listData) ;
+		return new LocationList(listData);
 	}
 
 	@Path("/nearby/{latitude}/{longitude}")
@@ -594,8 +594,6 @@ public class LocationRest {
 			return null;
 		}
 	}
-	
-	
 
 	@Path("/pinyin/{name_cn}")
 	@GET
@@ -659,22 +657,22 @@ public class LocationRest {
 					String path = FileUploadUtil.getUuidPath(hashValue);
 					buffer.append(realPath).append(File.separator).append(path)
 							.append(hashValue.substring(12));
-					
-					FileHashCode.delFile(buffer.toString()) ;//删除图片
-					moduleFileService.delete(temp);//删除记录
+
+					FileHashCode.delFile(buffer.toString());// 删除图片
+					moduleFileService.delete(temp);// 删除记录
 				}
 			}
-			String photoPath = loc.getPhoto_path() ;
-			if((null != photoPath) && (!(photoPath.equals("0")))){
+			String photoPath = loc.getPhoto_path();
+			if ((null != photoPath) && (!(photoPath.equals("0")))) {
 				StringBuffer temp = new StringBuffer();
 				String path = FileUploadUtil.getUuidPath(photoPath);
 				temp.append(realPath).append(File.separator).append(path)
 						.append(photoPath.substring(12));
-				
+
 				FileHashCode.delFile(temp.toString());
 			}
-			
-			locationService.delete(loc) ;
+
+			locationService.delete(loc);
 			json.put(Constant.CODE, JSONCode.SUCCESS);
 			return Response.ok(json.toString()).build();
 		} catch (Exception ex) {

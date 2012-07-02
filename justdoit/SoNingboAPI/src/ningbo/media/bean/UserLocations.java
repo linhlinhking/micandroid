@@ -1,7 +1,9 @@
 package ningbo.media.bean;
 
 import java.io.Serializable;
+import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,10 +20,13 @@ public class UserLocations implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	private Integer userId;
+	@Column(name="md5_value")
+	private String md5Value;
 
 	private Integer locationId;
 	
+	@Column(name = "added_date")
+	private Date addedDate ;
 
 	public Integer getId() {
 		return id;
@@ -31,12 +36,13 @@ public class UserLocations implements Serializable {
 		this.id = id;
 	}
 
-	public Integer getUserId() {
-		return userId;
+
+	public String getMd5Value() {
+		return md5Value;
 	}
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
+	public void setMd5Value(String md5Value) {
+		this.md5Value = md5Value;
 	}
 
 	public Integer getLocationId() {
@@ -47,4 +53,13 @@ public class UserLocations implements Serializable {
 		this.locationId = locationId;
 	}
 
+	public Date getAddedDate() {
+		return addedDate;
+	}
+
+	public void setAddedDate(Date addedDate) {
+		this.addedDate = addedDate;
+	}
+
+	
 }

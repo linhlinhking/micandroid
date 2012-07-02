@@ -2,6 +2,7 @@ package ningbo.media.rest.service;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -21,6 +22,7 @@ import ningbo.media.bean.FirstCategory;
 import ningbo.media.bean.Location;
 import ningbo.media.bean.ModuleFile;
 import ningbo.media.bean.SecondCategory;
+import ningbo.media.bean.SystemUser;
 import ningbo.media.bean.UserLocations;
 import ningbo.media.data.api.LocationList;
 import ningbo.media.data.entity.LocationData;
@@ -35,6 +37,7 @@ import ningbo.media.rest.util.JSONCode;
 import ningbo.media.service.LocationService;
 import ningbo.media.service.ModuleFileService;
 import ningbo.media.service.SecondCategoryService;
+import ningbo.media.service.SystemUserService;
 import ningbo.media.service.UserLocationsService;
 import ningbo.media.util.Base64Image;
 import ningbo.media.util.MD5;
@@ -62,11 +65,12 @@ public class LocationRest {
 
 	@Resource
 	private ModuleFileService moduleFileService;
-	
+
 	@Resource
-	private UserLocationsService userLocationsService ;
-	
-	
+	private UserLocationsService userLocationsService;
+
+	@Resource
+	private SystemUserService systemUserService;
 
 	@Path("/showAll")
 	@GET
@@ -177,7 +181,7 @@ public class LocationRest {
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String addLocation(FormDataMultiPart form, @Context
+	public Response addLocation(FormDataMultiPart form, @Context
 	HttpServletRequest request) throws JSONException {
 		String key = form.getField("key").getValue();
 		JSONObject json = new JSONObject();
@@ -185,11 +189,13 @@ public class LocationRest {
 		UserLocations userlocTemp = new UserLocations();
 		if (key.isEmpty()) {
 			json.put(Constant.CODE, JSONCode.GLOBAL_KEYISNULL);
-			return json.toString();
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+			return Response.ok(json.toString()).build();
 
 		} else if (!Constant.KEY.equals(key)) {
 			json.put(Constant.CODE, JSONCode.GLOBAL_KEYINPUTINVALID);
-			return json.toString();
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+			return Response.ok(json.toString()).build();
 		}
 
 		// String name_en = form.getField("name_en").getValue();
@@ -208,10 +214,9 @@ public class LocationRest {
 		String telephone = form.getField("telephone").getValue();
 		String lon = form.getField("longitude").getValue();
 		String lat = form.getField("latitude").getValue();
-		String userId = form.getField("user_id").getValue() ;
-		
-		//systemUserService
-		
+		String userId = form.getField("user_id").getValue();
+
+		// systemUserService
 
 		List<String> listValues = FieldsData.getValue(form
 				.getFields("category2_id"));
@@ -237,8 +242,9 @@ public class LocationRest {
 			location.setLatitude(Double.parseDouble(lat));
 
 		if (null == listValues || listValues.size() < 0) {
-			return json.put(Constant.CODE,
-					JSONCode.LOCATION_CATEGORY2ID_INVALID).toString();
+			json.put(Constant.CODE, JSONCode.LOCATION_CATEGORY2ID_INVALID);
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+			return Response.ok(json.toString()).build();
 		}
 
 		try {
@@ -247,8 +253,11 @@ public class LocationRest {
 				SecondCategory sc = secondCategoryService.get(Integer
 						.valueOf(ids));
 				if (sc == null) {
-					return json.put(Constant.CODE,
-							JSONCode.LOCATION_CATEGORY_NOEXISTS).toString();
+					json
+							.put(Constant.CODE,
+									JSONCode.LOCATION_CATEGORY_NOEXISTS);
+					json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+					return Response.ok(json.toString()).build();
 				} else {
 					listSc.add(sc);
 				}
@@ -260,21 +269,31 @@ public class LocationRest {
 			location = locationService.get(locationId);
 			location.setMd5Value(md5Value);
 			locationService.update(location);
-			
-			if("".equals(userId) || null == userId){
-				userId = "0" ;
-			}
-			
-			userlocTemp.setLocationId(locationId) ;
-			userlocTemp.setUserId(Integer.valueOf(userId)) ;
-			userLocationsService.save(userlocTemp) ;
 
+			if ("".equals(userId) || null == userId) {
+				userId = "0";
+			}
+			SystemUser sysUser = systemUserService
+					.getSystemUserByMd5Value(userId);
+			if (null == sysUser) {
+				json.put(Constant.MESSAGE, JSONCode.MSG_USER_NOEXISTS);
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				return Response.ok(json.toString()).build();
+			}
+
+			userlocTemp.setLocationId(locationId);
+			userlocTemp.setMd5Value(userId) ;
+			userlocTemp.setAddedDate(new Date()) ;
+			userLocationsService.save(userlocTemp);
+			
+			json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
 			json.put(Constant.LOCATIONID, locationId);
-			return json.put(Constant.CODE, JSONCode.SUCCESS).toString();
+			return Response.ok(json.toString()).build();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			json.put(Constant.CODE, JSONCode.LOCATION_EXCEPTION);
-			return json.toString();
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+			return Response.ok(json.toString()).build();
 		}
 	}
 
@@ -431,11 +450,11 @@ public class LocationRest {
 				return Response.ok(json.toString()).build();
 			}
 
-			//String name_en = TranslateUtil.getEnglishByChinese(name_cn);
-			//String tags_en = TranslateUtil.getEnglishByChinese(tags_cn);
+			// String name_en = TranslateUtil.getEnglishByChinese(name_cn);
+			// String tags_en = TranslateUtil.getEnglishByChinese(tags_cn);
 
 			String name_py = Pinyin.getPinYin(name_cn);
-			//String address_en = Pinyin.getPinYin(address_cn);
+			// String address_en = Pinyin.getPinYin(address_cn);
 
 			// String base64Value = form.getField("base64Value").getValue();
 

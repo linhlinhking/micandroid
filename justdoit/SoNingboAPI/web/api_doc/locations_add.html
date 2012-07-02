@@ -9,7 +9,7 @@
 
 <body>
 	<!-- enctype="multipart/form-data"-->
-	<form name="form1" method="post" action="http://localhost:8080/resource/location/add" enctype="multipart/form-data">
+	<form name="form1" method="post" action="http://localhost:8000/resource/location/add" enctype="multipart/form-data">
 		<p>
 
 			key<br> 
@@ -17,24 +17,13 @@
 			<input type="text" name="key" id="key"> 
 			<br> 
 			<br> 
-			name_en<br> 
-			<input type="text" name="name_en" id="name_en"> 
-			<br>
-			<br>
+		
 
 			name_cn<br> 
 			<input type="text" name="name_cn" id="name_cn">
 			<br> 
 			<br> 
 			
-			name_py<br> 
-			<input type="text" name="name_py" id="name_py">
-			<br> 
-			<br> 
-			address_en<br> 
-			<input type="text"	name="address_en" id="address_en"> 
-			<br> 
-			<br>
 
 			address_cn<br> 
 			<input type="text" name="address_cn" id="address_cn"> 
@@ -44,6 +33,11 @@
 			<input type="text" name="telephone" id="telephone"> 
 			<br> 
 			<br>
+			
+			tags_cn<br> 
+			<input type="text" name="tags_cn" id="tags_cn">
+			<br> 
+			<br> 
 
 			gps_lat<br>
 			<input type="text" name="latitude" id="latitude">
@@ -56,6 +50,11 @@
 			
 			category2_id<br> 
 			<input type="text"	name="category2_id" id="category2_id"> 
+			<br> 
+			<br>
+			
+			user_id<br> 
+			<input type="text" name="user_id" id="user_id">
 			<br> 
 			<br>
 			
@@ -113,24 +112,12 @@
 			<td>Authorized verification of API calls</td>
 		</tr>
 		<tr>
-			<td>name_en</td>
-			<td>true</td>
-			<td>String</td>
-			<td>Location English Name</td>
-		</tr>
-		<tr>
 			<td>name_cn</td>
 			<td>true</td>
 			<td>String</td>
 			<td>Location Chinese Name</td>
 		</tr>
 
-		<tr>
-			<td>address_en</td>
-			<td>true</td>
-			<td>String</td>
-			<td>Location English Address</td>
-		</tr>
 		<tr>
 			<td>address_cn</td>
 			<td>true</td>
@@ -155,12 +142,6 @@
 			<td>true</td>
 			<td>Double</td>
 			<td>Location's longitude</td>
-		</tr>
-		<tr>
-			<td>name_py</td>
-			<td>true</td>
-			<td>String</td>
-			<td>the pinyin of name_cn</td>
 		</tr>
 		<tr>
 			<td>photo_path</td>

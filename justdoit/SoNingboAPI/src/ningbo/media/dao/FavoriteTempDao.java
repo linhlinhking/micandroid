@@ -5,4 +5,5 @@ import ningbo.media.core.dao.BaseDao;
 
 public interface FavoriteTempDao extends BaseDao<FavoriteTemp, Integer> {
 
+	public FavoriteTemp getFavoriteTempByDeviceId(String deviceId,Integer locationId) ;
 }

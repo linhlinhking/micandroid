@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import ningbo.media.bean.Favorite;
+import ningbo.media.bean.enums.FavoriteType;
 import ningbo.media.core.service.impl.BaseServiceImpl;
 import ningbo.media.dao.FavoriteDao;
 import ningbo.media.service.FavoriteService;
@@ -25,24 +26,28 @@ public class FavoriteServiceImpl extends BaseServiceImpl<Favorite, Integer>
 		super(favoriteDao);
 	}
 
-	public Favorite findFavoriteById(String userId, String locationId) {
-		return favoriteDao.findFavoriteById(userId, locationId);
-	}
 
-	public Favorite findFavoriteByDeviceId(String deviceId, String locationId) {
-		return favoriteDao.findFavoriteByDeviceId(deviceId, locationId) ;
-	}
-
-	public List<Favorite> getListFavoriteByUserId(Integer userId) {
-		return favoriteDao.getListFavoriteByUserId(userId);
-	}
-
-	public List<Favorite> getListFavoriteByDeviceId(String deviceId) {
-		return favoriteDao.getListFavoriteByDeviceId(deviceId);
-	}
 
 	public List<Favorite> findFavoriteByDeviceForUser(String deviceId) {
 		return favoriteDao.findFavoriteByDeviceForUser(deviceId) ;
+	}
+
+
+	public Favorite findFavoriteByType(String locationId, String id,
+			FavoriteType type) {
+		return favoriteDao.findFavoriteByType(locationId, id, type);
+	}
+
+
+
+	public List<Favorite> getListFavoriteById(String id, FavoriteType type) {
+		return favoriteDao.getListFavoriteById(id, type);
+	}
+
+
+
+	public Favorite getFavoriteByUserId(Integer userId, Integer locationId) {
+		return favoriteDao.getFavoriteByUserId(userId, locationId);
 	}
 	
 }

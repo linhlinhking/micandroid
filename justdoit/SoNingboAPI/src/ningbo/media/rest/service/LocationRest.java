@@ -21,6 +21,7 @@ import ningbo.media.bean.FirstCategory;
 import ningbo.media.bean.Location;
 import ningbo.media.bean.ModuleFile;
 import ningbo.media.bean.SecondCategory;
+import ningbo.media.bean.UserLocations;
 import ningbo.media.data.api.LocationList;
 import ningbo.media.data.entity.LocationData;
 import ningbo.media.data.entity.LocationDetail;
@@ -34,6 +35,7 @@ import ningbo.media.rest.util.JSONCode;
 import ningbo.media.service.LocationService;
 import ningbo.media.service.ModuleFileService;
 import ningbo.media.service.SecondCategoryService;
+import ningbo.media.service.UserLocationsService;
 import ningbo.media.util.Base64Image;
 import ningbo.media.util.MD5;
 import ningbo.media.util.Pinyin;
@@ -60,6 +62,11 @@ public class LocationRest {
 
 	@Resource
 	private ModuleFileService moduleFileService;
+	
+	@Resource
+	private UserLocationsService userLocationsService ;
+	
+	
 
 	@Path("/showAll")
 	@GET
@@ -175,6 +182,7 @@ public class LocationRest {
 		String key = form.getField("key").getValue();
 		JSONObject json = new JSONObject();
 		Location location = new Location();
+		UserLocations userlocTemp = new UserLocations();
 		if (key.isEmpty()) {
 			json.put(Constant.CODE, JSONCode.GLOBAL_KEYISNULL);
 			return json.toString();
@@ -200,6 +208,10 @@ public class LocationRest {
 		String telephone = form.getField("telephone").getValue();
 		String lon = form.getField("longitude").getValue();
 		String lat = form.getField("latitude").getValue();
+		String userId = form.getField("user_id").getValue() ;
+		
+		//systemUserService
+		
 
 		List<String> listValues = FieldsData.getValue(form
 				.getFields("category2_id"));
@@ -248,6 +260,14 @@ public class LocationRest {
 			location = locationService.get(locationId);
 			location.setMd5Value(md5Value);
 			locationService.update(location);
+			
+			if("".equals(userId) || null == userId){
+				userId = "0" ;
+			}
+			
+			userlocTemp.setLocationId(locationId) ;
+			userlocTemp.setUserId(Integer.valueOf(userId)) ;
+			userLocationsService.save(userlocTemp) ;
 
 			json.put(Constant.LOCATIONID, locationId);
 			return json.put(Constant.CODE, JSONCode.SUCCESS).toString();
@@ -378,9 +398,12 @@ public class LocationRest {
 	public Response editLocationBase64(@FormParam("key")
 	String key, @FormParam("locationId")
 	String locationId, @FormParam("name_cn")
-	String name_cn, @FormParam("tags_cn")
-	String tags_cn, @FormParam("address_cn")
-	String address_cn, @FormParam("telephone")
+	String name_cn, @FormParam("name_en")
+	String name_en, @FormParam("tags_cn")
+	String tags_cn, @FormParam("tags_en")
+	String tags_en, @FormParam("address_cn")
+	String address_cn, @FormParam("address_en")
+	String address_en, @FormParam("telephone")
 	String telephone, @FormParam("category2_id")
 	String category2_id, @FormParam("latitude")
 	String latitude, @FormParam("longitude")
@@ -408,11 +431,11 @@ public class LocationRest {
 				return Response.ok(json.toString()).build();
 			}
 
-			String name_en = TranslateUtil.getEnglishByChinese(name_cn);
-			String tags_en = TranslateUtil.getEnglishByChinese(tags_cn);
+			//String name_en = TranslateUtil.getEnglishByChinese(name_cn);
+			//String tags_en = TranslateUtil.getEnglishByChinese(tags_cn);
 
 			String name_py = Pinyin.getPinYin(name_cn);
-			String address_en = Pinyin.getPinYin(address_cn);
+			//String address_en = Pinyin.getPinYin(address_cn);
 
 			// String base64Value = form.getField("base64Value").getValue();
 
@@ -444,10 +467,10 @@ public class LocationRest {
 			location.setTags_en(tags_en);
 
 			if (!("".equals(latitude)) && null != latitude) {
-				location.setLongitude(Double.parseDouble(latitude));
+				location.setLatitude(Double.parseDouble(latitude));
 			}
 			if (!("".equals(longitude)) && null != longitude) {
-				location.setLatitude(Double.parseDouble(longitude));
+				location.setLongitude(Double.parseDouble(longitude));
 			}
 
 			List<SecondCategory> listSc = new ArrayList<SecondCategory>();

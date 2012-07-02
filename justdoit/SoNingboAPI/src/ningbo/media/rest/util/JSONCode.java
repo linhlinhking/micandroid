@@ -44,6 +44,10 @@ public class JSONCode {
 	public static final String MSG_KEY_ISNULL = "key no input." ;
 	public static final String MSG_KEY_INVALID = "key input invalid." ;
 	
+	
+	public static final String MSG_FAVORITE_ALREADY_EXIST = "Already Favorite." ;
+	public static final String MSG_FAVORITE_LOCATION_SUCCESS = "Favorite Successfully." ;
+	
 	/**Locatioin-4*/
 	public static final String LOCATION_NOEXISTS = "20010" ; //位置不存在
 	public static final String LOCATION_LATITUDE_IS_NULL = "20011" ;//经纬度为空

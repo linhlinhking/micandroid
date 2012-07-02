@@ -1,5 +1,7 @@
 package ningbo.media.service.impl;
 
+import javax.annotation.Resource;
+
 import ningbo.media.bean.FavoriteTemp;
 import ningbo.media.core.service.impl.BaseServiceImpl;
 import ningbo.media.dao.FavoriteTempDao;
@@ -14,9 +16,16 @@ import org.springframework.stereotype.Service;
 public class FavoriteTempServiceImpl extends
 		BaseServiceImpl<FavoriteTemp, Integer> implements FavoriteTempService {
 
+	@Resource
+	private FavoriteTempDao favoriteTempDao ;
+	
 	@Autowired
 	public FavoriteTempServiceImpl(@Qualifier("favoriteTempDao")
 	FavoriteTempDao favoriteTempDao) {
 		super(favoriteTempDao);
+	}
+	
+	public FavoriteTemp getFavoriteTempByDeviceId(String deviceId,Integer locationId){
+		return favoriteTempDao.getFavoriteTempByDeviceId(deviceId, locationId) ;
 	}
 }

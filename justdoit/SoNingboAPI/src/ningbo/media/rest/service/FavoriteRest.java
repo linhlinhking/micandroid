@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.Resource;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -15,10 +16,13 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
 import ningbo.media.bean.Favorite;
+import ningbo.media.bean.FavoriteTemp;
 import ningbo.media.bean.Location;
 import ningbo.media.bean.SystemUser;
 import ningbo.media.bean.TempUser;
+import ningbo.media.bean.enums.FavoriteType;
 import ningbo.media.data.api.FavoriteList;
 import ningbo.media.data.entity.FavoriteData;
 import ningbo.media.data.entity.LocationDetail;
@@ -26,6 +30,7 @@ import ningbo.media.rest.util.Constant;
 import ningbo.media.rest.util.JSONCode;
 import ningbo.media.rest.util.StringUtils;
 import ningbo.media.service.FavoriteService;
+import ningbo.media.service.FavoriteTempService;
 import ningbo.media.service.LocationService;
 import ningbo.media.service.SystemUserService;
 import ningbo.media.service.TempUserService;
@@ -47,6 +52,9 @@ public class FavoriteRest {
 	private FavoriteService favoriteService;
 
 	@Resource
+	private FavoriteTempService favoriteTempService;
+
+	@Resource
 	private SystemUserService systemUserService;
 
 	@Resource
@@ -63,7 +71,7 @@ public class FavoriteRest {
 		List<Favorite> list = favoriteService.getList("locationId", Integer
 				.valueOf(locationId));
 		JSONObject json = new JSONObject();
-		if (list == null) {
+		if (null == list || list.size() < 0) {
 			json.put(Constant.FAVORITENUMBER, 0);
 			return Response.ok(json.toString()).build();
 		} else {
@@ -95,8 +103,8 @@ public class FavoriteRest {
 		}
 
 		if (StringUtils.hasText(userId)) {
-			Favorite favorite = favoriteService.findFavoriteById(userId,
-					locationId);
+			Favorite favorite = favoriteService.getFavoriteByUserId(Integer
+					.valueOf(userId), Integer.valueOf(locationId));
 			if (null == favorite) {
 				json.put(Constant.CODE, JSONCode.FAVORITE_NOEXISTS);
 				return Response.ok(json.toString()).build();
@@ -106,13 +114,13 @@ public class FavoriteRest {
 				return Response.ok(json.toString()).build();
 			}
 		} else {
-			Favorite favorite = favoriteService.findFavoriteByDeviceId(
-					deviceId, locationId);
+			FavoriteTemp favorite = favoriteTempService.getFavoriteTempByDeviceId(deviceId,
+					Integer.valueOf(locationId));
 			if (null == favorite) {
 				json.put(Constant.CODE, JSONCode.FAVORITE_NOEXISTS);
 				return Response.ok(json.toString()).build();
 			} else {
-				favoriteService.delete(favorite);
+				favoriteTempService.delete(favorite);
 				json.put(Constant.CODE, JSONCode.SUCCESS);
 				return Response.ok(json.toString()).build();
 			}
@@ -133,6 +141,7 @@ public class FavoriteRest {
 		try {
 			TempUser tempUser = null;
 			Favorite fav = null;
+			FavoriteTemp favTemp = null;
 			if (!StringUtils.hasText(key)) {
 				tempJson.put(Constant.CODE, JSONCode.GLOBAL_KEYISNULL);
 				return Response.ok(tempJson.toString()).build();
@@ -145,7 +154,7 @@ public class FavoriteRest {
 				return Response.ok(tempJson.toString()).build();
 			}
 			Location loc = locationService.get(Integer.valueOf(locationId));
-			if (loc == null) {
+			if (null == loc) {
 				tempJson.put(Constant.CODE, JSONCode.FAVORITE_LOCATIONEXISTS);
 				return Response.ok(tempJson.toString()).build();
 			}
@@ -153,15 +162,19 @@ public class FavoriteRest {
 			if (userId != null && userId.trim().length() > 0) {
 				SystemUser systemUser = systemUserService.get(Integer
 						.valueOf(userId));
-				if (systemUser == null) {
+				if (null == systemUser) {
 					tempJson.put(Constant.CODE,
 							JSONCode.FAVORITE_USERID_NOTEXISTS);
 					return Response.ok(tempJson.toString()).build();
 				}
 
-				fav = favoriteService.findFavoriteById(userId, locationId);
+				fav = favoriteService.getFavoriteByUserId(Integer
+						.valueOf(userId), Integer.valueOf(locationId));
+
 				if (fav != null) {
-					tempJson.put(Constant.CODE, JSONCode.FAVORITE_ISEXISTS);
+					tempJson.put(Constant.MESSAGE,
+							JSONCode.MSG_FAVORITE_ALREADY_EXIST);
+					tempJson.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 					return Response.ok(tempJson.toString()).build();
 				}
 
@@ -169,33 +182,51 @@ public class FavoriteRest {
 				fav.setUserId(Integer.valueOf(userId));
 				fav.setLocationId(Integer.valueOf(locationId));
 				favoriteService.save(fav);
-			} else {// User Is Not Exists.Use Temp User.
+			} else {
 				if (!StringUtils.hasText(deviceId)) {
 					tempJson.put(Constant.CODE, JSONCode.FAVORITE_GET_SERIAL);
 					return Response.ok(tempJson.toString()).build();
 				} else {
-					fav = favoriteService.findFavoriteByDeviceId(deviceId,
-							locationId);
-					if (fav != null) {
-						tempJson.put(Constant.CODE, JSONCode.FAVORITE_ISEXISTS);
+					favTemp = favoriteTempService.getFavoriteTempByDeviceId(
+							deviceId, Integer.valueOf(locationId));
+					if (favTemp != null) {
+						tempJson.put(Constant.MESSAGE,
+								JSONCode.MSG_FAVORITE_ALREADY_EXIST);
+						tempJson.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 						return Response.ok(tempJson.toString()).build();
 					}
+					Location tempLoc = locationService.get(Integer
+							.valueOf(locationId));
+					List<Location> tempLocs = new ArrayList<Location>();
+					tempLocs.add(tempLoc);
 
-					fav = new Favorite();
-					fav.setLocationId(Integer.valueOf(locationId));
-					
-					favoriteService.save(fav);
+					// favTemp = new FavoriteTemp();
+					// favTemp.setDeviceId(deviceId);
+					// favTemp.setLocationId(Integer.valueOf(locationId));
+					// favoriteTempService.save(favTemp);
 
 					boolean temp = tempUserService.isExistsDeviceId(deviceId);
 					if (!temp) {
 						tempUser = new TempUser();
+						String temp_name = String.valueOf(System
+								.currentTimeMillis());
+						tempUser.setTempName(temp_name);
 						tempUser.setDeviceId(deviceId);
 						tempUser.setTempKey(Constant.KEY);
+						tempUser.setLocations(tempLocs);
 						tempUserService.save(tempUser);
+					} else {
+						TempUser t = tempUserService.get("deviceId", deviceId);
+						if (null != t) {
+							t.setLocations(tempLocs);
+							tempUserService.update(t);
+						}
 					}
 				}
 			}
-			tempJson.put(Constant.CODE, JSONCode.SUCCESS);
+			tempJson.put(Constant.MESSAGE,
+					JSONCode.MSG_FAVORITE_LOCATION_SUCCESS);
+			tempJson.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
 			return Response.ok(tempJson.toString()).build();
 		} catch (NumberFormatException ex) {
 			tempJson.put(Constant.CODE, JSONCode.FAVORITE_INPUT_INVALID);
@@ -220,55 +251,56 @@ public class FavoriteRest {
 		return Response.ok(queryDeviceFavorites(deviceId)).build();
 	}
 
-	
-	
 	private FavoriteList queryUserFavorites(String userId) {
-		List<Favorite> list = favoriteService.getListFavoriteByUserId(Integer
-				.valueOf(userId));
-		if(null == list || list.size() < 0){
-			return new FavoriteList() ;
+		List<Favorite> list = favoriteService.getListFavoriteById(userId,
+				FavoriteType.REALUSER);
+		if (null == list || list.size() < 0) {
+			return new FavoriteList();
 		}
-		List<LocationDetail> locations = new ArrayList<LocationDetail>() ;
-		
-		for(Favorite f : list){
-			LocationDetail detail = new LocationDetail() ;
-			Integer locationId = f.getLocationId() ;
-			Location tempLocation = null ;
-			if(null != locationId){
-				tempLocation = locationService.get(locationId) ;
-				detail.setMd5Value(MD5.calcMD5(String.valueOf(tempLocation.getId()))) ;
-				detail.setName_cn(tempLocation.getName_cn()) ;
-				detail.setAddress_cn(tempLocation.getAddress_cn()) ;
-				detail.setLatitude(tempLocation.getLatitude()) ;
-				detail.setLongitude(tempLocation.getLongitude()) ;
-				locations.add(detail) ;
+		List<LocationDetail> locations = new ArrayList<LocationDetail>();
+
+		for (Favorite f : list) {
+			LocationDetail detail = new LocationDetail();
+			Integer locationId = f.getLocationId();
+			Location tempLocation = null;
+			if (null != locationId) {
+				tempLocation = locationService.get(locationId);
+				detail.setMd5Value(MD5.calcMD5(String.valueOf(tempLocation
+						.getId())));
+				detail.setName_cn(tempLocation.getName_cn());
+				detail.setAddress_cn(tempLocation.getAddress_cn());
+				detail.setLatitude(tempLocation.getLatitude());
+				detail.setLongitude(tempLocation.getLongitude());
+				locations.add(detail);
 			}
 		}
-		return new FavoriteList(Integer.valueOf(userId),"",locations);
+		return new FavoriteList(Integer.valueOf(userId), "", locations);
 	}
-	
+
 	private FavoriteList queryDeviceFavorites(String deviceId) {
-		List<Favorite> list = favoriteService.getListFavoriteByDeviceId(deviceId) ;
-		if(null == list || list.size() < 0){
-			return new FavoriteList() ;
+		List<Favorite> list = favoriteService.getListFavoriteById(deviceId,
+				FavoriteType.TEMPUSER);
+		if (null == list || list.size() < 0) {
+			return new FavoriteList();
 		}
-		List<LocationDetail> locations = new ArrayList<LocationDetail>() ;
-		
-		for(Favorite f : list){
-			LocationDetail detail = new LocationDetail() ;
-			Integer locationId = f.getLocationId() ;
-			Location tempLocation = null ;
-			if(null != locationId){
-				tempLocation = locationService.get(locationId) ;
-				detail.setMd5Value(MD5.calcMD5(String.valueOf(tempLocation.getId()))) ;
-				detail.setName_cn(tempLocation.getName_cn()) ;
-				detail.setAddress_cn(tempLocation.getAddress_cn()) ;
-				detail.setLatitude(tempLocation.getLatitude()) ;
-				detail.setLongitude(tempLocation.getLongitude()) ;
-				locations.add(detail) ;
+		List<LocationDetail> locations = new ArrayList<LocationDetail>();
+
+		for (Favorite f : list) {
+			LocationDetail detail = new LocationDetail();
+			Integer locationId = f.getLocationId();
+			Location tempLocation = null;
+			if (null != locationId) {
+				tempLocation = locationService.get(locationId);
+				detail.setMd5Value(MD5.calcMD5(String.valueOf(tempLocation
+						.getId())));
+				detail.setName_cn(tempLocation.getName_cn());
+				detail.setAddress_cn(tempLocation.getAddress_cn());
+				detail.setLatitude(tempLocation.getLatitude());
+				detail.setLongitude(tempLocation.getLongitude());
+				locations.add(detail);
 			}
 		}
-		return new FavoriteList(Integer.valueOf(-1),deviceId,locations);
+		return new FavoriteList(Integer.valueOf(-1), deviceId, locations);
 	}
 
 	@Path("/location/getAll")
@@ -296,14 +328,15 @@ public class FavoriteRest {
 				return json.toString();
 			} else if ((deviceId != null && deviceId.trim().length() > 0)
 					&& ("".equals(userId) || userId == null)) {
-				list = favoriteService.getListFavoriteByDeviceId(deviceId);
+				list = favoriteService.getListFavoriteById(deviceId,
+						FavoriteType.TEMPUSER);
 				if (list == null || list.size() < 1) {
 					json.put("code", "4");
 					return json.toString();
 				}
 			} else {
-				list = favoriteService.getListFavoriteByUserId(Integer
-						.valueOf(userId));
+				list = favoriteService.getListFavoriteById(userId,
+						FavoriteType.REALUSER);
 				if (list == null || list.size() < 1) {
 					json.put("code", "5");
 					return json.toString();

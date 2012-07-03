@@ -48,6 +48,8 @@ public class JSONCode {
 	public static final String MSG_FAVORITE_ALREADY_EXIST = "Already Favorite." ;
 	public static final String MSG_FAVORITE_LOCATION_SUCCESS = "Favorite Successfully." ;
 	
+	public static final String MSG_LOCATION_NO_LOGIN = "Please Sign In." ;
+	
 	/**Locatioin-4*/
 	public static final String LOCATION_NOEXISTS = "20010" ; //位置不存在
 	public static final String LOCATION_LATITUDE_IS_NULL = "20011" ;//经纬度为空

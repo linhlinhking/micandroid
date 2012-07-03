@@ -25,6 +25,7 @@ import ningbo.media.bean.ImageInformation;
 import ningbo.media.bean.Location;
 import ningbo.media.bean.ModuleFile;
 import ningbo.media.bean.SystemUser;
+import ningbo.media.bean.UserModuleFiles;
 import ningbo.media.rest.dto.ModuleFileData;
 import ningbo.media.rest.util.Constant;
 import ningbo.media.rest.util.FileHashCode;
@@ -36,6 +37,7 @@ import ningbo.media.service.ImageInformationService;
 import ningbo.media.service.LocationService;
 import ningbo.media.service.ModuleFileService;
 import ningbo.media.service.SystemUserService;
+import ningbo.media.service.UserModuleFilesService;
 import ningbo.media.util.Base64Image;
 import ningbo.media.util.MagickImageScale;
 
@@ -65,6 +67,8 @@ public class ModuleFileResource {
 	@Resource
 	private ImageInformationService imageInformationService;
 
+	@Resource
+	private UserModuleFilesService userModuleFilesService;
 
 	@Path("/show/{fileId}")
 	@GET
@@ -135,15 +139,18 @@ public class ModuleFileResource {
 					.toString()));
 			inforImage.setSize(Long
 					.valueOf(m.get(Constant.FILESIZE).toString()));
-			
-			if(null != m.get(Constant.LATITUDE)){
-				inforImage.setLatitude(Double.valueOf(m.get(Constant.LATITUDE).toString())) ;
+
+			if (null != m.get(Constant.LATITUDE)) {
+				inforImage.setLatitude(Double.valueOf(m.get(Constant.LATITUDE)
+						.toString()));
 			}
-			if(null != m.get(Constant.LONGITUDE)){
-				inforImage.setLongitude(Double.valueOf(m.get(Constant.LONGITUDE).toString())) ;
+			if (null != m.get(Constant.LONGITUDE)) {
+				inforImage.setLongitude(Double.valueOf(m
+						.get(Constant.LONGITUDE).toString()));
 			}
-			if(null != m.get(Constant.TAKE_PHOTO_DATE)){
-				inforImage.setTakePhotoDate(m.get(Constant.TAKE_PHOTO_DATE).toString()) ;
+			if (null != m.get(Constant.TAKE_PHOTO_DATE)) {
+				inforImage.setTakePhotoDate(m.get(Constant.TAKE_PHOTO_DATE)
+						.toString());
 			}
 
 			String uuid = String.valueOf(m.get(Constant.UUID));
@@ -172,11 +179,14 @@ public class ModuleFileResource {
 	public Response addLoctionFileByBase64(@FormParam("key")
 	String key, @FormParam("locationId")
 	String locationId, @FormParam("imageBase64")
-	String imageBase64, @Context HttpServletRequest request) {
+	String imageBase64, @FormParam("md5_value")
+	String md5Value, @Context
+	HttpServletRequest request) {
 		try {
 			JSONObject json = new JSONObject();
 			List<Location> listLocations = new ArrayList<Location>();
 			ModuleFile moduleFile = new ModuleFile();
+			UserModuleFiles files = new UserModuleFiles();
 
 			if (!StringUtils.hasText(key)) {
 				json.put(Constant.CODE, JSONCode.KEYISNULL);
@@ -193,15 +203,13 @@ public class ModuleFileResource {
 			}
 			listLocations.add(loc);
 
-			
 			String fileName = String.valueOf(System.currentTimeMillis());
 			StringBuffer sb = new StringBuffer();
 			String tempPath = FileUploadUtil.makeFileDir(null, request, true);
 			sb.append(tempPath).append(fileName);
 
-			String tempBase64 = imageBase64.replaceAll(" ", "+") ;
-			boolean flag = Base64Image
-					.generateImage(tempBase64, sb.toString());
+			String tempBase64 = imageBase64.replaceAll(" ", "+");
+			boolean flag = Base64Image.generateImage(tempBase64, sb.toString());
 
 			if (!flag) {
 				File file = new File(sb.toString());
@@ -220,16 +228,18 @@ public class ModuleFileResource {
 					.toString()));
 			inforImage.setSize(Long
 					.valueOf(m.get(Constant.FILESIZE).toString()));
-			if(null != m.get(Constant.LATITUDE)){
-				inforImage.setLatitude(Double.valueOf(m.get(Constant.LATITUDE).toString())) ;
+			if (null != m.get(Constant.LATITUDE)) {
+				inforImage.setLatitude(Double.valueOf(m.get(Constant.LATITUDE)
+						.toString()));
 			}
-			if(null != m.get(Constant.LONGITUDE)){
-				inforImage.setLongitude(Double.valueOf(m.get(Constant.LONGITUDE).toString())) ;
+			if (null != m.get(Constant.LONGITUDE)) {
+				inforImage.setLongitude(Double.valueOf(m
+						.get(Constant.LONGITUDE).toString()));
 			}
-			if(null != m.get(Constant.TAKE_PHOTO_DATE)){
-				inforImage.setTakePhotoDate(m.get(Constant.TAKE_PHOTO_DATE).toString()) ;
+			if (null != m.get(Constant.TAKE_PHOTO_DATE)) {
+				inforImage.setTakePhotoDate(m.get(Constant.TAKE_PHOTO_DATE)
+						.toString());
 			}
-			
 
 			String uuid = String.valueOf(m.get(Constant.UUID));
 			imageInformationService.save(inforImage);
@@ -241,13 +251,24 @@ public class ModuleFileResource {
 			moduleFile.setLocations(listLocations);
 
 			Integer moduleFileId = moduleFileService.save(moduleFile);
+
+
+			if ((!"".equals(md5Value)) && (null != md5Value)) {
+				files.setMd5Value(md5Value);
+				files.setLocationId(Integer.valueOf(locationId));
+				files.setFileId(moduleFileId);
+				files.setUploadedDate(new Date());
+
+				userModuleFilesService.save(files);
+			}
+
 			json.put(Constant.CODE, JSONCode.SUCCESS);
 			json.put(Constant.FILEID, moduleFileId);
 			return Response.ok(json.toString()).build();
 		} catch (Exception ex) {
-			//  FileHashCode.delFile(filePathAndName)
+			// FileHashCode.delFile(filePathAndName)
 			throw Jerseys.buildException(Status.INTERNAL_SERVER_ERROR, ex
-			.getMessage());
+					.getMessage());
 		}
 
 	}
@@ -262,12 +283,16 @@ public class ModuleFileResource {
 			FormDataContentDisposition fileDetail) {
 
 		try {
+			UserModuleFiles files = new UserModuleFiles();
 			JSONObject json = new JSONObject();
 			List<Location> listLocations = new ArrayList<Location>();
 			ModuleFile moduleFile = new ModuleFile();
 			String key = form.getField("key").getValue();
 			String locationId = form.getField("locationId").getValue();// md5
-			
+
+			// 上传用户的md5Value
+			String md5Value = form.getField("md5_value").getValue();
+
 			if (!StringUtils.hasText(key)) {
 				json.put(Constant.CODE, JSONCode.KEYISNULL);
 				return Response.ok(json.toString()).build();
@@ -298,14 +323,17 @@ public class ModuleFileResource {
 					.toString()));
 			inforImage.setSize(Long
 					.valueOf(m.get(Constant.FILESIZE).toString()));
-			if(null != m.get(Constant.LATITUDE)){
-				inforImage.setLatitude(Double.valueOf(m.get(Constant.LATITUDE).toString())) ;
+			if (null != m.get(Constant.LATITUDE)) {
+				inforImage.setLatitude(Double.valueOf(m.get(Constant.LATITUDE)
+						.toString()));
 			}
-			if(null != m.get(Constant.LONGITUDE)){
-				inforImage.setLongitude(Double.valueOf(m.get(Constant.LONGITUDE).toString())) ;
+			if (null != m.get(Constant.LONGITUDE)) {
+				inforImage.setLongitude(Double.valueOf(m
+						.get(Constant.LONGITUDE).toString()));
 			}
-			if(null != m.get(Constant.TAKE_PHOTO_DATE)){
-				inforImage.setTakePhotoDate(m.get(Constant.TAKE_PHOTO_DATE).toString()) ;
+			if (null != m.get(Constant.TAKE_PHOTO_DATE)) {
+				inforImage.setTakePhotoDate(m.get(Constant.TAKE_PHOTO_DATE)
+						.toString());
 			}
 			String uuid = String.valueOf(m.get(Constant.UUID));
 			imageInformationService.save(inforImage);
@@ -317,6 +345,16 @@ public class ModuleFileResource {
 			moduleFile.setLocations(listLocations);
 
 			Integer moduleFileId = moduleFileService.save(moduleFile);
+
+			if ((!"".equals(md5Value)) && (null != md5Value)) {
+				files.setMd5Value(md5Value);
+				files.setLocationId(Integer.valueOf(locationId));
+				files.setFileId(moduleFileId);
+				files.setUploadedDate(new Date());
+
+				userModuleFilesService.save(files);
+			}
+
 			json.put(Constant.CODE, JSONCode.SUCCESS);
 			json.put(Constant.FILEID, moduleFileId);
 			return Response.ok(json.toString()).build();
@@ -410,6 +448,5 @@ public class ModuleFileResource {
 
 		return null;
 	}
-
 
 }

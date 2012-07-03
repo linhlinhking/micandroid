@@ -282,10 +282,10 @@ public class LocationRest {
 			}
 
 			userlocTemp.setLocationId(locationId);
-			userlocTemp.setMd5Value(userId) ;
-			userlocTemp.setAddedDate(new Date()) ;
+			userlocTemp.setMd5Value(userId);
+			userlocTemp.setAddedDate(new Date());
 			userLocationsService.save(userlocTemp);
-			
+
 			json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
 			json.put(Constant.LOCATIONID, locationId);
 			return Response.ok(json.toString()).build();
@@ -315,10 +315,12 @@ public class LocationRest {
 	String telephone, @FormParam("longitude")
 	String longitude, @FormParam("latitude")
 	String latitude, @FormParam("category2_id")
-	String category2_id, @FormParam("base64Value")
+	String category2_id, @FormParam("user_id")
+	String user_id, @FormParam("base64Value")
 	String base64Value, @Context
 	HttpServletRequest request) throws JSONException {
 		JSONObject json = new JSONObject();
+		UserLocations userlocTemp = new UserLocations();
 		try {
 			Location location = new Location();
 			if (key.isEmpty()) {
@@ -394,8 +396,27 @@ public class LocationRest {
 			location.setMd5Value(md5Value);
 			locationService.update(location);
 
+			if ("".equals(user_id) || null == user_id) {
+				//json.put(Constant.MESSAGE, JSONCode.MSG_LOCATION_NO_LOGIN);
+				//json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				//return Response.ok(json.toString()).build();
+			} else {
+				SystemUser sysUser = systemUserService
+						.getSystemUserByMd5Value(user_id);
+				if (null == sysUser) {
+					json.put(Constant.MESSAGE, JSONCode.MSG_USER_NOEXISTS);
+					json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+					return Response.ok(json.toString()).build();
+				}
+
+				userlocTemp.setLocationId(locationId);
+				userlocTemp.setMd5Value(user_id);
+				userlocTemp.setAddedDate(new Date());
+				userLocationsService.save(userlocTemp);
+			}
+
+			json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
 			json.put(Constant.LOCATIONID, locationId);
-			json.put(Constant.CODE, JSONCode.SUCCESS);
 			return Response.ok(json.toString()).build();
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -519,8 +540,6 @@ public class LocationRest {
 			return Response.ok(json.toString()).build();
 		}
 	}
-
-
 
 	@Path("/search/{name}")
 	@GET

@@ -412,7 +412,6 @@ public class LocationRest {
 	 */
 	@Path("/base64/edit")
 	@POST
-	// @Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response editLocationBase64(@FormParam("key")
 	String key, @FormParam("locationId")
@@ -521,74 +520,7 @@ public class LocationRest {
 		}
 	}
 
-	/**
-	 * This method is judge whether the username and email is exists or not If
-	 * exists returns true, and the register can't save the information
-	 * 
-	 * @param form
-	 * @param request
-	 * @return
-	 * @throws JSONException
-	 */
-	@Path("/edit")
-	@POST
-	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	@Produces(MediaType.APPLICATION_JSON)
-	public String editLocation(FormDataMultiPart form, @Context
-	HttpServletRequest request) throws JSONException {
-		String key = form.getField("key").getValue();
-		JSONObject json = new JSONObject();
-		boolean b = false;
-		// the key is wrong
-		if (key.isEmpty()) {
-			json.put(Constant.CODE, JSONCode.GLOBAL_KEYISNULL);
-			return json.toString();
 
-		} else if (!Constant.KEY.equals(key)) {
-			json.put(Constant.CODE, JSONCode.GLOBAL_KEYINPUTINVALID);
-			return json.toString();
-		}
-		String pk = form.getField("id").getValue();
-		if (pk.isEmpty()) {
-			return json.put("id", "null").toString();
-		}
-		Integer id = Integer.parseInt(pk);
-		String name_en = form.getField("name_en").getValue();
-		String name_cn = form.getField("name_cn").getValue();
-		String address_en = form.getField("address_en").getValue();
-		String address_cn = form.getField("address_cn").getValue();
-		String telephone = form.getField("telephone").getValue();
-		String lon = form.getField("longitude").getValue();
-		String lat = form.getField("latitude").getValue();
-		String cid = form.getField("category_id").getValue();
-		// FormDataBodyPart part = form.getField("photo_path");
-		// String fileName = part.getContentDisposition().getFileName();
-		Location location = locationService.get(id);
-		location.setName_cn(name_cn);
-		location.setName_en(name_en);
-		location.setAddress_cn(address_cn);
-		location.setAddress_en(address_en);
-		location.setTelephone(telephone);
-		if (!lon.isEmpty())
-			location.setLongitude(Double.parseDouble(lon));
-		if (!lat.isEmpty())
-			location.setLatitude(Double.parseDouble(lat));
-		if (cid.isEmpty()) {
-			return json.put("cid", false).toString();
-		}
-		SecondCategory sc = new SecondCategory();
-		sc.setId(Integer.parseInt(cid));
-		// location.setSecondCategory(sc);
-		try {
-			// location.setPhoto_path(FileUpload.upload(part,
-			// fileName,"location_head", request));
-			locationService.save(location);
-			return json.put("success", !b).toString();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			return null;
-		}
-	}
 
 	@Path("/search/{name}")
 	@GET

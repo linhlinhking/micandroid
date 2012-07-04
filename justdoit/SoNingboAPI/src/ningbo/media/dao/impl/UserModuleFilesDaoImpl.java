@@ -12,4 +12,20 @@ public class UserModuleFilesDaoImpl extends
 	public UserModuleFilesDaoImpl(){
 		super(UserModuleFiles.class);
 	}
+
+
+	public UserModuleFiles getUserModuleFilesByUserId(Integer fileId,
+			String md5Value) {
+		try{
+			String hql = "from UserModuleFiles as m where 1=1 and m.fileId = ? and m.md5Value = ? " ;
+			UserModuleFiles temp = (UserModuleFiles)findUnique(hql, fileId,md5Value) ;
+			if(null != temp){
+				return temp ;
+			}
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		
+		return null ;
+	}
 }

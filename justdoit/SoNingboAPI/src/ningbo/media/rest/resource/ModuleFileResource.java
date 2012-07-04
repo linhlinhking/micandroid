@@ -252,10 +252,8 @@ public class ModuleFileResource {
 
 			Integer moduleFileId = moduleFileService.save(moduleFile);
 
-
 			if ((!"".equals(md5Value)) && (null != md5Value)) {
 				files.setMd5Value(md5Value);
-				files.setLocationId(Integer.valueOf(locationId));
 				files.setFileId(moduleFileId);
 				files.setUploadedDate(new Date());
 
@@ -291,7 +289,7 @@ public class ModuleFileResource {
 			String locationId = form.getField("locationId").getValue();// md5
 
 			// 上传用户的md5Value
-			String md5Value = form.getField("md5_value").getValue();
+			String md5Value = form.getField("user_md5_value").getValue();
 
 			if (!StringUtils.hasText(key)) {
 				json.put(Constant.CODE, JSONCode.KEYISNULL);
@@ -348,7 +346,6 @@ public class ModuleFileResource {
 
 			if ((!"".equals(md5Value)) && (null != md5Value)) {
 				files.setMd5Value(md5Value);
-				files.setLocationId(Integer.valueOf(locationId));
 				files.setFileId(moduleFileId);
 				files.setUploadedDate(new Date());
 
@@ -442,11 +439,49 @@ public class ModuleFileResource {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteFileByUploader(@FormParam("key")
-	String key, @FormParam("uploaderId")
-	String uploaderId, @FormParam("locationId")
-	String locationId) {
+	String key, @FormParam("user_md5_value")
+	String md5Value, @FormParam("fileId")
+	String fileId, @Context
+	HttpServletRequest request) throws JSONException {
+		JSONObject json = new JSONObject();
+		try {
+			if (!StringUtils.hasText(key)) {
+				json.put(Constant.CODE, JSONCode.KEYISNULL);
+				return Response.ok(json.toString()).build();
+			} else if (!key.equals(Constant.KEY)) {
+				json.put(Constant.CODE, JSONCode.KEYINPUTINVALID);
+				return Response.ok(json.toString()).build();
+			}
 
-		return null;
+			UserModuleFiles flag = userModuleFilesService.getUserModuleFilesByUserId(
+					Integer.valueOf(fileId), md5Value);
+			
+			if(null != flag){
+				ModuleFile tempFile = moduleFileService.get(Integer.valueOf(fileId)) ;
+				String uuid = "" ;
+				
+				if(null != tempFile){
+					ImageInformation infor = tempFile.getImageInfo() ;
+					uuid = tempFile.getFileHash() ;
+					
+					if ((!"0".equals(uuid)) && (null != uuid)){
+						FileUploadUtil.delFile(uuid, request) ;
+					}
+					
+					moduleFileService.delete(tempFile) ;
+					imageInformationService.delete(infor) ;
+				}
+				userModuleFilesService.delete(flag) ;
+				json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
+				json.put(Constant.MESSAGE,JSONCode.MSG_MODULEFILE_DELETE_SUCCESS);
+				return Response.ok(json.toString()).build() ;
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace() ;
+		}
+		json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+		json.put(Constant.MESSAGE,JSONCode.MSG_MODULEFILE_DELETE_FAIL);
+		return Response.ok(json.toString()).build() ;
 	}
 
 }

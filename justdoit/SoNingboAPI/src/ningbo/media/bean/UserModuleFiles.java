@@ -4,10 +4,14 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "user_modulefiles")
 public class UserModuleFiles implements Serializable{
 
 	private static final long serialVersionUID = -3527250865122035116L;
@@ -24,10 +28,9 @@ public class UserModuleFiles implements Serializable{
 	@Column(name = "uploaded_date")
 	private Date uploadedDate ;
 	
-	private Integer locationId ;
-	
 	
 	public UserModuleFiles(){}
+	
 
 	public Integer getId() {
 		return id;
@@ -60,14 +63,6 @@ public class UserModuleFiles implements Serializable{
 
 	public void setUploadedDate(Date uploadedDate) {
 		this.uploadedDate = uploadedDate;
-	}
-
-	public Integer getLocationId() {
-		return locationId;
-	}
-
-	public void setLocationId(Integer locationId) {
-		this.locationId = locationId;
 	}
 
 	

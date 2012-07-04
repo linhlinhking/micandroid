@@ -17,7 +17,6 @@ public class FileHashCode {
 	private static char hexChar[] = { '0', '1', '2', '3', '4', '5', '6', '7',
 			'8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 
-
 	private FileHashCode() {
 	}
 
@@ -155,7 +154,6 @@ public class FileHashCode {
 		}
 		return dir;
 	}
-	
 
 	/**
 	 * @param uploadedInputStream
@@ -200,11 +198,11 @@ public class FileHashCode {
 					Integer width = Integer.valueOf(tmps[0]);
 					Integer height = Integer.valueOf(tmps[1]);
 					if (width == height) {
-						MagickImageScale.resizeFix(srcFile, destFile, width,
-								height, false);
+						//MagickImageScale.resizeFix(srcFile, destFile, width,
+						//		height, false);
 					} else {
-						MagickImageScale.resizeFix(srcFile, destFile, width,
-								800);
+						//MagickImageScale.resizeFix(srcFile, destFile, width,
+						//		800);
 					}
 
 				}
@@ -216,35 +214,13 @@ public class FileHashCode {
 					.getImageInformation(uploadedFileLocation);
 			map.put(Constant.UUID, uuid);
 
-			delFile(uploadedFileLocation);
+			FileUploadUtil.delFile(uploadedFileLocation);
 			out.flush();
 			out.close();
 			return map;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
-		}
-
-	}
-
-	/**
-	 * delete file
-	 * 
-	 * @param filePathAndName
-	 *            String 文件路径及名称
-	 * @param fileContent
-	 *            String
-	 * @return boolean
-	 */
-	public static void delFile(String filePathAndName) {
-		try {
-			File myDelFile = new File(filePathAndName);
-
-			myDelFile.delete();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-
 		}
 
 	}
@@ -260,7 +236,7 @@ public class FileHashCode {
 	 */
 	private static void copyFile(String oldPath, String newPath) {
 		try {
-			//int bytesum = 0;
+			// int bytesum = 0;
 			int byteread = 0;
 			File oldfile = new File(oldPath);
 			if (oldfile.exists()) { // 文件存在时
@@ -268,7 +244,7 @@ public class FileHashCode {
 				FileOutputStream fs = new FileOutputStream(newPath);
 				byte[] buffer = new byte[1024];
 				while ((byteread = inStream.read(buffer)) != -1) {
-					//bytesum += byteread;
+					// bytesum += byteread;
 					fs.write(buffer, 0, byteread);
 				}
 				inStream.close();
@@ -281,22 +257,20 @@ public class FileHashCode {
 
 	}
 
-	
-	public static Map<String, Object> writeToFile(
-			HttpServletRequest request, String tempFilePath) {
+	public static Map<String, Object> writeToFile(HttpServletRequest request,
+			String tempFilePath) {
 		Map<String, Object> map = new HashMap<String, Object>(7);
 		try {
 			String uuid = getFileMD5(tempFilePath);
 			String tempPath = FileUploadUtil.makeFileDir(uuid, request, false);
 			StringBuffer sb = new StringBuffer();
 			sb.append(tempPath).append(uuid.substring(12));
-			
+
 			copyFile(tempFilePath, sb.toString());
 
 			// 同时生成原图的缩略图
 			File srcFile = new File(tempFilePath);
 
-			
 			try {
 				ResizeEnum[] resizes = ResizeEnum.values();
 				for (ResizeEnum re : resizes) {
@@ -324,12 +298,11 @@ public class FileHashCode {
 				return null;
 			}
 
-			map = ImageDetailInformation
-					.getImageInformation(tempFilePath);
+			map = ImageDetailInformation.getImageInformation(tempFilePath);
 			map.put(Constant.UUID, uuid);
 
-			//delFile(tempFilePath);
-			
+			// delFile(tempFilePath);
+
 			return map;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -337,15 +310,15 @@ public class FileHashCode {
 		}
 
 	}
-	
-	public static String writeBase64File(
-			HttpServletRequest request, String tempFilePath) {
+
+	public static String writeBase64File(HttpServletRequest request,
+			String tempFilePath) {
 		try {
 			String uuid = getFileMD5(tempFilePath);
 			String tempPath = FileUploadUtil.makeFileDir(uuid, request, false);
 			StringBuffer sb = new StringBuffer();
 			sb.append(tempPath).append(uuid.substring(12));
-			
+
 			copyFile(tempFilePath, sb.toString());
 			File srcFile = new File(tempFilePath);
 			try {
@@ -374,8 +347,8 @@ public class FileHashCode {
 				e.printStackTrace();
 				return null;
 			}
-			
-			delFile(tempFilePath);
+
+			FileUploadUtil.delFile(tempFilePath);
 			return uuid;
 		} catch (Exception e) {
 			e.printStackTrace();

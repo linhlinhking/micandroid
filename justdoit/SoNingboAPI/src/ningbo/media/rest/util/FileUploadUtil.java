@@ -52,22 +52,72 @@ public class FileUploadUtil {
 				uuid.substring(8, 12)).append(FILE_SEPARATOR);
 		return sb.toString();
 	}
-	
-	public static String copy(InputStream inputstream,String newPath){
-		try{
+
+	public static String copy(InputStream inputstream, String newPath) {
+		try {
 			OutputStream out = new FileOutputStream(new File(newPath));
 			int read = 0;
-			byte[] bytes = new byte[1024] ;
-			while((read = inputstream.read(bytes)) != -1){
-				out.write(bytes,0,read) ;
+			byte[] bytes = new byte[1024];
+			while ((read = inputstream.read(bytes)) != -1) {
+				out.write(bytes, 0, read);
 			}
-			
+
 			out.close();
-		}catch(Exception ex){
-			ex.printStackTrace() ;
-			return null ;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return null;
 		}
-		return newPath ;
+		return newPath;
+	}
+
+	/**
+	 * delete file
+	 * 
+	 * @param filePathAndName
+	 *            String 文件路径及名称
+	 * @param fileContent
+	 *            String
+	 * @return boolean
+	 */
+	public static void delFile(String filePathAndName) {
+		try {
+			File myDelFile = new File(filePathAndName);
+
+			myDelFile.delete();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+	}
+
+	/**
+	 * delete file
+	 * 
+	 * @param filePathAndName
+	 *            String 文件路径及名称
+	 * @param fileContent
+	 *            String
+	 * @return boolean
+	 */
+	public static void delFile(String filePathAndName,
+			HttpServletRequest request) {
+		try {
+			String realPath = request.getSession().getServletContext()
+					.getRealPath("");
+			StringBuffer temp = new StringBuffer();
+			String path = FileUploadUtil.getUuidPath(filePathAndName);
+			temp.append(realPath).append(File.separator).append(path).append(
+					filePathAndName.substring(12));
+			
+			File myDelFile = new File(temp.toString());
+
+			myDelFile.delete();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
 	}
 
 }

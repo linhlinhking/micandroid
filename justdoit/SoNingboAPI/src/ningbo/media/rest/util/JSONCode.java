@@ -40,9 +40,10 @@ public class JSONCode {
 	public static final String MSG_USER_ACTIVATED = "user has activated." ;
 	public static final String MSG_USER_USERNAME_NO_INPUT = "user no input." ;
 	public static final String MSG_USER_FORGOT_PASSWORD = "password had sended to your email." ;
-	
+	public static final String MSG_USER_USER_MD5VALUE = "No The User Of Md5 value" ;
 	public static final String MSG_KEY_ISNULL = "key no input." ;
 	public static final String MSG_KEY_INVALID = "key input invalid." ;
+	public static final String MSG_USER_AVATAR_UPDATE = "The User Avatar Aleady Update." ;
 	
 	
 	public static final String MSG_FAVORITE_ALREADY_EXIST = "Already Favorite." ;
@@ -72,6 +73,9 @@ public class JSONCode {
 	public static final String MODULEFILE_VALID_CHARACTER = "70006" ;
 	public static final String MODULEFILE_BASE64_INVALID = "70007" ;
 	public static final String NO_DATA = "No Data." ;
+	
+	public static final String MSG_MODULEFILE_DELETE_SUCCESS = "Deleted successfully." ;
+	public static final String MSG_MODULEFILE_DELETE_FAIL = "Delete failed" ;
 
 	
 	

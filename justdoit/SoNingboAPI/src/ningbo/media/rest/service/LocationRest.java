@@ -397,9 +397,9 @@ public class LocationRest {
 			locationService.update(location);
 
 			if ("".equals(user_id) || null == user_id) {
-				//json.put(Constant.MESSAGE, JSONCode.MSG_LOCATION_NO_LOGIN);
-				//json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
-				//return Response.ok(json.toString()).build();
+				// json.put(Constant.MESSAGE, JSONCode.MSG_LOCATION_NO_LOGIN);
+				// json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				// return Response.ok(json.toString()).build();
 			} else {
 				SystemUser sysUser = systemUserService
 						.getSystemUserByMd5Value(user_id);
@@ -642,6 +642,7 @@ public class LocationRest {
 				json.put(Constant.CODE, JSONCode.LOCATION_NOEXISTS);
 				return Response.ok(json.toString()).build();
 			}
+			Integer locId = loc.getId();
 			List<ModuleFile> files = loc.getModuleFiles();
 			if (null != files && files.size() > 0) {
 				for (ModuleFile temp : files) {
@@ -651,21 +652,22 @@ public class LocationRest {
 					buffer.append(realPath).append(File.separator).append(path)
 							.append(hashValue.substring(12));
 
-					FileHashCode.delFile(buffer.toString());// 删除图片
+					FileUploadUtil.delFile(buffer.toString());// 删除图片
 					moduleFileService.delete(temp);// 删除记录
 				}
 			}
 			String photoPath = loc.getPhoto_path();
 			if ((null != photoPath) && (!(photoPath.equals("0")))) {
-				StringBuffer temp = new StringBuffer();
-				String path = FileUploadUtil.getUuidPath(photoPath);
-				temp.append(realPath).append(File.separator).append(path)
-						.append(photoPath.substring(12));
+				FileUploadUtil.delFile(photoPath, request);
+			}
+			locationService.delete(loc);
 
-				FileHashCode.delFile(temp.toString());
+			UserLocations tempUserLocation = userLocationsService.get(
+					Constant.LOCATIONID, locId);
+			if(null != tempUserLocation){
+				userLocationsService.delete(tempUserLocation) ;
 			}
 
-			locationService.delete(loc);
 			json.put(Constant.CODE, JSONCode.SUCCESS);
 			return Response.ok(json.toString()).build();
 		} catch (Exception ex) {

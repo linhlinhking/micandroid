@@ -21,7 +21,7 @@ public class Constant {
 	public static final String CODE = "code" ;
 	public static final String FILEID = "fileId" ;
 	public static final String USERID = "userId" ;
-	public static final String LOCATIONID = "locationId" ;
+	public static final String LOCATIONID = "locationId" ;//locationId
 	public static final String LOCATIONCOUNT = "count" ;
 	public static final String COMMENTID = "commentId" ;
 	public static final String EVENTID = "eventId" ;

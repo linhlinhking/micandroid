@@ -24,6 +24,7 @@ import ningbo.media.oauth2.utils.StringCode;
 import ningbo.media.rest.dto.SystemUserData;
 import ningbo.media.rest.util.Constant;
 import ningbo.media.rest.util.FileUpload;
+import ningbo.media.rest.util.FileUploadUtil;
 import ningbo.media.rest.util.JSONCode;
 import ningbo.media.rest.util.Jerseys;
 import ningbo.media.service.FavoriteService;
@@ -97,12 +98,12 @@ public class SystemUserRest {
 		String tempKey = stringCode.decrypt(key);
 
 		if (key.isEmpty()) {
-			json.put(Constant.RESULT, JSONCode.RESULT_FAIL) ;
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 			json.put(Constant.MESSAGE, JSONCode.MSG_KEY_ISNULL);
 			return Response.ok(json.toString()).build();
 
 		} else if (!Constant.KEY.equals(tempKey)) {
-			json.put(Constant.RESULT, JSONCode.RESULT_FAIL) ;
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 			json.put(Constant.MESSAGE, JSONCode.MSG_KEY_INVALID);
 			return Response.ok(json.toString()).build();
 		}
@@ -110,14 +111,14 @@ public class SystemUserRest {
 		u.setStatus(true);
 		try {
 			systemUserService.update(u);
-			json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS) ;
-			json.put(Constant.MESSAGE, JSONCode.MSG_USER_ACTIVATED) ;
-			return Response.ok(json.toString()).build() ;
+			json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
+			json.put(Constant.MESSAGE, JSONCode.MSG_USER_ACTIVATED);
+			return Response.ok(json.toString()).build();
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			json.put(Constant.RESULT, JSONCode.RESULT_FAIL) ;
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 			json.put(Constant.CODE, JSONCode.THROWEXCEPTION);
-			return Response.ok(json.toString()).build() ;
+			return Response.ok(json.toString()).build();
 		}
 	}
 
@@ -135,18 +136,18 @@ public class SystemUserRest {
 	public Response addSystemUser(FormDataMultiPart form, @Context
 	HttpServletRequest request) throws JSONException {
 		JSONObject json = new JSONObject();
-		String key = form.getField("key").getValue(); 
-		String username = form.getField("username").getValue(); 
-		String email = form.getField("email").getValue(); 
-		String password = form.getField("password").getValue();  
+		String key = form.getField("key").getValue();
+		String username = form.getField("username").getValue();
+		String email = form.getField("email").getValue();
+		String password = form.getField("password").getValue();
 		FormDataBodyPart part = form.getField("photo_path");
-		
+
 		if (key.isEmpty()) {
-			json.put(Constant.RESULT, JSONCode.RESULT_FAIL) ;
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 			json.put(Constant.MESSAGE, JSONCode.MSG_KEY_ISNULL);
 			return Response.ok(json.toString()).build();
 		} else if (!Constant.KEY.equals(key)) {
-			json.put(Constant.RESULT, JSONCode.RESULT_FAIL) ;
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 			json.put(Constant.MESSAGE, JSONCode.MSG_KEY_INVALID);
 			return Response.ok(json.toString()).build();
 		}
@@ -156,7 +157,7 @@ public class SystemUserRest {
 			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 			return Response.ok(json.toString()).build();
 		}
-		
+
 		boolean bool_username = systemUserService.isExist(Constant.USERNAME,
 				username);
 		if (bool_username) {
@@ -177,13 +178,13 @@ public class SystemUserRest {
 			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 			return Response.ok(json.toString()).build();
 		}
-		
+
 		if ("".equals(password) || password == null) {
 			json.put(Constant.MESSAGE, JSONCode.MSG_USER_PASSWORD_NOINPUT);
 			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 			return Response.ok(json.toString()).build();
 		}
-		
+
 		String fileName = part.getContentDisposition().getFileName();
 		String photo_path = FileUpload.uploadLocation(part, fileName, request);
 
@@ -195,10 +196,10 @@ public class SystemUserRest {
 		u.setDatetime(new Date());
 		u.setIsManager(false);
 		u.setStatus(false);
-		if("".equals(photo_path) || null == photo_path){
-			u.setPhoto_path("0") ;
-		}else{
-			u.setPhoto_path(photo_path) ;
+		if ("".equals(photo_path) || null == photo_path) {
+			u.setPhoto_path("0");
+		} else {
+			u.setPhoto_path(photo_path);
 		}
 		try {
 			Integer id = systemUserService.save(u);
@@ -209,7 +210,8 @@ public class SystemUserRest {
 
 			StringCode code = new StringCode();
 			String tempKey = code.encrypt(key);
-			sendMgrService.sendHtmlMail(email, username, md5Value, tempKey,SendEmailType.REGISTER);
+			sendMgrService.sendHtmlMail(email, username, md5Value, tempKey,
+					SendEmailType.REGISTER);
 			json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
 			json.put(Constant.USERID, id);
 			return Response.ok(json.toString()).build();
@@ -232,12 +234,13 @@ public class SystemUserRest {
 		JSONObject json = new JSONObject();
 		if (null == u) {
 			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
-			json.put(Constant.MESSAGE, JSONCode.MSG_USER_NOEXISTS) ;
+			json.put(Constant.MESSAGE, JSONCode.MSG_USER_NOEXISTS);
 			return Response.ok(json.toString()).build();
 		} else {
 			StringCode code = new StringCode();
 			String tempKey = code.encrypt(Constant.KEY);
-			sendMgrService.sendHtmlMail(email, username, md5Value, tempKey,SendEmailType.REGISTER);
+			sendMgrService.sendHtmlMail(email, username, md5Value, tempKey,
+					SendEmailType.REGISTER);
 			json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
 			json.put(Constant.MESSAGE, JSONCode.MSG_USER_RESEND_EMAIL);
 			return Response.ok(json.toString()).build();
@@ -266,12 +269,12 @@ public class SystemUserRest {
 		JSONObject json = new JSONObject();
 		try {
 			if (key.isEmpty()) {
-				json.put(Constant.RESULT, JSONCode.RESULT_FAIL) ;
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_ISNULL);
 				return Response.ok(json.toString()).build();
 
 			} else if (!Constant.KEY.equals(key)) {
-				json.put(Constant.RESULT, JSONCode.RESULT_FAIL) ;
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_INVALID);
 				return Response.ok(json.toString()).build();
 			}
@@ -299,7 +302,7 @@ public class SystemUserRest {
 			u.setIsManager(false);
 			systemUserService.update(u);
 			json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
-			json.put(Constant.USERID, u.getId()) ;
+			json.put(Constant.USERID, u.getId());
 			return Response.ok(json.toString()).build();
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -315,14 +318,61 @@ public class SystemUserRest {
 	 * @param key
 	 * @param userId
 	 * @return
+	 * @throws JSONException
 	 */
 	@Path("/modify/avatar")
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response changeUserHeader(String key, String userId) {
+	public Response changeUserHeader(FormDataMultiPart form, @Context
+	HttpServletRequest request) throws JSONException {
+		JSONObject json = new JSONObject();
+		try {
+			String key = form.getField("key").getValue();
+			String md5Value = form.getField("userId").getValue();
+			FormDataBodyPart part = form.getField("photo_path");
+			String photo_path = "";
+			if (key.isEmpty()) {
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_ISNULL);
+				return Response.ok(json.toString()).build();
+			} else if (!Constant.KEY.equals(key)) {
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_INVALID);
+				return Response.ok(json.toString()).build();
+			}
 
-		return null;
+			if ("".equals(md5Value) || null == md5Value) {
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_USER_USER_MD5VALUE);
+				return Response.ok(json.toString()).build();
+			}
+			SystemUser u = systemUserService.getSystemUserByMd5Value(md5Value);
+			if (null == u) {
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_USER_NOEXISTS);
+				return Response.ok(json.toString()).build();
+			}
+
+			String fileName = part.getContentDisposition().getFileName();
+			photo_path = FileUpload.uploadLocation(part, fileName, request);
+
+			String uuid = u.getPhoto_path();
+			if (!("0".equals(uuid)) && (null != uuid)) {
+				FileUploadUtil.delFile(uuid, request);
+			}
+			
+			u.setPhoto_path(photo_path);
+			systemUserService.update(u);
+
+			json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
+			json.put(Constant.MESSAGE, JSONCode.MSG_USER_AVATAR_UPDATE);
+			return Response.ok(json.toString()).build();
+		} catch (Exception ex) {
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+			json.put(Constant.MESSAGE, JSONCode.MSG_USER_NOEXISTS);
+			return Response.ok(json.toString()).build();
+		}
 	}
 
 	@Path("/login")
@@ -336,11 +386,11 @@ public class SystemUserRest {
 
 		JSONObject json = new JSONObject();
 		if (key.isEmpty()) {
-			json.put(Constant.RESULT, JSONCode.RESULT_FAIL) ;
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 			json.put(Constant.MESSAGE, JSONCode.MSG_KEY_ISNULL);
 			return Response.ok(json.toString()).build();
 		} else if (!Constant.KEY.equals(key)) {
-			json.put(Constant.RESULT, JSONCode.RESULT_FAIL) ;
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 			json.put(Constant.MESSAGE, JSONCode.MSG_KEY_INVALID);
 			return Response.ok(json.toString()).build();
 		}
@@ -359,7 +409,7 @@ public class SystemUserRest {
 			SystemUser tempUser = systemUserService.login(username, password);
 			if (null == tempUser) {
 				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
-				json.put(Constant.MESSAGE, JSONCode.MSG_USER_NOEXISTS) ;
+				json.put(Constant.MESSAGE, JSONCode.MSG_USER_NOEXISTS);
 				return Response.ok(json.toString()).build();
 			}
 
@@ -393,12 +443,12 @@ public class SystemUserRest {
 		JSONObject json = new JSONObject();
 		try {
 			if (key.isEmpty()) {
-				json.put(Constant.RESULT, JSONCode.RESULT_FAIL) ;
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_ISNULL);
 				return Response.ok(json.toString()).build();
 
 			} else if (!Constant.KEY.equals(key)) {
-				json.put(Constant.RESULT, JSONCode.RESULT_FAIL) ;
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_INVALID);
 				return Response.ok(json.toString()).build();
 			}
@@ -407,7 +457,7 @@ public class SystemUserRest {
 					userEmail);
 			if (null == user) {
 				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
-				json.put(Constant.MESSAGE, JSONCode.MSG_USER_NOEXISTS) ;
+				json.put(Constant.MESSAGE, JSONCode.MSG_USER_NOEXISTS);
 				return Response.ok(json.toString()).build();
 			}
 			String randomPass = StringUtil.randomString();
@@ -422,7 +472,8 @@ public class SystemUserRest {
 
 			StringCode code = new StringCode();
 			String tempKey = code.encrypt(key);
-			sendMgrService.sendHtmlMail(userEmail, username,randomPass, tempKey,SendEmailType.FORGOTPASSWORD);
+			sendMgrService.sendHtmlMail(userEmail, username, randomPass,
+					tempKey, SendEmailType.FORGOTPASSWORD);
 			json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
 			json.put(Constant.MESSAGE, JSONCode.MSG_USER_FORGOT_PASSWORD);
 			return Response.ok(json.toString()).build();

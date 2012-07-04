@@ -31,6 +31,7 @@ public class Constant {
 	public static final String TYPEID = "typeId" ;
 	public static final String MENUTOOLID = "toolId" ;
 	public static final String MENUITEMID = "itemId" ;
+	public static final String DEVICEID = "deviceId" ;
 	public static final String SHOPID = "shopId" ;
 	public static final String DATA = "data" ;
 	

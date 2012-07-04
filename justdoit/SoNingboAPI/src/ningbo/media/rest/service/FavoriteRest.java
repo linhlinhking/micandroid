@@ -216,12 +216,15 @@ public class FavoriteRest {
 						tempUser.setLocations(tempLocs);
 						tempUserService.save(tempUser);
 					} else {
-						TempUser t = tempUserService.get("deviceId", deviceId);
+						TempUser t = tempUserService.get(Constant.DEVICEID, deviceId);
 						if (null != t) {
+							
 							t.setLocations(tempLocs);
 							tempUserService.update(t);
 						}
 					}
+					
+					
 				}
 			}
 			tempJson.put(Constant.MESSAGE,

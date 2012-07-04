@@ -198,11 +198,11 @@ public class FileHashCode {
 					Integer width = Integer.valueOf(tmps[0]);
 					Integer height = Integer.valueOf(tmps[1]);
 					if (width == height) {
-						//MagickImageScale.resizeFix(srcFile, destFile, width,
-						//		height, false);
+						MagickImageScale.resizeFix(srcFile, destFile, width,
+								height, false);
 					} else {
-						//MagickImageScale.resizeFix(srcFile, destFile, width,
-						//		800);
+						MagickImageScale.resizeFix(srcFile, destFile, width,
+								800);
 					}
 
 				}

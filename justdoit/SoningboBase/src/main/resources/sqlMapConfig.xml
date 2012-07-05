@@ -27,9 +27,9 @@
 	<!-- 别名定义 -->
 	
 	<typeAliases>
-		<typeAlias alias="firstCategory"
+		<typeAlias alias="FirstCategory"
 			type="ningbo.media.example.entity.FirstCategory" />
 	</typeAliases>
 
-
+	
 </configuration>

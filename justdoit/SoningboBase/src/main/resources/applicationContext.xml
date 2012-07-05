@@ -55,7 +55,7 @@
 		<property name="dataSource" ref="dataSource" />
 		<property name="mapperLocations">
 			<list>
-				<value>classpath:ningbo/media/**/entity/mapping/*-mapping.xml</value>
+				<value>classpath:ningbo/media/**/mapper/*-mapper.xml</value>
 			</list>
 		</property>
 	</bean>

@@ -4,18 +4,33 @@
 <!-- namespace the same Mapper interface -->
 <mapper namespace="ningbo.media.example.mapper.FirstCategoryMapper">
 
-	<!-- resultType use the typeAliases of sqlMapConfig.xml  -->
+	<resultMap type="FirstCategory"
+		id="firstCategoryResultMap">
+		<id property="id" column="id" />
+		<result property="name_en" column="name_en" />
+		<result property="name_cn" column="name_cn" />
+		<result property="name_py" column="name_py" />
+		<result property="keywords_cn" column="keywords_cn" />
+		<result property="keywords_en" column="keywords_en" />
+		<result property="description_cn" column="description_cn" />
+		<result property="description_en" column="description_en" />
+	</resultMap>
+
+
+
+	<!-- resultType use the typeAliases of sqlMapConfig.xml -->
 	<select id="getAll" resultType="list" resultMap="firstCategoryResultMap">
         <![CDATA[
-            select * from firstCategory
+            select * from o_category1
         ]]>
-    </select>
+	</select>
 
-	<select id="getFirstCategoryById" parameterType="string" resultType="ningbo.media.example.entity.FirstCategory" resultMap="firstCategoryResultMap">
+	<select id="getFirstCategoryById" parameterType="string"
+		resultType="FirstCategory" resultMap="firstCategoryResultMap">
 		<![CDATA[
-			select * from firstCategory where 1=1 and id = #{id}
+			select * from o_category1 where 1=1 and id = #{id}
 		]]>
 	</select>
-	
+
 
 </mapper>

@@ -5,7 +5,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import ningbo.media.BaseTest;
-import ningbo.media.example.entity.FirstCategory;
+import ningbo.media.website.entity.FirstCategory;
+import ningbo.media.website.mapper.FirstCategoryMapper;
 
 import org.junit.Test;
 
@@ -20,11 +21,18 @@ public class FirstCategoryMapperTest extends BaseTest{
 		System.out.println(fc.getName_en()) ;
 	}
 	
-	@Test
 	public void testGetAll(){
 		List<FirstCategory> tempList = mapper.getAll() ;
 		for(FirstCategory first : tempList){
 			System.out.println(first.getName_cn()) ;
+		}
+	}
+	
+	@Test
+	public void getFirstCategoryByName(){
+		FirstCategory temp = mapper.getFirstCategoryByName("服务");
+		if(null != temp){
+			System.out.println(temp.getName_cn() + "->" + temp.getKeywords_cn()) ;
 		}
 	}
 }

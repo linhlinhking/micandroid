@@ -3,10 +3,8 @@ package ningbo.media.website.entity;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "o_category1")
 public class FirstCategory implements Serializable{
 
 	private static final long serialVersionUID = 8659880437208428931L;

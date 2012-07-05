@@ -1,31 +1,31 @@
-package ningbo.media.example.entity;
+package ningbo.media.website.entity;
 
 import java.io.Serializable;
 
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "o_category1")
-public class FirstCategory implements Serializable{
+public class SecondCategory implements Serializable{
 
-	private static final long serialVersionUID = 8659880437208428931L;
+	private static final long serialVersionUID = 6020573875794530174L;
+
+	private Integer id;
+
+	private String name_en;
+
+	private String name_cn;
+
+	private String name_py;
+
+	private String keywords_cn;
+
+	private String keywords_en;
+
+	private String description_cn;
+
+	private String description_en;
 	
-	private Integer id ;
-	
-	private String name_en ;
-	
-	private String name_cn ;
-	
-	private String name_py ;
-	
-	private String keywords_cn ;
-	
-	private String keywords_en ;
-	
-	private String description_cn ;
-	
-	private String description_en ;
+	private Integer firstId ;
 
 	public Integer getId() {
 		return id;
@@ -90,7 +90,14 @@ public class FirstCategory implements Serializable{
 	public void setDescription_en(String description_en) {
 		this.description_en = description_en;
 	}
-	
-	
 
+	public Integer getFirstId() {
+		return firstId;
+	}
+
+	public void setFirstId(Integer firstId) {
+		this.firstId = firstId;
+	}
+
+	
 }

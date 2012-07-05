@@ -29,6 +29,7 @@
 	<typeAliases>
 		<typeAlias alias="FirstCategory"
 			type="ningbo.media.website.entity.FirstCategory" />
+		<typeAlias type="ningbo.media.website.entity.SecondCategory" alias="SecondCategory"/>
 	</typeAliases>
 
 	

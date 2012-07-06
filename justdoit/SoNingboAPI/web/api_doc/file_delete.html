@@ -2,58 +2,48 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Photo Add</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" href="test.css" />
+<title>Favorites Add</title>
 </head>
 
 <body>
-<form name="data" method="post" action="http://localhost:8000/resource/modulefile/location/upload" enctype="multipart/form-data">
-  <p>
-  
-  key<br>
-  <input type="text" name="key" id="key">
-  <br>
-  <br>
+	<!-- enctype="multipart/form-data"-->
+	<form name="form1" method="post" action="http://localhost:8000/resource/modulefile/delete">
+		<p>
 
-   location_id<br>
-  <input type="text" name="locationId" id="locationId">
-  <br>
-  <br>
-  
-     user_md5_value<br>
-  <input type="text" name="user_md5_value" id="user_md5_value">
-  <br>
-  <br>
+			key<br> 
+			<label for="key"></label> 
+			<input type="text" name="key" id="key"> 
+			<br> 
+			<br> 
+		
 
+			fileId<br> 
+			<input type="text" name="fileId" id="fileId">
+			<br> 
+			<br> 
+			
 
-  
-  
-  file<br>
-  <input type="file" name="file">
-  <br/>
-  
-  <br/>
+			user_md5Value<br> 
+			<input type="text" name="user_md5_value" id="user_md5_value"> 
+			<br> 
+			<br> 
+		
+		    <input type="submit" name="POST" id="POST" value="Submit"> <br> <br>
+		</p>
+	</form>
 
-  <input type="submit" name="POST" id="POST" value="Submit">
-<br>
-    <br>
-  </p>
-</form>
-
-<h2>
-		<span class="mw-headline"> Method Summary </span>
-</h2>
-
-<h2>
+	<h2>
 		<span class="mw-headline"> Requests Instruction </span>
-</h2>
+	</h2>
 
 	<table width="95%" cellpadding="0" cellspacing="2" border="0"
 		class="paratable">
 
 		<tr>
 			<td>url</td>
-			<td><a href="#" class="external free" rel="nofollow">http://api.soningbo.com/resource/modulefile/location/upload</a>
+			<td><a href="#" class="external free" rel="nofollow">https://api.soningbo.com/resource/location/add</a>
 			</td>
 		</tr>
 		<tr>
@@ -70,7 +60,7 @@
 			<td>true</td>
 		</tr>
 	</table>
-<h2>
+	<h2>
 		<span class="mw-headline"> Parameter Description </span>
 	</h2>
 	<table border="1" cellspacing="0" cellpadding="0" width="95%"
@@ -87,25 +77,45 @@
 			<td>String</td>
 			<td>Authorized verification of API calls</td>
 		</tr>
-			<tr>
-			<td>user_md5_value</td>
+		<tr>
+			<td>name_cn</td>
 			<td>true</td>
 			<td>String</td>
-			<td>The user's md5 value</td>
+			<td>Location Chinese Name</td>
 		</tr>
+
 		<tr>
-			<td>locationId</td>
+			<td>address_cn</td>
 			<td>true</td>
 			<td>String</td>
-			<td>The Type of Module</td>
+			<td>Location Chinese Address</td>
+		</tr>
+
+		<tr>
+			<td>telephone</td>
+			<td>true</td>
+			<td>String</td>
+			<td>Location Telephone</td>
 		</tr>
 		<tr>
-			<td>file</td>
+			<td>latitude</td>
 			<td>true</td>
-			<td>File</td>
-			<td>The File of Upload</td>
+			<td>Double</td>
+			<td>Location's latitude</td>
 		</tr>
-		
+		<tr>
+			<td>longitude</td>
+			<td>true</td>
+			<td>Double</td>
+			<td>Location's longitude</td>
+		</tr>
+		<tr>
+			<td>photo_path</td>
+			<td>true</td>
+			<td>String</td>
+			<td>Location's Avatar</td>
+		</tr>
+	
 	</table>
 
 	<h2>
@@ -120,7 +130,7 @@
 		<span class="mw-headline"> Return Code Lists </span>
 	</h2>
 	<pre class="brush: js;">{
-		0      : Success
+	
 	}
 	</pre>
 

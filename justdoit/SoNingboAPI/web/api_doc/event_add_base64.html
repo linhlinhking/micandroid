@@ -6,7 +6,7 @@
 		<link rel="stylesheet" href="test.css" />
 
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		
+
 
 
 	</head>
@@ -14,9 +14,11 @@
 	<body>
 
 
+
+
+		<!-- enctype="multipart/form-data" -->
 		<form name="event" method="post"
-			action="http://localhost:8000/resource/event/add"
-			enctype="multipart/form-data">
+			action="http://localhost:8000/resource/event/add/base64">
 			<p>
 
 				key
@@ -83,9 +85,9 @@
 				<br>
 				<br>
 
-				photo_path
+				base64Value
 				<br>
-				<input type="file" name="photo_path" id="photo_path">
+				<textarea  name="base64Value" id="base64Value"></textarea>
 				<br>
 				<br>
 

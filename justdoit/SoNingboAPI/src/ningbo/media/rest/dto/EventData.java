@@ -1,16 +1,26 @@
-package ningbo.media.data.entity;
+package ningbo.media.rest.dto;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlType(name = "", propOrder = { "md5Value", "title", "subject", "startDate",
-		"startTime", "endDate", "endTime","address","organizer","photo_path" })
-public class EventData implements EntityData {
+import ningbo.media.bean.Location;
+import ningbo.media.bean.SystemUser;
+import ningbo.media.rest.WsConstants;
+
+@XmlType(name = "Event", namespace = WsConstants.NS, propOrder = { "md5Value",
+		"title", "subject", "address", "startDate", "startTime", "endDate",
+		"endTime", "photo_path", "organizer", "location",
+		"user" })
+@XmlRootElement(name = "data")
+public class EventData {
 
 	private String md5Value;
 
 	private String title;
 
 	private String subject;
+
+	private String address;
 
 	private String startDate;
 
@@ -20,27 +30,13 @@ public class EventData implements EntityData {
 
 	private String endTime;
 
-	private String address;
+	private String photo_path;
 
 	private String organizer;
-	
-	private String photo_path ;
 
-	public String getAddress() {
-		return address;
-	}
+	private Location location;
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public String getOrganizer() {
-		return organizer;
-	}
-
-	public void setOrganizer(String organizer) {
-		this.organizer = organizer;
-	}
+	private SystemUser user;
 
 	public String getMd5Value() {
 		return md5Value;
@@ -64,6 +60,14 @@ public class EventData implements EntityData {
 
 	public void setSubject(String subject) {
 		this.subject = subject;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public String getStartDate() {
@@ -105,7 +109,30 @@ public class EventData implements EntityData {
 	public void setPhoto_path(String photo_path) {
 		this.photo_path = photo_path;
 	}
-	
-	
 
+	public String getOrganizer() {
+		return organizer;
+	}
+
+	public void setOrganizer(String organizer) {
+		this.organizer = organizer;
+	}
+
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+
+	public SystemUser getUser() {
+		return user;
+	}
+
+	public void setUser(SystemUser user) {
+		this.user = user;
+	}
+	
+	
 }

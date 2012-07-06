@@ -8,24 +8,24 @@ import javax.xml.bind.annotation.XmlType;
 import ningbo.media.data.entity.UserEventData;
 
 
-@XmlType(name="",propOrder={"userId","data"})
+@XmlType(name="",propOrder={"userMd5Value","data"})
 @XmlRootElement
 public class UserEventList {
 
-	private Integer userId ;
+	private String userMd5Value ;
 	
 	private Collection<UserEventData> data ;
 	
 	public UserEventList(){}
 	
-	public UserEventList(Integer userId,Collection<UserEventData> data){
-		this.userId = userId ;
+	public UserEventList(String userMd5Value,Collection<UserEventData> data){
+		this.userMd5Value = userMd5Value ;
 		this.data = data ;
 	}
 
 	@XmlElement
-	public Integer getUserId() {
-		return userId;
+	public String getUserMd5Value() {
+		return userMd5Value;
 	}
 
 	

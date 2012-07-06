@@ -38,13 +38,13 @@ public class JSONCode {
 	public static final String MSG_USER_PASSWORD_NOINPUT = "password no input." ;
 	public static final String MSG_USER_RESEND_EMAIL = "email resend successfully." ;
 	public static final String MSG_USER_ACTIVATED = "user has activated." ;
-	public static final String MSG_USER_USERNAME_NO_INPUT = "user no input." ;
+	public static final String MSG_USER_USERNAME_NO_INPUT = "Please Input." ;
 	public static final String MSG_USER_FORGOT_PASSWORD = "password had sended to your email." ;
 	public static final String MSG_USER_USER_MD5VALUE = "No The User Of Md5 value" ;
 	public static final String MSG_KEY_ISNULL = "key no input." ;
 	public static final String MSG_KEY_INVALID = "key input invalid." ;
 	public static final String MSG_USER_AVATAR_UPDATE = "The User Avatar Aleady Update." ;
-	
+	public static final String MSG_USER_MD5VALUE_ISNULL = "Can't get MD5 Value." ;
 	
 	public static final String MSG_FAVORITE_ALREADY_EXIST = "Already Favorite." ;
 	public static final String MSG_FAVORITE_LOCATION_SUCCESS = "Favorite Successfully." ;
@@ -55,6 +55,8 @@ public class JSONCode {
 	public static final String LOCATION_NOEXISTS = "20010" ; //位置不存在
 	public static final String LOCATION_LATITUDE_IS_NULL = "20011" ;//经纬度为空
 	public static final String LOCATION_NEARBY_NODATA = "20012" ;//没有数据
+	public static final String MSG_LOCATION_MD5_NOEXISTS = "No The Location by Md5 Value." ;
+	public static final String MSG_LOCATION_MD5_ISNULL = "Can't get MD5 Value" ;
 	
 	
 	/**Comment-5*/
@@ -63,6 +65,8 @@ public class JSONCode {
 	
 	/**Event-6*/
 	public static final String EVENT_NOEXISTS = "20012" ;
+	public static final String MSG_EVENT_MD5_ISNULL = "Please Input Event MD5." ;
+	public static final String MSG_EVENT_MD5_NOEXISTS = "No The Event by Md5 Value" ;
 	
 	/**ModuleFile-7*/
 	public static final String MODULEFILE_TOOL_NOEXISTS = "70001" ;

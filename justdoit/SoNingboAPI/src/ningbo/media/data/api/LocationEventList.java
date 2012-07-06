@@ -8,26 +8,26 @@ import javax.xml.bind.annotation.XmlType;
 
 import ningbo.media.data.entity.LocationEventData;
 
-@XmlType(name = "",propOrder = {"locationId","data"})
+@XmlType(name = "",propOrder = {"locationMd5","data"})
 @XmlRootElement
 public class LocationEventList {
 
-	private Integer locationId;
+	private String locationMd5;
 
 	private Collection<LocationEventData> data;
 
 	public LocationEventList() {
 	}
 
-	public LocationEventList(Integer locationId,
+	public LocationEventList(String locationMd5,
 			Collection<LocationEventData> data) {
-		this.locationId = locationId;
+		this.locationMd5 = locationMd5;
 		this.data = data;
 	}
 
 	@XmlElement
-	public Integer getLocationId() {
-		return locationId;
+	public String getLocationMd5() {
+		return locationMd5;
 	}
 
 	@XmlElement(name = "events",defaultValue = "null")

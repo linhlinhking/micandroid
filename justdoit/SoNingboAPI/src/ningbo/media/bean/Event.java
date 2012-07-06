@@ -1,16 +1,30 @@
-package ningbo.media.data.entity;
+package ningbo.media.bean;
 
-import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
 
-@XmlType(name = "", propOrder = { "md5Value", "title", "subject", "startDate",
-		"startTime", "endDate", "endTime","address","organizer","photo_path" })
-public class EventData implements EntityData {
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "tb_event")
+public class Event implements Serializable {
+
+	private static final long serialVersionUID = 2156307824455276583L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
 	private String md5Value;
 
 	private String title;
 
 	private String subject;
+
+	private String address;
 
 	private String startDate;
 
@@ -20,18 +34,15 @@ public class EventData implements EntityData {
 
 	private String endTime;
 
-	private String address;
+	private String photo_path;
 
 	private String organizer;
-	
-	private String photo_path ;
 
-	public String getAddress() {
-		return address;
-	}
+	private String locationMd5Value;
 
-	public void setAddress(String address) {
-		this.address = address;
+	private String userMd5Value;
+
+	public Event() {
 	}
 
 	public String getOrganizer() {
@@ -40,6 +51,14 @@ public class EventData implements EntityData {
 
 	public void setOrganizer(String organizer) {
 		this.organizer = organizer;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getMd5Value() {
@@ -64,6 +83,14 @@ public class EventData implements EntityData {
 
 	public void setSubject(String subject) {
 		this.subject = subject;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public String getStartDate() {
@@ -105,7 +132,21 @@ public class EventData implements EntityData {
 	public void setPhoto_path(String photo_path) {
 		this.photo_path = photo_path;
 	}
-	
-	
+
+	public String getLocationMd5Value() {
+		return locationMd5Value;
+	}
+
+	public void setLocationMd5Value(String locationMd5Value) {
+		this.locationMd5Value = locationMd5Value;
+	}
+
+	public String getUserMd5Value() {
+		return userMd5Value;
+	}
+
+	public void setUserMd5Value(String userMd5Value) {
+		this.userMd5Value = userMd5Value;
+	}
 
 }

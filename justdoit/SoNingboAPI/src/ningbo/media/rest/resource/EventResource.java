@@ -240,12 +240,107 @@ public class EventResource {
 
 	}
 
-	@Path("/edit")
+	@Path("/edit/base64")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response editEvent() {
+	public Response editEvent(@FormParam("eventMd5Value")
+	String md5Value, @FormParam("key")
+	String key, @FormParam("user_md5Value")
+	String userMd5Value, @FormParam("location_md5Value")
+	String locationMd5Value, @FormParam("title")
+	String title, @FormParam("subject")
+	String subject, @FormParam("startDate")
+	String startDate, @FormParam("startTime")
+	String startTime, @FormParam("endDate")
+	String endDate, @FormParam("endTime")
+	String endTime, @FormParam("address")
+	String address, @FormParam("base64Value")
+	String base64Value, @Context
+	HttpServletRequest request) throws JSONException {
+		JSONObject json = new JSONObject();
+		try {
+			if (key.isEmpty()) {
+				json.put(Constant.CODE, JSONCode.GLOBAL_KEYISNULL);
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				return Response.ok(json.toString()).build();
 
-		return null;
+			} else if (!Constant.KEY.equals(key)) {
+				json.put(Constant.CODE, JSONCode.GLOBAL_KEYINPUTINVALID);
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				return Response.ok(json.toString()).build();
+			}
+			
+			Event event = eventService.get(Constant.MD5_FIELD, md5Value) ;
+			if(null == event){
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_EVENT_NOEXISTS);
+				return Response.ok(json.toString()).build();
+			}
+
+			SystemUser tempUser = systemUserService
+					.getSystemUserByMd5Value(userMd5Value);
+			if (null == tempUser) {
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_USER_USER_MD5VALUE);
+				return Response.ok(json.toString()).build();
+			}
+			String organizer = tempUser.getUsername();
+
+			Location tempLocation = locationService.get(Constant.MD5_FIELD,
+					locationMd5Value);
+			if (null == tempLocation) {
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_LOCATION_MD5_NOEXISTS);
+				return Response.ok(json.toString()).build();
+			}
+
+			event.setTitle(title);
+			event.setSubject(subject);
+			event.setStartDate(startDate);
+			event.setStartTime(startTime);
+			event.setEndDate(endDate);
+			event.setEndTime(endTime);
+			event.setOrganizer(organizer);
+			event.setAddress(address);
+			event.setLocationMd5Value(locationMd5Value);
+			event.setUserMd5Value(userMd5Value);
+
+			if((!"".equals(base64Value)) && (null != base64Value)){
+				String fileName = String.valueOf(System.currentTimeMillis());
+				StringBuffer sb = new StringBuffer();
+				String tempPath = FileUploadUtil.makeFileDir(null, request, true);
+				sb.append(tempPath).append(fileName);
+
+				String tempBase64Value = base64Value.replaceAll(" ", "+");
+
+				boolean flag = Base64Image.generateImage(tempBase64Value, sb
+					.toString());
+
+				if (!flag) {
+					File file = new File(sb.toString());
+					file.delete();
+					json.put(Constant.CODE, JSONCode.MODULEFILE_BASE64_INVALID);
+					return Response.ok(json.toString()).build();
+				}
+
+				String photo_path = FileHashCode.writeBase64File(request, sb
+						.toString());
+				event.setPhoto_path(photo_path);
+			}
+			
+			
+			eventService.update(event);
+
+			json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
+			json.put(Constant.MESSAGE, JSONCode.MSG_EVENT_EDIT_SUCCESS);
+			return Response.ok(json.toString()).build();
+
+		} catch (Exception ex) {
+			json.put(Constant.CODE, JSONCode.LOCATION_EXCEPTION);
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+			return Response.ok(json.toString()).build();
+		}
+
 	}
 
 	@Path("/delete")
@@ -253,7 +348,8 @@ public class EventResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteEvent(@FormParam("event_md5_value")
 	String eventMd5Value, @FormParam("key")
-	String key,@Context HttpServletRequest request) {
+	String key, @Context
+	HttpServletRequest request) {
 		JSONObject json = new JSONObject();
 
 		try {
@@ -319,11 +415,13 @@ public class EventResource {
 	public Response getEventByLocation(@PathParam("md5Value")
 	String md5Value) throws JSONException {
 		JSONObject json = new JSONObject();
+		LocationEventList lists = new LocationEventList();
 		if (null == md5Value) {
 			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 			json.put(Constant.MESSAGE, JSONCode.MSG_LOCATION_MD5_ISNULL);
 			return Response.ok(json.toString()).build();
 		}
+
 		List<Event> events = eventService.getEventsByType(md5Value,
 				EventType.LOCATION);
 
@@ -334,7 +432,20 @@ public class EventResource {
 			return Response.ok(json.toString()).build();
 		}
 
-		return Response.ok(new LocationEventList(md5Value, temps)).build();
+		Location loc = locationService.get(Constant.MD5_FIELD, md5Value);
+		Double lat = loc.getLatitude();
+		Double lon = loc.getLongitude();
+		String name_cn = loc.getName_cn();
+		String name_en = loc.getName_en();
+
+		lists.setLocationMd5(md5Value);
+		lists.setName_en(name_en);
+		lists.setName_cn(name_cn);
+		lists.setLatitude(lat);
+		lists.setLongitude(lon);
+		lists.setData(temps);
+
+		return Response.ok(lists).build();
 	}
 
 	private List<UserEventData> getUserEventDataList(List<Event> events) {

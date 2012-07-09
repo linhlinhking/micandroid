@@ -67,6 +67,8 @@ public class JSONCode {
 	public static final String EVENT_NOEXISTS = "20012" ;
 	public static final String MSG_EVENT_MD5_ISNULL = "Please Input Event MD5." ;
 	public static final String MSG_EVENT_MD5_NOEXISTS = "No The Event by Md5 Value" ;
+	public static final String MSG_EVENT_NOEXISTS = "Event No Exists." ;
+	public static final String MSG_EVENT_EDIT_SUCCESS = "Edit Successfully." ;
 	
 	/**ModuleFile-7*/
 	public static final String MODULEFILE_TOOL_NOEXISTS = "70001" ;

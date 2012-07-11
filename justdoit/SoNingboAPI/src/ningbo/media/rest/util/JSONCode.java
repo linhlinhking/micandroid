@@ -57,6 +57,7 @@ public class JSONCode {
 	public static final String LOCATION_NEARBY_NODATA = "20012" ;//没有数据
 	public static final String MSG_LOCATION_MD5_NOEXISTS = "No The Location by Md5 Value." ;
 	public static final String MSG_LOCATION_MD5_ISNULL = "Can't get MD5 Value" ;
+	public static final String MSG_LOCATION_NOEXISTS = "No The Location Data."; 
 	
 	
 	/**Comment-5*/
@@ -82,7 +83,18 @@ public class JSONCode {
 	
 	public static final String MSG_MODULEFILE_DELETE_SUCCESS = "Deleted successfully." ;
 	public static final String MSG_MODULEFILE_DELETE_FAIL = "Delete failed" ;
-
+	
+	
+	/**Favorite Message*/
+	public static final String MSG_FAVORITE_TEMPUSER_DELETE_SUCCESS = "Already Cancel Temp Favorite." ;
+	public static final String MSG_FAVORITE_TEMPUSER_NOEXISTS = "Temp Favorite No Exists." ;
+	public static final String MSG_FAVORITE_USER_NOEXISTS = "User's Favorite No Exists." ;
+	public static final String MSG_FAVORITE_USER_DELETE_SUCCESS = "Already Cancel User Favorite." ;
+	public static final String MSG_FAVORITE_DELETE_FAIL = "No Input Deleted Request." ;
+	
+	
+	/**tempuser*/
+	public static final String MSG_TEMPUSER_NOEXISTS = "No The Device Data." ;
 	
 	
 	/**Menu-8*/

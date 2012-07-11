@@ -18,14 +18,14 @@ public class FavoriteTempDaoImpl extends BaseDaoImpl<FavoriteTemp, Integer>
 		super(FavoriteTemp.class);
 	}
 
-	public FavoriteTemp getFavoriteTempByDeviceId(String deviceId,
+	public FavoriteTemp getFavoriteTempByDeviceId(Integer deviceId,
 			Integer locationId) {
 		if (null == deviceId || null == locationId) {
 			return null;
 		}
 		try {
 			FavoriteTemp favorite = null;
-			String hql = "from Favorite model where 1=1 and model.userId = ? and model.locationId = ? ";
+			String hql = "from FavoriteTemp model where 1=1 and model.tempId = ? and model.locationId = ? ";
 			favorite = (FavoriteTemp) findUnique(hql, deviceId, locationId);
 			return favorite;
 		} catch (Exception ex) {

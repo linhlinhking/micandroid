@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import ningbo.media.rest.dto.FirstCategoryData;
 
-@XmlType(name = "location", propOrder = { "locationId","md5Value", "name_cn", "name_en", "address_cn","photo_path",
+@XmlType(name = "locationBean", propOrder = { "locationId","md5Value", "name_cn", "name_en", "address_cn","photo_path",
 		"address_en", "latitude", "longitude","name_py","tags_cn","tags_en","telephone","category2_id","firstCategoryData" })
 @XmlRootElement(name = "data")
 public class LocationDetail {

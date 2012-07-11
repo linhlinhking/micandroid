@@ -25,7 +25,7 @@ public class FavoriteTempServiceImpl extends
 		super(favoriteTempDao);
 	}
 	
-	public FavoriteTemp getFavoriteTempByDeviceId(String deviceId,Integer locationId){
+	public FavoriteTemp getFavoriteTempByDeviceId(Integer deviceId,Integer locationId){
 		return favoriteTempDao.getFavoriteTempByDeviceId(deviceId, locationId) ;
 	}
 }

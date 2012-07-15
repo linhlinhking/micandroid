@@ -9,7 +9,7 @@
 		<result property="name_en" column="name_en" />
 		<result property="name_cn" column="name_cn" />
 		<result property="name_py" column="name_py" />
-		<result property="firstId" column="category1Id" />
+		<result property="firstId" column="category1_id" />
 		<result property="keywords_cn" column="keywords_cn" />
 		<result property="keywords_en" column="keywords_en" />
 		<result property="description_cn" column="description_cn" />
@@ -21,28 +21,28 @@
 	<!-- resultType use the typeAliases of sqlMapConfig.xml -->
 	<select id="getAll" resultType="list" resultMap="secondCategoryResultMap">
         <![CDATA[
-            select * from o_category2
+            select * from category2
         ]]>
 	</select>
 
-	<select id="getSecondCategoryById" parameterType="string"
+	<select id="getSecondCategoryById" parameterType="int"
 		resultType="SecondCategory" resultMap="secondCategoryResultMap">
 		<![CDATA[
-			select * from o_category2 where 1=1 and id = #{id}
+			select * from category2 where 1=1 and id = #{id}
 		]]>
 	</select>
 
 	<select id="getSecondCategoryByFirstId" parameterType="int"
 		resultType="list" resultMap="secondCategoryResultMap">
 		<![CDATA[
-			select * from o_category2 where 1=1 and category1Id = #{id}
+			select * from category2 where 1=1 and category1Id = #{id}
 		]]>
 	</select>
 
 	<insert id="addSecondCategory" parameterType="SecondCategory">
 		insert into
-		o_category2
-		(name_en,name_cn,name_py,category1Id,keywords_cn,keywords_en,description_cn,description_en)
+		category2
+		(name_en,name_cn,name_py,category1_id,keywords_cn,keywords_en,description_cn,description_en)
 		values
 		(#{name_en},#{name_cn},#{name_py},#{firstId},#{keywords_cn},#{keywords_en},#{description_cn},#{description_en})
 	</insert>

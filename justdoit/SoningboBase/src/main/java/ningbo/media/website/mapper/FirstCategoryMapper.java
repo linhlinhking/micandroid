@@ -9,7 +9,7 @@ import ningbo.media.website.entity.FirstCategory;
 
 public interface FirstCategoryMapper extends SqlMapper{
 
-	public FirstCategory getFirstCategoryById(String id);
+	public FirstCategory getFirstCategoryById(Integer id);
 	
 	public List<FirstCategory> getAll();
 	

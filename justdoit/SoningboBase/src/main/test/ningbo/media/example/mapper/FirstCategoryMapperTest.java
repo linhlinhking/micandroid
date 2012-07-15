@@ -15,9 +15,9 @@ public class FirstCategoryMapperTest extends BaseTest{
 	@Inject
 	private FirstCategoryMapper mapper ;
 	
-	
+	@Test
 	public void testGetFirstCategoryById(){
-		FirstCategory fc = mapper.getFirstCategoryById(String.valueOf(1)) ;
+		FirstCategory fc = mapper.getFirstCategoryById(1) ;
 		System.out.println(fc.getName_en()) ;
 	}
 	
@@ -28,7 +28,7 @@ public class FirstCategoryMapperTest extends BaseTest{
 		}
 	}
 	
-	@Test
+	
 	public void getFirstCategoryByName(){
 		FirstCategory temp = mapper.getFirstCategoryByName("服务");
 		if(null != temp){

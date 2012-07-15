@@ -21,14 +21,14 @@
 	<!-- resultType use the typeAliases of sqlMapConfig.xml -->
 	<select id="getAll" resultType="list" resultMap="firstCategoryResultMap">
         <![CDATA[
-            select * from o_category1
+            select * from category1
         ]]>
 	</select>
 
-	<select id="getFirstCategoryById" parameterType="string"
+	<select id="getFirstCategoryById" parameterType="int"
 		resultType="FirstCategory" resultMap="firstCategoryResultMap">
 		<![CDATA[
-			select * from o_category1 where 1=1 and id = #{id}
+			select * from category1 where 1=1 and id = #{id}
 		]]>
 	</select>
 

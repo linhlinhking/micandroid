@@ -5,11 +5,11 @@
 <mapper namespace="ningbo.media.website.mapper.SecondCategoryMapper">
 
 	<resultMap type="SecondCategory" id="secondCategoryResultMap">
-		<id property="id" column="id" jdbcType="Integer"/>
+		<id property="id" column="id" />
 		<result property="name_en" column="name_en" />
 		<result property="name_cn" column="name_cn" />
 		<result property="name_py" column="name_py" />
-		<result property="firstId" column="category1Id" jdbcType="Integer"/>
+		<result property="firstId" column="category1Id" />
 		<result property="keywords_cn" column="keywords_cn" />
 		<result property="keywords_en" column="keywords_en" />
 		<result property="description_cn" column="description_cn" />

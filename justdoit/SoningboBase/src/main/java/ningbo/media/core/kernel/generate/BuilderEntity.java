@@ -29,7 +29,7 @@ public class BuilderEntity {
         StringBuilder builder = new StringBuilder();
         StringBuilder getSet = new StringBuilder();
         String dataTime = DatetimeUtil.dateTime();
-        System.out.println("NOO代码工具:" + dataTime + ",正在生成表：" + tableInfo + "的实体类");
+        System.out.println("Mybatis代码工具:" + dataTime + ",正在生成表：" + tableInfo + "的实体类");
         builder.append("/**\n");
         builder.append(" * ").append(tableInfo.getTableComment()).append(" 实体\n");
         builder.append(" * <br/>\n");
@@ -73,7 +73,7 @@ public class BuilderEntity {
         }
         builder.append(getSet);
         builder.append("}");
-        String packageName = Constants.PROJECT_INFO.getPackageName() + ".domain";
+        String packageName = Constants.PROJECT_INFO.getPackageName() + ".entity";
         classPath = FileUtil.createJavaFolder(classPath, packageName);
         String filePath = classPath + "/" + className + ".java";
         String header = ResourceUtils.getInstance().getCodeTemplate()

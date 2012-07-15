@@ -30,7 +30,7 @@ public class BuildMapper {
                 getDBMSBuilderSql(TableInfoDao.DB_POOL.getDbms());
         final SqlModal sql = createSqlFace.createSql(tableInfo);
         String tmpPakcage = Constants.PROJECT_INFO.getPackageName();
-        String packageName = tmpPakcage + ".persistence";
+        String packageName = tmpPakcage + ".mapper";
 
         String xmlPath = FileUtil.createXmlFolder(classPath, packageName);
 
@@ -47,7 +47,7 @@ public class BuildMapper {
             String dataTime = DatetimeUtil.dateTime();
             content = StringUtil.replace(TemplateSM.MAPPER_TEMP, Constants.MAPPER_TEMP,
                     new String[]{
-                            tmpPakcage + ".domain." + className,
+                            tmpPakcage + ".entity." + className,
                             packageName,
                             tableInfo.getTableComment(),
                             Constants.PROJECT_INFO.getUser(),

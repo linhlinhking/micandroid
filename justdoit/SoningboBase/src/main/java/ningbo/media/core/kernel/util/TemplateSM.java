@@ -32,7 +32,8 @@ public class TemplateSM implements Serializable {
      * @return Mapper模板信息
      */
     private static String readMapperTemp() {
-        String path = FileUtil.getClassPath("mappertmp.txt");
+        //String path = FileUtil.getClassPath("mappertmp.txt");
+    	String path = FileUtil.getResourcePath("mappertmp.txt");
         return FileUtil.readFileContent(path);
     }
 
@@ -42,7 +43,8 @@ public class TemplateSM implements Serializable {
      * @return XML模板信息
      */
     private static String readXmlTemp() {
-        String path = FileUtil.getClassPath("mybatis.txt");
+        //String path = FileUtil.getClassPath("mybatis.txt");
+    	String path = FileUtil.getResourcePath("mybatis.txt");
         return FileUtil.readFileContent(path);
     }
 

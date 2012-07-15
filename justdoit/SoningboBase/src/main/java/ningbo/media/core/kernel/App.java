@@ -11,6 +11,6 @@ public class App {
 
 		ResourceUtils.getInstance();
 		IGenerateService service = new GenerateService();
-		service.generateFile(args[0]);
+		service.generateFile("src/main");
 	}
 }

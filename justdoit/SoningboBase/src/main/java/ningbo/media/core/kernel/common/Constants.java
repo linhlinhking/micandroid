@@ -1,5 +1,6 @@
 package ningbo.media.core.kernel.common;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -88,6 +89,8 @@ public class Constants {
      * Mapper接口的文件名称的结尾标志
      */
     public static final String MAPPER = "Mapper";
+    
+    public static final String FILE_SEPARATOR = File.separator ;
 
 
     /**
@@ -141,6 +144,7 @@ public class Constants {
             "${domainName}"
     };
     
+
 
 
 }

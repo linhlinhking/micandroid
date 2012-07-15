@@ -1,13 +1,12 @@
 package ningbo.media.core.kernel.util;
 import java.io.*;
 
+import ningbo.media.core.kernel.common.Constants;
+
 /**
  * .
  * <br/>
  *
- * @author poplar_mumu
- * @version 1.0 11-6-8 下午3:46
- * @since JDK 1.0
  */
 public class FileUtil {
     /**
@@ -120,6 +119,22 @@ public class FileUtil {
         }
         return null;
     }
+    
+    
+	public static String getResourcePath(String fileName){
+		StringBuffer sb = new StringBuffer();
+		sb.append(Constants.USER_DIR).append(Constants.FILE_SEPARATOR)
+				.append("src").append(Constants.FILE_SEPARATOR).append("main")
+				.append(Constants.FILE_SEPARATOR).append("java")
+				.append(Constants.FILE_SEPARATOR).append("ningbo")
+				.append(Constants.FILE_SEPARATOR).append("media")
+				.append(Constants.FILE_SEPARATOR).append("core")
+				.append(Constants.FILE_SEPARATOR).append("kernel")
+				.append(Constants.FILE_SEPARATOR).append("resource")
+				.append(Constants.FILE_SEPARATOR).append(fileName);
+		
+		return sb.toString();
+	}
 
 
 }

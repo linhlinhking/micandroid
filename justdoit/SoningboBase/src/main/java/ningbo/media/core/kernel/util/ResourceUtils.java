@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import ningbo.media.core.kernel.common.Constants;
 import ningbo.media.core.kernel.model.JdbcInfo;
 import ningbo.media.core.kernel.model.ProjectInfo;
 
@@ -17,7 +16,7 @@ public final class ResourceUtils {
 
 	private static final ProjectInfo PROJECT_INFO;
 
-	/**头描述文件*/
+	/** 头描述文件 */
 	private static final String CODE_TEMPLATE;
 
 	static {
@@ -25,7 +24,8 @@ public final class ResourceUtils {
 		Properties config = new Properties();
 		PROJECT_INFO = new ProjectInfo();
 		InputStream in = null;
-		String proFilePath = Constants.USER_DIR + "/default.properties";
+		
+		String proFilePath = FileUtil.getResourcePath("default.properties");
 		try {
 			in = new BufferedInputStream(new FileInputStream(proFilePath));
 			config.load(in);
@@ -51,7 +51,7 @@ public final class ResourceUtils {
 					.toUpperCase());
 			PROJECT_INFO.setUser(config.getProperty("project.user"));
 
-			CODE_TEMPLATE = "/*\n" + " * Copyright (c) 2010-2011 NutShell.\n"
+			CODE_TEMPLATE = "/*\n" + " * Copyright (c) 2010-2011 宁波商外文化传媒有限公司.\n"
 					+ " * [Project:" + config.getProperty("project.name")
 					+ ",Id:${name}.java  ${datetime} "
 					+ config.getProperty("project.user") + " ]\n" + " */\n"
@@ -96,5 +96,10 @@ public final class ResourceUtils {
 	public String getCodeTemplate() {
 		return CODE_TEMPLATE;
 	}
+
+	// src\main\java\ningbo\media\core\kernel\resource
+
+	
+	
 
 }

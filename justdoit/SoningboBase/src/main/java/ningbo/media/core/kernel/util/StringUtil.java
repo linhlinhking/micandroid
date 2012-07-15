@@ -6,9 +6,6 @@ import ningbo.media.core.kernel.common.Constants;
  * 字符串工具.
  * <br/>
  *
- * @author poplar_mumu
- * @version 1.0 11-6-8 上午1:41
- * @since JDK 1.0
  */
 public class StringUtil {
 
@@ -52,7 +49,8 @@ public class StringUtil {
      * @return 转换为类名
      */
     public static String tableNameToClass(String tableName) {
-        tableName = tableName.toUpperCase();
+        //tableName = tableName.toUpperCase();
+    	tableName = tableName.toLowerCase() ;
         tableName = tableName.substring(tableName.lastIndexOf(Constants.PROJECT_INFO.getBizTable()) + 1);
         if (tableName.contains(TABLE_SPLIT)) {
             return toSplitChar(tableName, true);
@@ -60,6 +58,10 @@ public class StringUtil {
             tableName = tableName.toLowerCase();
             return toFirstCharUpper(tableName);
         }
+    }
+    
+    public static void main(String args[]){
+    	System.out.println(tableNameToClass("tb_message")) ;
     }
 
     /**

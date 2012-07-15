@@ -10,8 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import ningbo.media.core.kernel.common.Constants;
-
 /**
  * 常用英文字典，通过dict.txt文本读取到。.
  * <br/>
@@ -29,7 +27,7 @@ public class EnglishDict {
     static {
         Properties config = new Properties();
         InputStream in = null;
-        String proFilePath = Constants.USER_DIR + "/dict.properties";
+        String proFilePath = FileUtil.getResourcePath("dict.properties");
         try {
             in = new BufferedInputStream(new FileInputStream(proFilePath));
             config.load(in);

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<context:annotation-config />
+	<context:component-scan base-package="ningbo.media">
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Service" />
+	</context:component-scan>
+	
+	<resources mapping="/resources/**" location="/resources/" />
+	
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+
+	<!-- To enable @RequestMapping process on type level and method level -->
+	<!-- 支持返回json xml 等多种格式 -->
+	
+	<beans:bean
+		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
+	<beans:bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<beans:property name="messageConverters">
+			<beans:list>
+				<beans:ref bean="marshallingConverter" />
+				<beans:ref bean="atomConverter" />
+				<beans:ref bean="jsonConverter" />
+				<beans:ref bean="stringHttpMessageConverter" />
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+
+
+	<!-- 格式转换类 -->
+	<beans:bean id="marshallingConverter"
+		class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
+		<beans:constructor-arg ref="jaxbMarshaller" />
+		<beans:property name="supportedMediaTypes" value="application/xml" />
+	</beans:bean>
+
+	<beans:bean id="atomConverter"
+		class="org.springframework.http.converter.feed.AtomFeedHttpMessageConverter">
+		<beans:property name="supportedMediaTypes" value="application/atom+xml" />
+	</beans:bean>
+
+	<beans:bean id="jsonConverter"
+		class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+		<beans:property name="supportedMediaTypes" value="application/json" />
+	</beans:bean>
+
+	<beans:bean id="stringHttpMessageConverter"
+		class="org.springframework.http.converter.StringHttpMessageConverter">
+		<beans:property name="supportedMediaTypes" value="text/html" />
+	</beans:bean>
+	
+	
+	<!-- 配置数据实体支持多种格式 ，每增加一个数据实体类，都需要在此配置绑定。-->
+	<!--Use JAXB OXM marshaller to marshall/unmarshall following class -->
+	<beans:bean id="jaxbMarshaller"
+		class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+		<beans:property name="classesToBeBound">
+			<beans:list>
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+	
+	<!-- 视图配置  -->
+	<beans:bean
+		class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<beans:property name="mediaTypes">
+			<beans:map>
+				<beans:entry key="xml" value="application/xml" />
+				<beans:entry key="html" value="text/html" />
+				<beans:entry key="json" value="application/json" />
+				<beans:entry key="atom" value="application/atom+xml" />
+			</beans:map>
+		</beans:property>
+		<beans:property name="viewResolvers">
+			<beans:list>
+				<beans:bean
+					class="org.springframework.web.servlet.view.BeanNameViewResolver" />
+				<beans:bean
+					class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+					<beans:property name="viewClass"
+						value="org.springframework.web.servlet.view.JstlView" />
+					<beans:property name="prefix" value="/WEB-INF/views/" /> 
+					<beans:property name="suffix" value=".jsp" />
+				</beans:bean>
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+
+</beans:beans>

@@ -50,7 +50,7 @@
 		<javaee-api-version>6.0</javaee-api-version>
 		<jstl-version>1.2</jstl-version>
 		<dom4j-version>1.6</dom4j-version>
-		<junit-version>4.8</junit-version>
+		<junit-version>4.9</junit-version>
 		<sqlite-jdbc-version>3.7.2</sqlite-jdbc-version>
 		<commons-codec-version>1.6</commons-codec-version>
 		<commons-dbcp-version>1.4</commons-dbcp-version>
@@ -58,9 +58,15 @@
 		<cglib-version>2.2</cglib-version>
 		<rome-version>1.0</rome-version>
 		<jackson-version>1.9.8</jackson-version>
+		<ejb3-persistence-version>3.3.2.Beta1</ejb3-persistence-version>
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>ejb3-persistence</artifactId>
+			<version>${ejb3-persistence-version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
@@ -171,6 +177,7 @@
 
 		<!-- spring end -->
 		<!-- spring security -->
+		<!--  
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
@@ -188,13 +195,14 @@
 			<artifactId>spring-security-web</artifactId>
 			<version>${spring.security.version}</version>
 		</dependency>
+		-->
 		<!-- spring security end -->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<version>${httpclient.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>

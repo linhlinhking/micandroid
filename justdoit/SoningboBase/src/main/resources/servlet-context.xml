@@ -21,23 +21,6 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 
-	<!-- To enable @RequestMapping process on type level and method level -->
-	<!-- 支持返回json xml 等多种格式 -->
-	
-	<beans:bean
-		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
-	<beans:bean
-		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
-		<beans:property name="messageConverters">
-			<beans:list>
-				<beans:ref bean="marshallingConverter" />
-				<beans:ref bean="atomConverter" />
-				<beans:ref bean="jsonConverter" />
-				<beans:ref bean="stringHttpMessageConverter" />
-			</beans:list>
-		</beans:property>
-	</beans:bean>
-
 
 	<!-- 格式转换类 -->
 	<beans:bean id="marshallingConverter"
@@ -61,6 +44,23 @@
 		<beans:property name="supportedMediaTypes" value="text/html" />
 	</beans:bean>
 	
+	<!-- To enable @RequestMapping process on type level and method level -->
+	<!-- 支持返回json xml 等多种格式 -->
+	<beans:bean
+		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
+	<beans:bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<beans:property name="messageConverters">
+			<beans:list>
+				<beans:ref bean="marshallingConverter" />
+				<beans:ref bean="atomConverter" />
+				<beans:ref bean="jsonConverter" />
+				<beans:ref bean="stringHttpMessageConverter" />
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+
+
 	
 	<!-- 配置数据实体支持多种格式 ，每增加一个数据实体类，都需要在此配置绑定。-->
 	<!--Use JAXB OXM marshaller to marshall/unmarshall following class -->

@@ -31,14 +31,30 @@
 
 	<!-- - Publishes events for session creation and destruction through the 
 		application - context. Optional unless concurrent session control is being 
-		used. -->
+		used. 
 	<listener>
 		<listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
 	</listener>
 	<listener>
 		<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
 	</listener>
+	-->
 
+	<!-- appServlet -->
+	<servlet>
+		<servlet-name>appServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:servlet-context.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>appServlet</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	
 	<!-- encodingFilter -->
 	<filter>
 		<filter-name>encodingFilter</filter-name>
@@ -55,20 +71,6 @@
 	</filter-mapping>
 
 
-	<!-- appServlet -->
-	<servlet>
-		<servlet-name>appServlet</servlet-name>
-		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-		<init-param>
-			<param-name>contextConfigLocation</param-name>
-			<param-value>classpath:servlet-context.xml</param-value>
-		</init-param>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>appServlet</servlet-name>
-		<url-pattern>/</url-pattern>
-	</servlet-mapping>
 
 	<!-- <error-page> <error-code>500</error-code> <location>/error</location> 
 		</error-page> <error-page> <error-code>404</error-code> <location>/error</location> 

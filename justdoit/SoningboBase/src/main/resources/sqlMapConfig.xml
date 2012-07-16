@@ -25,12 +25,12 @@
 	</settings>
 
 	<!-- 别名定义 -->
-	
+
 	<typeAliases>
-		<typeAlias alias="FirstCategory"
-			type="ningbo.media.website.entity.FirstCategory" />
-		<typeAlias type="ningbo.media.website.entity.SecondCategory" alias="SecondCategory"/>
+		<typeAlias alias="FirstCategory" type="ningbo.media.website.entity.FirstCategory" />
+		<typeAlias alias="SecondCategory"
+			type="ningbo.media.website.entity.SecondCategory" />
 	</typeAliases>
 
-	
+
 </configuration>

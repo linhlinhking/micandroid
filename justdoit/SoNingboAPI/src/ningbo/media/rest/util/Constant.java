@@ -35,6 +35,7 @@ public class Constant {
 	public static final String SHOPID = "shopId" ;
 	public static final String DATA = "data" ;
 	public static final String MD5_FIELD = "md5Value" ;
+	public static final String SYSTEM_USER_TYPE = "User" ;
 	
 	public static final Integer LIMIT = 10  ;
 	public static final String ERROR = "error" ;

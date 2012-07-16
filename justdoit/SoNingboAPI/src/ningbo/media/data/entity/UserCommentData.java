@@ -3,19 +3,20 @@ package ningbo.media.data.entity;
 
 public class UserCommentData implements EntityData{
 
-	private Integer locationId ;
+	private LocationDetail locationDetail ;
 	
 	private Integer commentId ;
 	
 	private String commentContent ;
 
 	
-	public Integer getLocationId() {
-		return locationId;
+
+	public LocationDetail getLocationDetail() {
+		return locationDetail;
 	}
 
-	public void setLocationId(Integer locationId) {
-		this.locationId = locationId;
+	public void setLocationDetail(LocationDetail locationDetail) {
+		this.locationDetail = locationDetail;
 	}
 
 	public Integer getCommentId() {

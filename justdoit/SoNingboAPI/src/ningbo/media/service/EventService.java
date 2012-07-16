@@ -9,4 +9,6 @@ import ningbo.media.core.service.BaseService;
 public interface EventService extends BaseService<Event, Integer>{
 
 	public List<Event> getEventsByType(String mdValue,EventType type) ;
+	
+	public Event getEventByUser(String eMdValue,String uMdValue) ;
 }

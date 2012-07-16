@@ -24,6 +24,7 @@ import javax.xml.bind.annotation.XmlTransient;
 public class SystemUser implements Serializable {
 
 	private static final long serialVersionUID = -4367047739963786995L;
+	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,6 +56,9 @@ public class SystemUser implements Serializable {
 	@Column(name = "userKey")
 	private String userKey ;
 	
+	@Column(length = 32,name="user_type")
+	private String userType ;
+	
 	//注册日期
 	@Column(name="date_time")
 	private Date datetime;
@@ -66,8 +70,6 @@ public class SystemUser implements Serializable {
 	private String md5Value ;
 	
 	private String website ;
-	
-	private String user_type ;
 	
 	private String qq ;
 	
@@ -272,16 +274,6 @@ public class SystemUser implements Serializable {
 	}
 
 
-	public String getUser_type() {
-		return user_type;
-	}
-
-
-	public void setUser_type(String user_type) {
-		this.user_type = user_type;
-	}
-
-
 	public String getQq() {
 		return qq;
 	}
@@ -311,6 +303,15 @@ public class SystemUser implements Serializable {
 		this.name_en = name_en;
 	}
 
-	
+
+	public String getUserType() {
+		return userType;
+	}
+
+
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+
 	
 }

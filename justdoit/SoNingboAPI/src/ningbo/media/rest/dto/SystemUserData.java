@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+
 import ningbo.media.rest.WsConstants;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -11,7 +12,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @XmlType(name = "SystemUser", namespace = WsConstants.NS, propOrder = {
 		"md5Value", "username", "name_cn", "name_en", "email", "status",
 		"photo_path", "gender", "birthday", "isManager", "datetime",
-		"lastModifyTime", "website"})
+		"lastModifyTime", "website","userType"})
 @XmlRootElement(name = "data")
 public class SystemUserData {
 
@@ -40,6 +41,8 @@ public class SystemUserData {
 	private Date lastModifyTime;
 
 	private String website;
+	
+	private String userType ;
 
 	public String getMd5Value() {
 		return md5Value;
@@ -143,6 +146,15 @@ public class SystemUserData {
 
 	public void setWebsite(String website) {
 		this.website = website;
+	}
+	
+
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
 	}
 
 	@Override

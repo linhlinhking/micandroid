@@ -1,27 +1,32 @@
 package ningbo.media.data.api;
 
+import java.util.Collection;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import ningbo.media.data.entity.OneEventData;
+import javax.xml.bind.annotation.XmlType;
 
+import ningbo.media.data.entity.EventData;
 
+@XmlType(propOrder = { "datas" })
 @XmlRootElement
 public class EventList {
-	
-	private OneEventData data ;
-	
-	public EventList(){
-		
-	}
-	
-	public EventList(OneEventData data){
-		this.data = data ;
+
+	private Collection<EventData> datas;
+
+	public EventList() {
+
 	}
 
-	@XmlElement(name = "events",defaultValue = "null")
-	public OneEventData getData() {
-		return data;
+	public EventList(Collection<EventData> datas) {
+		this.datas = datas;
+
 	}
+
+	@XmlElement
+	public Collection<EventData> getDatas() {
+		return datas;
+	}
+	
 	
 }

@@ -9,4 +9,7 @@ import ningbo.media.core.dao.BaseDao;
 public interface EventDao extends BaseDao<Event, Integer>{
 
 	public List<Event> getEventsByType(String mdValue, EventType type);
+	
+	public Event getEventByUser(String eMdValue,String uMdValue) ;
+	
 }

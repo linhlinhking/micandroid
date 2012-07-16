@@ -3,6 +3,7 @@ package ningbo.media.dao;
 import java.util.List;
 
 import ningbo.media.bean.Friends;
+import ningbo.media.bean.enums.FriendType;
 import ningbo.media.core.dao.BaseDao;
 
 public interface FriendsDao extends BaseDao<Friends, Integer>{
@@ -11,5 +12,5 @@ public interface FriendsDao extends BaseDao<Friends, Integer>{
 	
 	public Friends getRelationObject(Integer userA,Integer userB) ;
 	
-	public List<Friends> getFriendsForUserId(Integer userId);
+	public List<Friends> getFriendsForUserId(Integer userId,FriendType type);
 }

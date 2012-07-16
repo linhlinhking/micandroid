@@ -3,15 +3,14 @@ package ningbo.media.rest.dto;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import ningbo.media.bean.Location;
-import ningbo.media.bean.SystemUser;
+import ningbo.media.data.entity.LocationDetail;
 import ningbo.media.rest.WsConstants;
 
 @XmlType(name = "Event", namespace = WsConstants.NS, propOrder = { "md5Value",
 		"title", "subject", "address", "startDate", "startTime", "endDate",
 		"endTime", "photo_path", "organizer", "location",
 		"user" })
-@XmlRootElement(name = "data")
+@XmlRootElement
 public class EventData {
 
 	private String md5Value;
@@ -34,9 +33,9 @@ public class EventData {
 
 	private String organizer;
 
-	private Location location;
+	private LocationDetail location;
 
-	private SystemUser user;
+	private SystemUserData user ;
 
 	public String getMd5Value() {
 		return md5Value;
@@ -118,21 +117,22 @@ public class EventData {
 		this.organizer = organizer;
 	}
 
-	public Location getLocation() {
-		return location;
-	}
 
-	public void setLocation(Location location) {
-		this.location = location;
-	}
-
-	public SystemUser getUser() {
+	public SystemUserData getUser() {
 		return user;
 	}
 
-	public void setUser(SystemUser user) {
+	public void setUser(SystemUserData user) {
 		this.user = user;
 	}
-	
+
+	public LocationDetail getLocation() {
+		return location;
+	}
+
+	public void setLocation(LocationDetail location) {
+		this.location = location;
+	}
+
 	
 }

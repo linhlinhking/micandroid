@@ -5,4 +5,5 @@ import ningbo.media.core.dao.BaseDao;
 
 public interface CommentDao extends BaseDao<Comment, Integer>{
 
+	public Comment getCommentByUser(String userId,String commentId) ;
 }

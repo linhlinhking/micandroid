@@ -2,6 +2,7 @@ package ningbo.media.rest.resource;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -21,8 +22,10 @@ import ningbo.media.bean.Event;
 import ningbo.media.bean.Location;
 import ningbo.media.bean.SystemUser;
 import ningbo.media.bean.enums.EventType;
+import ningbo.media.data.api.EventList;
 import ningbo.media.data.api.LocationEventList;
 import ningbo.media.data.api.UserEventList;
+import ningbo.media.data.entity.EventData;
 import ningbo.media.data.entity.LocationDetail;
 import ningbo.media.data.entity.LocationEventData;
 import ningbo.media.data.entity.UserEventData;
@@ -269,9 +272,9 @@ public class EventResource {
 				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 				return Response.ok(json.toString()).build();
 			}
-			
-			Event event = eventService.get(Constant.MD5_FIELD, md5Value) ;
-			if(null == event){
+
+			Event event = eventService.get(Constant.MD5_FIELD, md5Value);
+			if (null == event) {
 				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 				json.put(Constant.MESSAGE, JSONCode.MSG_EVENT_NOEXISTS);
 				return Response.ok(json.toString()).build();
@@ -305,16 +308,17 @@ public class EventResource {
 			event.setLocationMd5Value(locationMd5Value);
 			event.setUserMd5Value(userMd5Value);
 
-			if((!"".equals(base64Value)) && (null != base64Value)){
+			if ((!"".equals(base64Value)) && (null != base64Value)) {
 				String fileName = String.valueOf(System.currentTimeMillis());
 				StringBuffer sb = new StringBuffer();
-				String tempPath = FileUploadUtil.makeFileDir(null, request, true);
+				String tempPath = FileUploadUtil.makeFileDir(null, request,
+						true);
 				sb.append(tempPath).append(fileName);
 
 				String tempBase64Value = base64Value.replaceAll(" ", "+");
 
 				boolean flag = Base64Image.generateImage(tempBase64Value, sb
-					.toString());
+						.toString());
 
 				if (!flag) {
 					File file = new File(sb.toString());
@@ -327,8 +331,7 @@ public class EventResource {
 						.toString());
 				event.setPhoto_path(photo_path);
 			}
-			
-			
+
 			eventService.update(event);
 
 			json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
@@ -348,8 +351,9 @@ public class EventResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteEvent(@FormParam("event_md5_value")
 	String eventMd5Value, @FormParam("key")
-	String key, @Context
-	HttpServletRequest request) {
+	String key, @FormParam("user_md5_Value")
+	String userMd5Value, @Context
+	HttpServletRequest request) throws JSONException {
 		JSONObject json = new JSONObject();
 
 		try {
@@ -369,20 +373,24 @@ public class EventResource {
 				return Response.ok(json.toString()).build();
 			}
 
-			Event event = eventService.get(Constant.MD5_FIELD, eventMd5Value);
+			Event event = eventService.getEventByUser(eventMd5Value, userMd5Value) ;
 			if (null != event) {
 				String uuid = event.getPhoto_path();
 				if (null != uuid && !("0".equals(uuid))) {
 					FileUploadUtil.delFile(uuid, request);
 				}
 				eventService.delete(event);
+				json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
+				json.put(Constant.MESSAGE, JSONCode.MSG_EVENT_DELETE_SUCCESS);
+				return Response.ok(json.toString()).build();
 			}
 
 		} catch (Exception ex) {
-
+			ex.printStackTrace() ;
 		}
-
-		return null;
+		json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+		json.put(Constant.MESSAGE, JSONCode.MSG_EVENT_DELETE_FAIL);
+		return Response.ok(json.toString()).build();
 	}
 
 	@Path("/user/{md5Value}")
@@ -448,6 +456,77 @@ public class EventResource {
 		return Response.ok(lists).build();
 	}
 
+	@Path("/date/{date_today}")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getEventsByDate(@PathParam("date_today")
+	String nowDate) throws JSONException {
+		JSONObject json = new JSONObject();
+		Collection<EventData> datas = new ArrayList<EventData>();
+		try {
+			if ("".equals(nowDate.trim()) || nowDate.length() < 0) {
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_EVENT_DATE_NOINPUT);
+				return Response.ok().build();
+			}
+			List<Event> events = eventService.getEventsByType(nowDate,
+					EventType.EVENTDATE);
+
+			datas = getEventsByDateList(events);
+			if (null == datas) {
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_EVENT_NO_DATA);
+				return Response.ok(json.toString()).build();
+			}
+
+		} catch (Exception ex) {
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+			json.put(Constant.MESSAGE, JSONCode.MSG_EVENT_NO_DATA);
+			return Response.ok(json.toString()).build();
+		}
+		return Response.ok(new EventList(datas)).build();
+	}
+
+	private List<EventData> getEventsByDateList(List<Event> events) {
+		if (null == events || events.size() < 0) {
+			return null;
+		}
+		List<EventData> datas = new ArrayList<EventData>();
+		for (int i = 0, j = events.size(); i < j; i++) {
+			Event temp = events.get(i);
+			EventData tempEventData = new EventData();
+			SystemUserData tmpUser = new SystemUserData();
+			LocationDetail detail = new LocationDetail();
+			String userMd5 = temp.getUserMd5Value();
+			SystemUser u = systemUserService.get(Constant.MD5_FIELD, userMd5);
+			String locMd5 = temp.getLocationMd5Value();
+			Location loc = locationService.get(Constant.MD5_FIELD, locMd5);
+
+			tmpUser.setMd5Value(u.getMd5Value());
+			tmpUser.setUsername(u.getUsername());
+			detail.setLatitude(loc.getLatitude());
+			detail.setLongitude(loc.getLongitude());
+			detail.setMd5Value(loc.getMd5Value());
+			detail.setName_cn(loc.getName_cn());
+			detail.setName_en(loc.getName_en());
+
+			tempEventData.setTitle(temp.getTitle());
+			tempEventData.setSubject(temp.getSubject());
+			tempEventData.setMd5Value(temp.getMd5Value());
+			tempEventData.setStartDate(temp.getStartDate());
+			tempEventData.setStartTime(temp.getStartTime());
+			tempEventData.setEndDate(temp.getEndDate());
+			tempEventData.setEndTime(temp.getEndTime());
+			tempEventData.setOrganizer(temp.getOrganizer());
+			tempEventData.setPhoto_path(temp.getPhoto_path());
+			tempEventData.setUser(tmpUser);
+			tempEventData.setLocation(detail);
+
+		}
+
+		return datas;
+	}
+
 	private List<UserEventData> getUserEventDataList(List<Event> events) {
 		if (null == events || events.size() < 0) {
 			return null;
@@ -481,7 +560,6 @@ public class EventResource {
 
 			datas.add(tmpUserEvent);
 		}
-
 		return datas;
 	}
 

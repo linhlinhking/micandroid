@@ -3,6 +3,7 @@ package ningbo.media.dao.impl;
 import java.util.List;
 
 import ningbo.media.bean.Friends;
+import ningbo.media.bean.enums.FriendType;
 import ningbo.media.core.dao.impl.BaseDaoImpl;
 import ningbo.media.dao.FriendsDao;
 
@@ -37,13 +38,27 @@ public class FriendsDaoImpl extends BaseDaoImpl<Friends, Integer> implements
 		return f;
 	}
 
-	public List<Friends> getFriendsForUserId(Integer userId) {
-		String hql = " from Friends as m where 1=1 and m.userId = ? and m.followId in (select n.userId from Friends as n where 1=1 and n.followId = ? and n.isFollowed = 1 ) and m.isFollowed = 1 ";
-		List<Friends> list = findByHql(hql, userId, userId);
-		if (null == list || list.size() < 0) {
+	public List<Friends> getFriendsForUserId(Integer userId, FriendType type) {
+		try {
+			String hql = "";
+			if (FriendType.FANS.equals(type)) {
+				hql = "from Friends as m where 1=1 and m.userId = ? and m.followId in (select n.userId from Friends as n where 1=1 and n.followId = ? and n.isFollowed = 1 ) and m.isFollowed = 0 ";
+			} else if (FriendType.FOLLOWED.equals(type)) {
+				hql = "from Friends as m where 1=1 and m.userId = ? and m.followId in (select n.userId from Friends as n where 1=1 and n.followId = ? and n.isFollowed = 0 ) and m.isFollowed = 1 ";
+			} else {
+				hql = " from Friends as m where 1=1 and m.userId = ? and m.followId in (select n.userId from Friends as n where 1=1 and n.followId = ? and n.isFollowed = 1 ) and m.isFollowed = 1 ";
+			}
+
+			List<Friends> list = findByHql(hql, userId, userId);
+			if (null == list || list.size() < 0) {
+				return null;
+			}
+			return list;
+		} catch (Exception ex) {
+			ex.printStackTrace();
 			return null;
 		}
-		return list;
+
 	}
 
 }

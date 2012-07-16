@@ -30,6 +30,10 @@ public class EventServiceImpl extends BaseServiceImpl<Event, Integer> implements
 	public List<Event> getEventsByType(String mdValue, EventType type) {
 		return eventDao.getEventsByType(mdValue, type) ;
 	}
+
+	public Event getEventByUser(String eMdValue,String uMdValue) {
+		return eventDao.getEventByUser(eMdValue, uMdValue) ;
+	}
 	
 	
 }

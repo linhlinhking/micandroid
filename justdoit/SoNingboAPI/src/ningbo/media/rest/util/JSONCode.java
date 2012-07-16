@@ -13,7 +13,10 @@ public class JSONCode {
 	public static final String LOCATION_COUNT_EXCEPTION = "13001" ;//获取位置数目异常
 	public static final String THROW_MESSAGE = "Request The Resource No Exists." ;
 	public static final String SERVER_EXCEPTION = "System Error." ;
-	
+	public static final String MSG_KEY_ISNULL = "key no input." ;
+	public static final String MSG_KEY_INVALID = "key input invalid." ;
+	public static final String MSG_NO_INPUT = "No Input." ;
+	public static final String MSG_DELETE_SUCCESS = "Deleted Successfully." ;
 	
 	/**应用级别的全局异常*/
 	public static final String KEYISNULL = "20001" ; //key输入为空
@@ -23,6 +26,7 @@ public class JSONCode {
 	public static final String NOINPUT = "20005" ; //必填项不能为空
 	public static final String DELETE_FILE_ISNULL = "20006" ;//删除的文件ID不能为空
 	
+	
 	/**SystemUser-3*/
 	public static final String USERNAME_EXISTS = "30001" ; //用户名称存在
 	public static final String USER_EMAIL_EXISTS = "30002" ; //用户email存在
@@ -31,7 +35,7 @@ public class JSONCode {
 	public static final String USE_PASSWORD_NOINPUT = "30005" ;//用户密码为空
 	public static final String USER_INPUT_INVALID = "30006" ;
 	
-	/**Message*/
+	/**Message-systemuser*/
 	public static final String MSG_USERNAME_EXISTS = "username already exist." ; //用户名称存在
 	public static final String MSG_USER_EMAIL_EXISTS = "email already exist." ; //用户名称存在
 	public static final String MSG_USER_NOEXISTS = "user no exists." ; //用户不存在
@@ -41,8 +45,6 @@ public class JSONCode {
 	public static final String MSG_USER_USERNAME_NO_INPUT = "Please Input." ;
 	public static final String MSG_USER_FORGOT_PASSWORD = "password had sended to your email." ;
 	public static final String MSG_USER_USER_MD5VALUE = "No The User Of Md5 value" ;
-	public static final String MSG_KEY_ISNULL = "key no input." ;
-	public static final String MSG_KEY_INVALID = "key input invalid." ;
 	public static final String MSG_USER_AVATAR_UPDATE = "The User Avatar Aleady Update." ;
 	public static final String MSG_USER_MD5VALUE_ISNULL = "Can't get MD5 Value." ;
 	
@@ -70,6 +72,10 @@ public class JSONCode {
 	public static final String MSG_EVENT_MD5_NOEXISTS = "No The Event by Md5 Value" ;
 	public static final String MSG_EVENT_NOEXISTS = "Event No Exists." ;
 	public static final String MSG_EVENT_EDIT_SUCCESS = "Edit Successfully." ;
+	public static final String MSG_EVENT_DATE_NOINPUT = "No Date Input." ;
+	public static final String MSG_EVENT_NO_DATA = "No Event Data." ;
+	public static final String MSG_EVENT_DELETE_SUCCESS = "Delete Event Successfully." ;
+	public static final String MSG_EVENT_DELETE_FAIL = "Delete Event Failly." ;
 	
 	/**ModuleFile-7*/
 	public static final String MODULEFILE_TOOL_NOEXISTS = "70001" ;
@@ -91,6 +97,14 @@ public class JSONCode {
 	public static final String MSG_FAVORITE_USER_NOEXISTS = "User's Favorite No Exists." ;
 	public static final String MSG_FAVORITE_USER_DELETE_SUCCESS = "Already Cancel User Favorite." ;
 	public static final String MSG_FAVORITE_DELETE_FAIL = "No Input Deleted Request." ;
+	
+	/**Friend - Message*/
+	public static final String MSG_FRIEND_FOLLOW_SUCCESS = "Followed Success." ;
+	public static final String MSG_FRIEND_CANCEL_FOLLOW_SUCCESS = "Cancel Success." ;
+	public static final String MSG_FRIEND_FOLLOW_YOURSELF = "Followed YourSelf Fail." ;
+	
+	/**Comment*/
+	public static final String MSG_COMMENT_NOEXISTS = "No The Comment Data." ;
 	
 	
 	/**tempuser*/

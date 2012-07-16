@@ -16,7 +16,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-
 import ningbo.media.bean.Favorite;
 import ningbo.media.bean.SystemUser;
 import ningbo.media.bean.enums.SendEmailType;
@@ -33,12 +32,10 @@ import ningbo.media.service.SystemUserService;
 import ningbo.media.util.ApplicationContextUtil;
 import ningbo.media.util.MD5;
 import ningbo.media.util.StringUtil;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
 import com.sun.jersey.multipart.FormDataBodyPart;
 import com.sun.jersey.multipart.FormDataMultiPart;
 
@@ -361,7 +358,7 @@ public class SystemUserRest {
 			if (!("0".equals(uuid)) && (null != uuid)) {
 				FileUploadUtil.delFile(uuid, request);
 			}
-			
+
 			u.setPhoto_path(photo_path);
 			systemUserService.update(u);
 
@@ -383,7 +380,6 @@ public class SystemUserRest {
 	String password, @FormParam("key")
 	String key, @FormParam("device_id")
 	String device_id) throws JSONException {
-
 		JSONObject json = new JSONObject();
 		if (key.isEmpty()) {
 			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
@@ -425,6 +421,7 @@ public class SystemUserRest {
 					}
 				}
 			}
+		
 			return Response.ok(getSystemUserData(tempUser)).build();
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -501,7 +498,12 @@ public class SystemUserRest {
 		data.setBirthday(user.getBirthday());
 		data.setDatetime(user.getDatetime());
 		data.setLastModifyTime(user.getLastModifyTime());
-
+		String temp = user.getUserType() ;
+		if(null != temp){
+			data.setUserType(temp) ;
+		}else{
+			data.setUserType(Constant.SYSTEM_USER_TYPE) ;
+		}
 		return data;
 	}
 

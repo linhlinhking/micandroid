@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import ningbo.media.bean.Friends;
+import ningbo.media.bean.enums.FriendType;
 import ningbo.media.core.service.impl.BaseServiceImpl;
 import ningbo.media.dao.FriendsDao;
 import ningbo.media.service.FriendsService;
@@ -35,7 +36,7 @@ public class FriendsServiceImpl extends BaseServiceImpl<Friends, Integer>
 	}
 	
 	
-	public List<Friends> getFriendsForUserId(Integer userId){
-		return friendsDao.getFriendsForUserId(userId) ;
+	public List<Friends> getFriendsForUserId(Integer userId,FriendType type){
+		return friendsDao.getFriendsForUserId(userId,type) ;
 	}
 }

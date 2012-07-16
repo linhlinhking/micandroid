@@ -27,17 +27,32 @@ public class EventDaoIImpl extends BaseDaoImpl<Event, Integer> implements
 				hql = "from Event as model where 1=1 and model.userMd5Value = ? ";
 			} else if (EventType.LOCATION.equals(type)) {
 				hql = "from Event as model where 1=1 and model.locationMd5Value = ? ";
+			} else if (EventType.EVENTDATE.equals(type)) {
+				hql = "from Event as model where 1=1 and model.endDate > ? order by model.startDate desc " ;
 			} else {
 				return null;
 			}
-			List<Event> events = findByHql(hql, md5Value) ;
-			if(null != events && events.size() >0){
-				return events ;
+			List<Event> events = findByHql(hql, md5Value);
+			if (null != events && events.size() > 0) {
+				return events;
 			}
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			logger.error("Query Event Error." + type);
+			logger.error("Query Events Error." + type);
+		}
+		return null;
+	}
+
+	public Event getEventByUser(String eMdValue,String uMdValue) {
+		try{
+			String hql = "from Event as model where 1=1 and model.userMd5Value = ? and model.md5Value = ? " ;
+			Event e = (Event)findUnique(hql, uMdValue,eMdValue) ;
+			if(null != e){
+				return e ;
+			}
+		}catch(Exception ex){
+			logger.error("Query Event by UserMdValue Fail." + uMdValue) ;
 		}
 		return null;
 	}

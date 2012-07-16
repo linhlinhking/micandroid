@@ -5,4 +5,5 @@ import ningbo.media.core.service.BaseService;
 
 public interface CommentService extends BaseService<Comment, Integer>{
 
+	public Comment getCommentByUser(String userId,String commentId) ;
 }

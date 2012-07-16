@@ -2,32 +2,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Comment delete</title>
-<link rel="stylesheet" href="test.css" />
+<title>Comment getUser</title>
+<link rel="stylesheet" href="../test.css" />
 </head>
 
 <body>
 
-<form name="comment" method="post" action="https://api.searchningbo.com/resource/comment/delete">
-  <p>
-  
-  key<br>
-  <input type="text" name="key" id="key">
-  <br>
-  <br>
-  
-  comment_id<br>
-  <input type="text" name="commentId" id="commentId">
-  <br>
-  <br>
-
-  
-
-  <input type="submit" name="POST" id="POST" value="Submit">
-<br>
-    <br>
-  </p>
-</form>
 
 <h2>
 		<span class="mw-headline"> Method Summary </span>
@@ -42,7 +22,7 @@
 
 		<tr>
 			<td>url</td>
-			<td><a href="#" class="external free" rel="nofollow">https://api.searchningbo.com/resource/comment/delete</a>
+			<td><a href="#" class="external free" rel="nofollow">http://api.soningbo.com/resource/comment/user/{userId}</a>
 			</td>
 		</tr>
 		<tr>
@@ -52,12 +32,9 @@
 
 		<tr>
 			<td>httprequest method</td>
-			<td>post</td>
+			<td>get</td>
 		</tr>
-		<tr>
-			<td>need authorize</td>
-			<td>true</td>
-		</tr>
+
 	</table>
 <h2>
 		<span class="mw-headline"> Parameter Description </span>
@@ -70,17 +47,12 @@
 			<th width="10%">type & scope</th>
 			<th width="75%">Description</th>
 		</tr>
+		
 		<tr>
-			<td>key</td>
+			<td>userId</td>
 			<td>true</td>
 			<td>String</td>
-			<td>Authorized verification of API calls</td>
-		</tr>
-		<tr>
-			<td>commentId</td>
-			<td>true</td>
-			<td>String</td>
-			<td>Type</td>
+			<td>Get {userId} All Comment</td>
 		</tr>
 	</table>
 
@@ -88,19 +60,19 @@
 		<span class="mw-headline"> Return Results </span>
 	</h2>
 	<pre class="brush: js;">{
-		{"code":"0"} //
-	}
+   	    for example:  http://api.soningbo.com/resource/comment/user/3
+   	    
+   	    
+   	    
+       }
+	
 	</pre>
 
 	<h2>
 		<span class="mw-headline"> Return Code Lists </span>
 	</h2>
 	<pre class="brush: js;">{
-		0      : Success
-		20001  : Key is Null
-		20002  : Input Invalid
-		20011  : Comment No Exists
-		40001  : Throws Exception.
+		
 	}
 	</pre>
 

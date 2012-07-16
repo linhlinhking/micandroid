@@ -1,14 +1,17 @@
-<!DOCTYPE HTML>
 <html>
 	<head>
+		<meta charset="UTF-8">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<link rel="stylesheet" href="test.css" />
-		<title>Favorites Delete</title>
+		<link rel="stylesheet" href="../test.css" />
+		<title>Favorites Add</title>
 	</head>
 
 	<body>
+		<h2>
+			<span class="mw-headline"> Sample Test </span>
+		</h2>
 		<form name="form1" method="post"
-			action="http://localhost:8000/resource/favorite/delete">
+			action="http://api.soningbo.com/resource/favorite/add">
 			<p>
 
 				key
@@ -17,28 +20,27 @@
 				<input type="text" name="key" id="key">
 				<br>
 				<br>
-
-
+				location_id
+				<br>
+				<label for="locationId"></label>
+				<input type="text" name="locationId" id="locationId">
+				<br>
+				<br>
 				user_id
 				<br>
 				<label for="user_id"></label>
 				<input type="text" name="userId" id="userId">
 				<br>
 				<br>
-
-
+				
 				deviceId
 				<br>
 				<label for="deviceId"></label>
 				<input type="text" name="deviceId" id="deviceId">
 				<br>
 				<br>
-
-				location_id
-				<br>
-				<label for="location_id"></label>
-				<input type="text" name="locationId" id="locationId">
-				<br>
+				
+			
 				<br>
 
 
@@ -62,7 +64,7 @@
 
 		<tr>
 			<td>url</td>
-			<td><a href="#" class="external free" rel="nofollow">https://api.searchningbo.com/resource/favorite/delete</a>
+			<td><a href="#" class="external free" rel="nofollow">http://api.soningbo.com/resource/favorite/add</a>
 			</td>
 		</tr>
 		<tr>
@@ -121,7 +123,7 @@
 		<span class="mw-headline"> Return Results </span>
 	</h2>
 	<pre class="brush: js;">{
-		{"code":"0"} //
+		
 	}
 	</pre>
 
@@ -129,8 +131,7 @@
 		<span class="mw-headline"> Return Code Lists </span>
 	</h2>
 	<pre class="brush: js;">{
-		0      : Success
-		9      : Favorite NO Exists
+		
 	}
 	</pre>
 

@@ -68,6 +68,7 @@
 		class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
 		<beans:property name="classesToBeBound">
 			<beans:list>
+				<beans:value>ningbo.media.website.entity.FirstCategory</beans:value>
 			</beans:list>
 		</beans:property>
 	</beans:bean>

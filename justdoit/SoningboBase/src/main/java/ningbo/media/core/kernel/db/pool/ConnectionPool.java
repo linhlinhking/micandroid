@@ -31,6 +31,7 @@ public class ConnectionPool {
 
 	private int maxConnections = 50; // 连接池最大的大小
 
+	@SuppressWarnings("rawtypes")
 	private Vector connections = null; // 存放连接池中数据库连接的向量 , 初始时为 null
 
 	/**
@@ -89,6 +90,7 @@ public class ConnectionPool {
 	/**
 	 * 创建一个数据库连接池，连接池中的可用连接的数量采用类成员 initialConnections 中设置的值
 	 */
+	@SuppressWarnings("rawtypes")
 	public synchronized void createPool() {
 		// 确保连接池没有创建
 		// 如果连接池己经创建了，保存连接的向量 connections 不会为空
@@ -250,6 +252,7 @@ public class ConnectionPool {
 	 * @throws java.sql.SQLException
 	 *             数据库异常
 	 */
+	@SuppressWarnings("rawtypes")
 	private Connection findFreeConnection() throws SQLException {
 		Connection conn = null;
 		PooledConnection pConn;
@@ -289,6 +292,7 @@ public class ConnectionPool {
 	 *            需返回到连接池中的连接对象
 	 */
 
+	@SuppressWarnings("rawtypes")
 	public void returnConnection(Connection conn) {
 		// 确保连接池存在，如果连接没有创建（不存在），直接返回
 		if (connections == null) {
@@ -316,6 +320,7 @@ public class ConnectionPool {
 	 * @throws java.sql.SQLException
 	 *             数据库异常
 	 */
+	@SuppressWarnings("rawtypes")
 	public synchronized void refreshConnections() throws SQLException {
 		// 确保连接池己创新存在
 		if (connections == null) {
@@ -345,6 +350,7 @@ public class ConnectionPool {
 	 * @throws java.sql.SQLException
 	 *             数据库异常
 	 */
+	@SuppressWarnings("rawtypes")
 	public synchronized void closeConnectionPool() throws SQLException {
 		// 确保连接池存在，如果不存在，返回
 		if (connections == null) {

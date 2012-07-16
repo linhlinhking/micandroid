@@ -3,8 +3,10 @@ package ningbo.media.website.entity;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
+@XmlRootElement
 public class FirstCategory implements Serializable{
 
 	private static final long serialVersionUID = 8659880437208428931L;

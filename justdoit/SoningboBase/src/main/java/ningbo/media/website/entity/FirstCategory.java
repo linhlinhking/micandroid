@@ -2,10 +2,8 @@ package ningbo.media.website.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@Entity
 @XmlRootElement
 public class FirstCategory implements Serializable{
 

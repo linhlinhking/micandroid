@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Photo Add</title>
-<link rel="stylesheet" href="test.css" />
+<link rel="stylesheet" href="../test.css" />
 </head>
 
 <body>
 
-<form name="comment" method="post" action="http://localhost:8000/resource/friend/add">
+<form name="comment" method="post" action="http://api.soningbo.com/resource/friend/add">
   <p>
   
   key<br>
@@ -100,7 +100,7 @@
 		<span class="mw-headline"> Return Results </span>
 	</h2>
 	<pre class="brush: js;">{
-		{"code":"0"} //
+		
 	}
 	</pre>
 
@@ -108,14 +108,7 @@
 		<span class="mw-headline"> Return Code Lists </span>
 	</h2>
 	<pre class="brush: js;">{
-		0      : Success
-		20001  : Key is Null
-		20002  : Input Invalid
-		20004  : Location NO Input
-		20005  : DeviceId or UserId No Input
-		20009  : User NO Exists
-		20010  : Location NO Exists
-		40001  : Throws Exception.
+		
 	}
 	</pre>
 

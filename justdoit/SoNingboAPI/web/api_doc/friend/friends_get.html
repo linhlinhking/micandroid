@@ -3,17 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" href="test.css" />
-<script type="text/javascript" src="/js/base.js"></script>
-<title>Test User</title>
+<link rel="stylesheet" href="../test.css" />
+<title>Friend Get</title>
 </head>
 
 <body>
-	<input type="button" name="button" value="Click" onclick="test()">
+
 
 <h2>
 		<span class="mw-headline">
-			Requests Instruction </span>
+			Request instructions </span>
 	</h2>
 
 	<table width="95%" cellpadding="0" cellspacing="2" border="0"
@@ -22,7 +21,7 @@
 		<tr>
 			<td>url</td>
 			<td><a href="#"
-				class="external free" rel="nofollow"></a>
+				class="external free" rel="nofollow">http://api.soningbo.com/resource/friend/fans/{userId}</a>
 			</td>
 		</tr>
 		<tr>
@@ -31,8 +30,8 @@
 		</tr>
 
 		<tr>
-			<td>httprequest method</td>
-			<td>post</td>
+			<td>http Request method</td>
+			<td>get</td>
 		</tr>
 		<tr>
 			<td>need authorize</td>
@@ -48,7 +47,7 @@
 		<tr>
 			<th width="10%">&nbsp;</th>
 			<th width="5%">required</th>
-			<th width="10%">type & scope</th>
+			<th width="10%">type&scope</th>
 			<th width="75%">Description</th>
 		</tr>
 		<tr>
@@ -58,48 +57,31 @@
 			<td>Authorized verification of API calls</td>
 		</tr>
 		<tr>
-			<td>deviceId</td>
+			<td>userId</td>
 			<td>true</td>
-			<td>String</td>
-			<td>The serial number of the current equipment</td>
+			<td>int</td>
+			<td>query the user's favorites</td>
 		</tr>
-		<tr>
-			<td>username</td>
-			<td>true</td>
-			<td>String</td>
-			<td>user's email</td>
-		</tr>
-		<tr>
-			<td>password</td>
-			<td>true</td>
-			<td>String</td>
-			<td>user's password</td>
-		</tr>
+
 	</table>
 
 	<h2>
 		<span class="mw-headline">
-			Return Results </span>
+			return results </span>
 	</h2>
 	<pre class="brush: js;">{
-		{
-    		"userId": 22,
-    		"code": "0"
-	    }
-	</pre>
+	example:<a href="http://api.soningbo.com/resource/friend/fans/27">http://api.soningbo.com/resource/friend/user/27</a>
 	
+
+	
+  }
+</pre>
+
 	<h2>
-		<span class="mw-headline">
-			Return Code Lists </span>
+		<span class="mw-headline"> Return Code Lists </span>
 	</h2>
 	<pre class="brush: js;">{
-		0  : Success
-		1  : Key is Null
-		2  : Key is Invalid
-		3  : Username is Null
-		4  : Password is Null
-		5  : Login is Fail.
-		6  : Throwable JSONException
+	
 	}
 	</pre>
 </body>

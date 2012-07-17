@@ -8,15 +8,19 @@
 		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
+	<mvc:annotation-driven />
 	<context:annotation-config />
-	<context:component-scan base-package="ningbo.media">
+	<context:component-scan base-package="ningbo.media.*.controller" />
+	<!-- 
 		<context:exclude-filter type="annotation"
 			expression="org.springframework.stereotype.Service" />
 	</context:component-scan>
-	
+	 -->
+
 	<resources mapping="/resources/**" location="/resources/" />
-	
-	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+
+	<beans:bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
@@ -43,7 +47,7 @@
 		class="org.springframework.http.converter.StringHttpMessageConverter">
 		<beans:property name="supportedMediaTypes" value="text/html" />
 	</beans:bean>
-	
+
 	<!-- To enable @RequestMapping process on type level and method level -->
 	<!-- 支持返回json xml 等多种格式 -->
 	<beans:bean
@@ -61,8 +65,8 @@
 	</beans:bean>
 
 
-	
-	<!-- 配置数据实体支持多种格式 ，每增加一个数据实体类，都需要在此配置绑定。-->
+
+	<!-- 配置数据实体支持多种格式 ，每增加一个数据实体类，都需要在此配置绑定。 -->
 	<!--Use JAXB OXM marshaller to marshall/unmarshall following class -->
 	<beans:bean id="jaxbMarshaller"
 		class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
@@ -72,8 +76,8 @@
 			</beans:list>
 		</beans:property>
 	</beans:bean>
-	
-	<!-- 视图配置  -->
+
+	<!-- 视图配置 -->
 	<beans:bean
 		class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
 		<beans:property name="mediaTypes">
@@ -92,7 +96,7 @@
 					class="org.springframework.web.servlet.view.UrlBasedViewResolver">
 					<beans:property name="viewClass"
 						value="org.springframework.web.servlet.view.JstlView" />
-					<beans:property name="prefix" value="/WEB-INF/views/" /> 
+					<beans:property name="prefix" value="/WEB-INF/views/" />
 					<beans:property name="suffix" value=".jsp" />
 				</beans:bean>
 			</beans:list>

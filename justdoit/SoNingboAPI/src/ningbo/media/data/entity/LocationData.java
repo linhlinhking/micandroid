@@ -22,6 +22,10 @@ public class LocationData implements EntityData {
 	
 	private String name_py ;
 	
+	private Double latitdue ;
+	
+	private Double longitude ;
+	
 	
 
 	public Integer getId() {
@@ -103,7 +107,22 @@ public class LocationData implements EntityData {
 	public void setName_py(String name_py) {
 		this.name_py = name_py;
 	}
-	
+
+	public Double getLatitdue() {
+		return latitdue;
+	}
+
+	public void setLatitdue(Double latitdue) {
+		this.latitdue = latitdue;
+	}
+
+	public Double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(Double longitude) {
+		this.longitude = longitude;
+	}
 	
 
 }

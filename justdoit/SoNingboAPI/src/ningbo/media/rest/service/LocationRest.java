@@ -305,7 +305,6 @@ public class LocationRest {
 	 */
 	@Path("/base64/add")
 	@POST
-	// @Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addLocationBase64(@FormParam("key")
 	String key, @FormParam("name_cn")
@@ -551,7 +550,6 @@ public class LocationRest {
 		LocationData d = null;
 		for (Location l : list) {
 			d = new LocationData();
-			d.setPhoto_path(l.getPhoto_path());
 			d.setName_cn(l.getName_cn());
 			d.setName_en(l.getName_en());
 			d.setMd5Value(l.getMd5Value());
@@ -560,7 +558,14 @@ public class LocationRest {
 			d.setAddress_cn(l.getAddress_cn());
 			d.setAddress_en(l.getAddress_en());
 			d.setName_py(l.getName_py());
-
+			d.setLatitdue(l.getLatitude()) ;
+			d.setLongitude(l.getLongitude()) ;
+			if(null == l.getPhoto_path()){
+				d.setPhoto_path("0") ;
+			}else{
+				d.setPhoto_path(l.getPhoto_path());
+			}
+			
 			listData.add(d);
 		}
 		return new LocationList(listData);

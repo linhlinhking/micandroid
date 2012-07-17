@@ -23,6 +23,7 @@ public class LocationDaoImpl extends BaseDaoImpl<Location, Integer> implements
 			return null ;
 		}
 		StringBuffer sb = new StringBuffer() ;
+		
 		sb.append("from Location m where 1=1 ") ;
 		if(Pinyin.isChinese(locationName)){
 			sb.append(" and m.name_cn like ? or m.tags_cn like ? ") ;

@@ -20,9 +20,9 @@ public class Favorite implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id ;
 	
-	private Integer userId ;
+	private String userId ;
 	
-	private Integer locationId ;
+	private String locationId ;
 	
 	public Favorite(){}
 	
@@ -39,19 +39,19 @@ public class Favorite implements Serializable{
 		this.id = id;
 	}
 
-	public Integer getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Integer userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	public Integer getLocationId() {
+	public String getLocationId() {
 		return locationId;
 	}
 
-	public void setLocationId(Integer locationId) {
+	public void setLocationId(String locationId) {
 		this.locationId = locationId;
 	}
 

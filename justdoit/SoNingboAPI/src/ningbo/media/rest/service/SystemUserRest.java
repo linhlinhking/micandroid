@@ -416,7 +416,7 @@ public class SystemUserRest {
 					for (int i = 0; i < listFav.size(); i++) {
 						Favorite entity = listFav.get(i);
 						entity.setId(listFav.get(i).getId());
-						entity.setUserId(tempUser.getId());
+						entity.setUserId(tempUser.getMd5Value());
 						favoriteService.update(entity);
 					}
 				}

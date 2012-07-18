@@ -19,7 +19,7 @@ public class FavoriteTempDaoImpl extends BaseDaoImpl<FavoriteTemp, Integer>
 	}
 
 	public FavoriteTemp getFavoriteTempByDeviceId(Integer deviceId,
-			Integer locationId) {
+			String locationId) {
 		if (null == deviceId || null == locationId) {
 			return null;
 		}

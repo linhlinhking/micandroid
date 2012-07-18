@@ -550,6 +550,7 @@ public class LocationRest {
 		LocationData d = null;
 		for (Location l : list) {
 			d = new LocationData();
+			d.setId(l.getId()) ;
 			d.setName_cn(l.getName_cn());
 			d.setName_en(l.getName_en());
 			d.setMd5Value(l.getMd5Value());
@@ -558,8 +559,9 @@ public class LocationRest {
 			d.setAddress_cn(l.getAddress_cn());
 			d.setAddress_en(l.getAddress_en());
 			d.setName_py(l.getName_py());
-			d.setLatitdue(l.getLatitude()) ;
+			d.setLatitude(l.getLatitude()) ;
 			d.setLongitude(l.getLongitude()) ;
+			d.setTelephone(l.getTelephone()) ;
 			if(null == l.getPhoto_path()){
 				d.setPhoto_path("0") ;
 			}else{

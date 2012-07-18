@@ -46,7 +46,7 @@ public class FavoriteServiceImpl extends BaseServiceImpl<Favorite, Integer>
 
 
 
-	public Favorite getFavoriteByUserId(Integer userId, Integer locationId) {
+	public Favorite getFavoriteByUserId(String userId, String locationId) {
 		return favoriteDao.getFavoriteByUserId(userId, locationId);
 	}
 	

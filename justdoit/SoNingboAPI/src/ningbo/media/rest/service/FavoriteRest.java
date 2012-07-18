@@ -63,7 +63,7 @@ public class FavoriteRest {
 	public Response getFavoriteCountByLocationId(@PathParam("locationId")
 	String locationId) throws JSONException {
 		List<Favorite> list = favoriteService.getList(Constant.LOCATIONID,
-				Integer.valueOf(locationId));
+				locationId);
 		JSONObject json = new JSONObject();
 		if (null == list || list.size() < 0) {
 			json.put(Constant.FAVORITENUMBER, 0);
@@ -84,52 +84,57 @@ public class FavoriteRest {
 	String key) throws JSONException {
 		JSONObject json = new JSONObject();
 		if (!StringUtils.hasText(key)) {
-			json.put(Constant.CODE, JSONCode.GLOBAL_KEYISNULL);
+			json.put(Constant.MESSAGE, JSONCode.MSG_KEY_ISNULL);
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 			return Response.ok(json.toString()).build();
 		} else if (!Constant.KEY.equals(key)) {
-			json.put(Constant.CODE, JSONCode.GLOBAL_KEYINPUTINVALID);
+			json.put(Constant.MESSAGE, JSONCode.MSG_KEY_INVALID);
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 			return Response.ok(json.toString()).build();
 		}
 
 		if ((!StringUtils.hasText(userId)) && (!StringUtils.hasText(deviceId))) {
-			json.put(Constant.CODE, JSONCode.FAVORITE_INPUT_INVALID);
+			json.put(Constant.MESSAGE, JSONCode.FAVORITE_INPUT_INVALID);
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 			return Response.ok(json.toString()).build();
 		}
 
 		if (StringUtils.hasText(userId)) {
-			Favorite favorite = favoriteService.getFavoriteByUserId(Integer
-					.valueOf(userId), Integer.valueOf(locationId));
+			Favorite favorite = favoriteService.getFavoriteByUserId(userId,
+					locationId);
 			if (null == favorite) {
-				json.put(Constant.RESULT, JSONCode.RESULT_FAIL) ;
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 				json.put(Constant.MESSAGE, JSONCode.MSG_FAVORITE_USER_NOEXISTS);
 				return Response.ok(json.toString()).build();
 			} else {
 				favoriteService.delete(favorite);
-				json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS) ;
-				json.put(Constant.MESSAGE, JSONCode.MSG_FAVORITE_USER_DELETE_SUCCESS);
+				json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
+				json.put(Constant.MESSAGE,
+						JSONCode.MSG_FAVORITE_USER_DELETE_SUCCESS);
 				return Response.ok(json.toString()).build();
 			}
 		} else {
 			TempUser tmpUser = tempUserService.get(Constant.DEVICEID, deviceId);
 			if (null != tmpUser) {
-				Integer tmpId = tmpUser.getId() ;
+				Integer tmpId = tmpUser.getId();
 				FavoriteTemp favorite = favoriteTempService
-						.getFavoriteTempByDeviceId(tmpId, Integer
-								.valueOf(locationId));
+						.getFavoriteTempByDeviceId(tmpId,locationId);
 				if (null == favorite) {
-					json.put(Constant.RESULT, JSONCode.RESULT_FAIL) ;
-					json.put(Constant.MESSAGE, JSONCode.MSG_FAVORITE_TEMPUSER_NOEXISTS);
+					json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+					json.put(Constant.MESSAGE,
+							JSONCode.MSG_FAVORITE_TEMPUSER_NOEXISTS);
 					return Response.ok(json.toString()).build();
 				} else {
 					favoriteTempService.delete(favorite);
-					json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS) ;
-					json.put(Constant.MESSAGE, JSONCode.MSG_FAVORITE_TEMPUSER_DELETE_SUCCESS);
+					json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
+					json.put(Constant.MESSAGE,
+							JSONCode.MSG_FAVORITE_TEMPUSER_DELETE_SUCCESS);
 					return Response.ok(json.toString()).build();
 				}
 			}
 
 		}
-		json.put(Constant.RESULT, JSONCode.RESULT_FAIL) ;
+		json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 		json.put(Constant.MESSAGE, JSONCode.MSG_FAVORITE_DELETE_FAIL);
 		return Response.ok(json.toString()).build();
 
@@ -150,17 +155,20 @@ public class FavoriteRest {
 			Favorite fav = null;
 			FavoriteTemp favTemp = null;
 			if (!StringUtils.hasText(key)) {
-				tempJson.put(Constant.CODE, JSONCode.GLOBAL_KEYISNULL);
+				tempJson.put(Constant.MESSAGE, JSONCode.MSG_KEY_ISNULL);
+				tempJson.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 				return Response.ok(tempJson.toString()).build();
 			} else if (!Constant.KEY.equals(key)) {
-				tempJson.put(Constant.CODE, JSONCode.GLOBAL_KEYINPUTINVALID);
+				tempJson.put(Constant.MESSAGE, JSONCode.MSG_KEY_INVALID);
+				tempJson.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 				return Response.ok(tempJson.toString()).build();
 			}
 			if (!StringUtils.hasText(locationId)) {
 				tempJson.put(Constant.CODE, JSONCode.FAVORITE_LOCATIONISNULL);
+				tempJson.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 				return Response.ok(tempJson.toString()).build();
 			}
-			Location loc = locationService.get(Integer.valueOf(locationId));
+			Location loc = locationService.get(Constant.MD5_FIELD, locationId);
 			if (null == loc) {
 				tempJson.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 				tempJson.put(Constant.MESSAGE, JSONCode.MSG_LOCATION_NOEXISTS);
@@ -168,16 +176,15 @@ public class FavoriteRest {
 			}
 
 			if (userId != null && userId.trim().length() > 0) {
-				SystemUser systemUser = systemUserService.get(Integer
-						.valueOf(userId));
+				SystemUser systemUser = systemUserService.get(
+						Constant.MD5_FIELD, userId);
 				if (null == systemUser) {
 					tempJson.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 					tempJson.put(Constant.MESSAGE, JSONCode.MSG_USER_NOEXISTS);
 					return Response.ok(tempJson.toString()).build();
 				}
 
-				fav = favoriteService.getFavoriteByUserId(Integer
-						.valueOf(userId), Integer.valueOf(locationId));
+				fav = favoriteService.getFavoriteByUserId(userId, locationId);
 
 				if (null != fav) {
 					tempJson.put(Constant.MESSAGE,
@@ -187,12 +194,13 @@ public class FavoriteRest {
 				}
 
 				fav = new Favorite();
-				fav.setUserId(Integer.valueOf(userId));
-				fav.setLocationId(Integer.valueOf(locationId));
+				fav.setUserId(userId);
+				fav.setLocationId(locationId);
 				favoriteService.save(fav);
 			} else {
 				if (!StringUtils.hasText(deviceId)) {
 					tempJson.put(Constant.CODE, JSONCode.FAVORITE_GET_SERIAL);
+					tempJson.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 					return Response.ok(tempJson.toString()).build();
 				} else {
 					Integer tmpUserId = 0;
@@ -214,7 +222,7 @@ public class FavoriteRest {
 					}
 
 					favTemp = favoriteTempService.getFavoriteTempByDeviceId(
-							tmpUserId, Integer.valueOf(locationId));
+							tmpUserId, locationId);
 					if (null != favTemp) {
 						tempJson.put(Constant.MESSAGE,
 								JSONCode.MSG_FAVORITE_ALREADY_EXIST);
@@ -235,6 +243,7 @@ public class FavoriteRest {
 			return Response.ok(tempJson.toString()).build();
 		} catch (NumberFormatException ex) {
 			tempJson.put(Constant.CODE, JSONCode.FAVORITE_INPUT_INVALID);
+			tempJson.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 			return Response.ok(tempJson.toString()).build();
 		}
 
@@ -266,10 +275,10 @@ public class FavoriteRest {
 
 		for (Favorite f : list) {
 			LocationDetail detail = new LocationDetail();
-			Integer locationId = f.getLocationId();
+			String locationId = f.getLocationId();
 			Location tempLocation = null;
 			if (null != locationId) {
-				tempLocation = locationService.get(locationId);
+				tempLocation = locationService.get(Constant.MD5_FIELD,locationId);
 				detail.setMd5Value(MD5.calcMD5(String.valueOf(tempLocation
 						.getId())));
 				detail.setName_cn(tempLocation.getName_cn());
@@ -292,10 +301,10 @@ public class FavoriteRest {
 
 		for (Favorite f : list) {
 			LocationDetail detail = new LocationDetail();
-			Integer locationId = f.getLocationId();
+			String locationId = f.getLocationId();
 			Location tempLocation = null;
 			if (null != locationId) {
-				tempLocation = locationService.get(locationId);
+				tempLocation = locationService.get(Constant.MD5_FIELD,locationId);
 				detail.setMd5Value(MD5.calcMD5(String.valueOf(tempLocation
 						.getId())));
 				detail.setName_cn(tempLocation.getName_cn());
@@ -307,6 +316,5 @@ public class FavoriteRest {
 		}
 		return new FavoriteList(Integer.valueOf(-1), deviceId, locations);
 	}
-
 
 }

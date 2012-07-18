@@ -92,7 +92,7 @@ public class FavoriteDaoImpl extends BaseDaoImpl<Favorite, Integer> implements
 		}
 	}
 
-	public Favorite getFavoriteByUserId(Integer userId, Integer locationId) {
+	public Favorite getFavoriteByUserId(String userId, String locationId) {
 		if (null == userId || null == locationId) {
 			return null;
 		}

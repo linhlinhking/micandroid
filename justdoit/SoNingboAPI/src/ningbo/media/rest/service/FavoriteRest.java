@@ -285,6 +285,15 @@ public class FavoriteRest {
 				detail.setAddress_cn(tempLocation.getAddress_cn());
 				detail.setLatitude(tempLocation.getLatitude());
 				detail.setLongitude(tempLocation.getLongitude());
+				detail.setName_en(tempLocation.getName_en()) ;
+				detail.setAddress_en(tempLocation.getAddress_en()) ;
+				detail.setTags_cn(tempLocation.getTags_cn()) ;
+				detail.setTags_en(tempLocation.getTags_en()) ;
+				if(null == tempLocation.getPhoto_path()){
+					detail.setPhoto_path("0") ;
+				}else{
+					detail.setPhoto_path(tempLocation.getPhoto_path()) ;
+				}
 				locations.add(detail);
 			}
 		}

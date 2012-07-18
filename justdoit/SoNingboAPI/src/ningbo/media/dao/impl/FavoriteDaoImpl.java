@@ -28,7 +28,7 @@ public class FavoriteDaoImpl extends BaseDaoImpl<Favorite, Integer> implements
 			List<Favorite> list = new ArrayList<Favorite>();
 			if (type == FavoriteType.REALUSER) {
 				hql = "from Favorite model where 1=1 and model.userId = ? ";
-				list = findByHql(hql, Integer.valueOf(id));
+				list = findByHql(hql, id);
 
 			} else if (type == FavoriteType.TEMPUSER) {
 				hql = "from Favorite model where 1=1 and model.deviceId = ? ";

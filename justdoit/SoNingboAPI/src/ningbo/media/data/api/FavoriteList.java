@@ -12,7 +12,7 @@ import ningbo.media.data.entity.LocationDetail;
 @XmlRootElement
 public class FavoriteList {
 
-	private Integer userId;
+	private String userId;
 
 	private String deviceId;
 
@@ -21,7 +21,7 @@ public class FavoriteList {
 	public FavoriteList() {
 	}
 
-	public FavoriteList(Integer userId, String deviceId,
+	public FavoriteList(String userId, String deviceId,
 			Collection<LocationDetail> locations) {
 		this.userId = userId;
 		this.deviceId = deviceId;
@@ -30,7 +30,7 @@ public class FavoriteList {
 	}
 
 	@XmlElement
-	public Integer getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 

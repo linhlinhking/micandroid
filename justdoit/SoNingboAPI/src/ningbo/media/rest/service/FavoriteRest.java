@@ -288,7 +288,7 @@ public class FavoriteRest {
 				locations.add(detail);
 			}
 		}
-		return new FavoriteList(Integer.valueOf(userId), "", locations);
+		return new FavoriteList(userId, "", locations);
 	}
 
 	private FavoriteList queryDeviceFavorites(String deviceId) {
@@ -314,7 +314,7 @@ public class FavoriteRest {
 				locations.add(detail);
 			}
 		}
-		return new FavoriteList(Integer.valueOf(-1), deviceId, locations);
+		return new FavoriteList(String.valueOf(-1), deviceId, locations);
 	}
 
 }

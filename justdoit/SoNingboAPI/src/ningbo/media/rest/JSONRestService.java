@@ -28,7 +28,7 @@ public class JSONRestService {
 		u.setUsername("Davidning");
 		u.setDatetime(new Date());
 		u.setPhoto_path("/data/data/image/head.png");
-		u.setIsManager(false);
+		
 		return u ;
 	}
 	

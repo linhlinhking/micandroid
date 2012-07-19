@@ -42,4 +42,7 @@ public class Constant {
 	public static final String MESSAGE = "message" ;
 	public static final String RESULT = "result" ;
 	
+	public static final String USERTYPE_ADMIN = "Admin" ;
+	public static final String USERTYPE_USER = "User" ;
+	
 }

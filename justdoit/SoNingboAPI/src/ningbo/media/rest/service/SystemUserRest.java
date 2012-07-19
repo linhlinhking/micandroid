@@ -191,7 +191,7 @@ public class SystemUserRest {
 		u.setPassword(encodePassword);
 		u.setUsername(username);
 		u.setDatetime(new Date());
-		u.setIsManager(false);
+		u.setUserType(Constant.USERTYPE_USER) ;
 		u.setStatus(false);
 		if ("".equals(photo_path) || null == photo_path) {
 			u.setPhoto_path("0");
@@ -261,8 +261,6 @@ public class SystemUserRest {
 		String password = form.getField("password").getValue();
 		String email = form.getField("email").getValue();
 		String key = form.getField("key").getValue();
-		// FormDataBodyPart part = form.getField("head_photo");
-		// String fileName = part.getContentDisposition().getFileName();
 		JSONObject json = new JSONObject();
 		try {
 			if (key.isEmpty()) {
@@ -296,7 +294,7 @@ public class SystemUserRest {
 			u.setPassword(encodePassword);
 			u.setUsername(username);
 			u.setLastModifyTime(new Date());
-			u.setIsManager(false);
+			u.setUserType(Constant.USERTYPE_USER);
 			systemUserService.update(u);
 			json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
 			json.put(Constant.USERID, u.getId());
@@ -495,7 +493,6 @@ public class SystemUserRest {
 		data.setGender(user.isGender());
 		data.setStatus(user.isStatus());
 		data.setWebsite(user.getWebsite());
-		data.setBirthday(user.getBirthday());
 		data.setDatetime(user.getDatetime());
 		data.setLastModifyTime(user.getLastModifyTime());
 		String temp = user.getUserType() ;

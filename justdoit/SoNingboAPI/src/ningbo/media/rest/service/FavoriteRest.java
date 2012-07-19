@@ -289,6 +289,7 @@ public class FavoriteRest {
 				detail.setAddress_en(tempLocation.getAddress_en()) ;
 				detail.setTags_cn(tempLocation.getTags_cn()) ;
 				detail.setTags_en(tempLocation.getTags_en()) ;
+				detail.setTelephone(tempLocation.getTelephone()) ;
 				if(null == tempLocation.getPhoto_path()){
 					detail.setPhoto_path("0") ;
 				}else{

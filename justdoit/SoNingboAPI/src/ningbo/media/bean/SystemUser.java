@@ -33,25 +33,25 @@ public class SystemUser implements Serializable {
 	//用户名
 	private String username; 
 	
-	//密码
 	private String password;
-	//真实姓名
+	
 	private String name_cn;
 	
 	private String name_en ;
-	//电子邮箱
+	
+	private String realName ;
+	
+	private String nickName ;
+	
 	private String email;
-	//是否已经通过验证（新注册的用户上否已经激活）
+	
 	private boolean status;
-	//用户头像
+	
 	private String photo_path;
-	//性别
+	
 	private boolean gender;
-	//出生日期
-	private Date birthday;
-	//是否是管理员
-	@Column(name="manager")
-	private Boolean isManager;
+	
+	private String intro ;
 	
 	@Column(name = "userKey")
 	private String userKey ;
@@ -149,14 +149,6 @@ public class SystemUser implements Serializable {
 		this.photo_path = photo_path;
 	}
 
-	@XmlTransient
-	public Boolean getIsManager() {
-		return isManager;
-	}
-
-	public void setIsManager(Boolean isManager) {
-		this.isManager = isManager;
-	}
 
 	public Date getDatetime() {
 		return datetime;
@@ -184,15 +176,6 @@ public class SystemUser implements Serializable {
 		this.gender = gender;
 	}
 
-	@XmlTransient
-	public Date getBirthday() {
-		return birthday;
-	}
-
-	public void setBirthday(Date birthday) {
-		this.birthday = birthday;
-	}
-	
 	
 	public Date getLastModifyTime() {
 		return lastModifyTime;
@@ -306,6 +289,38 @@ public class SystemUser implements Serializable {
 
 	public String getUserType() {
 		return userType;
+	}
+	
+	
+
+
+	public String getRealName() {
+		return realName;
+	}
+
+
+	public void setRealName(String realName) {
+		this.realName = realName;
+	}
+
+
+	public String getNickName() {
+		return nickName;
+	}
+
+
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
+
+
+	public String getIntro() {
+		return intro;
+	}
+
+
+	public void setIntro(String intro) {
+		this.intro = intro;
 	}
 
 

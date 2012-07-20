@@ -8,6 +8,7 @@ public class UserCommentData implements EntityData{
 	private Integer commentId ;
 	
 	private String commentContent ;
+	
 
 	
 

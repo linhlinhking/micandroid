@@ -9,7 +9,7 @@ import ningbo.media.data.entity.UserCommentData;
 @XmlRootElement
 public class UserCommentList {
 
-	private Integer userId;
+	private String userId;
 
 	private Collection<UserCommentData> data;
 
@@ -17,14 +17,14 @@ public class UserCommentList {
 	public UserCommentList(){}
 	
 
-	public UserCommentList(Collection<UserCommentData> data,Integer userId){
+	public UserCommentList(Collection<UserCommentData> data,String userId){
 		this.data = data ;
 		this.userId = userId ;
 	}
 	
 	
 	@XmlElement(name = "userId")
-	public Integer getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 

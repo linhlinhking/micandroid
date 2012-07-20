@@ -13,13 +13,12 @@ import org.springframework.stereotype.Repository;
 public class FriendsDaoImpl extends BaseDaoImpl<Friends, Integer> implements
 		FriendsDao {
 
-	private static final String hql = "from Friends as m where 1=1 and m.userId = ? and m.followId = ? ";
 
 	public FriendsDaoImpl() {
 		super(Friends.class);
 	}
 
-	public boolean isExistsRelation(Integer userA, Integer userB) {
+	public boolean isExistsRelation(String userA, String userB) {
 		boolean flag = false;
 		Friends f = getRelationObject(userA, userB);
 		if (f != null) {
@@ -28,7 +27,8 @@ public class FriendsDaoImpl extends BaseDaoImpl<Friends, Integer> implements
 		return flag;
 	}
 
-	public Friends getRelationObject(Integer userA, Integer userB) {
+	public Friends getRelationObject(String userA, String userB) {
+		final String hql = "from Friends as m where 1=1 and m.userId = ? and m.followId = ? ";
 		Friends f = null;
 		try {
 			f = (Friends) this.findUnique(hql, userA, userB);
@@ -38,7 +38,7 @@ public class FriendsDaoImpl extends BaseDaoImpl<Friends, Integer> implements
 		return f;
 	}
 
-	public List<Friends> getFriendsForUserId(Integer userId, FriendType type) {
+	public List<Friends> getFriendsForUserId(String userId, FriendType type) {
 		try {
 			String hql = "";
 			if (FriendType.FANS.equals(type)) {

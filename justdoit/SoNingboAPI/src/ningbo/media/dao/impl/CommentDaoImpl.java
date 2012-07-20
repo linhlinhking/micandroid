@@ -21,6 +21,7 @@ public class CommentDaoImpl extends BaseDaoImpl<Comment, Integer> implements
 	public Comment getCommentByUser(String userId, String commentId) {
 		try {
 			String hql = "from Comment as m where 1=1 and m.id = ? and m.systemUser.id = ? ";
+			
 
 			Comment comment = (Comment) findUnique(hql, Integer
 					.valueOf(commentId), Integer.valueOf(userId));

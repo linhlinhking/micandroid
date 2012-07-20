@@ -111,6 +111,11 @@ public class JSONCode {
 	public static final String MSG_TEMPUSER_NOEXISTS = "No The Device Data." ;
 	
 	
+	/**Friend*/
+	public static final String MSG_FRIEND_NOEXISTS = "No Friend Relation." ;
+	public static final String MSG_FRIEND_NO_REMARK = "No Remark Data." ;
+	
+	
 	/**Menu-8*/
 	public static final String MENU_LOCATION_NOEXISTS = "80001" ;
 	public static final String MENU_TOOL_NOEXISTS = "80002" ;

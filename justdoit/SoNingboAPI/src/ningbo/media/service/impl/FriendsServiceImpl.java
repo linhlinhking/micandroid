@@ -27,16 +27,16 @@ public class FriendsServiceImpl extends BaseServiceImpl<Friends, Integer>
 		super(friendsDao);
 	}
 	
-	public boolean isExistsRelation(Integer userA,Integer userB){
+	public boolean isExistsRelation(String userA,String userB){
 		return friendsDao.isExistsRelation(userA, userB) ;
 	}
 	
-	public Friends getRelationObject(Integer userA,Integer userB){
+	public Friends getRelationObject(String userA,String userB){
 		return friendsDao.getRelationObject(userA, userB) ;
 	}
 	
 	
-	public List<Friends> getFriendsForUserId(Integer userId,FriendType type){
+	public List<Friends> getFriendsForUserId(String userId,FriendType type){
 		return friendsDao.getFriendsForUserId(userId,type) ;
 	}
 }

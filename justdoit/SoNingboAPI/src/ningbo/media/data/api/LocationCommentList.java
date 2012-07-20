@@ -10,7 +10,7 @@ import ningbo.media.data.entity.LocationCommentData;
 @XmlRootElement
 public class LocationCommentList {
 
-	private Integer locationId;
+	private String locationId;
 
 	private Collection<LocationCommentData> data;
 
@@ -18,14 +18,14 @@ public class LocationCommentList {
 	public LocationCommentList(){}
 	
 
-	public LocationCommentList(Collection<LocationCommentData> data,Integer locationId){
+	public LocationCommentList(Collection<LocationCommentData> data,String locationId){
 		this.data = data ;
 		this.locationId = locationId ;
 	}
 	
 	
 	@XmlElement(name = "locationId")
-	public Integer getLocationId() {
+	public String getLocationId() {
 		return locationId;
 	}
 

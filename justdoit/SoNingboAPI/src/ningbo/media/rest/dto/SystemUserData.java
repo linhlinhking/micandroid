@@ -10,11 +10,13 @@ import ningbo.media.rest.WsConstants;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 @XmlType(name = "SystemUser", namespace = WsConstants.NS, propOrder = {
-		"md5Value", "username", "name_cn", "name_en", "email", "status",
-		"photo_path", "gender", "birthday", "isManager", "datetime",
-		"lastModifyTime", "website","userType"})
+		"nickName", "md5Value", "username", "name_cn", "name_en", "email",
+		"status", "photo_path", "gender", "birthday", "datetime",
+		"lastModifyTime", "website", "userType", "intro" })
 @XmlRootElement(name = "data")
 public class SystemUserData {
+
+	private String nickName;
 
 	private String md5Value;
 
@@ -34,15 +36,15 @@ public class SystemUserData {
 
 	private Date birthday;
 
-	private Boolean isManager;
-
 	private Date datetime;
 
 	private Date lastModifyTime;
 
 	private String website;
-	
-	private String userType ;
+
+	private String userType;
+
+	private String intro;
 
 	public String getMd5Value() {
 		return md5Value;
@@ -108,14 +110,6 @@ public class SystemUserData {
 		this.birthday = birthday;
 	}
 
-	public Boolean getIsManager() {
-		return isManager;
-	}
-
-	public void setIsManager(Boolean isManager) {
-		this.isManager = isManager;
-	}
-
 	public Date getDatetime() {
 		return datetime;
 	}
@@ -147,7 +141,6 @@ public class SystemUserData {
 	public void setWebsite(String website) {
 		this.website = website;
 	}
-	
 
 	public String getUserType() {
 		return userType;
@@ -155,6 +148,22 @@ public class SystemUserData {
 
 	public void setUserType(String userType) {
 		this.userType = userType;
+	}
+
+	public String getIntro() {
+		return intro;
+	}
+
+	public void setIntro(String intro) {
+		this.intro = intro;
+	}
+
+	public String getNickName() {
+		return nickName;
+	}
+
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
 	}
 
 	@Override

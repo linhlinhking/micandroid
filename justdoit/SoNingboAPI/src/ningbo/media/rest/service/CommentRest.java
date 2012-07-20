@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response;
 import ningbo.media.bean.Comment;
 import ningbo.media.bean.Location;
 import ningbo.media.bean.SystemUser;
+import ningbo.media.bean.enums.CommentType;
 import ningbo.media.data.api.LocationCommentList;
 import ningbo.media.data.api.UserCommentList;
 import ningbo.media.data.entity.LocationCommentData;
@@ -75,7 +76,7 @@ public class CommentRest {
 				json.put(Constant.MESSAGE, JSONCode.MSG_NO_INPUT);
 				return Response.ok(json.toString()).build();
 			} else {
-				SystemUser u = systemUserService.get(Integer.valueOf(userId));
+				SystemUser u = systemUserService.get(Constant.MD5_FIELD,userId);
 				if (null == u) {
 					json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 					json.put(Constant.MESSAGE, JSONCode.MSG_USER_NOEXISTS);
@@ -89,8 +90,7 @@ public class CommentRest {
 				json.put(Constant.MESSAGE, JSONCode.MSG_NO_INPUT);
 				return Response.ok(json.toString()).build();
 			} else {
-				Location location = locationService.get(Integer
-						.valueOf(locationId));
+				Location location = locationService.get(Constant.MD5_FIELD,locationId);
 				if (null == location) {
 					json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 					json.put(Constant.MESSAGE, JSONCode.MSG_LOCATION_NOEXISTS);
@@ -160,8 +160,7 @@ public class CommentRest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public UserCommentList getUserCommentList(@PathParam("userId")
 	String id) {
-		List<Comment> list = commentService.getList("systemUser.id", Integer
-				.valueOf(id));
+		List<Comment> list = commentService.getListByMd5(id,CommentType.USER);
 		if (null == list || list.size() < 0) {
 			return new UserCommentList();
 		}
@@ -186,7 +185,7 @@ public class CommentRest {
 			uc.setCommentContent(c.getCommentContent());
 			tempList.add(uc);
 		}
-		return new UserCommentList(tempList, Integer.valueOf(id));
+		return new UserCommentList(tempList, id);
 	}
 
 	@Path("/location/{locationId}")
@@ -194,8 +193,7 @@ public class CommentRest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public LocationCommentList getLocationCommentList(@PathParam("locationId")
 	String id) {
-		List<Comment> list = commentService.getList("location.id", Integer
-				.valueOf(id));
+		List<Comment> list = commentService.getListByMd5(id,CommentType.LOCATION);
 		if (null == list || list.size() < 0) {
 			return new LocationCommentList();
 		}
@@ -222,6 +220,6 @@ public class CommentRest {
 			lc.setDate_time(c.getDate_time());
 			tempList.add(lc);
 		}
-		return new LocationCommentList(tempList, Integer.valueOf(id));
+		return new LocationCommentList(tempList, id);
 	}
 }

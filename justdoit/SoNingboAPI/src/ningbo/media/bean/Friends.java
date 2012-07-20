@@ -28,11 +28,13 @@ public class Friends implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id ;
 	
-	private Integer userId ;
+	private String userId ;
 	
-	private Integer followId ;
+	private String followId ;
 	
 	private FriendType isFollowed ; 
+	
+	private String remark ;
 	
 	public Friends(){}
 
@@ -55,20 +57,33 @@ public class Friends implements Serializable{
 	}
 
 
-	public Integer getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Integer userId) {
+
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	public Integer getFollowId() {
+
+	public String getFollowId() {
 		return followId;
 	}
 
-	public void setFollowId(Integer followId) {
+
+	public void setFollowId(String followId) {
 		this.followId = followId;
+	}
+
+
+	public String getRemark() {
+		return remark;
+	}
+
+
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 	
 	

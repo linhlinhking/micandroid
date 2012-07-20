@@ -12,20 +12,20 @@ import ningbo.media.rest.dto.SystemUserData;
 @XmlRootElement
 public class FriendList {
 
-	private Integer userId;
+	private String userId;
 
 	private Collection<SystemUserData> friends;
 
 	public FriendList() {
 	}
 
-	public FriendList(Integer userId, Collection<SystemUserData> friends) {
+	public FriendList(String userId, Collection<SystemUserData> friends) {
 		this.userId = userId;
 		this.friends = friends;
 	}
 
 	@XmlElement
-	public Integer getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 

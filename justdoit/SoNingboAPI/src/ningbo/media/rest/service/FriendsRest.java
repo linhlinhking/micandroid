@@ -69,9 +69,10 @@ public class FriendsRest {
 							JSONCode.MSG_FRIEND_FOLLOW_YOURSELF);
 					return Response.ok(json.toString()).build();
 				}
-				SystemUser u = systemUserService.get(Integer.valueOf(userId));
-				SystemUser u1 = systemUserService
-						.get(Integer.valueOf(followId));
+				SystemUser u = systemUserService
+						.get(Constant.MD5_FIELD, userId);
+				SystemUser u1 = systemUserService.get(Constant.MD5_FIELD,
+						followId);
 				if ((u == null) || (u1 == null)) {
 					json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 					json.put(Constant.MESSAGE, JSONCode.MSG_USER_NOEXISTS);
@@ -79,18 +80,18 @@ public class FriendsRest {
 				}
 			}
 
-			Friends tempFriend = friendsService.getRelationObject(Integer
-					.valueOf(userId), Integer.valueOf(followId));
+			Friends tempFriend = friendsService.getRelationObject(userId,
+					followId);
 
 			if (null == tempFriend) {
 				Friends follow = new Friends();
-				follow.setUserId(Integer.valueOf(userId));
-				follow.setFollowId(Integer.valueOf(followId));
+				follow.setUserId(userId);
+				follow.setFollowId(followId);
 				follow.setIsFollowed(FriendType.FOLLOWED);
 
 				Friends fans = new Friends();
-				fans.setUserId(Integer.valueOf(followId));
-				fans.setFollowId(Integer.valueOf(userId));
+				fans.setUserId(followId);
+				fans.setFollowId(userId);
 				fans.setIsFollowed(FriendType.FANS);
 
 				friendsService.save(follow);
@@ -120,8 +121,8 @@ public class FriendsRest {
 	String key) throws JSONException {
 		JSONObject json = new JSONObject();
 		try {
-			Friends tempFriend = friendsService.getRelationObject(Integer
-					.valueOf(userId), Integer.valueOf(followId));
+			Friends tempFriend = friendsService.getRelationObject(userId,
+					followId);
 			if (tempFriend != null) {
 				tempFriend.setIsFollowed(FriendType.FANS);
 				friendsService.update(tempFriend);
@@ -163,8 +164,7 @@ public class FriendsRest {
 	}
 
 	private FriendList getFriendsForUser(String id, FriendType type) {
-		List<Friends> list = friendsService.getFriendsForUserId(Integer
-				.valueOf(id), type);
+		List<Friends> list = friendsService.getFriendsForUserId(id, type);
 		List<SystemUserData> userData = new ArrayList<SystemUserData>();
 		if (null == list || list.size() < 0) {
 			return new FriendList();
@@ -173,22 +173,72 @@ public class FriendsRest {
 		for (int i = 0, j = list.size(); i < j; i++) {
 			SystemUserData data = new SystemUserData();
 			Friends tmp = list.get(i);
-			Integer followId = tmp.getFollowId();
-			SystemUser tmpUser = systemUserService.get(followId);
+			String followId = tmp.getFollowId();
+			SystemUser tmpUser = systemUserService.get(Constant.MD5_FIELD,
+					followId);
 			if (null != tmpUser) {
 				// data.setId(tmpUser.getId());
 				data.setUsername(tmpUser.getUsername());
 				data.setMd5Value(tmpUser.getMd5Value());
+				data.setIntro(tmpUser.getIntro());
+				data.setNickName(tmpUser.getNickName());
+
 				if (null != tmpUser.getPhoto_path()) {
 					data.setPhoto_path(tmpUser.getPhoto_path());
-				}else{
-					data.setPhoto_path("0") ;
+				} else {
+					data.setPhoto_path("0");
 				}
 
 			}
 			userData.add(data);
 		}
-		return new FriendList(Integer.valueOf(id), userData);
+		return new FriendList(id, userData);
+	}
+
+	@Path("/remark")
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response addRemark(@FormParam("remark")
+	String remark, @FormParam("userId")
+	String userId, @FormParam("followId")
+	String followId, @FormParam("key")
+	String key) throws JSONException {
+		JSONObject json = new JSONObject();
+		try {
+			if (!StringUtils.hasText(key)) {
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_ISNULL);
+				return Response.ok(json.toString()).build();
+			} else if (!Constant.KEY.equals(key)) {
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_INVALID);
+				return Response.ok(json.toString()).build();
+			}
+
+			Friends frd = friendsService.getRelationObject(userId, followId);
+			if (null == frd) {
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_FRIEND_NOEXISTS);
+				return Response.ok(json.toString()).build();
+			}
+			if ("".equals(remark) || null == remark) {
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_FRIEND_NO_REMARK);
+				return Response.ok(json.toString()).build();
+			}
+
+			frd.setRemark(remark);
+			friendsService.update(frd);
+			json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
+			json.put(Constant.MESSAGE, remark);
+			return Response.ok(json.toString()).build();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+			json.put(Constant.MESSAGE, JSONCode.SERVER_EXCEPTION);
+			return Response.ok(json.toString()).build();
+		}
+
 	}
 
 }

@@ -58,12 +58,12 @@ public class SystemUserRest {
 	 * @param id
 	 * @return SystemUser
 	 */
-	@Path("/show/{id : \\d+}")
+	@Path("/show/{id}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getSystemUserById(@PathParam("id")
 	Integer id) {
-		SystemUser u = systemUserService.get(id);
+		SystemUser u = systemUserService.get(Constant.MD5_FIELD,id) ;
 		if (null == u) {
 			String message = "The User Id [" + id + "] No Exists.";
 			throw Jerseys.buildException(Status.NOT_FOUND, message);

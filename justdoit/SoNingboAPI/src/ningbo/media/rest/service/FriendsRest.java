@@ -174,14 +174,19 @@ public class FriendsRest {
 			SystemUserData data = new SystemUserData();
 			Friends tmp = list.get(i);
 			String followId = tmp.getFollowId();
+			String remark = tmp.getRemark();
 			SystemUser tmpUser = systemUserService.get(Constant.MD5_FIELD,
 					followId);
 			if (null != tmpUser) {
-				// data.setId(tmpUser.getId());
 				data.setUsername(tmpUser.getUsername());
 				data.setMd5Value(tmpUser.getMd5Value());
 				data.setIntro(tmpUser.getIntro());
 				data.setNickName(tmpUser.getNickName());
+				if (null == remark || "".equals(remark) || remark.length() < 0) {
+					data.setRemark("") ;
+				} else {
+					data.setRemark(remark) ;
+				}
 
 				if (null != tmpUser.getPhoto_path()) {
 					data.setPhoto_path(tmpUser.getPhoto_path());

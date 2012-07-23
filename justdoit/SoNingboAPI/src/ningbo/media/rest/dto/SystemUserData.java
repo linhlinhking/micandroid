@@ -12,7 +12,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @XmlType(name = "SystemUser", namespace = WsConstants.NS, propOrder = {
 		"nickName", "md5Value", "username", "name_cn", "name_en", "email",
 		"status", "photo_path", "gender", "birthday", "datetime",
-		"lastModifyTime", "website", "userType", "intro" })
+		"lastModifyTime", "website", "userType", "intro","remark" })
 @XmlRootElement(name = "data")
 public class SystemUserData {
 
@@ -45,6 +45,8 @@ public class SystemUserData {
 	private String userType;
 
 	private String intro;
+	
+	private String remark ;
 
 	public String getMd5Value() {
 		return md5Value;
@@ -164,6 +166,15 @@ public class SystemUserData {
 
 	public void setNickName(String nickName) {
 		this.nickName = nickName;
+	}
+	
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
 	@Override

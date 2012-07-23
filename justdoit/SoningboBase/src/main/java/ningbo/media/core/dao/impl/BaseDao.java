@@ -7,8 +7,6 @@ import ningbo.media.core.dao.IBaseDao;
 
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 
-
-
 public class BaseDao <T extends IdEntity<T>, PK extends Serializable>  
 extends SqlSessionDaoSupport implements IBaseDao<T, PK> {
 

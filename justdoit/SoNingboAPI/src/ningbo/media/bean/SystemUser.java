@@ -86,6 +86,7 @@ public class SystemUser implements Serializable {
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE },mappedBy = "systemUsers")
 	private List<TempUser> tempUsers ;
 	
+	
 	public SystemUser(){}
 	
 
@@ -223,6 +224,7 @@ public class SystemUser implements Serializable {
 		this.tempUsers = tempUsers;
 	}
 
+	
 
 	@XmlTransient
 	public List<Location> getLocations() {

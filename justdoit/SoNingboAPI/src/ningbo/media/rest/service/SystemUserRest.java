@@ -16,26 +16,32 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+
 import ningbo.media.bean.Favorite;
+import ningbo.media.bean.PersonUserProfile;
 import ningbo.media.bean.SystemUser;
 import ningbo.media.bean.enums.SendEmailType;
 import ningbo.media.oauth2.utils.StringCode;
 import ningbo.media.rest.dto.SystemUserData;
+import ningbo.media.rest.dto.UserProfileData;
 import ningbo.media.rest.util.Constant;
 import ningbo.media.rest.util.FileUpload;
 import ningbo.media.rest.util.FileUploadUtil;
 import ningbo.media.rest.util.JSONCode;
 import ningbo.media.rest.util.Jerseys;
 import ningbo.media.service.FavoriteService;
+import ningbo.media.service.PersonUserProfileService;
 import ningbo.media.service.SendManagerService;
 import ningbo.media.service.SystemUserService;
 import ningbo.media.util.ApplicationContextUtil;
 import ningbo.media.util.MD5;
 import ningbo.media.util.StringUtil;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
 import com.sun.jersey.multipart.FormDataBodyPart;
 import com.sun.jersey.multipart.FormDataMultiPart;
 
@@ -50,6 +56,9 @@ public class SystemUserRest {
 	@Resource
 	private FavoriteService favoriteService;
 
+	@Resource
+	private PersonUserProfileService personUserProfileService;
+
 	private SendManagerService sendMgrService = (SendManagerService) ApplicationContextUtil
 			.getContext().getBean("sendMail");
 
@@ -62,8 +71,8 @@ public class SystemUserRest {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getSystemUserById(@PathParam("id")
-	Integer id) {
-		SystemUser u = systemUserService.get(Constant.MD5_FIELD,id) ;
+	String id) {
+		SystemUser u = systemUserService.get(Constant.MD5_FIELD, id);
 		if (null == u) {
 			String message = "The User Id [" + id + "] No Exists.";
 			throw Jerseys.buildException(Status.NOT_FOUND, message);
@@ -191,7 +200,7 @@ public class SystemUserRest {
 		u.setPassword(encodePassword);
 		u.setUsername(username);
 		u.setDatetime(new Date());
-		u.setUserType(Constant.USERTYPE_USER) ;
+		u.setUserType(Constant.USERTYPE_USER);
 		u.setStatus(false);
 		if ("".equals(photo_path) || null == photo_path) {
 			u.setPhoto_path("0");
@@ -419,7 +428,7 @@ public class SystemUserRest {
 					}
 				}
 			}
-		
+
 			return Response.ok(getSystemUserData(tempUser)).build();
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -484,7 +493,11 @@ public class SystemUserRest {
 			return null;
 		}
 		SystemUserData data = new SystemUserData();
+		UserProfileData uData = new UserProfileData();
+
+		Integer uid = user.getId();
 		data.setMd5Value(user.getMd5Value());
+		data.setNickName(user.getNickName());
 		data.setName_cn(user.getName_cn());
 		data.setName_en(user.getName_en());
 		data.setEmail(user.getEmail());
@@ -495,11 +508,34 @@ public class SystemUserRest {
 		data.setWebsite(user.getWebsite());
 		data.setDatetime(user.getDatetime());
 		data.setLastModifyTime(user.getLastModifyTime());
-		String temp = user.getUserType() ;
-		if(null != temp){
-			data.setUserType(temp) ;
-		}else{
-			data.setUserType(Constant.SYSTEM_USER_TYPE) ;
+		data.setIntro(user.getIntro());
+		String temp = user.getUserType();
+		if (null != temp) {
+			data.setUserType(temp);
+		} else {
+			data.setUserType(Constant.SYSTEM_USER_TYPE);
+		}
+
+		PersonUserProfile p = personUserProfileService.get(
+				Constant.PROFILE_EXT_USERID, uid);
+		if (null != p) {
+			uData.setId(p.getId());
+			uData.setBirthday(p.getBirthday());
+			uData.setBlood(p.getBlood());
+			uData.setCellPhone(p.getCellPhone());
+			uData.setConstellation(p.getConstellation());
+			uData.setHomeArea(p.getHomeArea());
+			uData.setLikeBooks(p.getLikeBooks());
+			uData.setLikeGames(p.getLikeGames());
+			uData.setLikeMovies(p.getLikeMovies());
+			uData.setLikeMusic(p.getLikeMusic());
+			uData.setMsn(p.getMsn());
+			uData.setPhone(p.getPhone());
+			uData.setQq(p.getQq());
+			uData.setStature(p.getStature());
+			uData.setAge(p.getAge());
+
+			data.setUserProfileData(uData);
 		}
 		return data;
 	}

@@ -115,6 +115,8 @@ public class JSONCode {
 	public static final String MSG_FRIEND_NOEXISTS = "No Friend Relation." ;
 	public static final String MSG_FRIEND_NO_REMARK = "No Remark Data." ;
 	
+	/**profile*/
+	public static final String MSG_PROFILE_USER_SUCCESS = "Data Update Success." ;
 	
 	/**Menu-8*/
 	public static final String MENU_LOCATION_NOEXISTS = "80001" ;

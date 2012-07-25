@@ -110,6 +110,7 @@ public class LocationServiceImpl extends BaseServiceImpl<Location, Integer>
 				detail.setName_py(loc.getName_py());
 				detail.setTags_cn(loc.getTags_cn());
 				detail.setTags_en(loc.getTags_en());
+				detail.setTelephone(loc.getTelephone());
 				if (null == loc.getPhoto_path()) {
 				detail.setPhoto_path("0");
 				} else {

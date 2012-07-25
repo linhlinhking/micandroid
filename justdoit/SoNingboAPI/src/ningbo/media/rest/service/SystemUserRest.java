@@ -135,6 +135,94 @@ public class SystemUserRest {
 	 * @return
 	 * @throws JSONException
 	 */
+	@Path("/registration")
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response addSimpleSystemUser(@FormParam("key")
+	String key, @FormParam("username")
+	String username, @FormParam("email")
+	String email, @FormParam("password")
+	String password) throws JSONException {
+		JSONObject json = new JSONObject();
+		if (key.isEmpty()) {
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+			json.put(Constant.MESSAGE, JSONCode.MSG_KEY_ISNULL);
+			return Response.ok(json.toString()).build();
+		} else if (!Constant.KEY.equals(key)) {
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+			json.put(Constant.MESSAGE, JSONCode.MSG_KEY_INVALID);
+			return Response.ok(json.toString()).build();
+		}
+
+		if ("".equals(username) || username == null) {
+			json.put(Constant.MESSAGE, JSONCode.MSG_USER_USERNAME_NO_INPUT);
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+			return Response.ok(json.toString()).build();
+		}
+
+		boolean bool_username = systemUserService.isExist(Constant.USERNAME,
+				username);
+		if (bool_username) {
+			json.put(Constant.MESSAGE, JSONCode.MSG_USERNAME_EXISTS);
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+			return Response.ok(json.toString()).build();
+		}
+
+		if ("".equals(email) || email == null) {
+			json.put(Constant.MESSAGE, JSONCode.MSG_USERNAME_EXISTS);
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+			return Response.ok(json.toString()).build();
+		}
+		boolean bool_email = systemUserService.isExist(Constant.USER_EMAIL,
+				email);
+		if (bool_email) {
+			json.put(Constant.MESSAGE, JSONCode.MSG_USER_EMAIL_EXISTS);
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+			return Response.ok(json.toString()).build();
+		}
+
+		if ("".equals(password) || password == null) {
+			json.put(Constant.MESSAGE, JSONCode.MSG_USER_PASSWORD_NOINPUT);
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+			return Response.ok(json.toString()).build();
+		}
+
+		SystemUser u = new SystemUser();
+		String encodePassword = MD5.calcMD5(password);
+		u.setEmail(email);
+		u.setPassword(encodePassword);
+		u.setUsername(username);
+		u.setDatetime(new Date());
+		u.setUserType(Constant.USERTYPE_USER);
+		u.setStatus(false);
+		try {
+			Integer id = systemUserService.save(u);
+			String md5Value = MD5.calcMD5(String.valueOf(id));
+			u = systemUserService.get(id);
+			u.setMd5Value(md5Value);
+			systemUserService.update(u);
+
+			StringCode code = new StringCode();
+			String tempKey = code.encrypt(key);
+			sendMgrService.sendHtmlMail(email, username, md5Value, tempKey,
+					SendEmailType.REGISTER);
+			json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
+			json.put(Constant.USERID, md5Value);
+			return Response.ok(json.toString()).build();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			json.put(Constant.CODE, JSONCode.SERVER_EXCEPTION);
+			return Response.ok(json.toString()).build();
+		}
+	}
+
+	/**
+	 * 
+	 * @param form
+	 * @param request
+	 * @return
+	 * @throws JSONException
+	 */
 	@Path("/register")
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -261,15 +349,13 @@ public class SystemUserRest {
 	 */
 	@Path("/edit")
 	@POST
-	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response editSystemUser(FormDataMultiPart form, @Context
-	HttpServletRequest request) throws JSONException {
-		String md5Value = form.getField("id").getValue();
-		String username = form.getField("username").getValue();
-		String password = form.getField("password").getValue();
-		String email = form.getField("email").getValue();
-		String key = form.getField("key").getValue();
+	public Response editSystemUser(@FormParam("key")
+	String key, @FormParam("nickName")
+	String nickName, @FormParam("md5Value")
+	String md5Value, @FormParam("gender")
+	String gender, @FormParam("intro")
+	String intro) throws JSONException {
 		JSONObject json = new JSONObject();
 		try {
 			if (key.isEmpty()) {
@@ -282,31 +368,69 @@ public class SystemUserRest {
 				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_INVALID);
 				return Response.ok(json.toString()).build();
 			}
-			boolean bool_username = systemUserService.isExist(
-					Constant.USERNAME, username);
-			if (bool_username) {
-				json.put(Constant.MESSAGE, JSONCode.MSG_USERNAME_EXISTS);
-				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
-				return Response.ok(json.toString()).build();
-			}
-			boolean bool_email = systemUserService.isExist(Constant.USER_EMAIL,
-					email);
-			if (bool_email) {
-				json.put(Constant.MESSAGE, JSONCode.MSG_USER_EMAIL_EXISTS);
-				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
-				return Response.ok(json.toString()).build();
-			}
-
+		
 			SystemUser u = systemUserService.getSystemUserByMd5Value(md5Value);
-			String encodePassword = MD5.calcMD5(password);
-			u.setEmail(email);
-			u.setPassword(encodePassword);
-			u.setUsername(username);
-			u.setLastModifyTime(new Date());
-			u.setUserType(Constant.USERTYPE_USER);
-			systemUserService.update(u);
-			json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
-			json.put(Constant.USERID, u.getId());
+			if(null != u){
+				u.setGender(Boolean.valueOf(gender)) ;
+				u.setIntro(intro) ;
+				u.setNickName(nickName) ;
+				u.setLastModifyTime(new Date());
+				u.setUserType(Constant.USERTYPE_USER);
+				systemUserService.update(u);
+				json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
+				json.put(Constant.USERID, u.getMd5Value());
+			}else{
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE,JSONCode.MSG_USER_NOEXISTS);
+			}
+			return Response.ok(json.toString()).build();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+			json.put(Constant.CODE, JSONCode.THROWEXCEPTION);
+			return Response.ok(json.toString()).build();
+		}
+	}
+	
+	
+	/**
+	 * 
+	 * @param form
+	 * @param request
+	 * @return
+	 */
+	@Path("/modify/password")
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response modifyPassword(@FormParam("key")
+	String key, @FormParam("md5Value")
+	String md5Value, @FormParam("password")
+	String password) throws JSONException {
+		JSONObject json = new JSONObject();
+		try {
+			if (key.isEmpty()) {
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_ISNULL);
+				return Response.ok(json.toString()).build();
+
+			} else if (!Constant.KEY.equals(key)) {
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_INVALID);
+				return Response.ok(json.toString()).build();
+			}
+		
+			SystemUser u = systemUserService.getSystemUserByMd5Value(md5Value);
+			if(null != u){
+				String newPsd = MD5.calcMD5(password);
+				u.setPassword(newPsd) ;
+				u.setLastModifyTime(new Date());
+				systemUserService.update(u);
+				json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
+				json.put(Constant.USERID, md5Value);
+			}else{
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE,JSONCode.MSG_USER_NOEXISTS);
+			}
 			return Response.ok(json.toString()).build();
 		} catch (Exception ex) {
 			ex.printStackTrace();

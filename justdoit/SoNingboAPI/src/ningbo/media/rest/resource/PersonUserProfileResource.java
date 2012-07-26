@@ -28,9 +28,9 @@ public class PersonUserProfileResource {
 
 	@Resource
 	private PersonUserProfileService personUserProfileService;
-	
+
 	@Resource
-	private SystemUserService systemUserService ;
+	private SystemUserService systemUserService;
 
 	@Path("/addOrUpdate")
 	@POST
@@ -55,7 +55,7 @@ public class PersonUserProfileResource {
 	String profileId) throws JSONException {
 		JSONObject json = new JSONObject();
 		PersonUserProfile profile = null;
-		Integer tempIds ;
+		Integer tempIds;
 		try {
 			if (!StringUtils.hasText(key)) {
 				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
@@ -66,9 +66,9 @@ public class PersonUserProfileResource {
 				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_INVALID);
 				return Response.ok(json.toString()).build();
 			}
-			
-			SystemUser u = systemUserService.get(Constant.MD5_FIELD, md5Value) ;
-			if(null == u){
+
+			SystemUser u = systemUserService.get(Constant.MD5_FIELD, md5Value);
+			if (null == u) {
 				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 				json.put(Constant.MESSAGE, JSONCode.MSG_USER_NOEXISTS);
 				return Response.ok(json.toString()).build();
@@ -79,7 +79,6 @@ public class PersonUserProfileResource {
 
 				profile.setBirthday(birthday);
 				profile.setBlood(blood);
-				profile.setAge(Integer.valueOf(age));
 				profile.setCellPhone(cellPhone);
 				profile.setConstellation(constellation);
 				profile.setHomeArea(homeArea);
@@ -90,17 +89,21 @@ public class PersonUserProfileResource {
 				profile.setMsn(msn);
 				profile.setQq(qq);
 				profile.setPhone(phone);
-				profile.setStature(Integer.valueOf(stature));
-				profile.setSystemUser(u) ;
-				
+				if (StringUtils.hasText(age)) {
+					profile.setAge(Integer.valueOf(age));
+				}
+				if (StringUtils.hasText(stature)) {
+					profile.setStature(Integer.valueOf(stature));
+				}
+				profile.setSystemUser(u);
+
 				tempIds = personUserProfileService.save(profile);
 			} else {
 				profile = personUserProfileService.get(Integer
 						.valueOf(profileId));
-				
+
 				profile.setBirthday(birthday);
 				profile.setBlood(blood);
-				profile.setAge(Integer.valueOf(age));
 				profile.setCellPhone(cellPhone);
 				profile.setConstellation(constellation);
 				profile.setHomeArea(homeArea);
@@ -111,14 +114,19 @@ public class PersonUserProfileResource {
 				profile.setMsn(msn);
 				profile.setQq(qq);
 				profile.setPhone(phone);
-				profile.setStature(Integer.valueOf(stature));
-				profile.setSystemUser(u) ;
-				
-				personUserProfileService.update(profile) ;
-				
-				tempIds = profile.getId() ;
+				if (StringUtils.hasText(age)) {
+					profile.setAge(Integer.valueOf(age));
+				}
+				if (StringUtils.hasText(stature)) {
+					profile.setStature(Integer.valueOf(stature));
+				}
+				profile.setSystemUser(u);
+
+				personUserProfileService.update(profile);
+
+				tempIds = profile.getId();
 			}
-			
+
 			json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
 			json.put(Constant.MESSAGE, JSONCode.MSG_PROFILE_USER_SUCCESS);
 			json.put(Constant.PROFILEID, tempIds);

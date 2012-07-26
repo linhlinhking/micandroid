@@ -355,7 +355,9 @@ public class SystemUserRest {
 	String nickName, @FormParam("md5Value")
 	String md5Value, @FormParam("gender")
 	String gender, @FormParam("intro")
-	String intro) throws JSONException {
+	String intro, @FormParam("realName")
+	String name_cn, @FormParam("website")
+	String website) throws JSONException {
 		JSONObject json = new JSONObject();
 		try {
 			if (key.isEmpty()) {
@@ -368,20 +370,22 @@ public class SystemUserRest {
 				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_INVALID);
 				return Response.ok(json.toString()).build();
 			}
-		
+
 			SystemUser u = systemUserService.getSystemUserByMd5Value(md5Value);
-			if(null != u){
-				u.setGender(Boolean.valueOf(gender)) ;
-				u.setIntro(intro) ;
-				u.setNickName(nickName) ;
+			if (null != u) {
+				u.setWebsite(website) ;
+				u.setName_cn(name_cn) ;
+				u.setGender(Boolean.valueOf(gender));
+				u.setIntro(intro);
+				u.setNickName(nickName);
 				u.setLastModifyTime(new Date());
 				u.setUserType(Constant.USERTYPE_USER);
 				systemUserService.update(u);
 				json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
 				json.put(Constant.USERID, u.getMd5Value());
-			}else{
+			} else {
 				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
-				json.put(Constant.MESSAGE,JSONCode.MSG_USER_NOEXISTS);
+				json.put(Constant.MESSAGE, JSONCode.MSG_USER_NOEXISTS);
 			}
 			return Response.ok(json.toString()).build();
 		} catch (Exception ex) {
@@ -391,8 +395,7 @@ public class SystemUserRest {
 			return Response.ok(json.toString()).build();
 		}
 	}
-	
-	
+
 	/**
 	 * 
 	 * @param form
@@ -418,18 +421,18 @@ public class SystemUserRest {
 				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_INVALID);
 				return Response.ok(json.toString()).build();
 			}
-		
+
 			SystemUser u = systemUserService.getSystemUserByMd5Value(md5Value);
-			if(null != u){
+			if (null != u) {
 				String newPsd = MD5.calcMD5(password);
-				u.setPassword(newPsd) ;
+				u.setPassword(newPsd);
 				u.setLastModifyTime(new Date());
 				systemUserService.update(u);
 				json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
 				json.put(Constant.USERID, md5Value);
-			}else{
+			} else {
 				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
-				json.put(Constant.MESSAGE,JSONCode.MSG_USER_NOEXISTS);
+				json.put(Constant.MESSAGE, JSONCode.MSG_USER_NOEXISTS);
 			}
 			return Response.ok(json.toString()).build();
 		} catch (Exception ex) {
@@ -633,6 +636,7 @@ public class SystemUserRest {
 		data.setDatetime(user.getDatetime());
 		data.setLastModifyTime(user.getLastModifyTime());
 		data.setIntro(user.getIntro());
+
 		String temp = user.getUserType();
 		if (null != temp) {
 			data.setUserType(temp);

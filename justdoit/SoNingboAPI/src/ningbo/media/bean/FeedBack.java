@@ -1,6 +1,7 @@
 package ningbo.media.bean;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,6 +22,10 @@ public class FeedBack implements Serializable{
 	private String feedEmail ;
 	
 	private String content ;
+	
+	private String userMd5Value ;
+	
+	private Date date_time ;
 
 	public Integer getId() {
 		return id;
@@ -45,7 +50,22 @@ public class FeedBack implements Serializable{
 	public void setContent(String content) {
 		this.content = content;
 	}
-	
+
+	public String getUserMd5Value() {
+		return userMd5Value;
+	}
+
+	public void setUserMd5Value(String userMd5Value) {
+		this.userMd5Value = userMd5Value;
+	}
+
+	public Date getDate_time() {
+		return date_time;
+	}
+
+	public void setDate_time(Date date_time) {
+		this.date_time = date_time;
+	}
 	
 
 }

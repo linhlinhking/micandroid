@@ -424,6 +424,211 @@ public class LocationRest {
 		}
 	}
 
+	@Path("/addLocation")
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response addLocationByWeb(@FormParam("key")
+	String key, @FormParam("name_cn")
+	String name_cn, @FormParam("tags_cn")
+	String tags_cn, @FormParam("address_cn")
+	String address_cn, @FormParam("telephone")
+	String telephone, @FormParam("longitude")
+	String longitude, @FormParam("latitude")
+	String latitude, @FormParam("category2_id")
+	String category2_id, @FormParam("user_id")
+	String user_id) throws JSONException {
+		JSONObject json = new JSONObject();
+		UserLocations userlocTemp = new UserLocations();
+		try {
+			Location location = new Location();
+			if (key.isEmpty()) {
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_ISNULL);
+				return Response.ok(json.toString()).build();
+			}
+			if (!Constant.KEY.equals(key)) {
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_INVALID);
+				return Response.ok(json.toString()).build();
+			}
+
+			String name_en = TranslateUtil.getEnglishByChinese(name_cn);
+			String tags_en = TranslateUtil.getEnglishByChinese(tags_cn);
+
+			String name_py = Pinyin.getPinYin(name_cn);
+			String address_en = Pinyin.getPinYin(address_cn);
+
+			location.setName_cn(name_cn);
+			location.setName_en(name_en);
+			location.setAddress_cn(address_cn);
+			location.setAddress_en(address_en);
+			location.setTelephone(telephone);
+			location.setName_py(name_py);
+			location.setTags_cn(tags_cn);
+			location.setTags_en(tags_en);
+
+			if (!longitude.isEmpty())
+				location.setLongitude(Double.parseDouble(longitude));
+			if (!latitude.isEmpty())
+				location.setLatitude(Double.parseDouble(latitude));
+
+			List<SecondCategory> listSc = new ArrayList<SecondCategory>();
+			SecondCategory sc = secondCategoryService.get(Integer
+					.valueOf(category2_id));
+			if (sc == null) {
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE,
+						JSONCode.MSG_LOCATION_SELECTE_CATEGORY);
+				Response.ok(json.toString()).build();
+			} else {
+				listSc.add(sc);
+			}
+
+			location.setSecondCategorys(listSc);
+
+			Integer locationId = locationService.save(location);
+			String md5Value = MD5.calcMD5(String.valueOf(locationId));
+			location = locationService.get(locationId);
+			location.setMd5Value(md5Value);
+			locationService.update(location);
+
+			if ("".equals(user_id) || null == user_id) {
+				// json.put(Constant.MESSAGE, JSONCode.MSG_LOCATION_NO_LOGIN);
+				// json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				// return Response.ok(json.toString()).build();
+			} else {
+				SystemUser sysUser = systemUserService
+						.getSystemUserByMd5Value(user_id);
+				if (null == sysUser) {
+					json.put(Constant.MESSAGE, JSONCode.MSG_USER_NOEXISTS);
+					json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+					return Response.ok(json.toString()).build();
+				}
+
+				userlocTemp.setLocationId(locationId);
+				userlocTemp.setMd5Value(user_id);
+				userlocTemp.setAddedDate(new Date());
+				userLocationsService.save(userlocTemp);
+			}
+
+			json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
+			json.put(Constant.LOCATIONID, md5Value);
+			return Response.ok(json.toString()).build();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			json.put(Constant.MESSAGE, JSONCode.SERVER_EXCEPTION);
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+			return Response.ok(json.toString()).build();
+		}
+	}
+
+	/**
+	 * @Description 修改Location
+	 * 
+	 * @param key
+	 * @param userId
+	 * @return
+	 * @throws JSONException
+	 */
+	@Path("/modify/avatar")
+	@POST
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response changeLocationAvatar(FormDataMultiPart form, @Context
+	HttpServletRequest request) throws JSONException {
+		JSONObject json = new JSONObject();
+		try {
+			String key = form.getField("key").getValue();
+			String md5Value = form.getField("userId").getValue();
+			String locationId = form.getField("locationId").getValue();
+			FormDataBodyPart part = form.getField("photo_path");
+			String photo_path = "";
+			if (key.isEmpty()) {
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_ISNULL);
+				return Response.ok(json.toString()).build();
+			} else if (!Constant.KEY.equals(key)) {
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_INVALID);
+				return Response.ok(json.toString()).build();
+			}
+
+			if ("".equals(md5Value) || null == md5Value) {
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_USER_USER_MD5VALUE);
+				return Response.ok(json.toString()).build();
+			}
+			SystemUser u = systemUserService.getSystemUserByMd5Value(md5Value);
+			if (null == u) {
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_USER_NOEXISTS);
+				return Response.ok(json.toString()).build();
+			}
+
+			Location loc = locationService.get(Constant.MD5_FIELD, locationId);
+			if (null == loc) {
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_LOCATION_NOEXISTS);
+				return Response.ok(json.toString()).build();
+			}
+
+			String fileName = part.getContentDisposition().getFileName();
+			photo_path = FileUpload.uploadLocation(part, fileName, request);
+
+			String uuid = loc.getPhoto_path();
+			if (!("0".equals(uuid)) && (null != uuid)) {
+				FileUploadUtil.delFile(uuid, request);
+			}
+
+			u.setPhoto_path(photo_path);
+			locationService.update(loc);
+
+			json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
+			json.put(Constant.MESSAGE, JSONCode.MSG_LOCATION_UPDATE_AVATAR);
+			return Response.ok(json.toString()).build();
+		} catch (Exception ex) {
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+			json.put(Constant.MESSAGE, JSONCode.SERVER_EXCEPTION);
+			return Response.ok(json.toString()).build();
+		}
+	}
+
+	@Path("/set/avatar")
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response setLocationAvator(@FormParam("key")
+	String key, @FormParam("md5Value")
+	String md5Value, @FormParam("uuidValue")
+	String photo_path) throws JSONException {
+		JSONObject json = new JSONObject();
+		try {
+			if (key.isEmpty()) {
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_ISNULL);
+				return Response.ok(json.toString()).build();
+			} else if (!Constant.KEY.equals(key)) {
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_INVALID);
+				return Response.ok(json.toString()).build();
+			}
+			Location loc = locationService.get(Constant.MD5_FIELD, md5Value);
+			if (null == loc) {
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_LOCATION_NOEXISTS);
+				return Response.ok(json.toString()).build();
+			}
+			loc.setPhoto_path(photo_path);
+			locationService.update(loc);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+			json.put(Constant.MESSAGE, JSONCode.SERVER_EXCEPTION);
+		}
+		json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
+		json.put(Constant.MESSAGE, JSONCode.MSG_LOCATION_UPDATE_AVATAR);
+		return Response.ok(json.toString()).build();
+	}
+
 	/**
 	 * @param form
 	 * @param request
@@ -535,7 +740,7 @@ public class LocationRest {
 			return Response.ok(json.toString()).build();
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			json.put(Constant.CODE, JSONCode.LOCATION_EXCEPTION);
+			json.put(Constant.CODE, JSONCode.SERVER_EXCEPTION);
 			return Response.ok(json.toString()).build();
 		}
 	}
@@ -550,7 +755,7 @@ public class LocationRest {
 		LocationData d = null;
 		for (Location l : list) {
 			d = new LocationData();
-			d.setId(l.getId()) ;
+			d.setId(l.getId());
 			d.setName_cn(l.getName_cn());
 			d.setName_en(l.getName_en());
 			d.setMd5Value(l.getMd5Value());
@@ -559,15 +764,15 @@ public class LocationRest {
 			d.setAddress_cn(l.getAddress_cn());
 			d.setAddress_en(l.getAddress_en());
 			d.setName_py(l.getName_py());
-			d.setLatitude(l.getLatitude()) ;
-			d.setLongitude(l.getLongitude()) ;
-			d.setTelephone(l.getTelephone()) ;
-			if(null == l.getPhoto_path()){
-				d.setPhoto_path("0") ;
-			}else{
+			d.setLatitude(l.getLatitude());
+			d.setLongitude(l.getLongitude());
+			d.setTelephone(l.getTelephone());
+			if (null == l.getPhoto_path()) {
+				d.setPhoto_path("0");
+			} else {
 				d.setPhoto_path(l.getPhoto_path());
 			}
-			
+
 			listData.add(d);
 		}
 		return new LocationList(listData);
@@ -671,8 +876,8 @@ public class LocationRest {
 
 			UserLocations tempUserLocation = userLocationsService.get(
 					Constant.LOCATIONID, locId);
-			if(null != tempUserLocation){
-				userLocationsService.delete(tempUserLocation) ;
+			if (null != tempUserLocation) {
+				userLocationsService.delete(tempUserLocation);
 			}
 
 			json.put(Constant.CODE, JSONCode.SUCCESS);

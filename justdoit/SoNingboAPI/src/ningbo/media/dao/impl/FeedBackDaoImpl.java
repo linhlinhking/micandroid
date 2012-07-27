@@ -10,4 +10,7 @@ import ningbo.media.dao.FeedBackDao;
 public class FeedBackDaoImpl extends BaseDaoImpl<FeedBack, Integer> implements
 		FeedBackDao {
 
+	public FeedBackDaoImpl(){
+		super(FeedBack.class);
+	}
 }

@@ -1,5 +1,7 @@
 package ningbo.media.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import ningbo.media.bean.SystemUser;
@@ -30,6 +32,10 @@ public class SystemUserServiceImpl extends BaseServiceImpl<SystemUser, Integer> 
 
 	public SystemUser getSystemUserByMd5Value(String md5Value) {
 		return systemUserDao.getSystemUserByMD5Value(md5Value) ;
+	}
+	
+	public List<SystemUser> querySystemUserByName(String name){
+		return systemUserDao.querySystemUserByName(name) ;
 	}
 
 }

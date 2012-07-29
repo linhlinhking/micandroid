@@ -246,4 +246,37 @@ public class FriendsRest {
 
 	}
 
+	@Path("/search/{id}/{name}")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response searchFriends(@PathParam("name")String name,@PathParam("id")String id){
+		return Response.ok(queryFriendsByName(id,name)).build() ;
+	}
+	
+	private FriendList queryFriendsByName(String id,String name) {
+		List<SystemUser> list = systemUserService.querySystemUserByName(name) ;
+		List<SystemUserData> userData = new ArrayList<SystemUserData>();
+		if (null == list || list.size() < 0) {
+			return new FriendList();
+		}
+
+		for (int i = 0, j = list.size(); i < j; i++) {
+			SystemUserData data = new SystemUserData();
+			SystemUser tmp = list.get(i);
+			if (null != tmp) {
+				data.setUsername(tmp.getUsername());
+				data.setMd5Value(tmp.getMd5Value());
+				data.setIntro(tmp.getIntro());
+				data.setNickName(tmp.getNickName());
+				if (null != tmp.getPhoto_path()) {
+					data.setPhoto_path(tmp.getPhoto_path());
+				} else {
+					data.setPhoto_path("0");
+				}
+
+			}
+			userData.add(data);
+		}
+		return new FriendList(id, userData);
+	}
 }

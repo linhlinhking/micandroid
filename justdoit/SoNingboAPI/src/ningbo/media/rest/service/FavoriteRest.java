@@ -118,7 +118,7 @@ public class FavoriteRest {
 			if (null != tmpUser) {
 				Integer tmpId = tmpUser.getId();
 				FavoriteTemp favorite = favoriteTempService
-						.getFavoriteTempByDeviceId(tmpId,locationId);
+						.getFavoriteTempByDeviceId(tmpId, locationId);
 				if (null == favorite) {
 					json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 					json.put(Constant.MESSAGE,
@@ -265,6 +265,57 @@ public class FavoriteRest {
 		return Response.ok(queryDeviceFavorites(deviceId)).build();
 	}
 
+	@Path("/search/{userId}/{name}")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response searchUserFavorite(@PathParam("userId")
+	String userId, @PathParam("name")
+	String name) {
+		return Response.ok(searchFavoritesByName(userId,name)).build();
+	}
+
+	
+	private FavoriteList searchFavoritesByName(String userId,String name){
+		List<Location> locationList = locationService.queryLocationByName(name) ;
+		if(null == locationList || locationList.size() <0){
+			return new FavoriteList();
+		}
+		List<Favorite> list = favoriteService.getListFavoriteById(userId,
+				FavoriteType.REALUSER);
+		if (null == list || list.size() < 0) {
+			return new FavoriteList();
+		}
+		List<LocationDetail> locations = new ArrayList<LocationDetail>();
+		for(Favorite f : list){
+			String locationId = f.getLocationId() ;
+			for(Location loc : locationList){
+				String temp = loc.getMd5Value() ;
+				if(locationId.equals(temp)){
+					LocationDetail detail = new LocationDetail();
+					detail.setMd5Value(temp);
+					detail.setName_cn(loc.getName_cn());
+					detail.setAddress_cn(loc.getAddress_cn());
+					detail.setLatitude(loc.getLatitude());
+					detail.setLongitude(loc.getLongitude());
+					detail.setName_en(loc.getName_en());
+					detail.setAddress_en(loc.getAddress_en());
+					detail.setTags_cn(loc.getTags_cn());
+					detail.setTags_en(loc.getTags_en());
+					detail.setTelephone(loc.getTelephone());
+					if (null == loc.getPhoto_path()) {
+						detail.setPhoto_path("0");
+					} else {
+						detail.setPhoto_path(loc.getPhoto_path());
+					}
+					
+					locations.add(detail) ;
+				}
+			}
+		}
+		
+		return new FavoriteList(userId, "", locations);
+	}
+	
 	private FavoriteList queryUserFavorites(String userId) {
 		List<Favorite> list = favoriteService.getListFavoriteById(userId,
 				FavoriteType.REALUSER);
@@ -278,22 +329,23 @@ public class FavoriteRest {
 			String locationId = f.getLocationId();
 			Location tempLocation = null;
 			if (null != locationId) {
-				tempLocation = locationService.get(Constant.MD5_FIELD,locationId);
+				tempLocation = locationService.get(Constant.MD5_FIELD,
+						locationId);
 				detail.setMd5Value(MD5.calcMD5(String.valueOf(tempLocation
 						.getId())));
 				detail.setName_cn(tempLocation.getName_cn());
 				detail.setAddress_cn(tempLocation.getAddress_cn());
 				detail.setLatitude(tempLocation.getLatitude());
 				detail.setLongitude(tempLocation.getLongitude());
-				detail.setName_en(tempLocation.getName_en()) ;
-				detail.setAddress_en(tempLocation.getAddress_en()) ;
-				detail.setTags_cn(tempLocation.getTags_cn()) ;
-				detail.setTags_en(tempLocation.getTags_en()) ;
-				detail.setTelephone(tempLocation.getTelephone()) ;
-				if(null == tempLocation.getPhoto_path()){
-					detail.setPhoto_path("0") ;
-				}else{
-					detail.setPhoto_path(tempLocation.getPhoto_path()) ;
+				detail.setName_en(tempLocation.getName_en());
+				detail.setAddress_en(tempLocation.getAddress_en());
+				detail.setTags_cn(tempLocation.getTags_cn());
+				detail.setTags_en(tempLocation.getTags_en());
+				detail.setTelephone(tempLocation.getTelephone());
+				if (null == tempLocation.getPhoto_path()) {
+					detail.setPhoto_path("0");
+				} else {
+					detail.setPhoto_path(tempLocation.getPhoto_path());
 				}
 				locations.add(detail);
 			}
@@ -314,7 +366,8 @@ public class FavoriteRest {
 			String locationId = f.getLocationId();
 			Location tempLocation = null;
 			if (null != locationId) {
-				tempLocation = locationService.get(Constant.MD5_FIELD,locationId);
+				tempLocation = locationService.get(Constant.MD5_FIELD,
+						locationId);
 				detail.setMd5Value(MD5.calcMD5(String.valueOf(tempLocation
 						.getId())));
 				detail.setName_cn(tempLocation.getName_cn());

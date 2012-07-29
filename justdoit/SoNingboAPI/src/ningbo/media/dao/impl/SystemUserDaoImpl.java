@@ -1,5 +1,7 @@
 package ningbo.media.dao.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import ningbo.media.bean.SystemUser;
@@ -38,6 +40,19 @@ public class SystemUserDaoImpl extends BaseDaoImpl<SystemUser, Integer>
 		SystemUser u = (SystemUser)findUnique(hql, value);
 		if (null != u) {
 			return u;
+		}
+		return null;
+	}
+
+	public List<SystemUser> querySystemUserByName(String name) {
+		try{
+			String hql = "from SystemUser as model where 1=1 and model.username like ? " ;
+			List<SystemUser> list = findByHql(hql, name) ;
+			if(null != list){
+				return list ;
+			}
+		}catch(Exception ex){
+			ex.printStackTrace() ;
 		}
 		return null;
 	}

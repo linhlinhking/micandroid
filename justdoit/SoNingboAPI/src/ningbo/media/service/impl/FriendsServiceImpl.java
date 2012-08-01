@@ -39,4 +39,12 @@ public class FriendsServiceImpl extends BaseServiceImpl<Friends, Integer>
 	public List<Friends> getFriendsForUserId(String userId,FriendType type){
 		return friendsDao.getFriendsForUserId(userId,type) ;
 	}
+
+	public long getFollowedNumber(String userId) {
+		return friendsDao.getFollowedNumber(userId);
+	}
+
+	public long getFollowingNumber(String userId) {
+		return friendsDao.getFollowingNumber(userId);
+	}
 }

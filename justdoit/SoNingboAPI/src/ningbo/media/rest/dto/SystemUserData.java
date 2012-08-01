@@ -12,7 +12,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @XmlType(name = "SystemUser", namespace = WsConstants.NS, propOrder = {
 		"nickName", "md5Value", "username", "name_cn", "name_en", "email",
 		"status", "photo_path", "gender", "birthday", "datetime",
-		"lastModifyTime", "website", "userType", "intro","remark","userProfileData" })
+		"lastModifyTime", "website", "userType", "intro","remark","following","followed","userProfileData" })
 @XmlRootElement(name = "data")
 public class SystemUserData {
 
@@ -47,6 +47,10 @@ public class SystemUserData {
 	private String intro;
 	
 	private String remark ;
+	
+	private long following ;
+	
+	private long followed ;
 	
 	private UserProfileData userProfileData ;
 	
@@ -187,6 +191,23 @@ public class SystemUserData {
 
 	public void setUserProfileData(UserProfileData userProfileData) {
 		this.userProfileData = userProfileData;
+	}
+	
+
+	public long getFollowing() {
+		return following;
+	}
+
+	public void setFollowing(long following) {
+		this.following = following;
+	}
+
+	public long getFollowed() {
+		return followed;
+	}
+
+	public void setFollowed(long followed) {
+		this.followed = followed;
 	}
 
 	@Override

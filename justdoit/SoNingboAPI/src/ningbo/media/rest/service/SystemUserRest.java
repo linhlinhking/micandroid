@@ -30,6 +30,7 @@ import ningbo.media.rest.util.FileUploadUtil;
 import ningbo.media.rest.util.JSONCode;
 import ningbo.media.rest.util.Jerseys;
 import ningbo.media.service.FavoriteService;
+import ningbo.media.service.FriendsService;
 import ningbo.media.service.PersonUserProfileService;
 import ningbo.media.service.SendManagerService;
 import ningbo.media.service.SystemUserService;
@@ -58,6 +59,9 @@ public class SystemUserRest {
 
 	@Resource
 	private PersonUserProfileService personUserProfileService;
+	
+	@Resource
+	private FriendsService friendsService ;
 
 	private SendManagerService sendMgrService = (SendManagerService) ApplicationContextUtil
 			.getContext().getBean("sendMail");
@@ -621,9 +625,12 @@ public class SystemUserRest {
 		}
 		SystemUserData data = new SystemUserData();
 		UserProfileData uData = new UserProfileData();
+		String md5Value = user.getMd5Value();
+		long followedNum = friendsService.getFollowedNumber(md5Value);
+		long followingNum = friendsService.getFollowingNumber(md5Value);
 
 		Integer uid = user.getId();
-		data.setMd5Value(user.getMd5Value());
+		data.setMd5Value(md5Value);
 		data.setNickName(user.getNickName());
 		data.setName_cn(user.getName_cn());
 		data.setName_en(user.getName_en());
@@ -636,6 +643,8 @@ public class SystemUserRest {
 		data.setDatetime(user.getDatetime());
 		data.setLastModifyTime(user.getLastModifyTime());
 		data.setIntro(user.getIntro());
+		data.setFollowed(followedNum);
+		data.setFollowing(followingNum) ;
 
 		String temp = user.getUserType();
 		if (null != temp) {

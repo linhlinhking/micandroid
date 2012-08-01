@@ -13,4 +13,8 @@ public interface FriendsDao extends BaseDao<Friends, Integer>{
 	public Friends getRelationObject(String userA,String userB) ;
 	
 	public List<Friends> getFriendsForUserId(String userId,FriendType type);
+	
+	public long getFollowingNumber(String userId);
+	
+	public long getFollowedNumber(String userId);
 }

@@ -41,15 +41,19 @@ public class FriendsDaoImpl extends BaseDaoImpl<Friends, Integer> implements
 	public List<Friends> getFriendsForUserId(String userId, FriendType type) {
 		try {
 			String hql = "";
+			List<Friends> list = null ;
 			if (FriendType.FANS.equals(type)) {
-				hql = "from Friends as m where 1=1 and m.userId = ? and m.followId in (select n.userId from Friends as n where 1=1 and n.followId = ? and n.isFollowed = 1 ) and m.isFollowed = 0 ";
+				hql = " from Friends as m where 1=1 and m.userId = ? and m.followId in (select n.userId from Friends as n where 1=1 and n.followId = ? and n.isFollowed = 1 ) and m.isFollowed = 0 ";
+				list = findByHql(hql, userId,userId);
 			} else if (FriendType.FOLLOWED.equals(type)) {
-				hql = "from Friends as m where 1=1 and m.userId = ? and m.followId in (select n.userId from Friends as n where 1=1 and n.followId = ? and n.isFollowed = 0 ) and m.isFollowed = 1 ";
+				hql = " from Friends as m where 1=1 and m.userId = ? and m.isFollowed = 1 ";
+				list = findByHql(hql, userId);
 			} else {
 				hql = " from Friends as m where 1=1 and m.userId = ? and m.followId in (select n.userId from Friends as n where 1=1 and n.followId = ? and n.isFollowed = 1 ) and m.isFollowed = 1 ";
+				list = findByHql(hql, userId, userId);
 			}
 
-			List<Friends> list = findByHql(hql, userId, userId);
+			
 			if (null == list || list.size() < 0) {
 				return null;
 			}

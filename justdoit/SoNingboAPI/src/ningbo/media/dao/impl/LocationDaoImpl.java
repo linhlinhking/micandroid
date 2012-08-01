@@ -26,9 +26,9 @@ public class LocationDaoImpl extends BaseDaoImpl<Location, Integer> implements
 		
 		sb.append("from Location m where 1=1 ") ;
 		if(Pinyin.isChinese(locationName)){
-			sb.append(" and m.name_cn like ? or m.tags_cn like ? or m.address_cn like ? ") ;
+			sb.append(" and m.name_cn like ? or m.tags_cn like ? or m.address_cn like ? order by id  desc,name_cn asc ") ;
 		}else{
-			sb.append(" and m.name_en like ? or m.tags_en like ? or m.address_en like ? ") ;
+			sb.append(" and m.name_en like ? or m.tags_en like ? or m.address_en like ? order by id  desc,name_en asc ") ;
 		}
 		List<Location> list = findByHql(sb.toString(), true, null, locationName,locationName,locationName) ;
 		return list ;

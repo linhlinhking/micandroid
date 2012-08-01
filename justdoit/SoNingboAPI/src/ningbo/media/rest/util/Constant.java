@@ -47,5 +47,7 @@ public class Constant {
 	
 	public static final String USERTYPE_ADMIN = "Admin" ;
 	public static final String USERTYPE_USER = "User" ;
+	public static final String SYSTEMUSER_USERNAME = "username" ;
+	public static final String SYSTEMUSER_EMAIL = "email" ;
 	
 }

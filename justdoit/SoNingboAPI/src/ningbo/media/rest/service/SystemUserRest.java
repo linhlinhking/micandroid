@@ -59,9 +59,9 @@ public class SystemUserRest {
 
 	@Resource
 	private PersonUserProfileService personUserProfileService;
-	
+
 	@Resource
-	private FriendsService friendsService ;
+	private FriendsService friendsService;
 
 	private SendManagerService sendMgrService = (SendManagerService) ApplicationContextUtil
 			.getContext().getBean("sendMail");
@@ -377,8 +377,8 @@ public class SystemUserRest {
 
 			SystemUser u = systemUserService.getSystemUserByMd5Value(md5Value);
 			if (null != u) {
-				u.setWebsite(website) ;
-				u.setName_cn(name_cn) ;
+				u.setWebsite(website);
+				u.setName_cn(name_cn);
 				u.setGender(Boolean.valueOf(gender));
 				u.setIntro(intro);
 				u.setNickName(nickName);
@@ -619,6 +619,39 @@ public class SystemUserRest {
 		}
 	}
 
+	@Path("/username/{username}")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response isExistsUserName(@PathParam("username")
+	String username) {
+		JSONObject json = new JSONObject();
+		boolean flag = false ;
+		try {
+			flag = systemUserService.isExist(Constant.SYSTEMUSER_USERNAME, username);
+			json.put(Constant.RESULT,flag);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return Response.ok(json.toString()).build() ;
+	}
+
+	@Path("/email/{email}")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response isExistsEmail(@PathParam("email")
+	String email) {
+		JSONObject json = new JSONObject();
+		boolean flag = false ;
+		try {
+			flag = systemUserService.isExist(Constant.SYSTEMUSER_EMAIL, email);
+			json.put(Constant.RESULT,flag);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+
+		}
+		return Response.ok(json.toString()).build() ;
+	}
+
 	private SystemUserData getSystemUserData(SystemUser user) {
 		if (null == user) {
 			return null;
@@ -644,7 +677,7 @@ public class SystemUserRest {
 		data.setLastModifyTime(user.getLastModifyTime());
 		data.setIntro(user.getIntro());
 		data.setFollowed(followedNum);
-		data.setFollowing(followingNum) ;
+		data.setFollowing(followingNum);
 
 		String temp = user.getUserType();
 		if (null != temp) {

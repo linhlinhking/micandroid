@@ -1,6 +1,7 @@
 package ningbo.media.rest.resource;
 
 import javax.annotation.Resource;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -24,7 +25,7 @@ public class LocationExtResource {
 	@Path("/add")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addLocationExt(){
+	public Response addLocationExt(@FormParam("location_website")String website){
 		
 		
 		return null ;

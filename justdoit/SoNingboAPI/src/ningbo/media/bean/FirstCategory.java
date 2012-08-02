@@ -43,6 +43,9 @@ public class FirstCategory implements Serializable {
 	@Mapping("secondCategorysDto")
 	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "firstCategory")
 	private List<SecondCategory> secondCategorys;
+	
+	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "firstCategory")
+	private List<AspectsCategory> aspectsCategorys ;
 
 	public FirstCategory() {
 	}
@@ -119,6 +122,15 @@ public class FirstCategory implements Serializable {
 
 	public void setDescription_en(String description_en) {
 		this.description_en = description_en;
+	}
+	
+	@XmlTransient
+	public List<AspectsCategory> getAspectsCategorys() {
+		return aspectsCategorys;
+	}
+
+	public void setAspectsCategorys(List<AspectsCategory> aspectsCategorys) {
+		this.aspectsCategorys = aspectsCategorys;
 	}
 
 	@Override

@@ -1,23 +1,28 @@
 package ningbo.media.data.entity;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import ningbo.media.rest.dto.AspectsCategoryData;
 import ningbo.media.rest.dto.FirstCategoryData;
 
-@XmlType(name = "locationBean", propOrder = { "locationId","md5Value", "name_cn", "name_en", "address_cn","photo_path",
-		"address_en", "latitude", "longitude","name_py","tags_cn","tags_en","telephone","category2_id","firstCategoryData" })
+@XmlType(name = "locationBean", propOrder = { "locationId", "md5Value",
+		"name_cn", "name_en", "address_cn", "photo_path", "address_en",
+		"latitude", "longitude", "name_py", "tags_cn", "tags_en", "telephone",
+		"category2_id", "firstCategoryData", "aspectsDatas" })
 @XmlRootElement(name = "data")
 public class LocationDetail {
 
-	private Integer locationId ;
-	
+	private Integer locationId;
+
 	private String md5Value;
 
 	private String name_cn;
 
 	private String name_en;
-	
+
 	private String address_cn;
 
 	private String address_en;
@@ -25,22 +30,22 @@ public class LocationDetail {
 	private Double latitude;
 
 	private Double longitude;
-	
-	private String name_py ;
-	
-	private String tags_en ;
-	
-	private String tags_cn ;
-	
-	private String telephone ;
-	
-	private String photo_path ;
-	
+
+	private String name_py;
+
+	private String tags_en;
+
+	private String tags_cn;
+
+	private String telephone;
+
+	private String photo_path;
+
 	private String category2_id;
-	
-	private FirstCategoryData firstCategoryData ;
-	
-	
+
+	private FirstCategoryData firstCategoryData;
+
+	private List<AspectsCategoryData> aspectsDatas;
 
 	public LocationDetail() {
 	}
@@ -165,6 +170,12 @@ public class LocationDetail {
 		this.photo_path = photo_path;
 	}
 
-	
-	
+	public List<AspectsCategoryData> getAspectsDatas() {
+		return aspectsDatas;
+	}
+
+	public void setAspectsDatas(List<AspectsCategoryData> aspectsDatas) {
+		this.aspectsDatas = aspectsDatas;
+	}
+
 }

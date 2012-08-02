@@ -32,7 +32,7 @@ public class Rate implements Serializable{
 	@JoinColumn(name = "locationId")
 	private Location location ;
 	
-	private double rank ;
+	private double rank ; 
 	
 	
 	public Rate(){}

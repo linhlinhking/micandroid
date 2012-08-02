@@ -18,6 +18,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import ningbo.media.bean.AspectsCategory;
 import ningbo.media.bean.FirstCategory;
 import ningbo.media.bean.Location;
 import ningbo.media.bean.ModuleFile;
@@ -27,6 +28,7 @@ import ningbo.media.bean.UserLocations;
 import ningbo.media.data.api.LocationList;
 import ningbo.media.data.entity.LocationData;
 import ningbo.media.data.entity.LocationDetail;
+import ningbo.media.rest.dto.AspectsCategoryData;
 import ningbo.media.rest.dto.FirstCategoryData;
 import ningbo.media.rest.util.Constant;
 import ningbo.media.rest.util.FieldsData;
@@ -122,6 +124,23 @@ public class LocationRest {
 				tempData.setName_cn(firstData.getName_cn());
 				tempData.setName_en(firstData.getName_en());
 				detail.setFirstCategoryData(tempData);
+				
+				List<AspectsCategory> listTemp = firstData
+						.getAspectsCategorys();
+				List<AspectsCategoryData> dataTemp = new ArrayList<AspectsCategoryData>();
+				if(null != listTemp && listTemp.size() > 0){
+					for(AspectsCategory a : listTemp){
+						AspectsCategoryData d = new AspectsCategoryData();
+						d.setId(a.getId()) ;
+						d.setAspect_cn(a.getAspect_cn()) ;
+						d.setAspect_en(a.getAspect_en()) ;
+						
+						dataTemp.add(d) ;
+					}
+					
+					detail.setAspectsDatas(dataTemp) ;
+				}
+
 			} else {
 				detail.setCategory2_id("");
 			}

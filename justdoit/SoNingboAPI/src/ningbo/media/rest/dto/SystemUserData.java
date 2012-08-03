@@ -12,7 +12,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @XmlType(name = "SystemUser", namespace = WsConstants.NS, propOrder = {
 		"nickName", "md5Value", "username", "name_cn", "name_en", "email",
 		"status", "photo_path", "gender", "birthday", "datetime",
-		"lastModifyTime", "website", "userType", "intro","remark","following","followed","userProfileData" })
+		"lastModifyTime", "website", "userType", "intro", "remark",
+		"following", "followed", "followingStatus", "userProfileData" })
 @XmlRootElement(name = "data")
 public class SystemUserData {
 
@@ -45,15 +46,16 @@ public class SystemUserData {
 	private String userType;
 
 	private String intro;
-	
-	private String remark ;
-	
-	private long following ;
-	
-	private long followed ;
-	
-	private UserProfileData userProfileData ;
-	
+
+	private String remark;
+
+	private long following;
+
+	private long followed;
+
+	private boolean followingStatus;
+
+	private UserProfileData userProfileData;
 
 	public String getMd5Value() {
 		return md5Value;
@@ -174,7 +176,6 @@ public class SystemUserData {
 	public void setNickName(String nickName) {
 		this.nickName = nickName;
 	}
-	
 
 	public String getRemark() {
 		return remark;
@@ -183,7 +184,6 @@ public class SystemUserData {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
-	
 
 	public UserProfileData getUserProfileData() {
 		return userProfileData;
@@ -192,7 +192,6 @@ public class SystemUserData {
 	public void setUserProfileData(UserProfileData userProfileData) {
 		this.userProfileData = userProfileData;
 	}
-	
 
 	public long getFollowing() {
 		return following;
@@ -208,6 +207,15 @@ public class SystemUserData {
 
 	public void setFollowed(long followed) {
 		this.followed = followed;
+	}
+
+
+	public boolean isFollowingStatus() {
+		return followingStatus;
+	}
+
+	public void setFollowingStatus(boolean followingStatus) {
+		this.followingStatus = followingStatus;
 	}
 
 	@Override

@@ -20,9 +20,14 @@ public class FriendsDaoImpl extends BaseDaoImpl<Friends, Integer> implements
 
 	public boolean isExistsRelation(String userA, String userB) {
 		boolean flag = false;
-		Friends f = getRelationObject(userA, userB);
-		if (f != null) {
-			flag = true;
+		final String hql = "from Friends as m where 1=1 and m.userId = ? and m.followId = ? and m.isFollowed =1 ";
+		try {
+			Friends f = (Friends) this.findUnique(hql, userA, userB);
+			if(null != f){
+				flag = true ;
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 		return flag;
 	}

@@ -264,8 +264,10 @@ public class FriendsRest {
 			SystemUserData data = new SystemUserData();
 			SystemUser tmp = list.get(i);
 			if (null != tmp) {
+				String followingMd5Value = tmp.getMd5Value() ;
+				boolean flag = friendsService.isExistsRelation(id, followingMd5Value);
 				data.setUsername(tmp.getUsername());
-				data.setMd5Value(tmp.getMd5Value());
+				data.setMd5Value(followingMd5Value);
 				data.setIntro(tmp.getIntro());
 				data.setNickName(tmp.getNickName());
 				if (null != tmp.getPhoto_path()) {
@@ -273,7 +275,7 @@ public class FriendsRest {
 				} else {
 					data.setPhoto_path("0");
 				}
-
+				data.setFollowingStatus(flag) ;
 			}
 			userData.add(data);
 		}

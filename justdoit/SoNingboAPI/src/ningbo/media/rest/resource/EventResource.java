@@ -351,7 +351,7 @@ public class EventResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteEvent(@FormParam("event_md5_value")
 	String eventMd5Value, @FormParam("key")
-	String key, @FormParam("user_md5_Value")
+	String key, @FormParam("user_md5_value")
 	String userMd5Value, @Context
 	HttpServletRequest request) throws JSONException {
 		JSONObject json = new JSONObject();

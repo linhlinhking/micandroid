@@ -33,7 +33,7 @@ public class SystemUserData {
 
 	private String photo_path;
 
-	private boolean gender;
+	private String gender;
 
 	private Date birthday;
 
@@ -105,11 +105,12 @@ public class SystemUserData {
 		this.photo_path = photo_path;
 	}
 
-	public boolean isGender() {
+
+	public String getGender() {
 		return gender;
 	}
 
-	public void setGender(boolean gender) {
+	public void setGender(String gender) {
 		this.gender = gender;
 	}
 

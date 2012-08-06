@@ -379,7 +379,7 @@ public class SystemUserRest {
 			if (null != u) {
 				u.setWebsite(website);
 				u.setName_cn(name_cn);
-				u.setGender(Boolean.valueOf(gender));
+				u.setGender(gender);
 				u.setIntro(intro);
 				u.setNickName(nickName);
 				u.setLastModifyTime(new Date());
@@ -670,7 +670,7 @@ public class SystemUserRest {
 		data.setEmail(user.getEmail());
 		data.setUsername(user.getUsername());
 		data.setPhoto_path(user.getPhoto_path());
-		data.setGender(user.isGender());
+		data.setGender(user.getGender());
 		data.setStatus(user.isStatus());
 		data.setWebsite(user.getWebsite());
 		data.setDatetime(user.getDatetime());

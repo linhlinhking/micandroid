@@ -47,7 +47,7 @@ public class SystemUser implements Serializable {
 	
 	private String photo_path;
 	
-	private boolean gender;
+	private String gender;
 	
 	private String intro ;
 	
@@ -166,14 +166,8 @@ public class SystemUser implements Serializable {
 		this.status = status;
 	}
 	
-	@XmlTransient
-	public boolean isGender() {
-		return gender;
-	}
+	
 
-	public void setGender(boolean gender) {
-		this.gender = gender;
-	}
 
 	
 	public Date getLastModifyTime() {
@@ -315,6 +309,16 @@ public class SystemUser implements Serializable {
 
 	public void setUserType(String userType) {
 		this.userType = userType;
+	}
+
+
+	public String getGender() {
+		return gender;
+	}
+
+
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 
 	

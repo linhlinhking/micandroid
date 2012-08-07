@@ -11,4 +11,6 @@ public interface EventService extends BaseService<Event, Integer>{
 	public List<Event> getEventsByType(String mdValue,EventType type) ;
 	
 	public Event getEventByUser(String eMdValue,String uMdValue) ;
+	
+	public List<Event> getAllEventOrderByDate();
 }

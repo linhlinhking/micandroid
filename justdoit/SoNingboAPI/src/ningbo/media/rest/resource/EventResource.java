@@ -3,6 +3,7 @@ package ningbo.media.rest.resource;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -67,7 +68,7 @@ public class EventResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<EventData> getAllEvent() throws JSONException{
-		List<Event> list = eventService.getAll() ;
+		List<Event> list = eventService.getAllEventOrderByDate() ;
 		List<EventData> d = null ;
 			if(null != list && list.size() > 0){
 				 d = getEventsByDateList(list);
@@ -217,6 +218,7 @@ public class EventResource {
 			event.setAddress(address);
 			event.setLocationMd5Value(locationMd5Value);
 			event.setUserMd5Value(userMd5Value);
+			event.setCreateDateTime(new Date());
 
 			String fileName = String.valueOf(System.currentTimeMillis());
 			StringBuffer sb = new StringBuffer();

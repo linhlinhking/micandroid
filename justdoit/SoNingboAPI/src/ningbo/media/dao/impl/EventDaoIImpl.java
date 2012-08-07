@@ -28,7 +28,7 @@ public class EventDaoIImpl extends BaseDaoImpl<Event, Integer> implements
 			} else if (EventType.LOCATION.equals(type)) {
 				hql = "from Event as model where 1=1 and model.locationMd5Value = ? ";
 			} else if (EventType.EVENTDATE.equals(type)) {
-				hql = "from Event as model where 1=1 and model.endDate > ? order by model.startDate desc " ;
+				hql = "from Event as model where 1=1 and model.endDate > ? order by model.startDate desc ";
 			} else {
 				return null;
 			}
@@ -44,16 +44,31 @@ public class EventDaoIImpl extends BaseDaoImpl<Event, Integer> implements
 		return null;
 	}
 
-	public Event getEventByUser(String eMdValue,String uMdValue) {
-		try{
-			String hql = "from Event as model where 1=1 and model.userMd5Value = ? and model.md5Value = ? " ;
-			Event e = (Event)findUnique(hql, uMdValue,eMdValue) ;
-			if(null != e){
-				return e ;
+	public Event getEventByUser(String eMdValue, String uMdValue) {
+		try {
+			String hql = "from Event as model where 1=1 and model.userMd5Value = ? and model.md5Value = ? ";
+			Event e = (Event) findUnique(hql, uMdValue, eMdValue);
+			if (null != e) {
+				return e;
 			}
-		}catch(Exception ex){
-			logger.error("Query Event by UserMdValue Fail." + uMdValue) ;
+		} catch (Exception ex) {
+			logger.error("Query Event by UserMdValue Fail." + uMdValue);
 		}
+		return null;
+	}
+
+	public List<Event> getAllEventOrderByDate() {
+		try {
+			String hql = "from Event as model where 1=1 order by model.startDate desc ,model.createDateTime desc ";
+			List<Event> list = findByHql(hql);
+			if(null != list && list.size() > 0){
+				return list;
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			logger.error("Query All Events,No data.");
+		}
+		
 		return null;
 	}
 

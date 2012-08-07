@@ -1,6 +1,7 @@
 package ningbo.media.bean;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -41,6 +42,10 @@ public class Event implements Serializable {
 	private String locationMd5Value;
 
 	private String userMd5Value;
+	
+	private Date createDateTime ;
+	
+	private Date updateDateTime ;
 
 	public Event() {
 	}
@@ -148,5 +153,22 @@ public class Event implements Serializable {
 	public void setUserMd5Value(String userMd5Value) {
 		this.userMd5Value = userMd5Value;
 	}
+
+	public Date getCreateDateTime() {
+		return createDateTime;
+	}
+
+	public void setCreateDateTime(Date createDateTime) {
+		this.createDateTime = createDateTime;
+	}
+
+	public Date getUpdateDateTime() {
+		return updateDateTime;
+	}
+
+	public void setUpdateDateTime(Date updateDateTime) {
+		this.updateDateTime = updateDateTime;
+	}
+	
 
 }

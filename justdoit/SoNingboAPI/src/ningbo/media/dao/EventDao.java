@@ -12,4 +12,6 @@ public interface EventDao extends BaseDao<Event, Integer>{
 	
 	public Event getEventByUser(String eMdValue,String uMdValue) ;
 	
+	public List<Event> getAllEventOrderByDate();
+	
 }

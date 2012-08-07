@@ -14,8 +14,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import ningbo.media.bean.AspectsCategory;
 import ningbo.media.bean.Comment;
 import ningbo.media.bean.Location;
+import ningbo.media.bean.SecondCategory;
 import ningbo.media.bean.SystemUser;
 import ningbo.media.bean.enums.CommentType;
 import ningbo.media.data.api.LocationCommentList;
@@ -23,6 +25,7 @@ import ningbo.media.data.api.UserCommentList;
 import ningbo.media.data.entity.LocationCommentData;
 import ningbo.media.data.entity.LocationDetail;
 import ningbo.media.data.entity.UserCommentData;
+import ningbo.media.rest.dto.AspectsCategoryData;
 import ningbo.media.rest.dto.SystemUserData;
 import ningbo.media.rest.util.Constant;
 import ningbo.media.rest.util.JSONCode;
@@ -76,7 +79,8 @@ public class CommentRest {
 				json.put(Constant.MESSAGE, JSONCode.MSG_NO_INPUT);
 				return Response.ok(json.toString()).build();
 			} else {
-				SystemUser u = systemUserService.get(Constant.MD5_FIELD,userId);
+				SystemUser u = systemUserService
+						.get(Constant.MD5_FIELD, userId);
 				if (null == u) {
 					json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 					json.put(Constant.MESSAGE, JSONCode.MSG_USER_NOEXISTS);
@@ -90,7 +94,8 @@ public class CommentRest {
 				json.put(Constant.MESSAGE, JSONCode.MSG_NO_INPUT);
 				return Response.ok(json.toString()).build();
 			} else {
-				Location location = locationService.get(Constant.MD5_FIELD,locationId);
+				Location location = locationService.get(Constant.MD5_FIELD,
+						locationId);
 				if (null == location) {
 					json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 					json.put(Constant.MESSAGE, JSONCode.MSG_LOCATION_NOEXISTS);
@@ -160,7 +165,7 @@ public class CommentRest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public UserCommentList getUserCommentList(@PathParam("userId")
 	String id) {
-		List<Comment> list = commentService.getListByMd5(id,CommentType.USER);
+		List<Comment> list = commentService.getListByMd5(id, CommentType.USER);
 		if (null == list || list.size() < 0) {
 			return new UserCommentList();
 		}
@@ -171,14 +176,14 @@ public class CommentRest {
 			Location loc = c.getLocation();
 			if (null != loc) {
 				LocationDetail detail = new LocationDetail();
-				detail.setLocationId(loc.getId()) ;
-				detail.setMd5Value(loc.getMd5Value()) ;
-				detail.setName_cn(loc.getName_cn()) ;
-				detail.setName_en(loc.getName_en()) ;
-				detail.setLatitude(loc.getLatitude()) ;
-				detail.setLongitude(loc.getLongitude()) ;
-				
-				uc.setLocationDetail(detail) ;
+				detail.setLocationId(loc.getId());
+				detail.setMd5Value(loc.getMd5Value());
+				detail.setName_cn(loc.getName_cn());
+				detail.setName_en(loc.getName_en());
+				detail.setLatitude(loc.getLatitude());
+				detail.setLongitude(loc.getLongitude());
+
+				uc.setLocationDetail(detail);
 			}
 
 			uc.setCommentId(c.getId());
@@ -193,7 +198,8 @@ public class CommentRest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public LocationCommentList getLocationCommentList(@PathParam("locationId")
 	String id) {
-		List<Comment> list = commentService.getListByMd5(id,CommentType.LOCATION);
+		List<Comment> list = commentService.getListByMd5(id,
+				CommentType.LOCATION);
 		if (null == list || list.size() < 0) {
 			return new LocationCommentList();
 		}
@@ -211,8 +217,8 @@ public class CommentRest {
 				data.setMd5Value(tempUser.getMd5Value());
 				if (null != tempUser.getPhoto_path()) {
 					data.setPhoto_path(tempUser.getPhoto_path());
-				}else{
-					data.setPhoto_path("0") ;
+				} else {
+					data.setPhoto_path("0");
 				}
 
 				lc.setSystemUserData(data);
@@ -220,6 +226,28 @@ public class CommentRest {
 			lc.setDate_time(c.getDate_time());
 			tempList.add(lc);
 		}
-		return new LocationCommentList(tempList, id);
+		Location temp = locationService.get(Constant.MD5_FIELD, id);
+		LocationDetail detail = new LocationDetail();
+		if (null != temp) {
+			List<SecondCategory> scList = temp.getSecondCategorys();
+			if (null != scList && scList.size() > 0) {
+				SecondCategory sc = scList.get(0);
+				List<AspectsCategory> aspectList = sc.getFirstCategory()
+						.getAspectsCategorys();
+				List<AspectsCategoryData> aspectsData = new ArrayList<AspectsCategoryData>();
+				for (AspectsCategory tmp : aspectList) {
+					AspectsCategoryData d = new AspectsCategoryData();
+					d.setAspect_cn(tmp.getAspect_cn());
+					d.setAspect_en(tmp.getAspect_en());
+					aspectsData.add(d);
+				}
+				detail.setAspectsDatas(aspectsData);
+			}
+
+			detail.setMd5Value(temp.getMd5Value());
+		} else {
+			detail.setMd5Value(id);
+		}
+		return new LocationCommentList(tempList, detail);
 	}
 }

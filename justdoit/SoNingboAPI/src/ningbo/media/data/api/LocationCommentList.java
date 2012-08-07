@@ -6,11 +6,12 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import ningbo.media.data.entity.LocationCommentData;
+import ningbo.media.data.entity.LocationDetail;
 
 @XmlRootElement
 public class LocationCommentList {
 
-	private String locationId;
+	private LocationDetail locationData;
 
 	private Collection<LocationCommentData> data;
 
@@ -18,15 +19,15 @@ public class LocationCommentList {
 	public LocationCommentList(){}
 	
 
-	public LocationCommentList(Collection<LocationCommentData> data,String locationId){
+	public LocationCommentList(Collection<LocationCommentData> data,LocationDetail locationData){
 		this.data = data ;
-		this.locationId = locationId ;
+		this.locationData = locationData ;
 	}
 	
 	
-	@XmlElement(name = "locationId")
-	public String getLocationId() {
-		return locationId;
+	@XmlElement(name = "locationData")
+	public LocationDetail getLocationDetail() {
+		return locationData;
 	}
 
 	@XmlElement(name = "data")

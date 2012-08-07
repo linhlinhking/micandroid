@@ -13,6 +13,8 @@ public class LocationCommentData implements EntityData{
 	private String commentContent ;
 	
 	private Date date_time ; 
+	
+	private LocationDetail locationData ;
 
 
 	public SystemUserData getSystemUserData() {
@@ -46,7 +48,14 @@ public class LocationCommentData implements EntityData{
 	public void setDate_time(Date date_time) {
 		this.date_time = date_time;
 	}
-	
+
+	public LocationDetail getLocationData() {
+		return locationData;
+	}
+
+	public void setLocationData(LocationDetail locationData) {
+		this.locationData = locationData;
+	}
 	
 	
 }

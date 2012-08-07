@@ -17,17 +17,19 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class LocationExtResource {
-	
+
 	@Resource
 	private LocationExtService locationExtService;
-	
-	
+
 	@Path("/add")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addLocationExt(@FormParam("location_website")String website){
-		
-		
-		return null ;
+	public Response addLocationExt(@FormParam("location_website")
+	String website, @FormParam("location_qq")
+	String qq, @FormParam("location_email")
+	String email, @FormParam("location_msn")
+	String msn) {
+
+		return null;
 	}
 }

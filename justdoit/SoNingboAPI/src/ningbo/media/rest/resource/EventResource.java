@@ -63,6 +63,20 @@ public class EventResource {
 	@Resource
 	private LocationService locationService;
 
+	@Path("/showAll")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<EventData> getAllEvent() throws JSONException{
+		List<Event> list = eventService.getAll() ;
+		List<EventData> d = null ;
+			if(null != list && list.size() > 0){
+				 d = getEventsByDateList(list);
+			}else{
+				 d = new ArrayList<EventData>(); 
+			}
+		return d ;
+	}
+
 	@Path("/add")
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -373,7 +387,8 @@ public class EventResource {
 				return Response.ok(json.toString()).build();
 			}
 
-			Event event = eventService.getEventByUser(eventMd5Value, userMd5Value) ;
+			Event event = eventService.getEventByUser(eventMd5Value,
+					userMd5Value);
 			if (null != event) {
 				String uuid = event.getPhoto_path();
 				if (null != uuid && !("0".equals(uuid))) {
@@ -386,7 +401,7 @@ public class EventResource {
 			}
 
 		} catch (Exception ex) {
-			ex.printStackTrace() ;
+			ex.printStackTrace();
 		}
 		json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 		json.put(Constant.MESSAGE, JSONCode.MSG_EVENT_DELETE_FAIL);
@@ -522,6 +537,7 @@ public class EventResource {
 			tempEventData.setUser(tmpUser);
 			tempEventData.setLocation(detail);
 
+			datas.add(tempEventData);
 		}
 
 		return datas;

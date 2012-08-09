@@ -8,7 +8,7 @@ import ningbo.media.rest.dto.SystemUserData;
 
 @XmlType(name = "Event", namespace = WsConstants.NS, propOrder = { "md5Value",
 		"title", "subject", "address", "startDate", "startTime", "endDate",
-		"endTime", "photo_path", "organizer", "location",
+		"endTime", "photo_path", "organizer","telephone", "location",
 		"user" })
 @XmlRootElement
 public class EventData {
@@ -32,6 +32,8 @@ public class EventData {
 	private String photo_path;
 
 	private String organizer;
+	
+	private String telephone ;
 
 	private LocationDetail location;
 
@@ -132,6 +134,14 @@ public class EventData {
 
 	public void setLocation(LocationDetail location) {
 		this.location = location;
+	}
+
+	public String getTelephone() {
+		return telephone;
+	}
+
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
 	}
 
 	

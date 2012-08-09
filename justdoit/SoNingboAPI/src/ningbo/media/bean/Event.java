@@ -34,6 +34,8 @@ public class Event implements Serializable {
 	private String endDate;
 
 	private String endTime;
+	
+	private String telephone ;
 
 	private String photo_path;
 
@@ -169,6 +171,14 @@ public class Event implements Serializable {
 	public void setUpdateDateTime(Date updateDateTime) {
 		this.updateDateTime = updateDateTime;
 	}
-	
 
+	public String getTelephone() {
+		return telephone;
+	}
+
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
+	}
+	
+	
 }

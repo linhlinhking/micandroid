@@ -67,15 +67,15 @@ public class EventResource {
 	@Path("/showAll")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<EventData> getAllEvent() throws JSONException{
-		List<Event> list = eventService.getAllEventOrderByDate() ;
-		List<EventData> d = null ;
-			if(null != list && list.size() > 0){
-				 d = getEventsByDateList(list);
-			}else{
-				 d = new ArrayList<EventData>(); 
-			}
-		return d ;
+	public List<EventData> getAllEvent() throws JSONException {
+		List<Event> list = eventService.getAllEventOrderByDate();
+		List<EventData> d = null;
+		if (null != list && list.size() > 0) {
+			d = getEventsByDateList(list);
+		} else {
+			d = new ArrayList<EventData>();
+		}
+		return d;
 	}
 
 	@Path("/add")
@@ -109,6 +109,7 @@ public class EventResource {
 			String endDate = form.getField("endDate").getValue();
 			String endTime = form.getField("endTime").getValue();
 			String address = form.getField("address").getValue();
+			String telephone = form.getField("telephone").getValue();
 
 			SystemUser tempUser = systemUserService
 					.getSystemUserByMd5Value(userMd5Value);
@@ -137,6 +138,7 @@ public class EventResource {
 			event.setAddress(address);
 			event.setLocationMd5Value(locationMd5Value);
 			event.setUserMd5Value(userMd5Value);
+			event.setTelephone(telephone);
 
 			FormDataBodyPart part = form.getField("photo_path");
 			String fileName = part.getContentDisposition().getFileName();
@@ -174,7 +176,8 @@ public class EventResource {
 	String startTime, @FormParam("endDate")
 	String endDate, @FormParam("endTime")
 	String endTime, @FormParam("address")
-	String address, @FormParam("base64Value")
+	String address, @FormParam("telephone")
+	String telephone, @FormParam("base64Value")
 	String base64Value, @Context
 	HttpServletRequest request) throws JSONException {
 		JSONObject json = new JSONObject();
@@ -219,6 +222,7 @@ public class EventResource {
 			event.setLocationMd5Value(locationMd5Value);
 			event.setUserMd5Value(userMd5Value);
 			event.setCreateDateTime(new Date());
+			event.setTelephone(telephone);
 
 			String fileName = String.valueOf(System.currentTimeMillis());
 			StringBuffer sb = new StringBuffer();
@@ -273,7 +277,8 @@ public class EventResource {
 	String startTime, @FormParam("endDate")
 	String endDate, @FormParam("endTime")
 	String endTime, @FormParam("address")
-	String address, @FormParam("base64Value")
+	String address, @FormParam("telephone")
+	String telephone, @FormParam("base64Value")
 	String base64Value, @Context
 	HttpServletRequest request) throws JSONException {
 		JSONObject json = new JSONObject();
@@ -323,6 +328,7 @@ public class EventResource {
 			event.setAddress(address);
 			event.setLocationMd5Value(locationMd5Value);
 			event.setUserMd5Value(userMd5Value);
+			event.setTelephone(telephone);
 
 			if ((!"".equals(base64Value)) && (null != base64Value)) {
 				String fileName = String.valueOf(System.currentTimeMillis());
@@ -534,6 +540,7 @@ public class EventResource {
 			tempEventData.setStartTime(temp.getStartTime());
 			tempEventData.setEndDate(temp.getEndDate());
 			tempEventData.setEndTime(temp.getEndTime());
+			tempEventData.setTelephone(temp.getTelephone());
 			tempEventData.setOrganizer(temp.getOrganizer());
 			tempEventData.setPhoto_path(temp.getPhoto_path());
 			tempEventData.setUser(tmpUser);
@@ -564,6 +571,7 @@ public class EventResource {
 			detail.setName_en(loc.getName_en());
 			detail.setAddress_cn(loc.getAddress_cn());
 			detail.setAddress_en(loc.getAddress_en());
+			detail.setTelephone(loc.getTelephone()) ;
 
 			tmpUserEvent.setLocation(detail);
 			tmpUserEvent.setTitle(temp.getTitle());
@@ -571,6 +579,7 @@ public class EventResource {
 			tmpUserEvent.setMd5Value(temp.getMd5Value());
 			tmpUserEvent.setStartDate(temp.getStartDate());
 			tmpUserEvent.setStartTime(temp.getStartTime());
+			tmpUserEvent.setTelephone(temp.getTelephone()) ;
 			tmpUserEvent.setEndDate(temp.getEndDate());
 			tmpUserEvent.setEndTime(temp.getEndTime());
 			tmpUserEvent.setOrganizer(temp.getOrganizer());
@@ -603,6 +612,7 @@ public class EventResource {
 			tmpUserEvent.setMd5Value(temp.getMd5Value());
 			tmpUserEvent.setStartDate(temp.getStartDate());
 			tmpUserEvent.setStartTime(temp.getStartTime());
+			tmpUserEvent.setTelephone(temp.getTelephone()) ;
 			tmpUserEvent.setEndDate(temp.getEndDate());
 			tmpUserEvent.setEndTime(temp.getEndTime());
 			tmpUserEvent.setOrganizer(temp.getOrganizer());

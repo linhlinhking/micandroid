@@ -139,6 +139,7 @@ public class EventResource {
 			event.setLocationMd5Value(locationMd5Value);
 			event.setUserMd5Value(userMd5Value);
 			event.setTelephone(telephone);
+			event.setCreateDateTime(new Date());
 
 			FormDataBodyPart part = form.getField("photo_path");
 			String fileName = part.getContentDisposition().getFileName();
@@ -329,6 +330,7 @@ public class EventResource {
 			event.setLocationMd5Value(locationMd5Value);
 			event.setUserMd5Value(userMd5Value);
 			event.setTelephone(telephone);
+			event.setUpdateDateTime(new Date());
 
 			if ((!"".equals(base64Value)) && (null != base64Value)) {
 				String fileName = String.valueOf(System.currentTimeMillis());

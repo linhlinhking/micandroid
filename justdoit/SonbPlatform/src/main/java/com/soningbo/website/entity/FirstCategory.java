@@ -12,6 +12,7 @@ import org.compass.annotations.Store;
 
 import com.soningbo.core.entity.BaseEntity;
 
+
 @Entity
 @Table(name = "category1")
 public class FirstCategory extends BaseEntity {

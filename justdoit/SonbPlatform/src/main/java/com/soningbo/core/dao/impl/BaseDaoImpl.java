@@ -7,23 +7,32 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.LockMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Example;
+import org.hibernate.criterion.Example.PropertySelector;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.metadata.ClassMetadata;
+import static org.hibernate.EntityMode.POJO;
+import org.hibernate.type.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 import com.soningbo.core.dao.BaseDao;
+import com.soningbo.core.dao.Condition;
 import com.soningbo.core.dao.OrderBy;
+import com.soningbo.core.dao.Updater;
 import com.soningbo.core.page.Finder;
 import com.soningbo.core.page.Pagination;
 
@@ -204,41 +213,40 @@ public abstract class BaseDaoImpl<E, PK extends Serializable> implements
 				.setProjection(Projections.rowCount()).uniqueResult()))
 				.intValue();
 	}
-	
-	
+
 	@SuppressWarnings("unchecked")
-	protected Pagination<E> find(Finder finder,int pageNo,int pageSize){
-		int totalCount = countQueryResult(finder) ;
-		Pagination<E> p = new Pagination<E>(pageNo,pageSize,totalCount) ;
-		if(totalCount < 1){
-			p.setList(new ArrayList<E>()) ;
-			return p ;
+	protected Pagination<E> find(Finder finder, int pageNo, int pageSize) {
+		int totalCount = countQueryResult(finder);
+		Pagination<E> p = new Pagination<E>(pageNo, pageSize, totalCount);
+		if (totalCount < 1) {
+			p.setList(new ArrayList<E>());
+			return p;
 		}
-		Query query = getSession().createQuery(finder.getOrigHql()) ;
-		finder.setParamsToQuery(query) ;
-		query.setFirstResult(p.getFirstResult()) ;
-		query.setMaxResults(p.getPageSize()) ;
-		List<E> list = query.list() ;
-		p.setList(list) ;
-		return p ;
+		Query query = getSession().createQuery(finder.getOrigHql());
+		finder.setParamsToQuery(query);
+		query.setFirstResult(p.getFirstResult());
+		query.setMaxResults(p.getPageSize());
+		List<E> list = query.list();
+		p.setList(list);
+		return p;
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	protected List<E> find(Finder finder){
-		Query query = getSession().createQuery(finder.getOrigHql()) ;
-		finder.setParamsToQuery(query) ;
-		query.setFirstResult(finder.getFirstResult()) ;
-		if(finder.getMaxResults() > 0){
-			query.setMaxResults(finder.getMaxResults()) ;
+	protected List<E> find(Finder finder) {
+		Query query = getSession().createQuery(finder.getOrigHql());
+		finder.setParamsToQuery(query);
+		query.setFirstResult(finder.getFirstResult());
+		if (finder.getMaxResults() > 0) {
+			query.setMaxResults(finder.getMaxResults());
 		}
-		List<E> list = query.list() ;
-		return list ;
+		List<E> list = query.list();
+		return list;
 	}
-	
-	protected int countQueryResult(Finder finder){
-		Query query = getSession().createQuery(finder.getRowCountHql()) ;
-		finder.setParamsToQuery(query) ;
-		return ((Number)query.iterate().next()).intValue() ;
+
+	protected int countQueryResult(Finder finder) {
+		Query query = getSession().createQuery(finder.getRowCountHql());
+		finder.setParamsToQuery(query);
+		return ((Number) query.iterate().next()).intValue();
 	}
 
 	/**
@@ -280,4 +288,107 @@ public abstract class BaseDaoImpl<E, PK extends Serializable> implements
 		return q;
 	}
 
+	protected Criteria getCritByEg(E bean, boolean anyWhere, Condition[] conds,
+			String... exclude) {
+		Criteria crit = getSession().createCriteria(getPersistentClass());
+		Example example = Example.create(bean);
+		example.setPropertySelector(NOT_BLANK);
+		if(anyWhere){
+			example.enableLike(MatchMode.ANYWHERE) ;
+			example.ignoreCase() ;
+		}
+		for(String p : exclude){
+			example.excludeProperty(p) ;
+		}
+		crit.add(example) ;
+		if(null != conds && conds.length > 0){
+			for(Condition o : conds){
+				if(o instanceof OrderBy){
+					OrderBy order = (OrderBy)o ;
+					crit.addOrder(order.getOrder()) ;
+				}else{
+					
+				}
+			}
+		}
+		//deal with many-to-one
+		ClassMetadata cm = getClassMetadata(bean.getClass()) ;
+		String[] fieldNames = cm.getPropertyNames() ;
+		for(String field :fieldNames){
+			Object o  = cm.getPropertyValue(bean, field, POJO) ;
+			if(null == o){
+				continue ;
+			}
+			ClassMetadata subCm = getClassMetadata(o.getClass()) ;
+			if(null == subCm){
+				continue ;
+			}
+			@SuppressWarnings("deprecation")
+			Serializable id = subCm.getIdentifier(o, POJO) ;
+			if(null != id){
+				Serializable idName = subCm.getIdentifierPropertyName() ;
+				crit.add(Restrictions.eq(field + "." + idName, id));
+			}else{
+				crit.createCriteria(field).add(Example.create(o)) ;
+			}
+		}
+		return crit ;
+	}
+
+	public void refresh(Object entity) {
+		getSession().refresh(entity);
+	}
+
+	public List<E> findByEgList(E eg, boolean anyWhere, Condition[] conds,
+			String... exclude) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<E> findByEgList(E eg, boolean anyWhere, Condition[] conds,
+			int firstResult, int maxResult, String... exclude) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Pagination<E> findByEg(E exampleInstance, boolean anyWhere,
+			Condition[] conds, int pageNo, int pageSize, String... exclude) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Object updateByUpdater(Updater updater) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Object updateDefault(Object entity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public E createNewEntiey() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private ClassMetadata getClassMetadata(Class<?> clazz){
+		return (ClassMetadata)sessionFactory.getClassMetadata(clazz) ;
+	}
+	
+	public static final NotBlankPropertySelector NOT_BLANK = new NotBlankPropertySelector();
+
+	/**
+	 * 不为空的EXAMPLE属性选择方式
+	 */
+	static final class NotBlankPropertySelector implements PropertySelector {
+		private static final long serialVersionUID = 1L;
+
+		public boolean include(Object object, String property,Type type) {
+			return object != null
+					&& !(object instanceof String && StringUtils
+							.isBlank((String) object));
+		}
+
+	}
 }

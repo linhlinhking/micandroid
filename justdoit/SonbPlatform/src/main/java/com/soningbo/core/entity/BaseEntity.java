@@ -22,6 +22,12 @@ public class BaseEntity implements Serializable {
 
 	@SearchableProperty(store = Store.YES)
 	private Date updateDate;
+	
+	@Column(length = 64)
+	private String create_person ;
+	
+	@Column(length = 64)
+	private String update_person ;
 
 	public String getMd5Value() {
 		return md5Value;
@@ -46,5 +52,23 @@ public class BaseEntity implements Serializable {
 	public void setUpdateDate(Date updateDate) {
 		this.updateDate = updateDate;
 	}
+
+	public String getCreate_person() {
+		return create_person;
+	}
+
+	public void setCreate_person(String create_person) {
+		this.create_person = create_person;
+	}
+
+	public String getUpdate_person() {
+		return update_person;
+	}
+
+	public void setUpdate_person(String update_person) {
+		this.update_person = update_person;
+	}
+	
+	
 
 }

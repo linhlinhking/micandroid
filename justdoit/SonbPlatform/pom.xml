@@ -8,7 +8,6 @@
 	<name>SonbPlatform Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 
-
 	<properties>
 		<spring.version>3.1.0.RELEASE</spring.version>
 		<spring.security.core.version>3.1.0.RELEASE</spring.security.core.version>
@@ -34,7 +33,6 @@
 		<mysql-version>5.1.13</mysql-version>
 		<cglib-version>2.2</cglib-version>
 		<jackson-version>1.9.8</jackson-version>
-		<ehcache-version>2.5.0</ehcache-version>
 	</properties>
 
 	<dependencies>

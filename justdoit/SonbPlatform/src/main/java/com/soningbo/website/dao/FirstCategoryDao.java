@@ -1,5 +1,8 @@
 package com.soningbo.website.dao;
 
-public class FirstCategoryDao {
+import com.soningbo.core.dao.BaseDao;
+import com.soningbo.website.entity.FirstCategory;
+
+public interface FirstCategoryDao extends BaseDao<FirstCategory, Integer>{
 
 }

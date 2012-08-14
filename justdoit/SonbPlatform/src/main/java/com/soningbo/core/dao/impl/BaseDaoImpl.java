@@ -1,12 +1,11 @@
 package com.soningbo.core.dao.impl;
 
+import static org.hibernate.EntityMode.POJO;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.annotation.Resource;
-
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.LockMode;
@@ -22,7 +21,6 @@ import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.metadata.ClassMetadata;
-import static org.hibernate.EntityMode.POJO;
 import org.hibernate.type.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -339,22 +337,43 @@ public abstract class BaseDaoImpl<E, PK extends Serializable> implements
 		getSession().refresh(entity);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<E> findByEgList(E eg, boolean anyWhere, Condition[] conds,
 			String... exclude) {
-		// TODO Auto-generated method stub
-		return null;
+		Criteria crit = getCritByEg(eg, anyWhere, conds, exclude) ;
+		return crit.list();
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<E> findByEgList(E eg, boolean anyWhere, Condition[] conds,
 			int firstResult, int maxResult, String... exclude) {
-		// TODO Auto-generated method stub
-		return null;
+		Criteria crit = getCritByEg(eg, anyWhere, conds, exclude) ;
+		crit.setFirstResult(firstResult) ;
+		crit.setMaxResults(maxResult) ;
+		return crit.list();
 	}
 
 	public Pagination<E> findByEg(E exampleInstance, boolean anyWhere,
 			Condition[] conds, int pageNo, int pageSize, String... exclude) {
-		// TODO Auto-generated method stub
-		return null;
+		Order[] orderArry = null ;
+		Condition[] condArry = null ;
+		if(null != conds && conds.length > 0){
+			List<Order> orderList = new ArrayList<Order>();
+			List<Condition> condList = new ArrayList<Condition>() ;
+			for(Condition c : conds){
+				if(c instanceof OrderBy){
+					orderList.add(((OrderBy)c).getOrder()) ;
+				}else{
+					condList.add(c) ;
+				}
+			}
+			orderArry = new Order[orderList.size()] ;
+			condArry = new Condition[condList.size()] ;
+			orderArry = orderList.toArray(orderArry) ;
+			condArry = condList.toArray(condArry) ;
+		}
+		Criteria crit = getCritByEg(exampleInstance, anyWhere, conds, exclude) ;
+		return findByCriteria(crit, pageNo, pageSize, null, orderArry);
 	}
 
 	public Object updateByUpdater(Updater updater) {

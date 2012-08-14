@@ -16,7 +16,6 @@ public interface BaseDao<E,PK extends Serializable> {
 	 * @return 实体对象
 	 */
 	public E load(PK id, boolean lock);
-	
 
 	public E get(PK id);
 

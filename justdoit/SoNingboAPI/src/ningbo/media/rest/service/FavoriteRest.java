@@ -30,8 +30,6 @@ import ningbo.media.service.FavoriteTempService;
 import ningbo.media.service.LocationService;
 import ningbo.media.service.SystemUserService;
 import ningbo.media.service.TempUserService;
-import ningbo.media.util.MD5;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.context.annotation.Scope;
@@ -331,23 +329,25 @@ public class FavoriteRest {
 			if (null != locationId) {
 				tempLocation = locationService.get(Constant.MD5_FIELD,
 						locationId);
-				detail.setMd5Value(MD5.calcMD5(String.valueOf(tempLocation
-						.getId())));
-				detail.setName_cn(tempLocation.getName_cn());
-				detail.setAddress_cn(tempLocation.getAddress_cn());
-				detail.setLatitude(tempLocation.getLatitude());
-				detail.setLongitude(tempLocation.getLongitude());
-				detail.setName_en(tempLocation.getName_en());
-				detail.setAddress_en(tempLocation.getAddress_en());
-				detail.setTags_cn(tempLocation.getTags_cn());
-				detail.setTags_en(tempLocation.getTags_en());
-				detail.setTelephone(tempLocation.getTelephone());
-				if (null == tempLocation.getPhoto_path()) {
-					detail.setPhoto_path("0");
-				} else {
-					detail.setPhoto_path(tempLocation.getPhoto_path());
+				if(null != tempLocation){
+					detail.setMd5Value(tempLocation.getMd5Value());
+					detail.setName_cn(tempLocation.getName_cn());
+					detail.setAddress_cn(tempLocation.getAddress_cn());
+					detail.setLatitude(tempLocation.getLatitude());
+					detail.setLongitude(tempLocation.getLongitude());
+					detail.setName_en(tempLocation.getName_en());
+					detail.setAddress_en(tempLocation.getAddress_en());
+					detail.setTags_cn(tempLocation.getTags_cn());
+					detail.setTags_en(tempLocation.getTags_en());
+					detail.setTelephone(tempLocation.getTelephone());
+					if (null == tempLocation.getPhoto_path()) {
+						detail.setPhoto_path("0");
+					} else {
+						detail.setPhoto_path(tempLocation.getPhoto_path());
+					}
+					locations.add(detail);
 				}
-				locations.add(detail);
+				
 			}
 		}
 		return new FavoriteList(userId, "", locations);
@@ -368,13 +368,14 @@ public class FavoriteRest {
 			if (null != locationId) {
 				tempLocation = locationService.get(Constant.MD5_FIELD,
 						locationId);
-				detail.setMd5Value(MD5.calcMD5(String.valueOf(tempLocation
-						.getId())));
-				detail.setName_cn(tempLocation.getName_cn());
-				detail.setAddress_cn(tempLocation.getAddress_cn());
-				detail.setLatitude(tempLocation.getLatitude());
-				detail.setLongitude(tempLocation.getLongitude());
-				locations.add(detail);
+				if(null != tempLocation){
+					detail.setMd5Value(tempLocation.getMd5Value());
+					detail.setName_cn(tempLocation.getName_cn());
+					detail.setAddress_cn(tempLocation.getAddress_cn());
+					detail.setLatitude(tempLocation.getLatitude());
+					detail.setLongitude(tempLocation.getLongitude());
+					locations.add(detail);
+				}
 			}
 		}
 		return new FavoriteList(String.valueOf(-1), deviceId, locations);

@@ -124,21 +124,21 @@ public class LocationRest {
 				tempData.setName_cn(firstData.getName_cn());
 				tempData.setName_en(firstData.getName_en());
 				detail.setFirstCategoryData(tempData);
-				
+
 				List<AspectsCategory> listTemp = firstData
 						.getAspectsCategorys();
 				List<AspectsCategoryData> dataTemp = new ArrayList<AspectsCategoryData>();
-				if(null != listTemp && listTemp.size() > 0){
-					for(AspectsCategory a : listTemp){
+				if (null != listTemp && listTemp.size() > 0) {
+					for (AspectsCategory a : listTemp) {
 						AspectsCategoryData d = new AspectsCategoryData();
-						d.setId(a.getId()) ;
-						d.setAspect_cn(a.getAspect_cn()) ;
-						d.setAspect_en(a.getAspect_en()) ;
-						
-						dataTemp.add(d) ;
+						d.setId(a.getId());
+						d.setAspect_cn(a.getAspect_cn());
+						d.setAspect_en(a.getAspect_en());
+
+						dataTemp.add(d);
 					}
-					
-					detail.setAspectsDatas(dataTemp) ;
+
+					detail.setAspectsDatas(dataTemp);
 				}
 
 			} else {
@@ -181,10 +181,12 @@ public class LocationRest {
 		if (secondCategory == null) {
 			return new ArrayList<Location>();
 		}
-		List<Location> listLocation = secondCategory.getLocations();
+		// secondCategory.getLocations();
+		List<Location> listLocation = locationService
+				.queryLocationsById(Integer.valueOf(id));
 		int size = listLocation.size();
 		if (size == 1) {
-			listLocation.add(new Location());
+			//listLocation.add(new Location());
 		}
 		return listLocation;
 	}

@@ -8,6 +8,8 @@ import ningbo.media.data.entity.LocationDetail;
 
 public interface LocationService extends BaseService<Location,Integer> {
 
+	public List<Location> queryLocationsById(Integer categoryId);
+	
 	public List<Location> queryLocationByName(String locationName) ;
 	
 	public List<Location> queryLocationByPage(int pageNo,int pageSize) ;

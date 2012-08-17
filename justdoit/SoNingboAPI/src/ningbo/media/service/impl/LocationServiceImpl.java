@@ -125,4 +125,9 @@ public class LocationServiceImpl extends BaseServiceImpl<Location, Integer>
 		return null;
 	}
 
+	@Override
+	public List<Location> queryLocationsById(Integer categoryId) {
+		return locationDao.queryLocationsById(categoryId);
+	}
+
 }

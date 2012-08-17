@@ -526,15 +526,19 @@ public class EventResource {
 			SystemUser u = systemUserService.get(Constant.MD5_FIELD, userMd5);
 			String locMd5 = temp.getLocationMd5Value();
 			Location loc = locationService.get(Constant.MD5_FIELD, locMd5);
-
-			tmpUser.setMd5Value(u.getMd5Value());
-			tmpUser.setUsername(u.getUsername());
-			detail.setLatitude(loc.getLatitude());
-			detail.setLongitude(loc.getLongitude());
-			detail.setMd5Value(loc.getMd5Value());
-			detail.setName_cn(loc.getName_cn());
-			detail.setName_en(loc.getName_en());
-
+			if(null != loc){
+				detail.setLatitude(loc.getLatitude());
+				detail.setLongitude(loc.getLongitude());
+				detail.setMd5Value(loc.getMd5Value());
+				detail.setName_cn(loc.getName_cn());
+				detail.setName_en(loc.getName_en());
+				tempEventData.setLocation(detail);
+			}
+			if(null != u){
+				tmpUser.setMd5Value(u.getMd5Value());
+				tmpUser.setUsername(u.getUsername());
+				tempEventData.setUser(tmpUser);
+			}
 			tempEventData.setTitle(temp.getTitle());
 			tempEventData.setSubject(temp.getSubject());
 			tempEventData.setMd5Value(temp.getMd5Value());
@@ -545,9 +549,7 @@ public class EventResource {
 			tempEventData.setTelephone(temp.getTelephone());
 			tempEventData.setOrganizer(temp.getOrganizer());
 			tempEventData.setPhoto_path(temp.getPhoto_path());
-			tempEventData.setUser(tmpUser);
-			tempEventData.setLocation(detail);
-
+			
 			datas.add(tempEventData);
 		}
 

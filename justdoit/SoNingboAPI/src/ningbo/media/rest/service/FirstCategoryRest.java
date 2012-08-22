@@ -7,6 +7,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -17,7 +18,6 @@ import ningbo.media.service.FirstCategoryService;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
 
 @Path("/category/first")
 @Component
@@ -30,8 +30,13 @@ public class FirstCategoryRest {
 	@Path("/showAll")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<FirstCategoryData> getAllFirstCategory() {
-		return firstCategoryService.getAllFirstCategory() ;
+	public Response getAllFirstCategory() {
+		List<FirstCategoryData> data = firstCategoryService
+				.getAllFirstCategory();
+		GenericEntity<List<FirstCategoryData>> entiry = new GenericEntity<List<FirstCategoryData>>(
+				data) {
+		};
+		return Response.ok(entiry).build();
 	}
 
 	@Path("/{name}")
@@ -43,8 +48,6 @@ public class FirstCategoryRest {
 		return firstCategoryService.getFristCategoryByName(name);
 	}
 
-	
-	
 	@Path("/show/{id}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)

@@ -235,7 +235,7 @@ public class LocationRest {
 		String telephone = form.getField("telephone").getValue();
 		String lon = form.getField("longitude").getValue();
 		String lat = form.getField("latitude").getValue();
-		String userId = form.getField("user_id").getValue();
+		String userId = form.getField("userId").getValue();
 
 		// systemUserService
 

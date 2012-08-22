@@ -568,14 +568,16 @@ public class EventResource {
 			String locMd5 = temp.getLocationMd5Value();
 			Location loc = locationService.get(Constant.MD5_FIELD, locMd5);
 			LocationDetail detail = new LocationDetail();
-			detail.setMd5Value(loc.getMd5Value());
-			detail.setLatitude(loc.getLatitude());
-			detail.setLongitude(loc.getLongitude());
-			detail.setName_cn(loc.getName_cn());
-			detail.setName_en(loc.getName_en());
-			detail.setAddress_cn(loc.getAddress_cn());
-			detail.setAddress_en(loc.getAddress_en());
-			detail.setTelephone(loc.getTelephone()) ;
+			if(null != loc){
+				detail.setMd5Value(loc.getMd5Value());
+				detail.setLatitude(loc.getLatitude());
+				detail.setLongitude(loc.getLongitude());
+				detail.setName_cn(loc.getName_cn());
+				detail.setName_en(loc.getName_en());
+				detail.setAddress_cn(loc.getAddress_cn());
+				detail.setAddress_en(loc.getAddress_en());
+				detail.setTelephone(loc.getTelephone()) ;
+			}
 
 			tmpUserEvent.setLocation(detail);
 			tmpUserEvent.setTitle(temp.getTitle());
@@ -606,9 +608,11 @@ public class EventResource {
 			String userMd5 = temp.getUserMd5Value();
 			SystemUser u = systemUserService.get(Constant.MD5_FIELD, userMd5);
 			SystemUserData detail = new SystemUserData();
-			detail.setUsername(u.getUsername());
-			detail.setMd5Value(u.getMd5Value());
-			detail.setPhoto_path(u.getPhoto_path());
+			if(null != u){
+				detail.setUsername(u.getUsername());
+				detail.setMd5Value(u.getMd5Value());
+				detail.setPhoto_path(u.getPhoto_path());
+			}
 
 			tmpUserEvent.setUser(detail);
 			tmpUserEvent.setTitle(temp.getTitle());

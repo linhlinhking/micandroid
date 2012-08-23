@@ -6,10 +6,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import ningbo.media.rest.WsConstants;
+import ningbo.media.rest.dto.SystemUserData;
 
 @XmlType(name = "Comment", namespace = WsConstants.NS, propOrder = {
 		"commentId", "commentContent", "overAll", "rank1", "rank2", "rank3",
-		"createTime", "updateTime" })
+		"createTime", "updateTime","userData" })
 @XmlRootElement(name = "data")
 public class CommentData implements EntityData {
 
@@ -28,6 +29,8 @@ public class CommentData implements EntityData {
 	private Date createTime;
 
 	private Date updateTime;
+	
+	private SystemUserData userData ;
 
 	public Integer getCommentId() {
 		return commentId;
@@ -92,5 +95,14 @@ public class CommentData implements EntityData {
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
+
+	public SystemUserData getUserData() {
+		return userData;
+	}
+
+	public void setUserData(SystemUserData userData) {
+		this.userData = userData;
+	}
+	
 
 }

@@ -253,7 +253,7 @@ public class CommentRest {
 					data.setPhoto_path("0");
 				}
 
-				lc.setSystemUserData(data);
+				cd.setUserData(data);
 			}
 			
 			tempList.add(lc);

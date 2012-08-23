@@ -1,0 +1,1 @@
+SELECT * from tb_user_relation m where m.userId = 27  AND m.followId IN (SELECT userId from tb_user_relation WHERE followId = 27 AND isFriend = 1 ) AND  m.isFriend = 1

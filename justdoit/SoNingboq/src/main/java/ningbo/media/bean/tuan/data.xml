@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+	<deal>
+		<website>美团网</website>
+		<city_name>北京</city_name>
+		<city_url>http://bj.meituan.com</city_url>
+		<deal_id>767918</deal_id>
+		<deal_title>仅售25元！最高100元的嘉华国际影城电影票1张（含3D）</deal_title>
+		<deal_rank>0</deal_rank>
+		<deal_url>http://bj.meituan.com/deal/767918.html</deal_url>
+		<deal_img>
+			http://p1.meituan.net/275.168/deal/201203/23/0326_0323173152.jpg
+		</deal_img>
+		<deal_cate>电影</deal_cate>
+		<deal_subcate>电影院</deal_subcate>
+		<deal_desc>
+			仅售25元！最高价值100元的嘉华国际影城电影票1张，2D/3D通兑。观看《泰坦尼克
+			3D版》需补10元差价，节假日通用。另付9元可换购价值18元的单人套餐1份（小桶爆米花+瓶装饮料）。
+		</deal_desc>
+		<value>100</value>
+		<price>25</price>
+		<rebate>2.5</rebate>
+		<sales_min>5</sales_min>
+		<sales_num>40977</sales_num>
+		<sold_out>no</sold_out>
+		<is_post>no</is_post>
+		<start_time>1332691200</start_time>
+		<end_time>1334851199</end_time>
+		<coupon_start_time>1332691200</coupon_start_time>
+		<coupon_end_time>1338479999</coupon_end_time>
+		<deal_tips>
+			<![CDATA[
+有效期 2012.3.26 至 2012.5.31; 营业时间：09:30-22:30; 
+ 无需预约，咨询请致电010-82732228; 
+ 儿童优惠信息详见购买须知处; 
+ 二维码仅限兑换观影当日影票; 
+ 另加10元可观看《泰坦尼克号 3D版》; 
+ 首映礼/见面会/会员专场/通宵连映场不可使用; 
+ 不可同时享受影院内其它优惠;
+]]>
+		</deal_tips>
+		<deal_wow>
+			<![CDATA[
+自由选择，含3D电影
+ 3至5月大片，一看过瘾
+ 超长有效期，可至五月底
+ 专业视听设备，效果极佳
+ 环境典雅大气，观影舒适
+ 繁华地段，交通便利
+]]>
+		</deal_wow>
+	</deal>
+	<shops>
+		<shop>
+			<shop_name>嘉华国际影城</shop_name>
+			<shop_dpid>4211150</shop_dpid>
+			<shop_tel>010-82732228</shop_tel>
+			<shop_addr>海淀区学清路甲8号圣熙8号购物中心5层西侧</shop_addr>
+			<shop_area>五道口</shop_area>
+			<shop_long>116.352923</shop_long>
+			<shop_lat>40.00845</shop_lat>
+			<shop_trafficinfo>
+				地铁：乘10号线西土城站B口出，乘坐490/392路公交车在石板房站下车即是或者乘坐13号线五道口站下车，乘坐398路公交车至石板房站即是
+				公交：乘490/392路公交车在石板房站下车即是 自驾：海淀区北四环学院桥往北第三个红绿灯的东北角即是
+			</shop_trafficinfo>
+		</shop>
+	</shops>
+</data>

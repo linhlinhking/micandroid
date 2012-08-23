@@ -5,12 +5,8 @@ public class UserCommentData implements EntityData{
 
 	private LocationDetail locationDetail ;
 	
-	private Integer commentId ;
-	
-	private String commentContent ;
-	
+	private CommentData commentData ;
 
-	
 
 	public LocationDetail getLocationDetail() {
 		return locationDetail;
@@ -20,21 +16,14 @@ public class UserCommentData implements EntityData{
 		this.locationDetail = locationDetail;
 	}
 
-	public Integer getCommentId() {
-		return commentId;
+	public CommentData getCommentData() {
+		return commentData;
 	}
 
-	public void setCommentId(Integer commentId) {
-		this.commentId = commentId;
+	public void setCommentData(CommentData commentData) {
+		this.commentData = commentData;
 	}
 
-	public String getCommentContent() {
-		return commentContent;
-	}
-
-	public void setCommentContent(String commentContent) {
-		this.commentContent = commentContent;
-	}
 	
 	
 	

@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -31,12 +30,13 @@ public class Comment implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "commentId")
 	private Integer id ;
 	
 	private String commentContent ;
 	
-	private Date date_time ;
+	private Date createTime ;
+	
+	private Date updateTime ;
 	
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
 	@JoinColumn(name = "locationId")
@@ -45,6 +45,14 @@ public class Comment implements Serializable{
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
 	@JoinColumn(name = "userId")
 	private SystemUser systemUser ;
+	
+	private int overAll;
+
+	private int rank1;
+
+	private int rank2;
+
+	private int rank3;
 	
 	public Comment(){}
 	
@@ -81,12 +89,52 @@ public class Comment implements Serializable{
 		this.systemUser = systemUser;
 	}
 
-	public Date getDate_time() {
-		return date_time;
+	public Date getCreateTime() {
+		return createTime;
 	}
 
-	public void setDate_time(Date date_time) {
-		this.date_time = date_time;
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
+
+	public int getOverAll() {
+		return overAll;
+	}
+
+	public void setOverAll(int overAll) {
+		this.overAll = overAll;
+	}
+
+	public int getRank1() {
+		return rank1;
+	}
+
+	public void setRank1(int rank1) {
+		this.rank1 = rank1;
+	}
+
+	public int getRank2() {
+		return rank2;
+	}
+
+	public void setRank2(int rank2) {
+		this.rank2 = rank2;
+	}
+
+	public int getRank3() {
+		return rank3;
+	}
+
+	public void setRank3(int rank3) {
+		this.rank3 = rank3;
 	}
 
 	

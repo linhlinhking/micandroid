@@ -1,6 +1,5 @@
 package ningbo.media.data.entity;
 
-import java.util.Date;
 
 import ningbo.media.rest.dto.SystemUserData;
 
@@ -8,13 +7,9 @@ public class LocationCommentData implements EntityData{
 
 	private SystemUserData systemUserData ;
 	
-	private Integer commentId ;
-	
-	private String commentContent ;
-	
-	private Date date_time ; 
-	
 	private LocationDetail locationData ;
+	
+	private CommentData commentData ;
 
 
 	public SystemUserData getSystemUserData() {
@@ -25,28 +20,13 @@ public class LocationCommentData implements EntityData{
 		this.systemUserData = systemUserData;
 	}
 
-	public Integer getCommentId() {
-		return commentId;
+
+	public CommentData getCommentData() {
+		return commentData;
 	}
 
-	public void setCommentId(Integer commentId) {
-		this.commentId = commentId;
-	}
-
-	public String getCommentContent() {
-		return commentContent;
-	}
-
-	public void setCommentContent(String commentContent) {
-		this.commentContent = commentContent;
-	}
-
-	public Date getDate_time() {
-		return date_time;
-	}
-
-	public void setDate_time(Date date_time) {
-		this.date_time = date_time;
+	public void setCommentData(CommentData commentData) {
+		this.commentData = commentData;
 	}
 
 	public LocationDetail getLocationData() {

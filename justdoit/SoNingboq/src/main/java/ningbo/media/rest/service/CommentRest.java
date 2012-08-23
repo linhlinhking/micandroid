@@ -22,6 +22,7 @@ import ningbo.media.bean.SystemUser;
 import ningbo.media.bean.enums.CommentType;
 import ningbo.media.data.api.LocationCommentList;
 import ningbo.media.data.api.UserCommentList;
+import ningbo.media.data.entity.CommentData;
 import ningbo.media.data.entity.LocationCommentData;
 import ningbo.media.data.entity.LocationDetail;
 import ningbo.media.data.entity.UserCommentData;
@@ -53,16 +54,19 @@ public class CommentRest {
 	@Resource
 	private LocationService locationService;
 
-	@Path("/add")
+	@Path("/addOrUpdate")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addComment(@FormParam("key")
-	String key, @FormParam("userId")
-	String userId, @FormParam("locationId")
-	String locationId, @FormParam("commentContent")
-	String commentContent) throws JSONException {
+	public Response addComment(@FormParam("key") String key,
+			@FormParam("userId") String userId,
+			@FormParam("locationId") String locationId,
+			@FormParam("commentContent") String commentContent,
+			@FormParam("commentId") String commentId,
+			@FormParam("overAll") String overAll,
+			@FormParam("rank1") String rank1, @FormParam("rank2") String rank2,
+			@FormParam("rank3") String rank3) throws JSONException {
 		JSONObject json = new JSONObject();
-		Comment comment = new Comment();
+		Comment comment = null;
 		try {
 			if (!StringUtils.hasText(key)) {
 				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
@@ -74,40 +78,53 @@ public class CommentRest {
 				return Response.ok(json.toString()).build();
 			}
 
-			if (!StringUtils.hasText(userId)) {
-				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
-				json.put(Constant.MESSAGE, JSONCode.MSG_NO_INPUT);
-				return Response.ok(json.toString()).build();
+			if (StringUtils.hasText(commentId)) {
+				comment = commentService.get(Integer.valueOf(commentId));
+				comment.setUpdateTime(new Date());
 			} else {
-				SystemUser u = systemUserService
-						.get(Constant.MD5_FIELD, userId);
-				if (null == u) {
-					json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
-					json.put(Constant.MESSAGE, JSONCode.MSG_USER_NOEXISTS);
-					return Response.ok(json.toString()).build();
-				}
-				comment.setSystemUser(u);
+				comment = new Comment();
+				comment.setCreateTime(new Date());
 			}
 
-			if (!StringUtils.hasText(locationId)) {
+			SystemUser u = systemUserService.get(Constant.MD5_FIELD, userId);
+			if (null == u) {
 				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
-				json.put(Constant.MESSAGE, JSONCode.MSG_NO_INPUT);
+				json.put(Constant.MESSAGE, JSONCode.MSG_USER_NOEXISTS);
 				return Response.ok(json.toString()).build();
-			} else {
-				Location location = locationService.get(Constant.MD5_FIELD,
-						locationId);
-				if (null == location) {
-					json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
-					json.put(Constant.MESSAGE, JSONCode.MSG_LOCATION_NOEXISTS);
-					return Response.ok(json.toString()).build();
-				}
-				comment.setLocation(location);
 			}
+			comment.setSystemUser(u);
 
+			Location location = locationService.get(Constant.MD5_FIELD,
+					locationId);
+			if (null == location) {
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_LOCATION_NOEXISTS);
+				return Response.ok(json.toString()).build();
+			}
+			comment.setLocation(location);
 			comment.setCommentContent(commentContent);
-			comment.setDate_time(new Date());
-			Integer ids = commentService.save(comment);
-			json.put(Constant.COMMENTID, String.valueOf(ids));
+			
+			int tOverAll=0,tRank1=0,tRank2=0,tRank3=0 ;
+			if (StringUtils.hasText(overAll)) {
+				 tOverAll = Integer.valueOf(overAll);
+			}
+			comment.setOverAll(tOverAll) ;
+			if (StringUtils.hasText(rank1)) {
+				tRank1 = Integer.valueOf(rank1);
+			}
+			comment.setRank1(tRank1) ;
+			if (StringUtils.hasText(rank2)) {
+				tRank2 = Integer.valueOf(rank2);
+			}
+			comment.setRank2(tRank2) ;
+			if (StringUtils.hasText(rank3)) {
+				tRank3 = Integer.valueOf(rank3);
+			}
+			comment.setRank3(tRank3) ;
+
+			comment = commentService.saveOrUpdate(comment);
+			Integer ids = comment.getId();
+			json.put(Constant.COMMENTID, ids);
 			json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
 			return Response.ok(json.toString()).build();
 		} catch (Exception ex) {
@@ -120,10 +137,9 @@ public class CommentRest {
 	@Path("/delete")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteComment(@FormParam("commentId")
-	String id, @FormParam("userId")
-	String userId, @FormParam("key")
-	String key) throws JSONException {
+	public Response deleteComment(@FormParam("commentId") String id,
+			@FormParam("userId") String userId, @FormParam("key") String key)
+			throws JSONException {
 		JSONObject json = new JSONObject();
 
 		try {
@@ -163,8 +179,7 @@ public class CommentRest {
 	@Path("/user/{userId}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public UserCommentList getUserCommentList(@PathParam("userId")
-	String id) {
+	public UserCommentList getUserCommentList(@PathParam("userId") String id) {
 		List<Comment> list = commentService.getListByMd5(id, CommentType.USER);
 		if (null == list || list.size() < 0) {
 			return new UserCommentList();
@@ -185,9 +200,18 @@ public class CommentRest {
 
 				uc.setLocationDetail(detail);
 			}
+			CommentData cd = new CommentData();
 
-			uc.setCommentId(c.getId());
-			uc.setCommentContent(c.getCommentContent());
+			cd.setCommentId(c.getId());
+			cd.setCommentContent(c.getCommentContent());
+			cd.setOverAll(c.getOverAll()) ;
+			cd.setRank1(c.getRank1()) ;
+			cd.setRank2(c.getRank2()) ;
+			cd.setRank3(c.getRank3()) ;
+			cd.setCreateTime(c.getCreateTime()) ;
+			cd.setUpdateTime(c.getUpdateTime()) ;
+			uc.setCommentData(cd) ;
+			
 			tempList.add(uc);
 		}
 		return new UserCommentList(tempList, id);
@@ -196,8 +220,8 @@ public class CommentRest {
 	@Path("/location/{locationId}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public LocationCommentList getLocationCommentList(@PathParam("locationId")
-	String id) {
+	public LocationCommentList getLocationCommentList(
+			@PathParam("locationId") String id) {
 		List<Comment> list = commentService.getListByMd5(id,
 				CommentType.LOCATION);
 		if (null == list || list.size() < 0) {
@@ -207,9 +231,17 @@ public class CommentRest {
 		LocationCommentData lc = null;
 		for (Comment c : list) {
 			lc = new LocationCommentData();
-			lc.setCommentContent(c.getCommentContent());
-			lc.setCommentId(c.getId());
-
+			CommentData cd = new CommentData();
+			cd.setCommentId(c.getId()) ;
+			cd.setCommentContent(c.getCommentContent()) ;
+			cd.setOverAll(c.getOverAll()) ;
+			cd.setRank1(c.getRank1()) ;
+			cd.setRank2(c.getRank2()) ;
+			cd.setRank3(c.getRank3()) ;
+			cd.setCreateTime(c.getCreateTime()) ;
+			cd.setUpdateTime(c.getUpdateTime()) ;
+			lc.setCommentData(cd) ;
+			
 			SystemUser tempUser = c.getSystemUser();
 			if (null != tempUser) {
 				SystemUserData data = new SystemUserData();
@@ -223,7 +255,7 @@ public class CommentRest {
 
 				lc.setSystemUserData(data);
 			}
-			lc.setDate_time(c.getDate_time());
+			
 			tempList.add(lc);
 		}
 		Location temp = locationService.get(Constant.MD5_FIELD, id);

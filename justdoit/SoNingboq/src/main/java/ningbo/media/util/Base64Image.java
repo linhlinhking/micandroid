@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
+@SuppressWarnings("restriction")
 public class Base64Image {
 
 	public static void main(String args[]) {

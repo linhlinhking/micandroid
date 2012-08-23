@@ -55,21 +55,25 @@ public class CommentServiceImpl extends BaseServiceImpl<Comment, Integer>
 
 	public List<Comment> getListByMd5(String md5Value, CommentType type) {
 		List<Comment> list = null ;
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(" from Comment as model where 1=1  ") ;
 		try {
 			if (CommentType.LOCATION.equals(type)) {
+				buffer.append(" and model.location.id = ? order by model.createTime desc ") ;
 				Location loc = locationDao.get(Constant.MD5_FIELD, md5Value) ;
 				if(null == loc){
 					return null ;
 				}
 				Integer id = loc.getId() ;
-				list = commentDao.getList("location.id", id) ;
+				list = commentDao.findByHql(buffer.toString(), id) ;
 			} else if (CommentType.USER.equals(type)) {
+				buffer.append(" and model.systemUser.id = ? order by model.createTime desc ") ;
 				SystemUser u = systemUserDao.get(Constant.MD5_FIELD, md5Value) ;
 				if(null == u){
 					return null ;
 				}
 				Integer id = u.getId() ;
-				list = commentDao.getList("systemUser.id", id) ;
+				list = commentDao.findByHql(buffer.toString(), id) ;
 				
 			} else {
 				return null ;

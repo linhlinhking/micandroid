@@ -251,12 +251,14 @@ public class ImageInfo {
 	private InputStream in;
 	private DataInput din;
 	private boolean collectComments = true;
+	@SuppressWarnings("rawtypes")
 	private Vector comments;
 	private boolean determineNumberOfImages;
 	private int numberOfImages;
 	private int physicalHeightDpi;
 	private int physicalWidthDpi;
 
+	@SuppressWarnings("rawtypes")
 	private void addComment(String s) {
 		if (comments == null) {
 			comments = new Vector();

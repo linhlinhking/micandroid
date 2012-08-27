@@ -49,5 +49,8 @@ public class Constant {
 	public static final String USERTYPE_USER = "User" ;
 	public static final String SYSTEMUSER_USERNAME = "username" ;
 	public static final String SYSTEMUSER_EMAIL = "email" ;
+	public static final String DEFAULT_PAGE_NO = "1" ;
+	public static final String DEFAULT_PAGE_SIZE = "20" ;
+	
 	
 }

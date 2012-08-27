@@ -15,6 +15,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -25,6 +26,7 @@ import ningbo.media.bean.ModuleFile;
 import ningbo.media.bean.SecondCategory;
 import ningbo.media.bean.SystemUser;
 import ningbo.media.bean.UserLocations;
+import ningbo.media.core.rest.BaseResource;
 import ningbo.media.data.api.LocationList;
 import ningbo.media.data.entity.LocationData;
 import ningbo.media.data.entity.LocationDetail;
@@ -46,6 +48,7 @@ import ningbo.media.util.MD5;
 import ningbo.media.util.Pinyin;
 import ningbo.media.util.TranslateUtil;
 
+import org.apache.commons.lang.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.context.annotation.Scope;
@@ -57,7 +60,7 @@ import com.sun.jersey.multipart.FormDataMultiPart;
 @Path("/location")
 @Component
 @Scope("request")
-public class LocationRest {
+public class LocationRest extends BaseResource{
 
 	@Resource
 	private LocationService locationService;
@@ -73,19 +76,52 @@ public class LocationRest {
 
 	@Resource
 	private SystemUserService systemUserService;
+	
+
 
 	@Path("/showAll")
 	@GET
-	@Produces( { MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public List<Location> getAllLocations() {
 		return locationService.getAll();
 	}
 
+	@Path("/showPage")
+	@POST
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getLocationsByPage(@FormParam("pageSize") String pageSize,
+			@FormParam("pageNo") String pageNo) throws JSONException {
+		GenericEntity<List<Location>> entity  = null ;
+		JSONObject json = new JSONObject();
+		try {
+			
+			if (!StringUtils.isNumeric(pageNo)) {
+				pageNo = Constant.DEFAULT_PAGE_NO;
+			}
+			if (!StringUtils.isNumeric(pageSize)) {
+				pageSize = Constant.DEFAULT_PAGE_SIZE;
+			}
+			List<Location> ls = locationService.queryLocationByPage(
+					Integer.valueOf(pageNo),Integer.valueOf(pageSize));
+			if(null == ls){
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL) ;
+				json.put(Constant.MESSAGE, JSONCode.MSG_NO_DATA) ;
+				return Response.ok(json.toString()).build() ;
+			}
+			entity = new GenericEntity<List<Location>>(ls){} ;
+			return Response.ok(entity).build();
+		} catch (Exception ex) {
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL) ;
+			json.put(Constant.MESSAGE, JSONCode.SERVER_EXCEPTION) ;
+			return Response.ok(json.toString()).build() ;
+		}
+		
+	}
+
 	@Path("/show/{id}")
 	@GET
-	@Produces( { MediaType.APPLICATION_JSON })
-	public LocationDetail getLocationById(@PathParam("id")
-	String id) {
+	@Produces({ MediaType.APPLICATION_JSON })
+	public LocationDetail getLocationById(@PathParam("id") String id) {
 		try {
 			if (id == null) {
 				return null;
@@ -155,7 +191,7 @@ public class LocationRest {
 
 	@Path("/number")
 	@GET
-	@Produces( { MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public String getLocationCount() throws JSONException {
 		JSONObject json = new JSONObject();
 		try {
@@ -170,9 +206,9 @@ public class LocationRest {
 
 	@Path("/category/{id : \\d+}")
 	@GET
-	@Produces( { MediaType.APPLICATION_JSON })
-	public List<Location> getAllLocationsBySecondCategory(@PathParam("id")
-	String id) {
+	@Produces({ MediaType.APPLICATION_JSON })
+	public List<Location> getAllLocationsBySecondCategory(
+			@PathParam("id") String id) {
 		if (id == null) {
 			return null;
 		}
@@ -186,7 +222,7 @@ public class LocationRest {
 				.queryLocationsById(Integer.valueOf(id));
 		int size = listLocation.size();
 		if (size == 1) {
-			//listLocation.add(new Location());
+			// listLocation.add(new Location());
 		}
 		return listLocation;
 	}
@@ -202,8 +238,8 @@ public class LocationRest {
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addLocation(FormDataMultiPart form, @Context
-	HttpServletRequest request) throws JSONException {
+	public Response addLocation(FormDataMultiPart form,
+			@Context HttpServletRequest request) throws JSONException {
 		String key = form.getField("key").getValue();
 		JSONObject json = new JSONObject();
 		Location location = new Location();
@@ -274,9 +310,7 @@ public class LocationRest {
 				SecondCategory sc = secondCategoryService.get(Integer
 						.valueOf(ids));
 				if (sc == null) {
-					json
-							.put(Constant.CODE,
-									JSONCode.LOCATION_CATEGORY_NOEXISTS);
+					json.put(Constant.CODE, JSONCode.LOCATION_CATEGORY_NOEXISTS);
 					json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 					return Response.ok(json.toString()).build();
 				} else {
@@ -327,18 +361,17 @@ public class LocationRest {
 	@Path("/base64/add")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addLocationBase64(@FormParam("key")
-	String key, @FormParam("name_cn")
-	String name_cn, @FormParam("tags_cn")
-	String tags_cn, @FormParam("address_cn")
-	String address_cn, @FormParam("telephone")
-	String telephone, @FormParam("longitude")
-	String longitude, @FormParam("latitude")
-	String latitude, @FormParam("category2_id")
-	String category2_id, @FormParam("user_id")
-	String user_id, @FormParam("base64Value")
-	String base64Value, @Context
-	HttpServletRequest request) throws JSONException {
+	public Response addLocationBase64(@FormParam("key") String key,
+			@FormParam("name_cn") String name_cn,
+			@FormParam("tags_cn") String tags_cn,
+			@FormParam("address_cn") String address_cn,
+			@FormParam("telephone") String telephone,
+			@FormParam("longitude") String longitude,
+			@FormParam("latitude") String latitude,
+			@FormParam("category2_id") String category2_id,
+			@FormParam("user_id") String user_id,
+			@FormParam("base64Value") String base64Value,
+			@Context HttpServletRequest request) throws JSONException {
 		JSONObject json = new JSONObject();
 		UserLocations userlocTemp = new UserLocations();
 		try {
@@ -366,8 +399,8 @@ public class LocationRest {
 
 			String tempBase64Value = base64Value.replaceAll(" ", "+");
 
-			boolean flag = Base64Image.generateImage(tempBase64Value, sb
-					.toString());
+			boolean flag = Base64Image.generateImage(tempBase64Value,
+					sb.toString());
 
 			if (!flag) {
 				File file = new File(sb.toString());
@@ -376,8 +409,8 @@ public class LocationRest {
 				return Response.ok(json.toString()).build();
 			}
 
-			String photo_path = FileHashCode.writeBase64File(request, sb
-					.toString());
+			String photo_path = FileHashCode.writeBase64File(request,
+					sb.toString());
 
 			location.setName_cn(name_cn);
 			location.setName_en(name_en);
@@ -448,16 +481,15 @@ public class LocationRest {
 	@Path("/addLocation")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addLocationByWeb(@FormParam("key")
-	String key, @FormParam("name_cn")
-	String name_cn, @FormParam("tags_cn")
-	String tags_cn, @FormParam("address_cn")
-	String address_cn, @FormParam("telephone")
-	String telephone, @FormParam("longitude")
-	String longitude, @FormParam("latitude")
-	String latitude, @FormParam("category2_id")
-	String category2_id, @FormParam("user_id")
-	String user_id) throws JSONException {
+	public Response addLocationByWeb(@FormParam("key") String key,
+			@FormParam("name_cn") String name_cn,
+			@FormParam("tags_cn") String tags_cn,
+			@FormParam("address_cn") String address_cn,
+			@FormParam("telephone") String telephone,
+			@FormParam("longitude") String longitude,
+			@FormParam("latitude") String latitude,
+			@FormParam("category2_id") String category2_id,
+			@FormParam("user_id") String user_id) throws JSONException {
 		JSONObject json = new JSONObject();
 		UserLocations userlocTemp = new UserLocations();
 		try {
@@ -555,8 +587,8 @@ public class LocationRest {
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response changeLocationAvatar(FormDataMultiPart form, @Context
-	HttpServletRequest request) throws JSONException {
+	public Response changeLocationAvatar(FormDataMultiPart form,
+			@Context HttpServletRequest request) throws JSONException {
 		JSONObject json = new JSONObject();
 		try {
 			String key = form.getField("key").getValue();
@@ -617,10 +649,9 @@ public class LocationRest {
 	@Path("/set/avatar")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response setLocationAvator(@FormParam("key")
-	String key, @FormParam("md5Value")
-	String md5Value, @FormParam("uuidValue")
-	String photo_path) throws JSONException {
+	public Response setLocationAvator(@FormParam("key") String key,
+			@FormParam("md5Value") String md5Value,
+			@FormParam("uuidValue") String photo_path) throws JSONException {
 		JSONObject json = new JSONObject();
 		try {
 			if (key.isEmpty()) {
@@ -659,20 +690,19 @@ public class LocationRest {
 	@Path("/base64/edit")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response editLocationBase64(@FormParam("key")
-	String key, @FormParam("locationId")
-	String locationId, @FormParam("name_cn")
-	String name_cn, @FormParam("name_en")
-	String name_en, @FormParam("tags_cn")
-	String tags_cn, @FormParam("tags_en")
-	String tags_en, @FormParam("address_cn")
-	String address_cn, @FormParam("address_en")
-	String address_en, @FormParam("telephone")
-	String telephone, @FormParam("category2_id")
-	String category2_id, @FormParam("latitude")
-	String latitude, @FormParam("longitude")
-	String longitude, @Context
-	HttpServletRequest request) throws JSONException {
+	public Response editLocationBase64(@FormParam("key") String key,
+			@FormParam("locationId") String locationId,
+			@FormParam("name_cn") String name_cn,
+			@FormParam("name_en") String name_en,
+			@FormParam("tags_cn") String tags_cn,
+			@FormParam("tags_en") String tags_en,
+			@FormParam("address_cn") String address_cn,
+			@FormParam("address_en") String address_en,
+			@FormParam("telephone") String telephone,
+			@FormParam("category2_id") String category2_id,
+			@FormParam("latitude") String latitude,
+			@FormParam("longitude") String longitude,
+			@Context HttpServletRequest request) throws JSONException {
 		JSONObject json = new JSONObject();
 		try {
 			if (key.isEmpty()) {
@@ -768,9 +798,8 @@ public class LocationRest {
 
 	@Path("/search/{name}")
 	@GET
-	@Produces( { MediaType.APPLICATION_JSON })
-	public LocationList getLocationByName(@PathParam("name")
-	String locationName) {
+	@Produces({ MediaType.APPLICATION_JSON })
+	public LocationList getLocationByName(@PathParam("name") String locationName) {
 		List<Location> list = locationService.queryLocationByName(locationName);
 		List<LocationData> listData = new ArrayList<LocationData>();
 		LocationData d = null;
@@ -801,10 +830,10 @@ public class LocationRest {
 
 	@Path("/nearby/{latitude}/{longitude}")
 	@GET
-	@Produces( { MediaType.APPLICATION_JSON })
-	public List<LocationDetail> getNearByLocations(@PathParam("latitude")
-	String latitude, @PathParam("longitude")
-	String longitude) throws JSONException {
+	@Produces({ MediaType.APPLICATION_JSON })
+	public List<LocationDetail> getNearByLocations(
+			@PathParam("latitude") String latitude,
+			@PathParam("longitude") String longitude) throws JSONException {
 		try {
 			if (null == latitude || null == longitude) {
 				return null;
@@ -824,8 +853,8 @@ public class LocationRest {
 	@Path("/pinyin/{name_cn}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getPinYinByNameCN(@PathParam("name_cn")
-	String name_cn) throws JSONException {
+	public Response getPinYinByNameCN(@PathParam("name_cn") String name_cn)
+			throws JSONException {
 		JSONObject json = new JSONObject();
 		if (null == name_cn) {
 			json.put(Constant.CODE, JSONCode.NO_DATA);
@@ -839,9 +868,8 @@ public class LocationRest {
 	@Path("/translate/{local}/{content}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response translateByLanguage(@PathParam("local")
-	String local, @PathParam("content")
-	String content) throws JSONException {
+	public Response translateByLanguage(@PathParam("local") String local,
+			@PathParam("content") String content) throws JSONException {
 		JSONObject json = new JSONObject();
 		if (null == local) {
 			json.put(Constant.ERROR, "No Selected Language.");
@@ -859,12 +887,11 @@ public class LocationRest {
 	@Path("/delete/{md5Value}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteByMd5(@PathParam("md5Value")
-	String md5Value, @Context
-	HttpServletRequest request) {
+	public Response deleteByMd5(@PathParam("md5Value") String md5Value,
+			@Context HttpServletRequest request) {
 		JSONObject json = new JSONObject();
-		String realPath = request.getSession().getServletContext().getRealPath(
-				"");
+		String realPath = request.getSession().getServletContext()
+				.getRealPath("");
 		try {
 			if (null == md5Value || md5Value.length() < 0) {
 				json.put(Constant.CODE, JSONCode.LOCATIONID_NOINPUT);

@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 
 import ningbo.media.core.dao.BaseDao;
+import ningbo.media.core.page.Finder;
+import ningbo.media.core.page.Pagination;
 import ningbo.media.core.service.BaseService;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -104,6 +106,12 @@ public class BaseServiceImpl<E, PK extends Serializable> implements
 		return baseDao.findAllObject(hql, values) ;
 	}
 	
+	public Pagination<E> findByPage(Finder finder, int pageNo, int pageSize){
+		return baseDao.findByPage(finder, pageNo, pageSize) ;
+	}
 	
-
+	public List<E> findByPage(final Finder finder){
+		return baseDao.findByPage(finder) ;
+	}
+	
 }

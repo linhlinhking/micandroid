@@ -17,6 +17,7 @@ public class JSONCode {
 	public static final String MSG_KEY_INVALID = "key input invalid." ;
 	public static final String MSG_NO_INPUT = "No Input." ;
 	public static final String MSG_DELETE_SUCCESS = "Deleted Successfully." ;
+	public static final String MSG_NO_DATA = "No Data." ;
 	
 	/**应用级别的全局异常*/
 	public static final String KEYISNULL = "20001" ; //key输入为空

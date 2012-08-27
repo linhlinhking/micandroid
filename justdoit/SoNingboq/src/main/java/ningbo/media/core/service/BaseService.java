@@ -3,6 +3,9 @@ package ningbo.media.core.service;
 import java.io.Serializable;
 import java.util.List;
 
+import ningbo.media.core.page.Finder;
+import ningbo.media.core.page.Pagination;
+
 public interface BaseService<E, PK extends Serializable> {
 	/**
 	 * According to PK(id) query object(E)
@@ -77,4 +80,8 @@ public interface BaseService<E, PK extends Serializable> {
 	public List<E> findByHql(String hql, boolean isLike,Integer limit,Object... values) ;
 
 	public List<String> findAllObject(String hql, Object... values);
+	
+	public Pagination<E> findByPage(Finder finder, int pageNo, int pageSize);
+	
+	public List<E> findByPage(final Finder finder);
 }

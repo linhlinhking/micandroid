@@ -46,9 +46,7 @@ public class LocationServiceImpl extends BaseServiceImpl<Location, Integer>
 	public List<Location> queryLocationByPage(int pageNo, int pageSize) {
 		Pagination<Location> page = locationDao.queryLocationByPage(pageNo,
 				pageSize);
-		System.out.println(page.getPageNo());
-		System.out.println(page.getTotalPage());
-		System.out.println(page.getTotalCount());
+		System.out.println(page.getTotalPage()) ;
 		return page.getList();
 	}
 

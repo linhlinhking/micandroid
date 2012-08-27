@@ -10,7 +10,7 @@ import ningbo.media.rest.dto.SystemUserData;
 
 @XmlType(name = "Comment", namespace = WsConstants.NS, propOrder = {
 		"commentId", "commentContent", "overAll", "rank1", "rank2", "rank3",
-		"createTime", "updateTime","userData" })
+		"createTime", "updateTime","userData","locationData" })
 @XmlRootElement(name = "data")
 public class CommentData implements EntityData {
 
@@ -31,6 +31,8 @@ public class CommentData implements EntityData {
 	private Date updateTime;
 	
 	private SystemUserData userData ;
+	
+	private LocationDetail locationData ;
 
 	public Integer getCommentId() {
 		return commentId;
@@ -103,6 +105,15 @@ public class CommentData implements EntityData {
 	public void setUserData(SystemUserData userData) {
 		this.userData = userData;
 	}
+
+	public LocationDetail getLocationData() {
+		return locationData;
+	}
+
+	public void setLocationData(LocationDetail locationData) {
+		this.locationData = locationData;
+	}
 	
 
+	
 }

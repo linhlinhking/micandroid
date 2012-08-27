@@ -17,4 +17,6 @@ public interface LocationService extends BaseService<Location,Integer> {
 	public Location queryLocationByMd5(String md5Value) ;
 	
 	public List<LocationDetail> queryLoctionsByLat(Double latitude,Double longitude) ;
+	
+	
 }

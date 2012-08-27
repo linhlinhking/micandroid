@@ -11,6 +11,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -103,24 +104,24 @@ public class CommentRest {
 			}
 			comment.setLocation(location);
 			comment.setCommentContent(commentContent);
-			
-			int tOverAll=0,tRank1=0,tRank2=0,tRank3=0 ;
+
+			int tOverAll = 0, tRank1 = 0, tRank2 = 0, tRank3 = 0;
 			if (StringUtils.hasText(overAll)) {
-				 tOverAll = Integer.valueOf(overAll);
+				tOverAll = Integer.valueOf(overAll);
 			}
-			comment.setOverAll(tOverAll) ;
+			comment.setOverAll(tOverAll);
 			if (StringUtils.hasText(rank1)) {
 				tRank1 = Integer.valueOf(rank1);
 			}
-			comment.setRank1(tRank1) ;
+			comment.setRank1(tRank1);
 			if (StringUtils.hasText(rank2)) {
 				tRank2 = Integer.valueOf(rank2);
 			}
-			comment.setRank2(tRank2) ;
+			comment.setRank2(tRank2);
 			if (StringUtils.hasText(rank3)) {
 				tRank3 = Integer.valueOf(rank3);
 			}
-			comment.setRank3(tRank3) ;
+			comment.setRank3(tRank3);
 
 			comment = commentService.saveOrUpdate(comment);
 			Integer ids = comment.getId();
@@ -204,17 +205,62 @@ public class CommentRest {
 
 			cd.setCommentId(c.getId());
 			cd.setCommentContent(c.getCommentContent());
-			cd.setOverAll(c.getOverAll()) ;
-			cd.setRank1(c.getRank1()) ;
-			cd.setRank2(c.getRank2()) ;
-			cd.setRank3(c.getRank3()) ;
-			cd.setCreateTime(c.getCreateTime()) ;
-			cd.setUpdateTime(c.getUpdateTime()) ;
-			uc.setCommentData(cd) ;
-			
+			cd.setOverAll(c.getOverAll());
+			cd.setRank1(c.getRank1());
+			cd.setRank2(c.getRank2());
+			cd.setRank3(c.getRank3());
+			cd.setCreateTime(c.getCreateTime());
+			cd.setUpdateTime(c.getUpdateTime());
+			uc.setCommentData(cd);
+
 			tempList.add(uc);
 		}
 		return new UserCommentList(tempList, id);
+	}
+
+	@Path("/showAll")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllComments() throws JSONException {
+		List<Comment> list = commentService.getAll();
+		JSONObject json = new JSONObject();
+		if (null == list) {
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+			json.put(Constant.MESSAGE, JSONCode.MSG_NO_DATA);
+			return Response.ok(json.toString()).build();
+		}
+		List<CommentData> listData = new ArrayList<CommentData>();
+		for (int i = 0, j = list.size(); i < j; i++) {
+			Comment c = list.get(i);
+			CommentData d = new CommentData();
+			d.setCommentId(c.getId());
+			d.setCommentContent(c.getCommentContent());
+			if (null != c.getSystemUser()) {
+				SystemUser su = c.getSystemUser();
+				SystemUserData u = new SystemUserData();
+				u.setUsername(su.getUsername());
+				u.setEmail(su.getEmail());
+				d.setUserData(u);
+			}
+
+			if (null != c.getLocation()) {
+				Location l = c.getLocation();
+				LocationDetail ld = new LocationDetail();
+				ld.setName_cn(l.getName_cn());
+				ld.setAddress_cn(l.getAddress_cn());
+
+				d.setLocationData(ld);
+			}
+			d.setCreateTime(c.getCreateTime());
+			d.setUpdateTime(c.getUpdateTime());
+
+			listData.add(d);
+
+		}
+		GenericEntity<List<CommentData>> entity = new GenericEntity<List<CommentData>>(
+				listData) {
+		};
+		return Response.ok(entity).build();
 	}
 
 	@Path("/location/{locationId}")
@@ -232,16 +278,16 @@ public class CommentRest {
 		for (Comment c : list) {
 			lc = new LocationCommentData();
 			CommentData cd = new CommentData();
-			cd.setCommentId(c.getId()) ;
-			cd.setCommentContent(c.getCommentContent()) ;
-			cd.setOverAll(c.getOverAll()) ;
-			cd.setRank1(c.getRank1()) ;
-			cd.setRank2(c.getRank2()) ;
-			cd.setRank3(c.getRank3()) ;
-			cd.setCreateTime(c.getCreateTime()) ;
-			cd.setUpdateTime(c.getUpdateTime()) ;
-			lc.setCommentData(cd) ;
-			
+			cd.setCommentId(c.getId());
+			cd.setCommentContent(c.getCommentContent());
+			cd.setOverAll(c.getOverAll());
+			cd.setRank1(c.getRank1());
+			cd.setRank2(c.getRank2());
+			cd.setRank3(c.getRank3());
+			cd.setCreateTime(c.getCreateTime());
+			cd.setUpdateTime(c.getUpdateTime());
+			lc.setCommentData(cd);
+
 			SystemUser tempUser = c.getSystemUser();
 			if (null != tempUser) {
 				SystemUserData data = new SystemUserData();
@@ -255,7 +301,7 @@ public class CommentRest {
 
 				cd.setUserData(data);
 			}
-			
+
 			tempList.add(lc);
 		}
 		Location temp = locationService.get(Constant.MD5_FIELD, id);

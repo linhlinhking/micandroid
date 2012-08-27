@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Insert title here</title>
+		<link rel="stylesheet" href="../css/flexgrid/flexigrid.min.css" type="text/css" media="screen" charset="utf-8"/>
+		<script type="text/javascript" charset="utf-8" src="../js/jquery-1.7.2.min.js"></script>
+	</head>
+	<body>
+		<table id="flex1"></table>
+	</body>
+
+	<script type="text/javascript" src="../js/flexgrid/flexigrid.min.js"></script>
+	<script>
+		$(function() {
+			$("#flex1").flexigrid({
+				url : 'staff.php',
+				dataType : 'json',
+				colModel : [{
+					display : 'ID',
+					name : 'id',
+					width : 40,
+					sortable : true,
+					align : 'left'
+				}, {
+					display : 'First Name',
+					name : 'first_name',
+					width : 150,
+					sortable : true,
+					align : 'left'
+				}, {
+					display : 'Surname',
+					name : 'surname',
+					width : 150,
+					sortable : true,
+					align : 'left'
+				}, {
+					display : 'Position',
+					name : 'email',
+					width : 250,
+					sortable : true,
+					align : 'left'
+				}],
+				buttons : [{
+					name : 'Edit',
+					bclass : 'edit',
+					onpress : doCommand
+				}, {
+					name : 'Delete',
+					bclass : 'delete',
+					onpress : doCommand
+				}, {
+					separator : true
+				}],
+				searchitems : [{
+					display : 'First Name',
+					name : 'first_name'
+				}, {
+					display : 'Surname',
+					name : 'surname',
+					isdefault : true
+				}, {
+					display : 'Position',
+					name : 'position'
+				}],
+				sortname : "id",
+				sortorder : "asc",
+				usepager : true,
+				title : "Staff",
+				useRp : true,
+				rp : 10,
+				showTableToggleBtn : false,
+				resizable : false,
+				width : 700,
+				height : 370,
+				singleSelect : true
+			});
+		});
+
+	</script>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="test.css" />
+<title>Favorites Edit</title>
+</head>
+
+<body>
+	<!-- enctype="multipart/form-data"-->
+	<form name="form1" method="post"
+		action="https://api.searchningbo.com/resource/location/edit"
+		enctype="multipart/form-data">
+		<p>
+
+			key<br> <label for="key"></label> <input type="text" name="key"
+				id="key"> <br> <br> name_en<br> <input
+				type="text" name="name_en" id="name_en"> <br> <br>
+
+			name_cn<br> <input type="text" name="name_cn" id="name_cn">
+			<br> <br> address_en<br> <input type="text"
+				name="address_en" id="address_en"> <br> <br>
+
+			address_cn<br> <input type="text" name="address_cn"
+				id="address_cn"> <br> <br> telephone<br> <input
+				type="text" name="telephone" id="telephone"> <br> <br>
+
+			gps_lat<br> <input type="text" name="latitude" id="latitude">
+			<br> <br> gps_lon<br> <input type="text"
+				name="longitude" id="longitude"> <br> <br> photo<br>
+			<input type="file" name="photo_path" id="photo_path"> <br>
+			<br> category2_id<br> <input type="text" name="category_id"
+				id="category_id"> <br> <br> <input type="submit"
+				name="POST" id="POST" value="Submit"> <br> <br>
+		</p>
+	</form>
+
+	<h2>
+		<span class="mw-headline"> Requests Instruction </span>
+	</h2>
+
+	<table width="95%" cellpadding="0" cellspacing="2" border="0"
+		class="paratable">
+
+		<tr>
+			<td>url</td>
+			<td><a href="#" class="external free" rel="nofollow">https://api.searchningbo.com/resource/location/add</a>
+			</td>
+		</tr>
+		<tr>
+			<td>format</td>
+			<td>json</td>
+		</tr>
+
+		<tr>
+			<td>httprequest method</td>
+			<td>post</td>
+		</tr>
+		<tr>
+			<td>need authorize</td>
+			<td>true</td>
+		</tr>
+	</table>
+	<h2>
+		<span class="mw-headline"> Parameter Description </span>
+	</h2>
+	<table border="1" cellspacing="0" cellpadding="0" width="95%"
+		class="paratable" style="border-color: #CCCCCC;">
+		<tr>
+			<th width="10%">&nbsp;</th>
+			<th width="5%">required</th>
+			<th width="10%">type & scope</th>
+			<th width="75%">Description</th>
+		</tr>
+		<tr>
+			<td>key</td>
+			<td>true</td>
+			<td>String</td>
+			<td>Authorized verification of API calls</td>
+		</tr>
+		<tr>
+			<td>name_en</td>
+			<td>true</td>
+			<td>String</td>
+			<td>Location English Name</td>
+		</tr>
+		<tr>
+			<td>name_cn</td>
+			<td>true</td>
+			<td>String</td>
+			<td>Location Chinese Name</td>
+		</tr>
+
+		<tr>
+			<td>address_en</td>
+			<td>true</td>
+			<td>String</td>
+			<td>Location English Address</td>
+		</tr>
+		<tr>
+			<td>address_cn</td>
+			<td>true</td>
+			<td>String</td>
+			<td>Location Chinese Address</td>
+		</tr>
+
+		<tr>
+			<td>telephone</td>
+			<td>true</td>
+			<td>String</td>
+			<td>Location Telephone</td>
+		</tr>
+		<tr>
+			<td>latitude</td>
+			<td>true</td>
+			<td>Double</td>
+			<td>Location's latitude</td>
+		</tr>
+		<tr>
+			<td>longitude</td>
+			<td>true</td>
+			<td>Double</td>
+			<td>Location's longitude</td>
+		</tr>
+		<tr>
+			<td>photo_path</td>
+			<td>false</td>
+			<td>String</td>
+			<td>path</td>
+		</tr>
+		<tr>
+			<td>category_id</td>
+			<td>true</td>
+			<td>Integer</td>
+			<td>category2_id</td>
+		</tr>
+	</table>
+
+	<h2>
+		<span class="mw-headline"> Return Results </span>
+	</h2>
+	<pre class="brush: js;">{
+		{"code":"1"} //
+	}
+	</pre>
+
+	<h2>
+		<span class="mw-headline"> Return Code Lists </span>
+	</h2>
+	<pre class="brush: js;">{
+		0  : Success
+		1  : Key is Null
+		2  : Key is Invalid
+		3  : Username is Null
+		4  : Password is Null
+		5  : Login is Fail.
+	}
+	</pre>
+
+</body>
+</html>

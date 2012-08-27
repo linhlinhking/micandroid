@@ -1,0 +1,132 @@
+// The soningbo namespace.
+var soningbo = soningbo || {};
+
+/**
+ * @constructor
+ * @extends soningbo.entity
+ * @class The user class
+ *
+ * @param {object} object The user object.
+ * @param {function} callback The function to be called once the user has
+ * been retrieved from the server.
+ */
+soningbo.user = function(object, callback) {
+
+  // Only continue if the object is valid.
+  if (object) {
+
+    /** The name for this user. */
+    this.name = this.name || '';
+
+    /** The email address of our user. */
+    this.mail = this.mail || '';
+
+    /** The password of the user. */
+    this.pass = this.pass || '';
+
+    /** The status of the user. */
+    this.status = this.status || 1;
+
+    /** The session ID of the user. */
+    this.sessid = this.sessid || '';
+
+    /** The session name of the user */
+    this.session_name = this.session_name || '';
+
+    // Declare the api.
+    this.api = this.api || new soningbo.user.api();
+  }
+
+  // Call the base class.
+  soningbo.entity.call(this, object, callback);
+};
+
+/** Derive from soningbo.entity. */
+soningbo.user.prototype = new soningbo.entity();
+
+/** Reset the constructor. */
+soningbo.user.prototype.constructor = soningbo.user;
+
+/**
+ * Login a user.
+ * action:/resource/user/login
+ * @param {function} callback The callback function.
+ */
+soningbo.user.prototype.login = function(callback) {
+
+  // Setup the POST data for the login of this user.
+  var object = {
+    username: this.name,
+    password: this.pass
+  };
+
+  // Execute the login.
+  var _this = this;
+  this.api.execute('login', object, function(user) {
+
+    // Set the session ID and session name.
+    _this.sessid = user.sessid;
+    _this.session_name = user.session_name;
+
+    // Update this object.
+    _this.update(user.user);
+    callback(_this);
+  });
+};
+
+/**
+ * Register a user.
+ * action:/resource/user/register
+ * @param {function} callback The callback function.
+ */
+soningbo.user.prototype.register = function(callback) {
+
+  // Execute the register.
+  var _this = this;
+  this.api.execute('register', this.getObject(), function(user) {
+
+    // Now update the object.
+    _this.update(user);
+    callback(_this);
+  });
+};
+
+/**
+ * Logout the user.
+ *
+ * @param {function} callback The callback function.
+ */
+soningbo.user.prototype.logout = function(callback) {
+
+  // Execute the logout.
+  this.api.execute('logout', null, callback);
+};
+
+/**
+ * Override the update routine.
+ *
+ * @param {object} object The object to update.
+ */
+soningbo.user.prototype.update = function(object) {
+
+  soningbo.entity.prototype.update.call(this, object);
+
+  // Make sure to also set the ID the same as uid.
+  if (object) {
+    this.id = object.uid || this.id;
+  }
+};
+
+/**
+ * Returns the object to send to Services.
+ *
+ * @return {object} The object to send to the Services endpoint.
+ */
+soningbo.user.prototype.getObject = function() {
+  return jQuery.extend(soningbo.entity.prototype.getObject.call(this), {
+    name: this.name,
+    mail: this.mail,
+    pass: this.pass,
+    status: this.status
+  });
+};

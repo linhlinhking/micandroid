@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Insert title here</title>
+		<link rel="stylesheet" href="../css/jqgrid/ui.jqgrid.css" type="text/css" media="screen" charset="utf-8"/>
+		<script type="text/javascript" charset="utf-8" src="../js/jquery-1.7.2.min.js"></script>
+	</head>
+	<body>
+
+		<table id="list2"></table>
+		<div id="pager2"></div>
+
+	</body>
+
+	<script type="text/javascript" src="../js/jqgrid/grid.locale-cn.js"></script>
+	<script type="text/javascript" src="../js/jqgrid/jquery.jqGrid.min.js"></script>
+	<script>
+	$(function(){
+		$("#list2").jqGrid({
+				url : 'http://localhost:8000/resource/comment/showAll',
+				datatype : "json",
+				colNames : ['id', 'content', 'username', 'email', 'locationName', 'locationAddress'],
+				colModel : [{
+					name : 'commentId',
+					index : 'commentId',
+					width : 55
+				}, {
+					name : 'commentContent',
+					index : 'commentContent',
+					width : 90
+				}, {
+					name : 'userData.username',
+					index : 'userData.username',
+					width : 100
+				}, {
+					name : 'userData.email',
+					index : 'userData.email',
+					width : 80,
+					align : "right"
+				}, {
+					name : 'locationData.name_cn',
+					index : 'locationData.name_cn',
+					width : 80,
+					align : "right"
+				}, {
+					name : 'locationData.address_cn',
+					index : 'locationData.address_cn',
+					width : 80,
+					align : "right"
+				}],
+				rowNum : 10,
+				rowList : [10, 20, 30],
+				pager : '#pager2',
+				sortname : 'commentId',
+				viewrecords : true,
+				sortorder : "desc",
+				caption : "JSON Example"
+			});
+		
+	
+		
+	})
+
+	</script>
+
+</html>

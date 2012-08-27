@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="test.css" />
+<title>edit</title>
+</head>
+
+<body>
+<h2><span class="mw-headline">Method Summary </span> </h2>
+<p>Check the whether the property(ex: username, email) is exists.<br>
+ex:https://api.searchningbo.com/check/username/Jhon</p>
+<h2><span class="mw-headline">Requests Instruction </span>
+</h2>
+
+	<table width="95%" cellpadding="0" cellspacing="2" border="0"
+		class="paratable">
+
+	  <tr>
+			<td>url</td>
+			<td><a href="#"
+				class="external free" rel="nofollow">https://api.searchningbo.com/check/{property}/{value}</a></td>
+		</tr>
+		<tr>
+			<td>format</td>
+			<td>json</td>
+		</tr>
+
+		<tr>
+			<td>http request method</td>
+			<td>get</td>
+		</tr>
+		<tr>
+			<td>need authorize</td>
+			<td>false</td>
+		</tr>
+	</table>
+	<h2>
+		<span class="mw-headline">
+			Parameter Description </span>
+	</h2>
+	<table border="1" cellspacing="0" cellpadding="0" width="95%"
+		class="paratable" style="border-color: #CCCCCC;">
+		<tr>
+			<th width="10%">&nbsp;</th>
+			<th width="5%">required</th>
+			<th width="10%">type & scope</th>
+			<th width="75%">Description</th>
+		</tr>
+		<tr>
+			<td>property</td>
+			<td>true</td>
+			<td>String</td>
+			<td>the property you want to check</td>
+		</tr>
+		<tr>
+			<td>value</td>
+			<td>true</td>
+			<td>String</td>
+			<td>the value of the property</td>
+		</tr>
+	</table>
+
+	<h2>
+		<span class="mw-headline">
+			Return Results </span>
+</h2>
+	<pre class="brush: js;">{
+		{"code":"1"} //
+	}
+	</pre>
+</body>
+</html>

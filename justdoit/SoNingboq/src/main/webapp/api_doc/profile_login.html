@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="test.css" />
+<title>Profile_User_Login</title>
+</head>
+
+<body>
+<form name="form1" method="post" action="https://api.searchningbo.com/resource/user/login">
+<p>
+  
+  key<br>
+  <label for="key"></label>
+  <input type="text" name="key" id="key">
+    <br>
+    <br>
+    
+   device_id<br>
+    <label for="device_id"></label>
+    <input type="text" name="device_id" id="device_id">
+    <br>
+    <br>
+    
+    
+    username<br>
+    <label for="username"></label>
+    <input type="text" name="username" id="username">
+    <br>
+    <br>
+    
+    
+    password<br>
+    <label for="password"></label>
+    <input type="password" name="password" id="password">
+    <br>
+    <br>
+    <br>
+    
+    <input type="submit" name="POST" id="POST" value="Login">
+    <br>
+    <br>
+</form>
+
+<h2>
+		<span class="mw-headline">
+			Requests Instruction </span>
+	</h2>
+
+	<table width="95%" cellpadding="0" cellspacing="2" border="0"
+		class="paratable">
+
+		<tr>
+			<td>url</td>
+			<td><a href="#"
+				class="external free" rel="nofollow">https://api.searchningbo.com/resource/user/login</a>
+			</td>
+		</tr>
+		<tr>
+			<td>format</td>
+			<td>json</td>
+		</tr>
+
+		<tr>
+			<td>httprequest method</td>
+			<td>post</td>
+		</tr>
+		<tr>
+			<td>need authorize</td>
+			<td>true</td>
+		</tr>
+	</table>
+	<h2>
+		<span class="mw-headline">
+			Parameter Description </span>
+	</h2>
+	<table border="1" cellspacing="0" cellpadding="0" width="95%"
+		class="paratable" style="border-color: #CCCCCC;">
+		<tr>
+			<th width="10%">&nbsp;</th>
+			<th width="5%">required</th>
+			<th width="10%">type & scope</th>
+			<th width="75%">Description</th>
+		</tr>
+		<tr>
+			<td>key</td>
+			<td>true</td>
+			<td>String</td>
+			<td>Authorized verification of API calls</td>
+		</tr>
+		<tr>
+			<td>deviceId</td>
+			<td>true</td>
+			<td>String</td>
+			<td>The serial number of the current equipment</td>
+		</tr>
+		<tr>
+			<td>username</td>
+			<td>true</td>
+			<td>String</td>
+			<td>user's email</td>
+		</tr>
+		<tr>
+			<td>password</td>
+			<td>true</td>
+			<td>String</td>
+			<td>user's password</td>
+		</tr>
+	</table>
+
+	<h2>
+		<span class="mw-headline">
+			Return Results </span>
+	</h2>
+	<pre class="brush: js;">{
+		{
+    		"userId": 22,
+    		"code": "0"
+	    }
+	</pre>
+	
+	<h2>
+		<span class="mw-headline">
+			Return Code Lists </span>
+	</h2>
+	<pre class="brush: js;">{
+		0  : Success
+		1  : Key is Null
+		2  : Key is Invalid
+		3  : Username is Null
+		4  : Password is Null
+		5  : Login is Fail.
+		6  : Throwable JSONException
+	}
+	</pre>
+</body>
+</html>

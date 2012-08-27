@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Photo Add</title>
+<link rel="stylesheet" href="test.css" />
+</head>
+
+<body>
+
+
+
+<h2>
+		<span class="mw-headline"> Method Summary </span>
+</h2>
+
+<h2>
+		<span class="mw-headline"> Requests Instruction </span>
+</h2>
+
+	<table width="95%" cellpadding="0" cellspacing="2" border="0"
+		class="paratable">
+
+		<tr>
+			<td>url</td>
+			<td><a href="#" class="external free" rel="nofollow">https://api.searchningbo.com/resource/comment/get/location/{locationId}</a>
+			</td>
+		</tr>
+		<tr>
+			<td>format</td>
+			<td>json</td>
+		</tr>
+
+		<tr>
+			<td>httprequest method</td>
+			<td>get</td>
+		</tr>
+	
+	</table>
+<h2>
+		<span class="mw-headline"> Parameter Description </span>
+	</h2>
+	<table border="1" cellspacing="0" cellpadding="0" width="95%"
+		class="paratable" style="border-color: #CCCCCC;">
+		<tr>
+			<th width="10%">&nbsp;</th>
+			<th width="5%">required</th>
+			<th width="10%">type & scope</th>
+			<th width="75%">Description</th>
+		</tr>
+
+		<tr>
+			<td>locationId</td>
+			<td>true</td>
+			<td>String</td>
+			<td>Get {locationId} All Comment</td>
+		</tr>
+	</table>
+
+	<h2>
+		<span class="mw-headline"> Return Results </span>
+	</h2>
+	<pre class="brush: js;">{
+		
+	{
+	    "data": [
+	        {
+	            "commentContent": "comment1",
+	            "commentId": "3",
+	            "userId": "27"
+	        },
+	        {
+	            "commentContent": "comment1",
+	            "commentId": "4",
+	            "userId": "28"
+	        }
+	    ],
+       "locationId": "12"
+    }
+		
+		
+		
+	}
+	</pre>
+
+	<h2>
+		<span class="mw-headline"> Return Code Lists </span>
+	</h2>
+	<pre class="brush: js;">{
+		0      : Success
+		20001  : Key is Null
+		20002  : Input Invalid
+		20011  : Comment No Exists
+		40001  : Throws Exception.
+	}
+	</pre>
+
+</body>
+</html>

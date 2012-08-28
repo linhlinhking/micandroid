@@ -26,7 +26,6 @@ import ningbo.media.bean.ModuleFile;
 import ningbo.media.bean.SecondCategory;
 import ningbo.media.bean.SystemUser;
 import ningbo.media.bean.UserLocations;
-import ningbo.media.core.rest.BaseResource;
 import ningbo.media.data.api.LocationList;
 import ningbo.media.data.entity.LocationData;
 import ningbo.media.data.entity.LocationDetail;
@@ -60,7 +59,7 @@ import com.sun.jersey.multipart.FormDataMultiPart;
 @Path("/location")
 @Component
 @Scope("request")
-public class LocationRest extends BaseResource{
+public class LocationRest {
 
 	@Resource
 	private LocationService locationService;
@@ -76,8 +75,9 @@ public class LocationRest extends BaseResource{
 
 	@Resource
 	private SystemUserService systemUserService;
-	
 
+	@Context
+	private HttpServletRequest req;
 
 	@Path("/showAll")
 	@GET
@@ -86,15 +86,26 @@ public class LocationRest extends BaseResource{
 		return locationService.getAll();
 	}
 
+	@Path("/test")
+	@POST
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getTestRequest() throws JSONException {
+		JSONObject json = new JSONObject();
+		String uname = req.getParameter("uname") ;
+		json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS) ;
+		json.put(Constant.MESSAGE, uname) ;
+		return Response.ok(json.toString()).build();
+	}
+
 	@Path("/showPage")
 	@POST
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response getLocationsByPage(@FormParam("pageSize") String pageSize,
 			@FormParam("pageNo") String pageNo) throws JSONException {
-		GenericEntity<List<Location>> entity  = null ;
+		GenericEntity<List<Location>> entity = null;
 		JSONObject json = new JSONObject();
 		try {
-			
+
 			if (!StringUtils.isNumeric(pageNo)) {
 				pageNo = Constant.DEFAULT_PAGE_NO;
 			}
@@ -102,20 +113,21 @@ public class LocationRest extends BaseResource{
 				pageSize = Constant.DEFAULT_PAGE_SIZE;
 			}
 			List<Location> ls = locationService.queryLocationByPage(
-					Integer.valueOf(pageNo),Integer.valueOf(pageSize));
-			if(null == ls){
-				json.put(Constant.RESULT, JSONCode.RESULT_FAIL) ;
-				json.put(Constant.MESSAGE, JSONCode.MSG_NO_DATA) ;
-				return Response.ok(json.toString()).build() ;
+					Integer.valueOf(pageNo), Integer.valueOf(pageSize));
+			if (null == ls) {
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_NO_DATA);
+				return Response.ok(json.toString()).build();
 			}
-			entity = new GenericEntity<List<Location>>(ls){} ;
+			entity = new GenericEntity<List<Location>>(ls) {
+			};
 			return Response.ok(entity).build();
 		} catch (Exception ex) {
-			json.put(Constant.RESULT, JSONCode.RESULT_FAIL) ;
-			json.put(Constant.MESSAGE, JSONCode.SERVER_EXCEPTION) ;
-			return Response.ok(json.toString()).build() ;
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+			json.put(Constant.MESSAGE, JSONCode.SERVER_EXCEPTION);
+			return Response.ok(json.toString()).build();
 		}
-		
+
 	}
 
 	@Path("/show/{id}")

@@ -6,6 +6,7 @@ import org.mortbay.jetty.Server;
 import org.mortbay.jetty.webapp.WebAppContext;
 
 public class JettyServer {
+	
 	static Server server;
 	static int port = 8000;
 

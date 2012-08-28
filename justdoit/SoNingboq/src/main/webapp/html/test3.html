@@ -1,0 +1,51 @@
+<body>
+	已通过测试的浏览器：IE6、IE7、FF
+
+	<div style=" border:solid #999999 1px;background-color:#FFFCE6;padding:10px; margin:20px;">
+		编码存储域：
+		<input name="cityCode" id="cityCode" value=""/>
+		<br />
+		城市1：
+		<input name="dest_city_1" id="dest_city_1" type="text" value="" size="10"
+		onclick="GetCityList(this)"
+		onkeyup="GetCityList(this)"
+		value_to_input="cityCode"
+		nextinput="dest_city_2"
+		mod_address_suggest="@Xian|西安|SIA@Beijing|北京|BJS@Shanghai|上海|SHA@Shenzhen|深圳|SZX@Guangzhou|广州|CAN@Qingdao|青岛|TAO@Chengdu|成都|CTU@Hangzhou|杭州|HGH@Wuhan|武汉|WUH@Tianjin|天津|TSN@Dalian|大连|DLC@Xiamen|厦门|XMN@Chongqing|重庆|CKG@"
+		/>
+		有指定默认城市列表，选择完成后自动跳转到下一城市选择对象
+		<br />
+		城市2：
+		<input name="dest_city_2" id="dest_city_2" type="text" value="" size="10"
+		onclick="GetCityList(this)"
+		onkeyup="GetCityList(this)"
+		pagecount="5"
+		/>
+		未指定默认城市列表，未指定城市值存储域，设置了每页显示城市数量为5个 <div id="div1"  style="border:solid #003399 1px;"></div>
+		<br />
+		<br />
+		日期1：
+		<input type="text" name="textfield1" id="textfield1" nextinput="textfield2" onClick="ShowTwoMonthList(this,0,'thisDay');" value=""/>
+		当前日期为最后可用日期，该项选择完成后自动跳转到下一日期项
+		<br />
+		日期2：
+		<input type="text" name="textfield2" id="textfield2" nextinput="textfield3" onClick="ShowTwoMonthList(this,0,$('textfield1').value);"/>
+		上一关联日期为最终可用日期
+		<br />
+		日期3：
+		<input type="text" name="textfield3" id="textfield3" onClick="ShowTwoMonthList(this,0);"/>
+		无任何限制，所有日期均可用
+		<br />
+		日期4：
+		<input type="text" name="textfield4" id="textfield4" />
+		<input style="background-color:#EBCCCC; border-width:0px;" type="button" name="btn" value="选择日期" value_to_input="textfield4" onClick="ShowTwoMonthList(this,0);"/>
+		点相关图标或按钮选择日期
+		<br />
+		测试覆盖：
+		<select name="select">
+			<option>测试层是否能盖住下拉菜单</option>
+		</select>
+		<br />
+		在日历中点击已选日期，自动切换取消选择。
+	</div>
+</body>

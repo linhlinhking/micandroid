@@ -1,0 +1,458 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>#sitename_en - #siteURL</title>
+		<link href="/css/global.css" rel="stylesheet" type="text/css">
+		<script type="text/javascript" src="/js/jquery-1.4.4.min.js" ></script>
+
+	</head>
+	<body class="login_body">
+		<input name="lang" type="hidden" value="#lang" id="current_selected_language">
+		<!-- TOP BAR EN START -->
+		<div tabindex="0" class="feedback" id="send_feedback"></div>
+		<form class="feedback_form" id="send_feedback1">
+			<h1>Send feedback to soningbo</h1>
+			<h2>We are happy to hear any suggestions and opinions you have for us</h2>
+			<p>
+				You can also email us at info@soningbo.com
+			</p>
+
+			<div class="divider_small"></div>
+			<textarea  id="feedback_content"  class="feedback_content"></textarea>
+			<input type="hidden" value="#useremail" id="feedEmail" name="feedEmail">
+
+			<div class="reply">
+				<span>We'll reply to #useremail</span>
+				<div class="button send" id="closefeedback">
+					<span>Cancel</span>
+				</div>
+				<div class="button feedback_cancel">
+					<span id="send">Send</span>
+				</div>
+			</div>
+		</form>
+		<div class="send_accept top_alert">
+			<h1>Send successfully!</h1>
+			<p>
+				Thanks for your feedback, we will be happy to serve you!
+			</p>
+		</div>
+		<div class="send_null top_alert">
+			<h1>it's blank!</h1>
+			<p>
+				The send content cannot be blank!
+			</p>
+		</div>
+		<div class="send_error top_alert">
+			<h1>Something happen!</h1>
+			<p>
+				Email failed to!
+			</p>
+		</div>
+		<div class="add_success top_alert">
+			<h1>Add success!</h1>
+			<p>
+				Add Favorite Success!
+			</p>
+		</div>
+		<div class="repeat_add top_alert">
+			<h1>Add repeat!</h1>
+			<p>
+				You have already added this location!
+			<p>
+		</div>
+		<div class="not_support top_alert">
+			<h1>Not supported!</h1>
+			<p>
+				Your browser does not support this feature.
+			</p>
+		</div>
+		<div class="sign_error top_alert">
+			<h1>Locate failed!</h1>
+			<p>
+				Failure to locate, please reposition.
+			</p>
+		</div>
+		<!--   popup div -->
+		<div class="big_detail_photo" id="popshow">
+			<div id="bigphoto">
+				#popupPhoto
+			</div>
+			<div class="detail_photo_bottom">
+				<img class="userphoto_small" src="/images/username_photo.jpg" alt="头像缩略图" /><span class="shared_span">#username shared at xx:xx</span>
+			</div>
+			<div class="photo_comments">
+				<div class="photo_comments_top">
+					<textarea id="comment" name="comment"></textarea>
+					<input type="hidden" name="photo_id" value="" id="photo_id">
+					<div class="button comments_button" onClick="saveComment();">
+						<span>Review</span>
+					</div>
+				</div>
+				<div class="photo_comments_top_line"></div>
+				<ul class="photo_comments_content" id="ph_comments"></ul>
+			</div>
+		</div>
+		<!--  End popup div -->
+		<div class="review_field" id="die1">
+			<h1>Please write a review</h1>
+			<div class="overall_field">
+				<span>Overall:</span>
+				<div id="location_rate" style="height: 21px ;float:left;"></div>
+				<input type="hidden" name="overAll" id="overAll"/>
+				<span class="detail_info_span"></span>
+			</div>
+			<div class="assess_field" id="assess_field_rate">
+				<span class="first_span"></span>
+				<div class="total_box" id="total_box_one">
+					<div class="num_box s0">
+						0
+					</div>
+					<div class="num_box s1">
+						1
+					</div>
+					<div class="num_box s2">
+						2
+					</div>
+					<div class="num_box s3">
+						3
+					</div>
+					<div class="num_box s4">
+						4
+					</div>
+					<input type="hidden" name="rank_one_o" id="rank_one_o"/>
+				</div>
+				<span></span>
+				<div class="total_box" id="total_box_two">
+					<div class="num_box s0">
+						0
+					</div>
+					<div class="num_box s1">
+						1
+					</div>
+					<div class="num_box s2">
+						2
+					</div>
+					<div class="num_box s3">
+						3
+					</div>
+					<div class="num_box s4">
+						4
+					</div>
+					<input type="hidden" name="rank_two_o" id="rank_two_o"/>
+				</div>
+				<span></span>
+				<div class="total_box" id="total_box_three">
+					<div class="num_box s0">
+						0
+					</div>
+					<div class="num_box s1">
+						1
+					</div>
+					<div class="num_box s2">
+						2
+					</div>
+					<div class="num_box s3">
+						3
+					</div>
+					<div class="num_box s4">
+						4
+					</div>
+					<input type="hidden" name="rank_three_o" id="rank_three_o"/>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<textarea id="commentContent" name="commentContent"></textarea>
+			<div class="button_field">
+				<div class="button publish_button">
+					<span id="Publish">Publish</span>
+				</div>
+				<div class="button cancel_button">
+					<span>Cancel</span>
+				</div>
+			</div>
+		</div>
+		<div class="container" id="container_full">
+			<header>
+				<div id="login_header">
+					<a href="http://www.soningbo.com"><img src="/images/mini_logo.png" alt="搜宁波图标-红色猫头鹰" /></a>
+					<div class="status_now" id="loading_box" style="display:none;">
+						Loading...
+					</div>
+					<ul>
+						<li id="showFeedbackTab">
+							<span class="header_span header_span_right">Feedback</span>
+						</li>
+						<li id="showNotificationTab">
+							<span class="header_span header_span_right notification">Notifications
+								<div class="notification_content" id="notificationTabInfo">
+									<div class="notification_content_title">
+										Notifications
+									</div>
+									<div class="notification_main">
+										<ul>
+											<li class="remind remind_title">
+												Notifications
+											</li>
+											<li class="remind">
+												<em>You have no notifications</em>
+											</li>
+											<li class="remind remind_bottom">
+												<a href="#">See all notifications</a>
+											</li>
+										</ul>
+									</div>
+								</div> </span>
+						</li>
+						<li id="showUsernameTab">
+							<span class="header_span username"><span>#username</span>
+								<div class="username_content">
+									<div class="username_content_title" id="userTabInfo">
+										#usename
+										<div class="username_main">
+											<div class="username_main_top">
+												<div class="username_main_top_photo"><img src="/images/username_photo.jpg" id="photopath" alt="用户头像" />
+												</div>
+												<div class="username_main_top_content">
+													<span class="lowercase">#useremail</span>
+													<ul>
+														<li>
+															<a href="%profile%">Profile</a>
+														</li>
+														<li>
+															<a href="%change_lang%">中文</a>
+														</li>
+													</ul>
+												</div>
+											</div>
+											<div class="username_main_bottom">
+												<a href="%logout%">Sign out</a>
+											</div>
+										</div>
+									</div>
+								</div> </span>
+						</li>
+					</ul>
+				</div>
+			</header>
+			<!-- END TOP BAR EN -->
+			<div class="body_full">
+				<div class="login_hidden place_detail">
+					<aside>
+						<div id="aside">
+							<div class="photo_change">
+								<div class="photo_bg">
+									<div class="personal_photo">
+										<img src="/images/username_photo.jpg" id="photopath_2" alt="用户头像" />
+										<div class="photo_name"></div>
+										<div class="personal_photo_shadow">
+											<div class="name_inside">
+												#username
+											</div>
+											<input type="hidden" value="#user_id" name="userId">
+											<input type="hidden" value="#useremail" name="feedEmail" id="feedEmail">
+										</div>
+									</div>
+									<div class="photo_right">
+										<a href="friends_en.html"> <div class="friends" id="show_following_number"></div> <div class="followed" id="show_followed_number"></div> </a>
+									</div>
+								</div>
+							</div>
+							<div class="main_menu">
+								<ul>
+									<li class="main_menu_content" id="menu_place">
+										<a href="#places" id="press_on"> <span class="menu_img"><img src="/images/location1.gif" alt="位置" /></span> <span class="menu_span">Places</span> </a>
+									</li>
+									<li class="main_menu_content" id="menu_favorite">
+										<a href="#favorites"> <span class="menu_img"><img src="/images/favorite1.gif" alt="收藏" /></span> <span class="menu_span">Favorites</span> </a>
+									</li>
+									<li class="main_menu_content" id="menu_friend">
+										<a href="#friends"> <span class="menu_img"><img src="/images/friends1.gif" alt="朋友" /></span> <span class="menu_span">Friends</span> </a>
+									</li>
+									<li class="main_menu_content" id="menu_event">
+										<a href="#events"> <span class="menu_img"><img src="/images/details1.gif" alt="活动" /></span> <span class="menu_span">Events</span> </a>
+									</li>
+									<li class="main_menu_content" id="menu_my_place">
+										<a href="#my place"> <span class="menu_img"><img src="/images/profile1.gif" alt="我的位置" /></span> <span class="menu_span">+ My Place</span> </a>
+									</li>
+								</ul>
+							</div>
+							<div class="foot_menu"></div>
+						</div>
+					</aside>
+					<section>
+						<div class="right_full">
+							<div class="right_full_fade">
+								<div class="place_info">
+									<span class="title_word">#locationname</span>
+									<ul class="star-rating" id="star_view_location">
+										<li>
+											<a href="#" class="one-star"></a>
+										</li>
+										<li>
+											<a href="#" class="two-stars"></a>
+										</li>
+										<li>
+											<a href="#" class="three-stars"></a>
+										</li>
+										<li>
+											<a href="#" class="four-stars"></a>
+										</li>
+										<li>
+											<a href="#" class="five-stars"></a>
+										</li>
+									</ul>
+									<ul class="location_rating">
+										<li>
+											<span class="rating_text">Excellent</span>
+											<div class="rating_box_outside">
+												<div class="rating_box_inside for_excellent"></div>
+											</div>
+											<span class="rating_number">124</span>
+										</li>
+										<li>
+											<span class="rating_text">Very Good</span>
+											<div class="rating_box_outside">
+												<div class="rating_box_inside for_verygood"></div>
+											</div>
+											<span class="rating_number">60</span>
+										</li>
+										<li>
+											<span class="rating_text">Average</span>
+											<div class="rating_box_outside">
+												<div class="rating_box_inside for_average"></div>
+											</div>
+											<span class="rating_number">65</span>
+										</li>
+										<li>
+											<span class="rating_text">Poor</span>
+											<div class="rating_box_outside">
+												<div class="rating_box_inside for_poor"></div>
+											</div>
+											<span class="rating_number">5</span>
+										</li>
+										<li>
+											<span class="rating_text" id="rating_none">Terrible</span>
+											<div class="rating_box_outside">
+												<div class="rating_box_inside for_terrible"></div>
+											</div>
+											<span class="rating_number">0</span>
+										</li>
+									</ul>
+									<span class="bottom_word word_address">#locationAddress</span><span class="bottom_word word_time">Open (Today) 9:00-17:00</span><span class="bottom_word word_phone">Phone 0574-12345678</span>
+								</div>
+								<div class="top_bar">
+									<div class="top_bar_blank" id="top_bar_blank">
+										<div class="top_bar_tab info_tab tab_focus" id="info_tab">
+											Info
+										</div>
+										<div class="top_bar_tab map_tab" id="map_tab">
+											Map
+										</div>
+										<div class="top_bar_tab review_tab" id="review_tab">
+											Reviews
+										</div>
+										<span class="tab_shadow" id="info_shadow"></span>
+									</div>
+								</div>
+								<div class="photo_content">
+									<div class="photo_content_title">
+										<span>Be the first to add a photo!</span>
+										<div class="favorite_alert" style="display:none">
+											<img src="../images/ajax-loader.gif" />
+										</div>
+										<div class="add_to_favorite gray_button" id="play_throw">
+											<span id="add_favorite_location">Add favorite</span>
+										</div>
+										<div class="upload_button_small gray_button">
+											<span>Browse</span>
+											<iframe name="iframe_content" id="iframe_content" style="width:100px; height:10px; border:1px;"></iframe>
+											<form name="data" method="post" action="http://api.soningbo.com/resource/modulefile/location/upload" enctype="multipart/form-data" target="iframe_content">
+												<input name="key" type="hidden" id="key" value="soningbo">
+												<input type="hidden" name="locationId" id="locationId" value="#location_id">
+												<input type="hidden" name="user_md5_value" id="user_md5_value" value="#user_id">
+												<input class="upload_input" type="file" name="file" onChange="hideiframe();">
+												<!--                         <input type="submit" name="POST" id="POST" value="Submit" onclick="hideiframe();">
+												-->
+											</form>
+										</div>
+									</div>
+									<div class="photo_content_below">
+										<div class="add_more">
+											<div class="big_photo">
+												<div class="big_photo_shadow" id="big_photo">
+													#photoBig
+												</div>
+											</div>
+											<ul class="small_photo_list" id="location_photos">
+												#photos
+											</ul>
+											<div class="clear"></div>
+										</div>
+									</div>
+								</div>
+								<!--show map in here -->
+								<div class="map_content">
+									<div id="map_canvas_detail" style="width:70%; height:500px; float:left;"></div>
+									<div class="map_right_detail" style="width:30%; height:500px; float:left;">
+										<button id="undo" style="display:none;margin:auto" onClick="undo()">
+											Cancel
+										</button>
+										<div id="directions_panel" style="width:100%; overflow:auto;"></div>
+
+									</div>
+									<div class="clear"></div>
+									<input type="hidden" name="latitude" id="latitude" value="#latitude">
+									<input type="hidden" name="longitude" id="longitude" value="#longitude">
+								</div>
+								<div class="review_content">
+									<div class="self_review_area">
+										<div class="gray_button review_submit" onClick="saveUserReview();" >
+											<span>+ Review</span>
+											<!--<input type="button" name="btnOK" value="DELETE" onclick="del();"/>-->
+										</div>
+									</div>
+									<div class="others_review_area" id="tableDiv" >
+										<ul>
+
+											<div class="clear"></div>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="http://ditu.google.cn/maps/api/js?sensor=false&language=zh-EN"></script>
+	<script src="/js/ajax.js"></script>
+	<script src="/js/placedetails.js"></script>
+	<script type="text/javascript" src="/js/jquery.raty.min.js" ></script>
+	<script type="text/javascript" src="/js/detail.js"></script>
+	<script type="text/javascript">
+		var dLocation = soningbo.DetailLocation();
+		dLocation.init();
+
+		$(function() {
+			$('#add_favorite_location').click(function() {
+				dLocation.addFavorite();
+			});
+
+			$("#map_tab").click(function() {
+				dLocation.initialize();
+			});
+		});
+
+		function hideiframe() {
+			document.data.submit();
+			setTimeout("startloading()", 200);
+			document.getElementById("loading_box").innerHTML = 'Uploading...';
+			setTimeout("showLocationsPhotos()", 1600);
+		}
+
+	</script>
+
+</html>

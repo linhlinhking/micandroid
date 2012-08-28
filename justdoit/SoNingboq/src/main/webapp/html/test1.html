@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Insert title here</title>
+		<script type="text/javascript" charset="utf-8" src="../js/jquery-1.7.2.min.js"></script>
+	</head>
+	<body>
+		<div>
+
+			<input name="uname" type="text"/>
+			<button name="requestClick" id="requestClick">
+				Click
+			</button>
+		</div>
+
+	</body>
+	<script>
+		$(function() {
+			$("#requestClick").click(function() {
+
+				$.ajax({
+					url : "http://api.soningbo.com/resource/category/first/showAll",
+					type : "GET",
+					dataType : "json",
+					beforeSend : function() {
+						$("#requestClick").attr("disabled", true);
+					},
+					success : function(json) {
+						alert("ok");
+					},
+					complete : function() {
+						$("#requestClick").attr("disabled", false);
+					}
+				});
+
+			});
+
+		})
+
+	</script>
+</html>

@@ -12,7 +12,6 @@ import java.util.Set;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.alibaba.fastjson.JSON;
 
 public class JsonUtil {
 
@@ -186,9 +185,7 @@ public class JsonUtil {
 	
 	public static JSONObject toJson(Object object) throws JSONException{
 		JSONObject json = new JSONObject();
-		//get the class name through reflect
-		String className = object.getClass().getSimpleName();
-		json.put(className, JSON.toJSON(object));
+		
 		return json;
 	}
 	

@@ -1,5 +1,5 @@
 package ningbo.media.bean.enums;
 
 public enum EventType {
-	SYSTEMUSER,LOCATION,EVENTDATE
+	SYSTEMUSER,LOCATION,EVENTDATE,EVENTTODAY
 }

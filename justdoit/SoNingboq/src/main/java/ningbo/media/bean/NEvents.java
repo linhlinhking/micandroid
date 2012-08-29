@@ -35,9 +35,9 @@ public class NEvents implements Serializable{
 
 	private String telephone ;
 
-	private String photo_path;
-
 	private String organizer;
+	
+	private boolean isRepeat ;
 
 	private Date createDateTime ;
 	
@@ -52,6 +52,7 @@ public class NEvents implements Serializable{
 	private SystemUser systemUser ;
 	
 	@ManyToOne
+	@JoinColumn(name = "category_id")
 	private EventCategory eventCategory ;
 	
 	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "nEvents")
@@ -105,12 +106,13 @@ public class NEvents implements Serializable{
 		this.telephone = telephone;
 	}
 
-	public String getPhoto_path() {
-		return photo_path;
+
+	public boolean isRepeat() {
+		return isRepeat;
 	}
 
-	public void setPhoto_path(String photo_path) {
-		this.photo_path = photo_path;
+	public void setRepeat(boolean isRepeat) {
+		this.isRepeat = isRepeat;
 	}
 
 	public String getOrganizer() {

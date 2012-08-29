@@ -28,8 +28,10 @@ public class EventDaoIImpl extends BaseDaoImpl<Event, Integer> implements
 			} else if (EventType.LOCATION.equals(type)) {
 				hql = "from Event as model where 1=1 and model.locationMd5Value = ? ";
 			} else if (EventType.EVENTDATE.equals(type)) {
-				hql = "from Event as model where 1=1 and model.endDate > ? order by model.startDate desc ";
-			} else {
+				hql = "from Event as model where 1=1 and model.startDate > ? order by model.startDate asc,model.id desc ";
+			} else if(EventType.EVENTTODAY.equals(type)){
+				hql = "from Event as model where 1=1 and model.startDate = ? order by model.startDate desc,model.id desc ";
+			}else{
 				return null;
 			}
 			List<Event> events = findByHql(hql, md5Value);

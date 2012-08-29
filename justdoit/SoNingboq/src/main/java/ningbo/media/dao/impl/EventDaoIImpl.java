@@ -23,18 +23,23 @@ public class EventDaoIImpl extends BaseDaoImpl<Event, Integer> implements
 	public List<Event> getEventsByType(String md5Value, EventType type) {
 		try {
 			String hql = "";
+			List<Event> events = null ;
 			if (EventType.SYSTEMUSER.equals(type)) {
 				hql = "from Event as model where 1=1 and model.userMd5Value = ? ";
+				events = findByHql(hql, md5Value);
 			} else if (EventType.LOCATION.equals(type)) {
 				hql = "from Event as model where 1=1 and model.locationMd5Value = ? ";
+				events = findByHql(hql, md5Value);
 			} else if (EventType.EVENTDATE.equals(type)) {
-				hql = "from Event as model where 1=1 and model.startDate > ? order by model.startDate asc,model.id desc ";
+				hql = "from Event as model where 1=1 and model.startDate > ? order by model.startDate asc,model.startTime asc ";
+				events = findByHql(hql, md5Value);
 			} else if(EventType.EVENTTODAY.equals(type)){
-				hql = "from Event as model where 1=1 and model.startDate = ? order by model.startDate desc,model.id desc ";
+				hql = "from Event as model where 1=1 and model.startDate <= ? and model.endDate >= ?  order by model.startTime asc ";
+				events = findByHql(hql, md5Value,md5Value);
 			}else{
 				return null;
 			}
-			List<Event> events = findByHql(hql, md5Value);
+			 
 			if (null != events && events.size() > 0) {
 				return events;
 			}

@@ -22,6 +22,7 @@ import javax.ws.rs.core.Response;
 import ningbo.media.bean.Event;
 import ningbo.media.bean.Location;
 import ningbo.media.bean.SystemUser;
+import ningbo.media.bean.enums.EventRequestType;
 import ningbo.media.bean.enums.EventType;
 import ningbo.media.data.api.EventList;
 import ningbo.media.data.api.LocationEventList;
@@ -481,21 +482,34 @@ public class EventResource {
 		return Response.ok(lists).build();
 	}
 
-	@Path("/date/{date_today}")
+	/**
+	 * @Description:获取指定日期或者指定日期之后的所有的活动。
+	 * @throws JSONException
+	 * @author Devon.Ning 
+	 * @param nowDate
+	 */
+	@Path("/date/{requestType}/{date_today}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getEventsByDate(@PathParam("date_today")
-	String nowDate) throws JSONException {
+	String nowDate,@PathParam("requestType")String reqType) throws JSONException {
 		JSONObject json = new JSONObject();
 		Collection<EventData> datas = new ArrayList<EventData>();
+		List<Event> events = null ;
 		try {
 			if ("".equals(nowDate.trim()) || nowDate.length() < 0) {
 				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 				json.put(Constant.MESSAGE, JSONCode.MSG_EVENT_DATE_NOINPUT);
 				return Response.ok().build();
 			}
-			List<Event> events = eventService.getEventsByType(nowDate,
-					EventType.EVENTDATE);
+			
+			if(EventRequestType.EQ.getValue().equalsIgnoreCase(reqType)){
+				events = eventService.getEventsByType(nowDate, EventType.EVENTTODAY) ;
+			}else if(EventRequestType.GT.getValue().equalsIgnoreCase(reqType)){
+				events = eventService.getEventsByType(nowDate,EventType.EVENTDATE);
+			}else{
+				events = new ArrayList<Event>() ;
+			}
 
 			datas = getEventsByDateList(events);
 			if (null == datas) {

@@ -120,6 +120,9 @@ public class JSONCode {
 	/**profile*/
 	public static final String MSG_PROFILE_USER_SUCCESS = "Data Update Success." ;
 	
+	/**Event Category*/
+	public static final String MSG_EVENT_CATEGORY_NOEXISTS = "No Event Category Data." ;
+	
 	/**Menu-8*/
 	public static final String MENU_LOCATION_NOEXISTS = "80001" ;
 	public static final String MENU_TOOL_NOEXISTS = "80002" ;

@@ -90,12 +90,12 @@ public class EventResource {
 			String key = form.getField("key").getValue();
 			Event event = new Event();
 			if (key.isEmpty()) {
-				json.put(Constant.CODE, JSONCode.GLOBAL_KEYISNULL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_ISNULL);
 				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 				return Response.ok(json.toString()).build();
 
 			} else if (!Constant.KEY.equals(key)) {
-				json.put(Constant.CODE, JSONCode.GLOBAL_KEYINPUTINVALID);
+				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_INVALID);
 				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 				return Response.ok(json.toString()).build();
 			}

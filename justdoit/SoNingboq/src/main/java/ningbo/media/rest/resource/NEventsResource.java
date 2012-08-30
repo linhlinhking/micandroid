@@ -91,6 +91,7 @@ public class NEventsResource {
 			} else {
 				event = new NEvents();
 				event.setCreateDateTime(new Date());
+				event.setApproval(false);
 			}
 
 			SystemUser tempUser = systemUserService.get(Constant.MD5_FIELD,
@@ -155,31 +156,36 @@ public class NEventsResource {
 				event.setRepeat(false);
 			}
 
+			EventDate d = null;
 			if (flag) {
 				if ((daysValue != null) && (daysValue.length() > 0)) {
-					List<String> tmpList = StringUtil
-							.getCustomDateString(daysValue);
+					List<String> tmpList = StringUtil.getCustomDateString(
+							daysValue, startDate, endDate);
 					for (String str : tmpList) {
 						EventDate ed = new EventDate();
 						ed.setStartDate(str);
 						ed.setEndDate(str);
 						ed.setStartTime(startTime);
 						ed.setEndTime(endTime);
+						ed.setnEvents(event);
 						eventDateService.save(ed);
 					}
-
+				} else {
+					d = new EventDate();
+					d.setStartDate(startDate);
+					d.setEndDate(endDate);
+					d.setStartTime(startTime);
+					d.setEndTime(endTime);
+					d.setnEvents(event);
+					eventDateService.save(d);
 				}
 
 			} else {
-				EventDate d = new EventDate();
+				d = new EventDate();
 				d.setStartDate(startDate);
 				d.setStartTime(startTime);
 				d.setEndTime(endTime);
-				if ((endDate != null) && (endDate.length() > 0)) {
-					d.setEndDate(endDate);
-				} else {
-					d.setEndDate(startDate);
-				}
+				d.setEndDate(startDate);
 				d.setnEvents(event);
 				eventDateService.save(d);
 			}

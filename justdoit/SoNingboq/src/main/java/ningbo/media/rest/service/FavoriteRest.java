@@ -30,6 +30,7 @@ import ningbo.media.service.FavoriteTempService;
 import ningbo.media.service.LocationService;
 import ningbo.media.service.SystemUserService;
 import ningbo.media.service.TempUserService;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.context.annotation.Scope;
@@ -58,8 +59,8 @@ public class FavoriteRest {
 	@Path("/location/count/{locationId : \\d+}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getFavoriteCountByLocationId(@PathParam("locationId")
-	String locationId) throws JSONException {
+	public Response getFavoriteCountByLocationId(
+			@PathParam("locationId") String locationId) throws JSONException {
 		List<Favorite> list = favoriteService.getList(Constant.LOCATIONID,
 				locationId);
 		JSONObject json = new JSONObject();
@@ -72,14 +73,33 @@ public class FavoriteRest {
 		}
 	}
 
+	@Path("/check/{userId}/{locationId}")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response isFavoriteByUser(@PathParam("userId") String userId,
+			@PathParam("locationId") String locationId) throws JSONException {
+		JSONObject json = new JSONObject();
+		try {
+			Favorite f = favoriteService.getFavoriteByUserId(userId, locationId) ;
+			if(null != f){
+				json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS) ;
+			}else{
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL) ;
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL) ;
+		}
+		return Response.ok(json.toString()).build();
+	}
+
 	@Path("/delete")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteFavorite(@FormParam("locationId")
-	String locationId, @FormParam("userId")
-	String userId, @FormParam("deviceId")
-	String deviceId, @FormParam("key")
-	String key) throws JSONException {
+	public Response deleteFavorite(@FormParam("locationId") String locationId,
+			@FormParam("userId") String userId,
+			@FormParam("deviceId") String deviceId, @FormParam("key") String key)
+			throws JSONException {
 		JSONObject json = new JSONObject();
 		if (!StringUtils.hasText(key)) {
 			json.put(Constant.MESSAGE, JSONCode.MSG_KEY_ISNULL);
@@ -142,11 +162,10 @@ public class FavoriteRest {
 	@POST
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addUserFavorite(@FormParam("userId")
-	String userId, @FormParam("locationId")
-	String locationId, @FormParam("deviceId")
-	String deviceId, @FormParam("key")
-	String key) throws JSONException {
+	public Response addUserFavorite(@FormParam("userId") String userId,
+			@FormParam("locationId") String locationId,
+			@FormParam("deviceId") String deviceId, @FormParam("key") String key)
+			throws JSONException {
 		JSONObject tempJson = new JSONObject();
 		try {
 			TempUser tempUser = null;
@@ -250,32 +269,28 @@ public class FavoriteRest {
 	@Path("/user/{userId}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getUserFavorite(@PathParam("userId")
-	String userId) {
+	public Response getUserFavorite(@PathParam("userId") String userId) {
 		return Response.ok(queryUserFavorites(userId)).build();
 	}
 
 	@Path("/device/{deviceId}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getDeviceFavorite(@PathParam("deviceId")
-	String deviceId) {
+	public Response getDeviceFavorite(@PathParam("deviceId") String deviceId) {
 		return Response.ok(queryDeviceFavorites(deviceId)).build();
 	}
 
 	@Path("/search/{userId}/{name}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response searchUserFavorite(@PathParam("userId")
-	String userId, @PathParam("name")
-	String name) {
-		return Response.ok(searchFavoritesByName(userId,name)).build();
+	public Response searchUserFavorite(@PathParam("userId") String userId,
+			@PathParam("name") String name) {
+		return Response.ok(searchFavoritesByName(userId, name)).build();
 	}
 
-	
-	private FavoriteList searchFavoritesByName(String userId,String name){
-		List<Location> locationList = locationService.queryLocationByName(name) ;
-		if(null == locationList || locationList.size() <0){
+	private FavoriteList searchFavoritesByName(String userId, String name) {
+		List<Location> locationList = locationService.queryLocationByName(name);
+		if (null == locationList || locationList.size() < 0) {
 			return new FavoriteList();
 		}
 		List<Favorite> list = favoriteService.getListFavoriteById(userId,
@@ -284,11 +299,11 @@ public class FavoriteRest {
 			return new FavoriteList();
 		}
 		List<LocationDetail> locations = new ArrayList<LocationDetail>();
-		for(Favorite f : list){
-			String locationId = f.getLocationId() ;
-			for(Location loc : locationList){
-				String temp = loc.getMd5Value() ;
-				if(locationId.equals(temp)){
+		for (Favorite f : list) {
+			String locationId = f.getLocationId();
+			for (Location loc : locationList) {
+				String temp = loc.getMd5Value();
+				if (locationId.equals(temp)) {
 					LocationDetail detail = new LocationDetail();
 					detail.setMd5Value(temp);
 					detail.setName_cn(loc.getName_cn());
@@ -305,15 +320,15 @@ public class FavoriteRest {
 					} else {
 						detail.setPhoto_path(loc.getPhoto_path());
 					}
-					
-					locations.add(detail) ;
+
+					locations.add(detail);
 				}
 			}
 		}
-		
+
 		return new FavoriteList(userId, "", locations);
 	}
-	
+
 	private FavoriteList queryUserFavorites(String userId) {
 		List<Favorite> list = favoriteService.getListFavoriteById(userId,
 				FavoriteType.REALUSER);
@@ -329,7 +344,7 @@ public class FavoriteRest {
 			if (null != locationId) {
 				tempLocation = locationService.get(Constant.MD5_FIELD,
 						locationId);
-				if(null != tempLocation){
+				if (null != tempLocation) {
 					detail.setMd5Value(tempLocation.getMd5Value());
 					detail.setName_cn(tempLocation.getName_cn());
 					detail.setAddress_cn(tempLocation.getAddress_cn());
@@ -347,7 +362,7 @@ public class FavoriteRest {
 					}
 					locations.add(detail);
 				}
-				
+
 			}
 		}
 		return new FavoriteList(userId, "", locations);
@@ -368,7 +383,7 @@ public class FavoriteRest {
 			if (null != locationId) {
 				tempLocation = locationService.get(Constant.MD5_FIELD,
 						locationId);
-				if(null != tempLocation){
+				if (null != tempLocation) {
 					detail.setMd5Value(tempLocation.getMd5Value());
 					detail.setName_cn(tempLocation.getName_cn());
 					detail.setAddress_cn(tempLocation.getAddress_cn());

@@ -1,9 +1,12 @@
 package ningbo.media.util;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import ningbo.media.rest.util.DateUtil;
 
 public class StringUtil {
 
@@ -55,17 +58,25 @@ public class StringUtil {
 		return lists;
 	}
 	
-	public static List<String> getCustomDateString(String dateString){
+	public static List<String> getCustomDateString(String dateString,String startDate,String endDate){
+		Date d1 = DateUtil.stringToDate(startDate) ;
+		Date d2 = DateUtil.stringToDate(endDate) ;
+				
 		List<String> tmpList = new ArrayList<String>();
 		String[] strs = dateString.split(",") ;
 		if(null != strs && strs.length > 0){
+			tmpList.add(startDate) ;
 			for(int i=0,j=strs.length;i<j;i++){
-				tmpList.add(strs[i]) ;
+				Date d3 = DateUtil.stringToDate(strs[i]) ;
+				if(d1.before(d3) && d2.after(d3)){
+					tmpList.add(strs[i]) ;
+				}
 			}
-			
+			tmpList.add(endDate) ;
 			return tmpList ;
 		}else{
 			return null ;
 		}
 	}
+	
 }

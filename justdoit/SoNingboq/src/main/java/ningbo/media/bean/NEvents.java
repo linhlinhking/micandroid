@@ -38,6 +38,8 @@ public class NEvents implements Serializable{
 	private String organizer;
 	
 	private boolean isRepeat ;
+	
+	private boolean isApproval;
 
 	private Date createDateTime ;
 	
@@ -169,6 +171,14 @@ public class NEvents implements Serializable{
 
 	public void setEventDates(List<EventDate> eventDates) {
 		this.eventDates = eventDates;
+	}
+
+	public boolean isApproval() {
+		return isApproval;
+	}
+
+	public void setApproval(boolean isApproval) {
+		this.isApproval = isApproval;
 	}
 	
 	

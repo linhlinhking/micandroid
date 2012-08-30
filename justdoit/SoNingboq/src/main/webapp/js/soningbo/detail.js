@@ -27,6 +27,7 @@ soningbo.DetailLocation = function() {
 			_this.directionsService = new google.maps.DirectionsService();
 			_this.oldDirections = [];
 			_this.currentDirections = null;
+			
 
 			_this.flushComment();
 

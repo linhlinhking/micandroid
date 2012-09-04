@@ -33,11 +33,55 @@
 		<!-- Testing -->
 		<mockito.version>1.8.5</mockito.version>
 		<junit.version>4.8.2</junit.version>
+		<ehcache-version>2.6.0</ehcache-version>
+		<mongodb-driver-version>2.6.5</mongodb-driver-version>
+		<hibernate-validate-version>4.1.0.Final</hibernate-validate-version>
+		<javax-validate-version>1.0.0.GA</javax-validate-version>
+		<spring.data.mongo.version>1.0.0.M4</spring.data.mongo.version>
+		<spring.amqp.version>1.0.0.RELEASE</spring.amqp.version>
+
 
 	</properties>
 
 	<dependencies>
+		<!-- Hibernate Validator -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>${hibernate-validate-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>${javax-validate-version}</version>
+		</dependency>
+		<!-- MongoDB Java Driver -->
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+			<version>${mongodb-driver-version}</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<!-- Spring Data MongoDB -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-mongodb</artifactId>
+			<version>${spring.data.mongo.version}</version>
+		</dependency>
 
+		<!-- Spring RabbitMQ -->
+		<dependency>
+			<groupId>org.springframework.amqp</groupId>
+			<artifactId>spring-rabbit</artifactId>
+			<version>${spring.amqp.version}</version>
+		</dependency>
+		<!-- Ehcache -->
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache-core</artifactId>
+			<version>${ehcache-version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>

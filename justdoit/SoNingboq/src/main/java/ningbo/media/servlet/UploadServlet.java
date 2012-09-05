@@ -137,6 +137,7 @@ public class UploadServlet extends HttpServlet {
 				new DiskFileItemFactory());
 		PrintWriter writer = response.getWriter();
 		response.setContentType("application/json");
+		System.out.println(fileUploadPath) ;
 		JSONArray json = new JSONArray();
 		try {
 			List<FileItem> items = uploadHandler.parseRequest(request);

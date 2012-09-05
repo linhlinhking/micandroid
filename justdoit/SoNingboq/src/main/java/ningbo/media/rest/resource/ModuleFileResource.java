@@ -27,6 +27,7 @@ import ningbo.media.bean.Location;
 import ningbo.media.bean.ModuleFile;
 import ningbo.media.bean.SystemUser;
 import ningbo.media.bean.UserModuleFiles;
+import ningbo.media.data.entity.FileData;
 import ningbo.media.rest.dto.ModuleFileData;
 import ningbo.media.rest.util.Constant;
 import ningbo.media.rest.util.FileHashCode;
@@ -100,6 +101,7 @@ public class ModuleFileResource {
 	@Path("/upload")
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response multipleFileUpload(@Context HttpServletRequest request)
 			throws JSONException {
 		if (!ServletFileUpload.isMultipartContent(request)) {
@@ -110,8 +112,8 @@ public class ModuleFileResource {
 				new DiskFileItemFactory());
 		System.out.println(request.getSession().getServletContext()
 				.getRealPath(""));
-		// List<FileData> lists = new ArrayList<FileData>();
-		JSONArray json = new JSONArray();
+		List<FileData> lists = new ArrayList<FileData>();
+		//JSONArray json = new JSONArray();
 		String tmpPath = FileUpload.makeTempDir(request);
 		try {
 			List<FileItem> items = uploadHandler.parseRequest(request);
@@ -119,24 +121,24 @@ public class ModuleFileResource {
 				if (!item.isFormField() && item.getSize() > 0) {
 					File file = new File(tmpPath, item.getName());
 					item.write(file);
-					JSONObject jsono = new JSONObject();
-					jsono.put("name", item.getName());
-					jsono.put("size", item.getSize());
-					jsono.put("url", "upload?getfile=" + item.getName());
-					jsono.put("thumbnail_url",
-							"upload?getthumb=" + item.getName());
-					jsono.put("delete_url", "upload?delfile=" + item.getName());
-					jsono.put("delete_type", "GET");
-					json.put(jsono);
-					// FileData jsono = new FileData();
-					// jsono.setName(item.getName());
-					// jsono.setSize(String.valueOf(item.getSize()));
-					// jsono.setUrl("pload?getfile=" + item.getName());
-					// jsono.setThumbnail_url("upload?getthumb=" +
-					// item.getName());
-					// jsono.setDelete_url("upload?delfile=" + item.getName());
-					// jsono.setDelete_type("GET");
-					// lists.add(jsono);
+					//JSONObject jsono = new JSONObject();
+					//jsono.put("name", item.getName());
+					//jsono.put("size", item.getSize());
+					//jsono.put("url", "upload?getfile=" + item.getName());
+					//jsono.put("thumbnail_url",
+					//		"upload?getthumb=" + item.getName());
+					//jsono.put("delete_url", "upload?delfile=" + item.getName());
+					//jsono.put("delete_type", "GET");
+					//json.put(jsono);
+					 FileData jsono = new FileData();
+					 jsono.setName(item.getName());
+					 jsono.setSize(String.valueOf(item.getSize()));
+					 jsono.setUrl("pload?getfile=" + item.getName());
+					 jsono.setThumbnail_url("upload?getthumb=" +
+					 item.getName());
+					 jsono.setDelete_url("upload?delfile=" + item.getName());
+					 jsono.setDelete_type("GET");
+					 lists.add(jsono);
 				}
 			}
 		} catch (Exception e) {
@@ -146,7 +148,7 @@ public class ModuleFileResource {
 			errorJSON.put(Constant.MESSAGE, JSONCode.MSG_UPLOAD_FILE_EXCEPTION);
 			return Response.ok(errorJSON.toString()).build();
 		}
-		GenericEntity<JSONArray> entiry = new GenericEntity<JSONArray>(json) {
+		GenericEntity<List<FileData>> entiry = new GenericEntity<List<FileData>>(lists) {
 		};
 		return Response.ok(entiry).build();
 	}

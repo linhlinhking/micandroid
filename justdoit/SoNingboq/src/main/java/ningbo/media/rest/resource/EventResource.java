@@ -33,6 +33,7 @@ import ningbo.media.data.entity.LocationEventData;
 import ningbo.media.data.entity.UserEventData;
 import ningbo.media.rest.dto.SystemUserData;
 import ningbo.media.rest.util.Constant;
+import ningbo.media.rest.util.DateUtil;
 import ningbo.media.rest.util.FileHashCode;
 import ningbo.media.rest.util.FileUpload;
 import ningbo.media.rest.util.FileUploadUtil;
@@ -69,7 +70,9 @@ public class EventResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<EventData> getAllEvent() throws JSONException {
-		List<Event> list = eventService.getAllEventOrderByDate();
+		//List<Event> list = eventService.getAllEventOrderByDate();
+		String today_frm = DateUtil.getNow(DateUtil.SHORT_FORMAT_TYPE) ;
+		List<Event> list = eventService.getEventsByType(today_frm, EventType.EVENTTODAY) ;
 		List<EventData> d = null;
 		if (null != list && list.size() > 0) {
 			d = getEventsByDateList(list);

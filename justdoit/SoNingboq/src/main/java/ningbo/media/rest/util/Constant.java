@@ -9,6 +9,7 @@ public class Constant {
 	public static final String USERNAME = "username" ;
 	public static final String USER_EMAIL = "email" ;
 	
+	
 	public static final String globalPath = "/Users/ning/upload" ;
 	
 	public static final String WIDTH = "w" ;
@@ -39,6 +40,7 @@ public class Constant {
 	public static final String SYSTEM_USER_TYPE = "User" ;
 	public static final String PROFILEID = "profileId" ;
 	public static final String PROFILE_EXT_USERID = "systemUser.id" ;
+	public static final String LOCATIONEXT_LINK_LOCATION = "location.id" ;
 	
 	public static final Integer LIMIT = 10  ;
 	public static final String ERROR = "error" ;

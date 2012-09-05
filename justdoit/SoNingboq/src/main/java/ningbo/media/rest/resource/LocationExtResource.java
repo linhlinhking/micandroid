@@ -31,40 +31,41 @@ public class LocationExtResource {
 	@Resource
 	private LocationService locationService;
 
-	@Path("/add")
+	@Path("/addOrUpdate")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addLocationExt(@FormParam("location_website")
-	String website, @FormParam("location_qq")
-	String qq, @FormParam("location_email")
-	String email, @FormParam("location_msn")
-	String msn, @FormParam("locationMd5Value")
-	String locationMd5Value, @FormParam("key")
-	String key, @FormParam("mon_isClosed")
-	String isMonClosed, @FormParam("mon_open")
-	String monOpen, @FormParam("mon_close")
-	String monClose, @FormParam("tue_isClosed")
-	String isTueClosed, @FormParam("tue_open")
-	String tueOpen, @FormParam("tue_close")
-	String tueClose, @FormParam("wed_isClosed")
-	String isWedClosed, @FormParam("wed_open")
-	String wedOpen, @FormParam("wed_close")
-	String wedClose, @FormParam("thru_isClosed")
-	String isThruClosed, @FormParam("thru_open")
-	String thruOpen, @FormParam("thru_close")
-	String thruClose, @FormParam("fri_isClosed")
-	String isFriClosed, @FormParam("fri_open")
-	String friOpen, @FormParam("fri_close")
-	String friClose, @FormParam("sat_isClosed")
-	String isSatClosed, @FormParam("sat_open")
-	String satOpen, @FormParam("sat_close")
-	String satClose, @FormParam("sun_isClosed")
-	String isSunClosed, @FormParam("sun_open")
-	String sunOpen, @FormParam("sun_close")
-	String sunClose) throws JSONException {
+	public Response addLocationExt(
+			@FormParam("location_website") String website,
+			@FormParam("location_qq") String qq,
+			@FormParam("location_email") String email,
+			@FormParam("location_msn") String msn,
+			@FormParam("locationMd5Value") String locationMd5Value,
+			@FormParam("key") String key,
+			@FormParam("mon_isClosed") String isMonClosed,
+			@FormParam("mon_open") String monOpen,
+			@FormParam("mon_close") String monClose,
+			@FormParam("tue_isClosed") String isTueClosed,
+			@FormParam("tue_open") String tueOpen,
+			@FormParam("tue_close") String tueClose,
+			@FormParam("wed_isClosed") String isWedClosed,
+			@FormParam("wed_open") String wedOpen,
+			@FormParam("wed_close") String wedClose,
+			@FormParam("thru_isClosed") String isThruClosed,
+			@FormParam("thru_open") String thruOpen,
+			@FormParam("thru_close") String thruClose,
+			@FormParam("fri_isClosed") String isFriClosed,
+			@FormParam("fri_open") String friOpen,
+			@FormParam("fri_close") String friClose,
+			@FormParam("sat_isClosed") String isSatClosed,
+			@FormParam("sat_open") String satOpen,
+			@FormParam("sat_close") String satClose,
+			@FormParam("sun_isClosed") String isSunClosed,
+			@FormParam("sun_open") String sunOpen,
+			@FormParam("sun_close") String sunClose) throws JSONException {
 		JSONObject json = new JSONObject();
+		LocationExt extLocation = null;
 		try {
-			LocationExt extLocation = new LocationExt();
+
 			if (key.isEmpty()) {
 				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_ISNULL);
@@ -82,6 +83,14 @@ public class LocationExtResource {
 				json.put(Constant.MESSAGE, JSONCode.MSG_LOCATION_NOEXISTS);
 				return Response.ok(json.toString()).build();
 			}
+
+			extLocation = locationExtService.get(Constant.LOCATIONEXT_LINK_LOCATION,
+					loc.getId());
+			
+			if(null == extLocation){
+				extLocation = new LocationExt();
+			}
+
 			extLocation.setWebsite(website);
 			extLocation.setEmailAddress(email);
 			extLocation.setMsn(msn);
@@ -108,7 +117,8 @@ public class LocationExtResource {
 			extLocation.setSunEndTime(sunClose);
 			extLocation.setClosedSun(Boolean.valueOf(isSunClosed));
 			extLocation.setLocation(loc);
-			locationExtService.save(extLocation);
+			
+			locationExtService.saveOrUpdate(extLocation);
 
 			json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
 			return Response.ok(json.toString()).build();

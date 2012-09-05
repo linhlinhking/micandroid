@@ -11,9 +11,9 @@ import java.util.Date;
  */
 public class DateUtil {
 
-	private static final String SHORT_FORMAT_TYPE = "yyyy-MM-dd";
+	public static final String SHORT_FORMAT_TYPE = "yyyy-MM-dd";
 
-	private static final String FULL_FORMAT_TYPE = "yyyy-MM-dd HH:mm:ss";
+	public static final String FULL_FORMAT_TYPE = "yyyy-MM-dd HH:mm:ss";
 
 	/**
 	 * format the date(today's date) to string

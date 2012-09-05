@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import javax.servlet.http.HttpServletRequest;
 
 import com.sun.jersey.multipart.FormDataBodyPart;
@@ -24,18 +23,27 @@ public class FileUpload {
 		String date = DateUtil.date2String("yyyy-MM-dd");
 		String strTime = String.valueOf(System.currentTimeMillis());
 		StringBuffer buffer = new StringBuffer();
-		buffer.append(folderName).append(FILE_SEPARATOR).append(
-				date.substring(0, 4)).append(FILE_SEPARATOR).append(
-				date.substring(5, 7)).append(FILE_SEPARATOR).append(
-				strTime.substring(0, 4)).append(FILE_SEPARATOR).append(
-				strTime.substring(4, 8)).append(FILE_SEPARATOR).append(
-				strTime.substring(8));
+		buffer.append(folderName).append(FILE_SEPARATOR)
+				.append(date.substring(0, 4)).append(FILE_SEPARATOR)
+				.append(date.substring(5, 7)).append(FILE_SEPARATOR)
+				.append(strTime.substring(0, 4)).append(FILE_SEPARATOR)
+				.append(strTime.substring(4, 8)).append(FILE_SEPARATOR)
+				.append(strTime.substring(8));
 
 		return buffer.toString();
 	}
 
-	public static void main(String args[]) {
-		System.out.println(generateFolderName(Constant.FOLDER));
+	public static String makeTempDir(HttpServletRequest request) {
+		StringBuffer temp = new StringBuffer();
+		temp.append(request.getSession().getServletContext().getRealPath(""))
+				.append(FILE_SEPARATOR).append(Constant.TEMP)
+				.append(FILE_SEPARATOR);
+
+		File f = new File(temp.toString());
+		if (!f.exists()) {
+			f.mkdirs();
+		}
+		return temp.toString();
 	}
 
 	/**

@@ -123,6 +123,9 @@ public class JSONCode {
 	/**Event Category*/
 	public static final String MSG_EVENT_CATEGORY_NOEXISTS = "No Event Category Data." ;
 	
+	/**File Upload*/
+	public static final String MSG_UPLOAD_FILE_EXCEPTION = "Upload File Exception." ;
+	
 	/**Menu-8*/
 	public static final String MENU_LOCATION_NOEXISTS = "80001" ;
 	public static final String MENU_TOOL_NOEXISTS = "80002" ;

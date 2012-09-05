@@ -14,4 +14,6 @@ public interface EventDao extends BaseDao<Event, Integer>{
 	
 	public List<Event> getAllEventOrderByDate();
 	
+	
+	
 }

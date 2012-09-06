@@ -54,5 +54,5 @@ public class Constant {
 	public static final String DEFAULT_PAGE_NO = "1" ;
 	public static final String DEFAULT_PAGE_SIZE = "20" ;
 	
-	
+	public static final String API_URL = "http://api.soningbo.com" ;
 }

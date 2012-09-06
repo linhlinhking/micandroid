@@ -74,8 +74,7 @@ public class SystemUserRest {
 	@Path("/show/{id}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getSystemUserById(@PathParam("id")
-	String id) {
+	public Response getSystemUserById(@PathParam("id") String id) {
 		SystemUser u = systemUserService.get(Constant.MD5_FIELD, id);
 		if (null == u) {
 			String message = "The User Id [" + id + "] No Exists.";
@@ -91,6 +90,32 @@ public class SystemUserRest {
 		return systemUserService.getAll();
 	}
 
+	@Path("/check/oldpassword")
+	public Response checkOldPassword(@FormParam("key") String key,
+			@FormParam("md5Value") String md5Value,
+			@FormParam("oldPassword") String oldPassword) {
+		JSONObject json = new JSONObject();
+		try{
+			if (key.isEmpty()) {
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_ISNULL);
+				return Response.ok(json.toString()).build();
+
+			} else if (!Constant.KEY.equals(key)) {
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_INVALID);
+				return Response.ok(json.toString()).build();
+			}
+			
+		}catch(Exception ex){
+			ex.printStackTrace() ;
+		}
+		
+		return null ;
+		
+		
+	}
+
 	/**
 	 * @param form
 	 * @param request
@@ -100,9 +125,8 @@ public class SystemUserRest {
 	@Path("/verifystatus/{id}/{key}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response verifystatus(@PathParam("id")
-	String id, @PathParam("key")
-	String key) throws Exception {
+	public Response verifystatus(@PathParam("id") String id,
+			@PathParam("key") String key) throws Exception {
 		JSONObject json = new JSONObject();
 		StringCode stringCode = new StringCode();
 		String tempKey = stringCode.decrypt(key);
@@ -142,11 +166,10 @@ public class SystemUserRest {
 	@Path("/registration")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addSimpleSystemUser(@FormParam("key")
-	String key, @FormParam("username")
-	String username, @FormParam("email")
-	String email, @FormParam("password")
-	String password) throws JSONException {
+	public Response addSimpleSystemUser(@FormParam("key") String key,
+			@FormParam("username") String username,
+			@FormParam("email") String email,
+			@FormParam("password") String password) throws JSONException {
 		JSONObject json = new JSONObject();
 		if (key.isEmpty()) {
 			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
@@ -231,8 +254,8 @@ public class SystemUserRest {
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addSystemUser(FormDataMultiPart form, @Context
-	HttpServletRequest request) throws JSONException {
+	public Response addSystemUser(FormDataMultiPart form,
+			@Context HttpServletRequest request) throws JSONException {
 		JSONObject json = new JSONObject();
 		String key = form.getField("key").getValue();
 		String username = form.getField("username").getValue();
@@ -323,8 +346,7 @@ public class SystemUserRest {
 	@Path("/resend/email/{id}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response resendEmail(@PathParam("id")
-	String id) throws Exception {
+	public Response resendEmail(@PathParam("id") String id) throws Exception {
 		SystemUser u = systemUserService.getSystemUserByMd5Value(id);
 		String md5Value = u.getMd5Value();
 		String email = u.getEmail();
@@ -354,14 +376,13 @@ public class SystemUserRest {
 	@Path("/edit")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response editSystemUser(@FormParam("key")
-	String key, @FormParam("nickName")
-	String nickName, @FormParam("md5Value")
-	String md5Value, @FormParam("gender")
-	String gender, @FormParam("intro")
-	String intro, @FormParam("realName")
-	String name_cn, @FormParam("website")
-	String website) throws JSONException {
+	public Response editSystemUser(@FormParam("key") String key,
+			@FormParam("nickName") String nickName,
+			@FormParam("md5Value") String md5Value,
+			@FormParam("gender") String gender,
+			@FormParam("intro") String intro,
+			@FormParam("realName") String name_cn,
+			@FormParam("website") String website) throws JSONException {
 		JSONObject json = new JSONObject();
 		try {
 			if (key.isEmpty()) {
@@ -409,10 +430,9 @@ public class SystemUserRest {
 	@Path("/modify/password")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response modifyPassword(@FormParam("key")
-	String key, @FormParam("md5Value")
-	String md5Value, @FormParam("password")
-	String password) throws JSONException {
+	public Response modifyPassword(@FormParam("key") String key,
+			@FormParam("md5Value") String md5Value,
+			@FormParam("password") String password) throws JSONException {
 		JSONObject json = new JSONObject();
 		try {
 			if (key.isEmpty()) {
@@ -459,8 +479,8 @@ public class SystemUserRest {
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response changeUserHeader(FormDataMultiPart form, @Context
-	HttpServletRequest request) throws JSONException {
+	public Response changeUserHeader(FormDataMultiPart form,
+			@Context HttpServletRequest request) throws JSONException {
 		JSONObject json = new JSONObject();
 		try {
 			String key = form.getField("key").getValue();
@@ -513,11 +533,10 @@ public class SystemUserRest {
 	@Path("/login")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response login(@FormParam("username")
-	String username, @FormParam("password")
-	String password, @FormParam("key")
-	String key, @FormParam("device_id")
-	String device_id) throws JSONException {
+	public Response login(@FormParam("username") String username,
+			@FormParam("password") String password,
+			@FormParam("key") String key,
+			@FormParam("device_id") String device_id) throws JSONException {
 		JSONObject json = new JSONObject();
 		if (key.isEmpty()) {
 			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
@@ -572,9 +591,9 @@ public class SystemUserRest {
 	@Path("/forgot/password")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response forgetUserPassword(@FormParam("user_email")
-	String userEmail, @FormParam("key")
-	String key) throws JSONException {
+	public Response forgetUserPassword(
+			@FormParam("user_email") String userEmail,
+			@FormParam("key") String key) throws JSONException {
 		JSONObject json = new JSONObject();
 		try {
 			if (key.isEmpty()) {
@@ -622,34 +641,33 @@ public class SystemUserRest {
 	@Path("/username/{username}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response isExistsUserName(@PathParam("username")
-	String username) {
+	public Response isExistsUserName(@PathParam("username") String username) {
 		JSONObject json = new JSONObject();
-		boolean flag = false ;
+		boolean flag = false;
 		try {
-			flag = systemUserService.isExist(Constant.SYSTEMUSER_USERNAME, username);
-			json.put(Constant.RESULT,flag);
+			flag = systemUserService.isExist(Constant.SYSTEMUSER_USERNAME,
+					username);
+			json.put(Constant.RESULT, flag);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		return Response.ok(json.toString()).build() ;
+		return Response.ok(json.toString()).build();
 	}
 
 	@Path("/email/{email}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response isExistsEmail(@PathParam("email")
-	String email) {
+	public Response isExistsEmail(@PathParam("email") String email) {
 		JSONObject json = new JSONObject();
-		boolean flag = false ;
+		boolean flag = false;
 		try {
 			flag = systemUserService.isExist(Constant.SYSTEMUSER_EMAIL, email);
-			json.put(Constant.RESULT,flag);
+			json.put(Constant.RESULT, flag);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 
 		}
-		return Response.ok(json.toString()).build() ;
+		return Response.ok(json.toString()).build();
 	}
 
 	private SystemUserData getSystemUserData(SystemUser user) {

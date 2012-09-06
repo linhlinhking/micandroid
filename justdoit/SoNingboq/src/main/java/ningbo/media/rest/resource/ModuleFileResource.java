@@ -25,7 +25,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -36,7 +35,6 @@ import ningbo.media.bean.Location;
 import ningbo.media.bean.ModuleFile;
 import ningbo.media.bean.SystemUser;
 import ningbo.media.bean.UserModuleFiles;
-import ningbo.media.data.entity.FileData;
 import ningbo.media.rest.dto.ModuleFileData;
 import ningbo.media.rest.util.Constant;
 import ningbo.media.rest.util.FileHashCode;
@@ -57,6 +55,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.imgscalr.Scalr;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.context.annotation.Scope;
@@ -178,12 +177,12 @@ public class ModuleFileResource {
 				}
 			} // TODO: check and report success
 		} else {
-			json.put(Constant.RESULT, JSONCode.RESULT_FAIL) ;
-			json.put(Constant.MESSAGE, "call POST with multipart form data") ;
-			return Response.ok(json.toString()).build() ;
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+			json.put(Constant.MESSAGE, "call POST with multipart form data");
+			return Response.ok(json.toString()).build();
 		}
-		json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS) ;
-		return Response.ok(json.toString()).build() ;
+		json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
+		return Response.ok(json.toString()).build();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -200,20 +199,17 @@ public class ModuleFileResource {
 		ServletFileUpload uploadHandler = new ServletFileUpload(
 				new DiskFileItemFactory());
 
-		List<FileData> lists = new ArrayList<FileData>();
-		UriBuilder getFileUrl = UriBuilder
-				.fromPath("/resource/modulefile/option?getfile=").path("");
+		// List<FileData> lists = new ArrayList<FileData>();
+		UriBuilder getFileUrl = UriBuilder.fromPath(
+				"/resource/modulefile/option?getfile=").path("");
 		UriBuilder getThumUrl = UriBuilder.fromPath(
 				"/resource/modulefile/option?getthumb=").path("");
-		UriBuilder delFileUrl = UriBuilder
-				.fromPath("/resource/modulefile/option?delfile=").path("");
-		StringBuffer headUrl = new StringBuffer();
-		headUrl.append(request.getScheme()).append("://")
-				.append(request.getServerName()).append(":")
-				.append(request.getServerPort());
-
-		// System.out.println(delFileUrl.build("").getPath());
+		UriBuilder delFileUrl = UriBuilder.fromPath(
+				"/resource/modulefile/option?delfile=").path("");
+		String locUrl = "http://localhost:9000" ;
+		//String remoteUrl = Constant.API_URL ;
 		String tmpPath = FileUpload.makeTempDir(request);
+		JSONArray jsonArry = new JSONArray();
 		try {
 			List<FileItem> items = uploadHandler.parseRequest(request);
 			for (FileItem item : items) {
@@ -221,18 +217,31 @@ public class ModuleFileResource {
 					File file = new File(tmpPath, item.getName());
 					item.write(file);
 
-					FileData jsono = new FileData();
-					jsono.setName(item.getName());
-					jsono.setSize(String.valueOf(item.getSize()));
-					jsono.setUrl(headUrl.toString()
+					JSONObject obj = new JSONObject();
+					obj.put("name", item.getName());
+					obj.put("size", item.getSize());
+					obj.put("url", locUrl
 							+ getFileUrl.build("").getPath() + item.getName());
-
-					jsono.setThumbnail_url(headUrl.toString()
+					obj.put("thumbnail_url", locUrl
 							+ getThumUrl.build("").getPath() + item.getName());
-					jsono.setDelete_url(headUrl.toString()
-							+ delFileUrl.build("").getPath() + item.getName());
-					jsono.setDelete_type("GET");
-					lists.add(jsono);
+					obj.put("delete_url",
+							locUrl + delFileUrl.build("").getPath()
+									+ item.getName());
+					obj.put("delete_type", "GET");
+
+					jsonArry.put(obj);
+					// FileData jsono = new FileData();
+					// jsono.setName(item.getName());
+					// jsono.setSize(String.valueOf(item.getSize()));
+					// jsono.setUrl(headUrl.toString()
+					// + getFileUrl.build("").getPath() + item.getName());
+
+					// jsono.setThumbnail_url(headUrl.toString()
+					// + getThumUrl.build("").getPath() + item.getName());
+					// jsono.setDelete_url(headUrl.toString()
+					// + delFileUrl.build("").getPath() + item.getName());
+					// jsono.setDelete_type("GET");
+					// lists.add(jsono);
 				}
 			}
 		} catch (Exception e) {
@@ -242,10 +251,10 @@ public class ModuleFileResource {
 			errorJSON.put(Constant.MESSAGE, JSONCode.MSG_UPLOAD_FILE_EXCEPTION);
 			return Response.ok(errorJSON.toString()).build();
 		}
-		GenericEntity<List<FileData>> entiry = new GenericEntity<List<FileData>>(
-				lists) {
-		};
-		return Response.ok(entiry).build();
+		// GenericEntity<JSONArray> entiry = new GenericEntity<JSONArray>(
+		// jsonArry) {
+		// };
+		return Response.ok(jsonArry.toString()).build();
 	}
 
 	@Path("/user/upload")
@@ -648,7 +657,7 @@ public class ModuleFileResource {
 				mimetype = mtMap.getContentType(file);
 			}
 		}
-		System.out.println("mimetype: " + mimetype);
+		// System.out.println("mimetype: " + mimetype);
 		return mimetype;
 	}
 
@@ -658,7 +667,7 @@ public class ModuleFileResource {
 		if (pos > 0 && pos < filename.length() - 1) {
 			suffix = filename.substring(pos + 1);
 		}
-		System.out.println("suffix: " + suffix);
+		// System.out.println("suffix: " + suffix);
 		return suffix;
 	}
 

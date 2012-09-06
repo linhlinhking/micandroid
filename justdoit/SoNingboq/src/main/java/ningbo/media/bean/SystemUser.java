@@ -72,6 +72,9 @@ public class SystemUser implements Serializable {
 	private String qq ;
 	
 	private String msn ;
+	
+	@Column(name="security_email")
+	private String securityEmail ;
 
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE },mappedBy = "systemUsers")
 	private List<ModuleFile> moduleFiles ;
@@ -319,6 +322,16 @@ public class SystemUser implements Serializable {
 
 	public void setGender(String gender) {
 		this.gender = gender;
+	}
+
+
+	public String getSecurityEmail() {
+		return securityEmail;
+	}
+
+
+	public void setSecurityEmail(String securityEmail) {
+		this.securityEmail = securityEmail;
 	}
 
 	

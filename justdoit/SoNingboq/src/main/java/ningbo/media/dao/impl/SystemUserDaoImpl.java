@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 
 import ningbo.media.bean.SystemUser;
 import ningbo.media.core.dao.impl.BaseDaoImpl;
+import ningbo.media.core.page.Finder;
+import ningbo.media.core.page.Pagination;
 import ningbo.media.dao.SystemUserDao;
 import ningbo.media.util.MD5;
 
@@ -56,5 +58,13 @@ public class SystemUserDaoImpl extends BaseDaoImpl<SystemUser, Integer>
 		}
 		return null;
 	}
+
+	public Pagination<SystemUser> getAllByPage(int pageNo, int pageSize) {
+		final Finder f = Finder.create("from SystemUser as u where 1=1 ") ;
+		f.append(" order by u.id desc ") ;
+		return findByPage(f, pageNo, pageSize);
+	}
+	
+	
 
 }

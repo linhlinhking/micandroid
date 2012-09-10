@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import ningbo.media.bean.SystemUser;
+import ningbo.media.core.page.Pagination;
 import ningbo.media.core.service.impl.BaseServiceImpl;
 import ningbo.media.dao.SystemUserDao;
 import ningbo.media.service.SystemUserService;
@@ -36,6 +37,16 @@ public class SystemUserServiceImpl extends BaseServiceImpl<SystemUser, Integer> 
 	
 	public List<SystemUser> querySystemUserByName(String name){
 		return systemUserDao.querySystemUserByName(name) ;
+	}
+
+	public Pagination<SystemUser> getAllByPage(int pageNo, int pageSize) {
+		if(pageNo < 1){
+			pageNo = 1 ;
+		}
+		if(pageSize < 1){
+			pageSize = 20 ;
+		}
+		return systemUserDao.getAllByPage(pageNo, pageSize) ;
 	}
 
 }

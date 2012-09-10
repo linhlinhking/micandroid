@@ -58,6 +58,20 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 		<url-pattern>/resource/*</url-pattern>
 	</servlet-mapping>
 
+	<servlet>
+		<servlet-name>soningbo</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>spring.profiles.active</param-name>
+			<param-value>local</param-value>
+		</init-param>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>soningbo</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+
 
 	<!--配置openSessionInViewFilter -->
 	<filter>
@@ -74,6 +88,21 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 		<init-param> <param-name>upload_path</param-name> <param-value>/temp</param-value> 
 		</init-param> </servlet> <servlet-mapping> <servlet-name>uploadServlet</servlet-name> 
 		<url-pattern>/res/servlet/upload</url-pattern> </servlet-mapping> -->
+
+	<jsp-config>
+		<taglib>
+			<taglib-uri>http://www.soningbo.com/tags/c</taglib-uri>
+			<taglib-location>/WEB-INF/tld/c.tld</taglib-location>
+		</taglib>
+		<taglib>
+			<taglib-uri>http://www.soningbo.com/tags/form</taglib-uri>
+			<taglib-location>/WEB-INF/tld/form.tld</taglib-location>
+		</taglib>
+		<taglib>
+			<taglib-uri>http://www.soningbo.com/tags/spring</taglib-uri>
+			<taglib-location>/WEB-INF/tld/spring.tld</taglib-location>
+		</taglib>
+	</jsp-config>
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 		<welcome-file>index.html</welcome-file>

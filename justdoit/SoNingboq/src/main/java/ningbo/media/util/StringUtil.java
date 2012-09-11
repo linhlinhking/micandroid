@@ -39,7 +39,7 @@ public class StringUtil {
 		String sub = s1.substring(0, l1 + 1);
 		Integer v1 = Integer.valueOf(s1.substring(l1 + 1));
 		Integer v2 = Integer.valueOf(s2.substring(l2 + 1));
-		
+
 		if (v1 > v2) {
 			return null;
 		} else {
@@ -57,33 +57,40 @@ public class StringUtil {
 
 		return lists;
 	}
-	
-	public static List<String> getCustomDateString(String dateString,String startDate,String endDate){
-		Date d1 = DateUtil.stringToDate(startDate) ;
-		Date d2 = DateUtil.stringToDate(endDate) ;
-				
+
+	public static List<String> getCustomDateString(String dateString,
+			String startDate, String endDate) {
+		Date d1 = DateUtil.stringToDate(startDate);
+		Date d2 = DateUtil.stringToDate(endDate);
+
 		List<String> tmpList = new ArrayList<String>();
-		String[] strs = dateString.split(",") ;
-		if(null != strs && strs.length > 0){
-			tmpList.add(startDate) ;
-			for(int i=0,j=strs.length;i<j;i++){
-				Date d3 = DateUtil.stringToDate(strs[i]) ;
-				if(d1.before(d3) && d2.after(d3)){
-					tmpList.add(strs[i]) ;
+		String[] strs = dateString.split(",");
+		if (null != strs && strs.length > 0) {
+			tmpList.add(startDate);
+			for (int i = 0, j = strs.length; i < j; i++) {
+				Date d3 = DateUtil.stringToDate(strs[i]);
+				if (d1.before(d3) && d2.after(d3)) {
+					tmpList.add(strs[i]);
 				}
 			}
-			tmpList.add(endDate) ;
-			return tmpList ;
-		}else{
-			return null ;
+			tmpList.add(endDate);
+			return tmpList;
+		} else {
+			return null;
 		}
 	}
-	
-	public static boolean isNumeric(String str){ 
-		Pattern pattern = Pattern.compile("[0-9]*"); 
-		return pattern.matcher(str).matches(); 
+
+	public static String[] parseString(String str, String regex) {
+		String[] arry = str.split(regex);
+		if (null == arry || arry.length < 0) {
+			return null;
+		}
+		return arry;
 	}
-	
-	
-	
+
+	public static boolean isNumeric(String str) {
+		Pattern pattern = Pattern.compile("[0-9]*");
+		return pattern.matcher(str).matches();
+	}
+
 }

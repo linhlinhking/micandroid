@@ -26,6 +26,9 @@ public class SystemUser implements Serializable {
 	private static final long serialVersionUID = -4367047739963786995L;
 	
 
+	public static final String PASSWORD = "password" ;
+	public static final String SECURITY_EMAIL = "securityEmail" ;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;

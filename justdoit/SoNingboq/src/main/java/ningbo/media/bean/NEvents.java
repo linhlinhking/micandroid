@@ -40,6 +40,8 @@ public class NEvents implements Serializable{
 	private boolean isRepeat ;
 	
 	private boolean isApproval;
+	
+	private Double price ;
 
 	private Date createDateTime ;
 	
@@ -179,6 +181,14 @@ public class NEvents implements Serializable{
 
 	public void setApproval(boolean isApproval) {
 		this.isApproval = isApproval;
+	}
+
+	public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
 	}
 	
 	

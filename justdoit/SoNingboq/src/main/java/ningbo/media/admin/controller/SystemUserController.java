@@ -30,7 +30,7 @@ public class SystemUserController {
 	}
 	
 	@Cacheable(value = "records")
-	@RequestMapping(value="/getAll",method = RequestMethod.POST)
+	@RequestMapping(value="/getAll",method = RequestMethod.GET)
 	public @ResponseBody JqgridPage<SystemUser> getAll(){
 		Pagination<SystemUser> p = systemUserService.getAllByPage(1, 20) ;
 		List<SystemUser> lists = p.getList() ;

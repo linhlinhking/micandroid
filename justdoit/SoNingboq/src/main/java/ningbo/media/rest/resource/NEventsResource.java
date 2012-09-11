@@ -69,6 +69,7 @@ public class NEventsResource {
 			@FormParam("endDate") String endDate,
 			@FormParam("isRepeat") String isRepeat,
 			@FormParam("repeat_type") String repeatType,
+			@FormParam("price") String price,
 			@FormParam("days_value") String daysValue,
 			@FormParam("event_md5Value") String eventMd5Value)
 			throws JSONException {
@@ -126,6 +127,11 @@ public class NEventsResource {
 				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 				json.put(Constant.MESSAGE, JSONCode.MSG_EVENT_CATEGORY_NOEXISTS);
 				return Response.ok(json.toString()).build();
+			}
+			if (StringUtil.isNumeric(price)){
+				event.setPrice(Double.valueOf(price)) ;
+			}else{
+				event.setPrice(0.0) ;
 			}
 
 			event.setTitle(title);

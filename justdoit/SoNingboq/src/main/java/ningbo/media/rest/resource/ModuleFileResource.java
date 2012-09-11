@@ -50,6 +50,7 @@ import ningbo.media.service.SystemUserService;
 import ningbo.media.service.UserModuleFilesService;
 import ningbo.media.util.Base64Image;
 import ningbo.media.util.MagickImageScale;
+import ningbo.media.util.StringUtil;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -206,8 +207,8 @@ public class ModuleFileResource {
 				"/resource/modulefile/option?getthumb=").path("");
 		UriBuilder delFileUrl = UriBuilder.fromPath(
 				"/resource/modulefile/option?delfile=").path("");
-		String locUrl = "http://localhost:9000" ;
-		//String remoteUrl = Constant.API_URL ;
+		// String linkUrl = "http://localhost:9000" ;
+		String linkUrl = Constant.API_URL;
 		String tmpPath = FileUpload.makeTempDir(request);
 		JSONArray jsonArry = new JSONArray();
 		try {
@@ -220,13 +221,12 @@ public class ModuleFileResource {
 					JSONObject obj = new JSONObject();
 					obj.put("name", item.getName());
 					obj.put("size", item.getSize());
-					obj.put("url", locUrl
-							+ getFileUrl.build("").getPath() + item.getName());
-					obj.put("thumbnail_url", locUrl
+					obj.put("url", linkUrl + getFileUrl.build("").getPath()
+							+ item.getName());
+					obj.put("thumbnail_url", linkUrl
 							+ getThumUrl.build("").getPath() + item.getName());
-					obj.put("delete_url",
-							locUrl + delFileUrl.build("").getPath()
-									+ item.getName());
+					obj.put("delete_url", linkUrl
+							+ delFileUrl.build("").getPath() + item.getName());
 					obj.put("delete_type", "GET");
 
 					jsonArry.put(obj);
@@ -255,6 +255,109 @@ public class ModuleFileResource {
 		// jsonArry) {
 		// };
 		return Response.ok(jsonArry.toString()).build();
+	}
+
+	@Path("/save")
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response saveModuleFile(@FormParam("fileNames") String fileNames,
+			@FormParam("locationId") String locationId,
+			@FormParam("userId") String userId, @FormParam("key") String key,
+			@Context HttpServletRequest request) throws JSONException {
+		JSONObject json = new JSONObject();
+		List<SystemUser> listUsers = new ArrayList<SystemUser>();
+		ModuleFile moduleFile = new ModuleFile();
+		List<Location> listLocations = new ArrayList<Location>();
+		UserModuleFiles files = new UserModuleFiles();
+		try {
+			if (!StringUtils.hasText(key)) {
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_ISNULL);
+				return Response.ok(json.toString()).build();
+			} else if (!key.equals(Constant.KEY)) {
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_INVALID);
+				return Response.ok(json.toString()).build();
+			}
+
+			SystemUser u = systemUserService.get(Constant.MD5_FIELD, userId);
+			if (null == u) {
+				json.put(Constant.MESSAGE, JSONCode.MSG_LOCATION_NOEXISTS);
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				return Response.ok(json.toString()).build();
+			}
+			Location loc = locationService.get(Constant.MD5_FIELD, locationId);
+			if (null == loc) {
+				json.put(Constant.MESSAGE, JSONCode.MSG_USER_NOEXISTS);
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				return Response.ok(json.toString()).build();
+			}
+			if ((!"".equals(fileNames)) && (fileNames.length() > 0)) {
+				String[] arry = StringUtil.parseString(fileNames,
+						Constant.STRING_REGEX);
+				StringBuffer buffer = new StringBuffer();
+				buffer.append(Constant.API_URL).append(File.separator)
+						.append(Constant.TEMP).append(File.separator);
+				;
+
+				for (int i = 0, j = arry.length; i < j; i++) {
+					InputStream in = new FileInputStream(buffer.toString());
+					String fileName = arry[i];
+					buffer.append(fileName);
+
+					ImageInformation inforImage = new ImageInformation();
+					Map<String, Object> m = FileHashCode.writeToFile(in,
+							buffer.toString());
+
+					inforImage.setWidth(Double.valueOf(m.get(Constant.WIDTH)
+							.toString()));
+					inforImage.setHeight(Double.valueOf(m.get(Constant.HEIGHT)
+							.toString()));
+					inforImage.setSize(Long.valueOf(m.get(Constant.FILESIZE)
+							.toString()));
+					if (null != m.get(Constant.LATITUDE)) {
+						inforImage.setLatitude(Double.valueOf(m.get(
+								Constant.LATITUDE).toString()));
+					}
+					if (null != m.get(Constant.LONGITUDE)) {
+						inforImage.setLongitude(Double.valueOf(m.get(
+								Constant.LONGITUDE).toString()));
+					}
+					if (null != m.get(Constant.TAKE_PHOTO_DATE)) {
+						inforImage.setTakePhotoDate(m.get(
+								Constant.TAKE_PHOTO_DATE).toString());
+					}
+					String uuid = String.valueOf(m.get(Constant.UUID));
+					imageInformationService.save(inforImage);
+
+					moduleFile.setFileName(fileName);
+					moduleFile.setFileHash(uuid);
+					moduleFile.setCreateTime(new Date());
+					moduleFile.setImageInfo(inforImage);
+					moduleFile.setLocations(listLocations);
+					moduleFile.setSystemUsers(listUsers);
+
+					Integer moduleFileId = moduleFileService.save(moduleFile);
+
+					if ((!"".equals(userId)) && (null != userId)) {
+						files.setMd5Value(userId);
+						files.setFileId(moduleFileId);
+						files.setUploadedDate(new Date());
+
+						userModuleFilesService.save(files);
+					}
+
+				}
+			}
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+			json.put(Constant.MESSAGE, JSONCode.MSG_UPLOAD_FILE_EXCEPTION);
+			return Response.ok(json.toString()).build();
+		}
+		json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
+		return Response.ok(json.toString()).build();
 	}
 
 	@Path("/user/upload")

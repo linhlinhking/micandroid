@@ -26,7 +26,7 @@ public class SystemUserController {
 	
 	@RequestMapping
 	public String getEventPage() {
-		return "user-list";
+		return "index";
 	}
 	
 	@Cacheable(value = "records")

@@ -95,7 +95,7 @@ public class SystemUserRest {
 			@FormParam("md5Value") String md5Value,
 			@FormParam("oldPassword") String oldPassword) {
 		JSONObject json = new JSONObject();
-		try{
+		try {
 			if (key.isEmpty()) {
 				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_ISNULL);
@@ -106,14 +106,13 @@ public class SystemUserRest {
 				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_INVALID);
 				return Response.ok(json.toString()).build();
 			}
-			
-		}catch(Exception ex){
-			ex.printStackTrace() ;
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
-		
-		return null ;
-		
-		
+
+		return null;
+
 	}
 
 	/**
@@ -421,18 +420,21 @@ public class SystemUserRest {
 		}
 	}
 
+
+
 	/**
 	 * 
 	 * @param form
 	 * @param request
 	 * @return
 	 */
-	@Path("/modify/password")
+	@Path("/modify/property")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response modifyPassword(@FormParam("key") String key,
+	public Response modifySecurityEmail(@FormParam("key") String key,
 			@FormParam("md5Value") String md5Value,
-			@FormParam("password") String password) throws JSONException {
+			@FormParam("modifyValue") String value,
+			@FormParam("modifyProperty") String type) throws JSONException {
 		JSONObject json = new JSONObject();
 		try {
 			if (key.isEmpty()) {
@@ -448,8 +450,12 @@ public class SystemUserRest {
 
 			SystemUser u = systemUserService.getSystemUserByMd5Value(md5Value);
 			if (null != u) {
-				String newPsd = MD5.calcMD5(password);
-				u.setPassword(newPsd);
+				if(SystemUser.PASSWORD.equalsIgnoreCase(type)){
+					String newPsd = MD5.calcMD5(value);
+					u.setPassword(newPsd) ;
+				}else if(SystemUser.SECURITY_EMAIL.equalsIgnoreCase(type)){
+					u.setSecurityEmail(value);
+				}
 				u.setLastModifyTime(new Date());
 				systemUserService.update(u);
 				json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);

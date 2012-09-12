@@ -13,4 +13,6 @@ public interface LocationDao extends BaseDao<Location, Integer>{
 	public Pagination<Location> queryLocationByPage(int pageNo,int pageSize) ;
 	
 	public List<Location> queryLocationsById(Integer categoryId) ;
+	
+	public Pagination<Location> getAllByPage(int pageNo,int pageSize);
 }

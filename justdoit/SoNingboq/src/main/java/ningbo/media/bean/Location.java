@@ -18,6 +18,8 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 @Entity
 @Table(name = "locations")
 @XmlRootElement
@@ -71,20 +73,24 @@ public class Location implements Serializable {
 	@Column(name="description_cn")
 	private String description_cn ;
 	
-	
+	@JsonIgnore
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
 	@JoinTable(name = "locations_category", joinColumns = @JoinColumn(name = "location_id"),inverseJoinColumns=@JoinColumn(name = "category2_id"))
 	private List<SecondCategory> secondCategorys;
 	
+	@JsonIgnore
 	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "location")
 	private List<Comment> comments ;
 	
+	@JsonIgnore
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE },mappedBy = "locations")
 	private List<ModuleFile> moduleFiles ;
 	
+	@JsonIgnore
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE },mappedBy = "locations")
 	private List<SystemUser> systemUsers ;
 	
+	@JsonIgnore
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE },mappedBy = "locations")
 	private List<TempUser> tempUsers ;
 	

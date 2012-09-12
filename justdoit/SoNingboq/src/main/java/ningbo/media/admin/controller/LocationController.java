@@ -5,11 +5,12 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import ningbo.media.admin.jqgrid.JqgridPage;
-import ningbo.media.bean.SystemUser;
+import ningbo.media.bean.Location;
 import ningbo.media.core.page.Pagination;
 import ningbo.media.core.web.BaseController;
-import ningbo.media.service.SystemUserService;
+import ningbo.media.service.LocationService;
 
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
@@ -20,26 +21,25 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 @Controller
-@RequestMapping("/admin/user")
-public class SystemUserController extends BaseController<SystemUser>{
+@RequestMapping("/admin/location")
+public class LocationController extends BaseController<Location>{
 	
 	@Resource
-	private SystemUserService systemUserService ;
-
+	private LocationService locationService ;
 	
 	@RequestMapping
 	public String getEventPage(HttpServletRequest request,
 			HttpServletResponse response) {
-		return "user-list" ;
+		return "location-list" ;
 	}
 	
 	@Cacheable(value = "records")
 	@RequestMapping(value="/getAll",method = RequestMethod.POST)
-	public @ResponseBody JqgridPage<SystemUser> getAll(){
-		Pagination<SystemUser> p = systemUserService.getAllByPage(1, 20) ;
-		List<SystemUser> lists = p.getList() ;
+	public @ResponseBody JqgridPage<Location> getAll(){
+		Pagination<Location> p = locationService.getAllByPage(1, 20) ;
+		List<Location> lists = p.getList() ;
 		if(null !=lists && lists.size() > 0 ){
-			JqgridPage<SystemUser> jq = new JqgridPage<SystemUser>();
+			JqgridPage<Location> jq = new JqgridPage<Location>();
 			jq.setTotal(String.valueOf(p.getTotalPage())) ;
 			jq.setRecords(String.valueOf(p.getPageSize())) ;
 			jq.setPage(String.valueOf(p.getPageNo())) ;
@@ -48,7 +48,7 @@ public class SystemUserController extends BaseController<SystemUser>{
 			return jq ;
 		}
 		
-		return new JqgridPage<SystemUser>() ;
+		return new JqgridPage<Location>() ;
 	}
 
 	@Override
@@ -58,13 +58,13 @@ public class SystemUserController extends BaseController<SystemUser>{
 	}
 
 	@Override
-	public List<SystemUser> listResults(int firstResult, int maxResults) {
+	public List<Location> listResults(int firstResult, int maxResults) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void sortResults(List<SystemUser> results, String field, String order) {
+	public void sortResults(List<Location> results, String field, String order) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -75,6 +75,5 @@ public class SystemUserController extends BaseController<SystemUser>{
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
+
 }

@@ -13,7 +13,6 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.dozer.Mapping;
 
 @Entity
 @Table(name = "category1")
@@ -40,10 +39,11 @@ public class FirstCategory implements Serializable {
 	
 	private String description_en ;
 
-	@Mapping("secondCategorysDto")
+	@XmlTransient
 	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "firstCategory")
 	private List<SecondCategory> secondCategorys;
 	
+	@XmlTransient
 	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "firstCategory")
 	private List<AspectsCategory> aspectsCategorys ;
 
@@ -74,7 +74,7 @@ public class FirstCategory implements Serializable {
 		this.name_cn = name_cn;
 	}
 
-	@XmlTransient
+	
 	public List<SecondCategory> getSecondCategorys() {
 		return secondCategorys;
 	}
@@ -124,7 +124,6 @@ public class FirstCategory implements Serializable {
 		this.description_en = description_en;
 	}
 	
-	@XmlTransient
 	public List<AspectsCategory> getAspectsCategorys() {
 		return aspectsCategorys;
 	}

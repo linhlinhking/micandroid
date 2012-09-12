@@ -3,6 +3,7 @@ package ningbo.media.bean;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 
 @Entity
 @Table(name = "users")
@@ -89,6 +93,7 @@ public class SystemUser implements Serializable {
 	@JoinTable(name = "in_favorite_user", joinColumns = @JoinColumn(name = "userId"),inverseJoinColumns=@JoinColumn(name = "locationId"))
 	private List<Location> locations ;
 	
+	
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE },mappedBy = "systemUsers")
 	private List<TempUser> tempUsers ;
 	
@@ -96,15 +101,18 @@ public class SystemUser implements Serializable {
 	public SystemUser(){}
 	
 
+	@JsonIgnore
 	@XmlTransient
 	public String getUserKey() {
 		return userKey;
 	}
 
+	
 	public void setUserKey(String userKey) {
 		this.userKey = userKey;
 	}
 
+	@JsonIgnore
 	public Integer getId() {
 		return id;
 	}
@@ -121,6 +129,7 @@ public class SystemUser implements Serializable {
 		this.username = username;
 	}
 
+	@JsonIgnore
 	@XmlTransient
 	public String getPassword() {
 		return password;
@@ -185,7 +194,7 @@ public class SystemUser implements Serializable {
 		this.lastModifyTime = lastModifyTime;
 	}
 	
-	
+	@JsonIgnore
 	@XmlTransient
 	public List<ModuleFile> getModuleFiles() {
 		return moduleFiles;
@@ -196,6 +205,7 @@ public class SystemUser implements Serializable {
 		this.moduleFiles = moduleFiles;
 	}
 	
+	@JsonIgnore
 	@XmlTransient
 	public List<Comment> getComments() {
 		return comments;
@@ -213,7 +223,7 @@ public class SystemUser implements Serializable {
 
 	
 
-
+	@JsonIgnore
 	@XmlTransient
 	public List<TempUser> getTempUsers() {
 		return tempUsers;
@@ -225,7 +235,7 @@ public class SystemUser implements Serializable {
 	}
 
 	
-
+	@JsonIgnore
 	@XmlTransient
 	public List<Location> getLocations() {
 		return locations;
@@ -286,7 +296,7 @@ public class SystemUser implements Serializable {
 		this.name_en = name_en;
 	}
 
-
+	@JsonIgnore
 	public String getUserType() {
 		return userType;
 	}
@@ -327,7 +337,7 @@ public class SystemUser implements Serializable {
 		this.gender = gender;
 	}
 
-
+	@JsonIgnore
 	public String getSecurityEmail() {
 		return securityEmail;
 	}

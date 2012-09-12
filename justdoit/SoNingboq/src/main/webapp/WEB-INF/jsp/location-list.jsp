@@ -60,32 +60,32 @@
 		<%@ include file="/common/footer.jsp"%>
 		<!-- Loading footer end -->
 
-	
+
 	</div>
 </body>
 <!-- /admin/user/getAll -->
 <script type="text/javascript">
 	$(function() {
 		$("#grid").jqGrid({
-			url : '/admin/user/getAll',
+			url : '/admin/location/getAll',
 			datatype : 'json',
 			mtype : 'POST',
 			autowidth: false, 
-			height:300,
-			colNames : [ '编号', '用户名', '登陆邮箱', '识别值', '注册日期' ],
+			height:'auto',
+			colNames : [ '编号', '位置名称', '位置地址', '识别值', '位置电话', '经度', '维度' ],
 			colModel : [ {
 				name : 'id',
 				index : 'id',
 				width : 55,
 				editable : false
 			}, {
-				name : 'username',
-				index : 'username',
+				name : 'name_cn',
+				index : 'name_cn',
 				width : 90,
 				editable : true
 			}, {
-				name : 'email',
-				index : 'email',
+				name : 'address_cn',
+				index : 'address_cn',
 				width : 90,
 				editable : true
 			}, {
@@ -94,15 +94,18 @@
 				width : 50,
 				editable : true
 			}, {
-				name : 'date_time',
-				index : 'date_time',
-				width : 90,
-				editable : false,
-				formatter : 'date',
-				formatoptions : {
-					newformat : 'd/M/Y'
-				},
+				name : 'telephone',
+				index : 'telephone',
+				width : 60,
 				editable : true
+			}, {
+				name : 'latitude',
+				index : 'latitude',
+				width : 60
+			}, {
+				name : 'longitude',
+				index : 'longitude',
+				width : 60
 			} ],
 			rowNum : 10,
 			rowList : [ 10, 20, 30 ],
@@ -112,7 +115,7 @@
 			sortname : 'id',
 			viewrecords : true,
 			sortorder : "asc",
-			caption : "用户管理",
+			caption : "位置管理",
 			emptyrecords : "Empty records",
 			loadonce : false,
 			jsonReader : {

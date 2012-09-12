@@ -3,7 +3,7 @@
 <div id="content">
 	<div id="rightnow">
 		<h3 class="reallynow">
-			<span>Notifications</span> 
+			<span>Notifications</span>
 			<!-- 
 			<a href="#" class="add">Add New Product</a> <a
 				href="#" class="app_add">Some Action</a> 
@@ -18,5 +18,8 @@
 		</p>
 		 -->
 	</div>
-	<div id="infowrap"></div>
+	<div id="infowrap" style="height: 578px">
+		<table id="grid"></table>
+		<div id="pager"></div>
+	</div>
 </div>

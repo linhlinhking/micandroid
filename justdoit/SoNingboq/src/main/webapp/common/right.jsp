@@ -12,7 +12,7 @@
 				<a href="#" class="folder_table">位置审核</a>
 			</h3>
 			<ul>
-					<li><a href="#" class="manage_page">管理位置</a></li>
+					<li><a href="/admin/location" class="manage_page">管理位置</a></li>
 				<li><a href="#" class="cart">待审核位置</a></li>
 				<li><a href="#" class="search">搜索位置</a></li>
 			</ul></li>
@@ -47,7 +47,7 @@
 				<a href="#" class="user">用户管理</a>
 			</h3>
 			<ul>
-				<li><a href="#" class="group">管理用户</a></li>
+				<li><a href="/admin/user" class="group">管理用户</a></li>
 				<li><a href="#" class="search">搜索用户</a></li>
 				<li><a href="#" class="online">在线用户</a></li>
 			</ul>

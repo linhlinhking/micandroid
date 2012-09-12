@@ -11,6 +11,7 @@
 
 	<mvc:annotation-driven />
 	<mvc:resources location="/resources/" mapping="/**" />
+	
 	<!-- Declare a view resolver -->
 
 	<bean

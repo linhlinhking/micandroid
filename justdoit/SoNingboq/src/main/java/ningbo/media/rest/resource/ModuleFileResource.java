@@ -102,7 +102,7 @@ public class ModuleFileResource {
 		} catch (Exception ex) {
 			throw Jerseys.buildException(Status.INTERNAL_SERVER_ERROR,
 					ex.getMessage());
-		}  
+		}
 
 	}
 
@@ -295,15 +295,15 @@ public class ModuleFileResource {
 			if ((!"".equals(fileNames)) && (fileNames.length() > 0)) {
 				String[] arry = StringUtil.parseString(fileNames,
 						Constant.STRING_REGEX);
-				StringBuffer buffer = new StringBuffer();
-				buffer.append(Constant.API_URL).append(File.separator)
-						.append(Constant.TEMP).append(File.separator);
-				;
+			
 
 				for (int i = 0, j = arry.length; i < j; i++) {
-					InputStream in = new FileInputStream(buffer.toString());
 					String fileName = arry[i];
+					StringBuffer buffer = new StringBuffer();
+					buffer.append(Constant.API_URL).append(File.separator)
+							.append(Constant.TEMP).append(File.separator);
 					buffer.append(fileName);
+					InputStream in = new FileInputStream(buffer.toString());
 
 					ImageInformation inforImage = new ImageInformation();
 					Map<String, Object> m = FileHashCode.writeToFile(in,

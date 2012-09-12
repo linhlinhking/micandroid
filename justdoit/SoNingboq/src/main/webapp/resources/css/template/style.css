@@ -5,7 +5,7 @@
 	margin:0;
 	padding:0;
 }
-img, div,a { behavior: url(css/iepngfix.htc) }
+img, div,a { behavior: url(/css/iepngfix.htc) }
 body{
 	font-size: 12px;
 	font-family: Arial, Tahoma, Verdana;
@@ -352,6 +352,9 @@ form#form #button1:hover, form#form #button2:hover {
 	margin:0 3px;
 	display:inline-block;
 	line-height:20px;
+}
+.ui-jqgrid-bdiv{
+	height: auto;
 }
 .user{background:transparent url(../../images/icons/user.png) no-repeat left;}
 .useradd{background:transparent url(../../images/icons/user_add.png) no-repeat left;}

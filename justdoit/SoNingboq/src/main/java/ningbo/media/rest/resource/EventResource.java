@@ -116,7 +116,7 @@ public class EventResource {
 			String telephone = form.getField("telephone").getValue();
 
 			SystemUser tempUser = systemUserService
-					.getSystemUserByMd5Value(userMd5Value);
+					.get(Constant.MD5_FIELD,userMd5Value);
 			if (null == tempUser) {
 				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 				json.put(Constant.MESSAGE, JSONCode.MSG_USER_USER_MD5VALUE);
@@ -200,7 +200,7 @@ public class EventResource {
 			}
 
 			SystemUser tempUser = systemUserService
-					.getSystemUserByMd5Value(userMd5Value);
+					.get(Constant.MD5_FIELD,userMd5Value);
 			if (null == tempUser) {
 				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 				json.put(Constant.MESSAGE, JSONCode.MSG_USER_USER_MD5VALUE);
@@ -307,7 +307,7 @@ public class EventResource {
 			}
 
 			SystemUser tempUser = systemUserService
-					.getSystemUserByMd5Value(userMd5Value);
+					.get(Constant.MD5_FIELD,userMd5Value);
 			if (null == tempUser) {
 				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 				json.put(Constant.MESSAGE, JSONCode.MSG_USER_USER_MD5VALUE);

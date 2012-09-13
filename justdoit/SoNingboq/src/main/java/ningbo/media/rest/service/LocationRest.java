@@ -341,7 +341,7 @@ public class LocationRest {
 				userId = "0";
 			}
 			SystemUser sysUser = systemUserService
-					.getSystemUserByMd5Value(userId);
+					.get(Constant.MD5_FIELD,userId);
 			if (null == sysUser) {
 				json.put(Constant.MESSAGE, JSONCode.MSG_USER_NOEXISTS);
 				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
@@ -467,7 +467,7 @@ public class LocationRest {
 				// return Response.ok(json.toString()).build();
 			} else {
 				SystemUser sysUser = systemUserService
-						.getSystemUserByMd5Value(user_id);
+						.get(Constant.MD5_FIELD,user_id);
 				if (null == sysUser) {
 					json.put(Constant.MESSAGE, JSONCode.MSG_USER_NOEXISTS);
 					json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
@@ -563,7 +563,7 @@ public class LocationRest {
 				// return Response.ok(json.toString()).build();
 			} else {
 				SystemUser sysUser = systemUserService
-						.getSystemUserByMd5Value(user_id);
+						.get(Constant.MD5_FIELD,user_id);
 				if (null == sysUser) {
 					json.put(Constant.MESSAGE, JSONCode.MSG_USER_NOEXISTS);
 					json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
@@ -623,7 +623,7 @@ public class LocationRest {
 				json.put(Constant.MESSAGE, JSONCode.MSG_USER_USER_MD5VALUE);
 				return Response.ok(json.toString()).build();
 			}
-			SystemUser u = systemUserService.getSystemUserByMd5Value(md5Value);
+			SystemUser u = systemUserService.get(Constant.MD5_FIELD,md5Value);
 			if (null == u) {
 				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 				json.put(Constant.MESSAGE, JSONCode.MSG_USER_NOEXISTS);

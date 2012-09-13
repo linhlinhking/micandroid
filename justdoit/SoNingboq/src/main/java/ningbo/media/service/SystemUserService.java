@@ -10,8 +10,6 @@ public interface SystemUserService extends BaseService<SystemUser, Integer> {
 	
 	public SystemUser login(String username, String password);
 	
-	public SystemUser getSystemUserByMd5Value(String md5Value);
-	
 	public List<SystemUser> querySystemUserByName(String name);
 	
 	public Pagination<SystemUser> getAllByPage(int pageNo,int pageSize);

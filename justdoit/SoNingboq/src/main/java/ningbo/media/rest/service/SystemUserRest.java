@@ -140,7 +140,7 @@ public class SystemUserRest {
 			json.put(Constant.MESSAGE, JSONCode.MSG_KEY_INVALID);
 			return Response.ok(json.toString()).build();
 		}
-		SystemUser u = systemUserService.getSystemUserByMd5Value(id);
+		SystemUser u = systemUserService.get(Constant.MD5_FIELD,id) ;
 		u.setStatus(true);
 		try {
 			systemUserService.update(u);
@@ -346,24 +346,25 @@ public class SystemUserRest {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response resendEmail(@PathParam("id") String id) throws Exception {
-		SystemUser u = systemUserService.getSystemUserByMd5Value(id);
-		String md5Value = u.getMd5Value();
-		String email = u.getEmail();
-		String username = u.getUsername();
+		SystemUser u = systemUserService.get(Constant.MD5_FIELD,id);
 		JSONObject json = new JSONObject();
-		if (null == u) {
+		if(null == u){
 			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 			json.put(Constant.MESSAGE, JSONCode.MSG_USER_NOEXISTS);
 			return Response.ok(json.toString()).build();
-		} else {
+		}else{
+			String md5Value = u.getMd5Value();
+			String email = u.getEmail();
+			String username = u.getUsername();
 			StringCode code = new StringCode();
 			String tempKey = code.encrypt(Constant.KEY);
 			sendMgrService.sendHtmlMail(email, username, md5Value, tempKey,
 					SendEmailType.REGISTER);
-			json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
-			json.put(Constant.MESSAGE, JSONCode.MSG_USER_RESEND_EMAIL);
-			return Response.ok(json.toString()).build();
 		}
+		json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
+		json.put(Constant.MESSAGE, JSONCode.MSG_USER_RESEND_EMAIL);
+		return Response.ok(json.toString()).build();
+		
 	}
 
 	/**
@@ -395,7 +396,7 @@ public class SystemUserRest {
 				return Response.ok(json.toString()).build();
 			}
 
-			SystemUser u = systemUserService.getSystemUserByMd5Value(md5Value);
+			SystemUser u = systemUserService.get(Constant.MD5_FIELD,md5Value);
 			if (null != u) {
 				u.setWebsite(website);
 				u.setName_cn(name_cn);
@@ -448,7 +449,7 @@ public class SystemUserRest {
 				return Response.ok(json.toString()).build();
 			}
 
-			SystemUser u = systemUserService.getSystemUserByMd5Value(md5Value);
+			SystemUser u = systemUserService.get(Constant.MD5_FIELD, md5Value) ;
 			if (null != u) {
 				if(SystemUser.PASSWORD.equalsIgnoreCase(type)){
 					String newPsd = MD5.calcMD5(value);
@@ -508,7 +509,7 @@ public class SystemUserRest {
 				json.put(Constant.MESSAGE, JSONCode.MSG_USER_USER_MD5VALUE);
 				return Response.ok(json.toString()).build();
 			}
-			SystemUser u = systemUserService.getSystemUserByMd5Value(md5Value);
+			SystemUser u = systemUserService.get(Constant.MD5_FIELD,md5Value);
 			if (null == u) {
 				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 				json.put(Constant.MESSAGE, JSONCode.MSG_USER_NOEXISTS);

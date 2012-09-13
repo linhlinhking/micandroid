@@ -10,8 +10,6 @@ public interface SystemUserDao extends BaseDao<SystemUser, Integer>{
 	
 	public SystemUser login(String username, String password);
 
-	public SystemUser getSystemUserByMD5Value(String value);
-	
 	public List<SystemUser> querySystemUserByName(String name);
 	
 	public Pagination<SystemUser> getAllByPage(int pageNo,int pageSize);

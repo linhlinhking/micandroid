@@ -34,17 +34,7 @@ public class SystemUserDaoImpl extends BaseDaoImpl<SystemUser, Integer>
 
 	}
 
-	public SystemUser getSystemUserByMD5Value(String value) {
-		if(null == value){
-			return null ;
-		}
-		String hql = "from SystemUser as model where 1=1 and model.md5Value = ? ";
-		SystemUser u = (SystemUser)findUnique(hql, value);
-		if (null != u) {
-			return u;
-		}
-		return null;
-	}
+
 
 	public List<SystemUser> querySystemUserByName(String name) {
 		try{

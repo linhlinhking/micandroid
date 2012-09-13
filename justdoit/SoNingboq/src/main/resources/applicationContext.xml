@@ -12,7 +12,9 @@
 	<!-- 开启通过注释进行事务配置 -->
 	<context:annotation-config />
 	<!-- 开启通过注释进行组件注入 -->
-	<context:component-scan base-package="ningbo.media" />
+	<context:component-scan base-package="ningbo.media">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
 	<!-- 加载属性文件 -->
 	<!--<value>classpath:mail.properties</value> <context:property-placeholder 
 		location="classpath:db.properties" /> -->

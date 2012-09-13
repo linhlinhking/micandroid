@@ -587,10 +587,11 @@ public class SystemUserRest {
 			}
 
 			return Response.ok(getSystemUserData(tempUser)).build();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			json.put(Constant.CODE, JSONCode.THROWEXCEPTION);
-			return Response.ok(json.toString()).build();
+		} catch (RuntimeException ex) {
+			//ex.printStackTrace();
+			//json.put(Constant.CODE, JSONCode.THROWEXCEPTION);
+			//return Response.ok(json.toString()).build();
+			throw Jerseys.buildDefaultException(ex);
 		}
 
 	}

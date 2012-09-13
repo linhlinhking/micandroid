@@ -77,7 +77,7 @@ public interface BaseService<E, PK extends Serializable> {
 
 	public List<E> findByHql(String hql, Object... values);
 	
-	public List<E> findByHql(String hql, boolean isLike,Integer limit,Object... values) ;
+	public List<E> findByLikeHql(String hql, boolean isLike,Integer limit,Object... values) ;
 
 	public List<String> findAllObject(String hql, Object... values);
 	

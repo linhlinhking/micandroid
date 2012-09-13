@@ -98,8 +98,8 @@ public class BaseServiceImpl<E, PK extends Serializable> implements
 		return baseDao.findByHql(hql, values);
 	}
 	
-	public List<E> findByHql(String hql, boolean isLike,Integer limit,Object... values){
-		return baseDao.findByHql(hql, isLike,limit, values) ;
+	public List<E> findByLikeHql(String hql, boolean isLike,Integer limit,Object... values){
+		return baseDao.findByLikeHql(hql, isLike,limit, values) ;
 	}
 	
 	public List<String> findAllObject(String hql, Object... values){

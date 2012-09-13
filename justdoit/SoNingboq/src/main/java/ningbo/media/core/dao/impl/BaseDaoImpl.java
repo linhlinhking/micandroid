@@ -176,10 +176,10 @@ public class BaseDaoImpl<E, PK extends Serializable> implements BaseDao<E, PK> {
 	}
 
 	public List<E> findByHql(final String hql, final Object... values) {
-		return findByHql(hql, false, null, values);
+		return findByLikeHql(hql, false, null, values);
 	}
 
-	public List<E> findByHql(final String hql, final boolean isLike,
+	public List<E> findByLikeHql(final String hql, final boolean isLike,
 			final Integer limit, final Object... values) {
 
 		return getHibernateTemplate().execute(new HibernateCallback<List<E>>() {

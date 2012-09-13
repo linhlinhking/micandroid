@@ -15,25 +15,22 @@ import ningbo.media.util.MD5;
 public class SystemUserDaoImpl extends BaseDaoImpl<SystemUser, Integer>
 		implements SystemUserDao {
 
+	
+	
+	
 	public SystemUserDaoImpl() {
 		super(SystemUser.class);
 	}
 
 	public SystemUser login(String username, String password) {
-		return verification(username, password);
-	}
-
-	private SystemUser verification(String email, String password) {
 		String encodePassword = MD5.calcMD5(password);
 		final String hql = "from SystemUser as model where 1=1 and model.email = ? and model.password = ? ";
-		SystemUser u = (SystemUser) findUnique(hql, email, encodePassword);
+		SystemUser u = (SystemUser) findUnique(hql, username, encodePassword);
 		if (null == u) {
 			return null;
 		}
 		return u;
-
 	}
-
 
 
 	public List<SystemUser> querySystemUserByName(String name) {

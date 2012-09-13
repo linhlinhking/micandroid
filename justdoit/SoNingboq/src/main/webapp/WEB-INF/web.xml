@@ -10,12 +10,25 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 		<param-name>webAppRootKey</param-name>
 		<param-value>webapp.root</param-value>
 	</context-param>
+	<context-param>
+		<param-name>logbackConfigLocation</param-name>
+		<param-value>classpath:logback.xml</param-value>
+	</context-param>
+	<context-param>
+		<param-name>logbackRefreshInterval</param-name>
+		<param-value>60000</param-value>
+	</context-param>
 
 	<!-- 加载spring的配置 -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath:applicationContext.xml</param-value>
 	</context-param>
+
+
+	<listener>
+		 <listener-class>ningbo.media.core.logback.LogbackConfigListener</listener-class>  
+	</listener>
 
 	<!-- 对Spring容器进行实例化 -->
 	<listener>

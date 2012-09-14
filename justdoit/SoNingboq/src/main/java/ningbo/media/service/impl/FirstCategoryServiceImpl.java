@@ -1,8 +1,11 @@
 package ningbo.media.service.impl;
 
 import java.util.List;
+
 import javax.annotation.Resource;
 import javax.ws.rs.core.Response.Status;
+
+import ningbo.media.admin.util.Result;
 import ningbo.media.bean.FirstCategory;
 import ningbo.media.bean.SecondCategory;
 import ningbo.media.core.service.impl.BaseServiceImpl;
@@ -33,6 +36,7 @@ public class FirstCategoryServiceImpl extends
 		super(firstCategoryDao);
 	}
 
+	@SuppressWarnings("null")
 	public List<FirstCategoryData> getAllFirstCategory() {
 		try {
 			List<FirstCategory> list = firstCategoryDao.getAll();
@@ -80,6 +84,7 @@ public class FirstCategoryServiceImpl extends
 		}
 	}
 
+	@SuppressWarnings("null")
 	public List<SecondCategoryData> getFristCategoryByName(String name) {
 		StringBuffer hql = new StringBuffer();
 		hql.append("from FirstCategory as model where 1=1") ;
@@ -119,6 +124,22 @@ public class FirstCategoryServiceImpl extends
 			throw Jerseys.buildException(Status.NOT_FOUND,
 					JSONCode.SERVER_EXCEPTION);
 		}
+	}
+
+	/**just for test*/
+	public Result<FirstCategory> getCategoryById(Integer id) {
+		Result<FirstCategory> rs = new Result<FirstCategory>() ;
+		rs.setSuccess(false) ;
+		if(0 == id){
+			return rs ;
+		}
+		
+		FirstCategory fc = firstCategoryDao.get(id) ;
+		if(null != fc){
+			rs.setSuccess(true) ;
+			rs.setDefaultModel(fc) ;
+		}
+		return rs;
 	}
 
 }

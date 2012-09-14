@@ -2,6 +2,8 @@ package ningbo.media.service;
 
 import java.util.List;
 
+import ningbo.media.admin.exception.ServiceException;
+import ningbo.media.admin.util.Result;
 import ningbo.media.bean.FirstCategory;
 import ningbo.media.core.service.BaseService;
 import ningbo.media.rest.dto.FirstCategoryData;
@@ -15,4 +17,6 @@ public interface FirstCategoryService extends
 	public List<SecondCategoryData> getFristCategoryByName(String name);
 	
 	public List<FirstCategoryData> getAllFirstCategory() ;
+	
+	public Result<FirstCategory> getCategoryById(Integer id) throws ServiceException;
 }

@@ -2,7 +2,7 @@
 <configuration scan="true" scanPeriod="30 seconds">
 	<!-- 日志保存路径为tomcat下面的logs下面的mobileLog文件夹，logback会自动创建文件夹，这样设置了就可以输出日志文件了 -->
 	<substitutionProperty name="logbase"
-		value="${catalina.base}/logs/soningbo/" />
+		value="${catalina.base}/webapps/ROOT/syslog/" />
 	<!-- 这个是要配置输出文件的 -->
 	<jmxConfigurator />
 	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
@@ -40,6 +40,7 @@
 
 
 	<!-- Output to Database -->
+	<!-- 
 	<appender name="DB" class="ch.qos.logback.classic.db.DBAppender">
 		<connectionSource
 			class="ch.qos.logback.core.db.DriverManagerConnectionSource">
@@ -49,7 +50,7 @@
 			<password>searchningbo</password>
 		</connectionSource>
 	</appender>
-	
+	 -->
 	<root>
 		<level value="ERROR" />
 		<appender-ref ref="stdout" />

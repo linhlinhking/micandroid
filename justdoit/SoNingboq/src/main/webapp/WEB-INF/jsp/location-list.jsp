@@ -12,7 +12,7 @@
 
 <!-- CSS Imports-->
 <link rel="stylesheet" type="text/css" media="screen"
-	href="/css/jquery/smoothness/jquery-ui-1.8.23.custom.css" />
+	href="/css/jquery/redmond/jquery-ui-1.8.23.custom.css" />
 <link rel="stylesheet" type="text/css" media="screen"
 	href="/css/jqgrid/ui.jqgrid.css" />
 <link rel="stylesheet" type="text/css" media="screen"
@@ -72,42 +72,41 @@
 			mtype : 'POST',
 			autowidth: false, 
 			height:'auto',
-			colNames : [ '编号', '位置名称', '位置地址', '识别值', '位置电话', '经度', '维度' ],
+			multiselect: true,
+			colNames : [ '位置名称', '位置地址', '位置电话', '经度', '维度','操作' ],
 			colModel : [ {
-				name : 'id',
-				index : 'id',
-				width : 55,
-				editable : false
-			}, {
 				name : 'name_cn',
 				index : 'name_cn',
-				width : 90,
+				width : 40,
 				editable : true
 			}, {
 				name : 'address_cn',
 				index : 'address_cn',
-				width : 90,
+				width : 40,
 				editable : true
-			}, {
-				name : 'md5Value',
-				index : 'md5Value',
-				width : 50,
-				editable : true
-			}, {
+			},  {
 				name : 'telephone',
 				index : 'telephone',
-				width : 60,
+				width : 40,
 				editable : true
 			}, {
 				name : 'latitude',
 				index : 'latitude',
-				width : 60
+				width : 40
 			}, {
 				name : 'longitude',
 				index : 'longitude',
-				width : 60
-			} ],
-			rowNum : 10,
+				width : 40
+			} ,{
+				name : 'CheckData',
+				index : 'id',
+				width : 60,
+				editable : false,
+				align:'center',
+				sortable:false
+			}],
+			page:1,
+			rowNum : 20,
 			rowList : [ 10, 20, 30 ],
 			autowidth : true,
 			rownumbers : true,
@@ -126,6 +125,13 @@
 				repeatitems : false,
 				cell : "cell",
 				id : "id"
+			},gridComplete:function(){
+				  var ids=jQuery("#grid").jqGrid('getDataIDs');
+                  for(var i=0; i<ids.length; i++){
+                      var id=ids[i];   
+                      appover = "<a href='#' style='color:#f60' onclick='checkData(" + id + ")'>审核</a>"; 
+                      jQuery("#grid").jqGrid('setRowData', ids[i], { CheckData: appover });
+                  }
 			}
 		});
 
@@ -178,6 +184,10 @@
 	}
 	function deleteRow() {
 		alert("delete");
+	}
+	
+	function checkData(ids){
+		alert(ids);
 	}
 </script>
 </html>

@@ -19,60 +19,80 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-
 @Controller
 @RequestMapping("/admin/location")
-public class LocationController extends BaseController<Location>{
-	
+public class LocationController extends BaseController<Location> {
+
 	@Resource
-	private LocationService locationService ;
-	
+	private LocationService locationService;
+
 	@RequestMapping
 	public String getEventPage(HttpServletRequest request,
 			HttpServletResponse response) {
-		return "location-list" ;
+		return "location-list";
 	}
-	
+
 	@Cacheable(value = "records")
-	@RequestMapping(value="/getAll",method = RequestMethod.POST)
-	public @ResponseBody JqgridPage<Location> getAll(){
-		Pagination<Location> p = locationService.getAllByPage(1, 20) ;
-		List<Location> lists = p.getList() ;
-		if(null !=lists && lists.size() > 0 ){
+	@RequestMapping(value = "/getAll", method = RequestMethod.POST)
+	public @ResponseBody
+	JqgridPage<Location> getAll() {
+		Pagination<Location> p = locationService.getAllByPage(1, 20);
+		List<Location> lists = p.getList();
+		if (null != lists && lists.size() > 0) {
 			JqgridPage<Location> jq = new JqgridPage<Location>();
-			jq.setTotal(String.valueOf(p.getTotalPage())) ;
-			jq.setRecords(String.valueOf(p.getPageSize())) ;
-			jq.setPage(String.valueOf(p.getPageNo())) ;
-			jq.setRows(lists) ;
-			
-			return jq ;
+			jq.setTotal(String.valueOf(p.getTotalPage()));
+			jq.setRecords(String.valueOf(p.getPageSize()));
+			jq.setPage(String.valueOf(p.getPageNo()));
+			jq.setRows(lists);
+
+			return jq;
 		}
+
+		return new JqgridPage<Location>();
+	}
+
+	@Cacheable(value = "records")
+	@RequestMapping(value = "/getPages", method = RequestMethod.POST)
+	public  @ResponseBody JqgridPage<Location> getAllByPage() {
+		List<Location> lists = locationService.getAll();
+		if (null == lists) {
+			new JqgridPage<Location>();
+		}
+
+		int totalCount = lists.size();
+		if (totalCount < 0) {
+			totalCount = 0;
+		}
+
+		Pagination<Location> p = new Pagination<Location>(1, 20, totalCount,
+				lists);
+		JqgridPage<Location> jq = new JqgridPage<Location>();
+		jq.setPage(String.valueOf(p.getPageNo())) ;
+		jq.setRecords(String.valueOf(p.getPageSize())); 
+		jq.setTotal(String.valueOf(p.getTotalPage())) ;
+		jq.setRows(lists) ;
 		
-		return new JqgridPage<Location>() ;
+		return jq ;
 	}
 
 	@Override
 	public Long getResultSize() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<Location> listResults(int firstResult, int maxResults) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void sortResults(List<Location> results, String field, String order) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public ModelAndView index(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

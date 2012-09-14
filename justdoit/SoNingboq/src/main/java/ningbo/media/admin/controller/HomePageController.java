@@ -6,11 +6,14 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ningbo.media.admin.exception.ServiceException;
+import ningbo.media.admin.util.Result;
 import ningbo.media.bean.FirstCategory;
 import ningbo.media.core.web.BaseController;
 import ningbo.media.service.FirstCategoryService;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -24,11 +27,23 @@ public class HomePageController extends BaseController {
 	
 	
 	@RequestMapping
-	public void getEventPage(HttpServletRequest request,
-			HttpServletResponse response) {
+	public String getEventPage(Model model) {
 		logger.debug("start....");
-		FirstCategory fc = firstCategoryService.get(1) ;
-		renderJson(response, fc, "encoding:utf-8");
+		try {
+			Result<FirstCategory> rs = firstCategoryService.getCategoryById(1) ;
+			if(rs.isSuccess()){
+				model.addAttribute("firstCategory", rs.getDefaultModel()) ;
+				model.addAttribute("msg", "The get category operation is success!");
+			}else{
+				model.addAttribute("msg", "The get category operation is fail!");
+			}
+		} catch (ServiceException e) {
+			e.printStackTrace();
+			model.addAttribute("msg", "get category operation is exception!");
+		}
+		
+		
+		return "msg" ;
 	}
 
 	@Override

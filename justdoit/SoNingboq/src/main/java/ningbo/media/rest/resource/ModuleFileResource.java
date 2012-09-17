@@ -211,6 +211,7 @@ public class ModuleFileResource {
 		String linkUrl = Constant.API_URL;
 		String tmpPath = FileUpload.makeTempDir(request);
 		JSONArray jsonArry = new JSONArray();
+
 		try {
 			List<FileItem> items = uploadHandler.parseRequest(request);
 			for (FileItem item : items) {
@@ -235,7 +236,6 @@ public class ModuleFileResource {
 					// jsono.setSize(String.valueOf(item.getSize()));
 					// jsono.setUrl(headUrl.toString()
 					// + getFileUrl.build("").getPath() + item.getName());
-
 					// jsono.setThumbnail_url(headUrl.toString()
 					// + getThumUrl.build("").getPath() + item.getName());
 					// jsono.setDelete_url(headUrl.toString()
@@ -269,6 +269,7 @@ public class ModuleFileResource {
 		ModuleFile moduleFile = new ModuleFile();
 		List<Location> listLocations = new ArrayList<Location>();
 		UserModuleFiles files = new UserModuleFiles();
+
 		try {
 			if (!StringUtils.hasText(key)) {
 				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
@@ -295,7 +296,6 @@ public class ModuleFileResource {
 			if ((!"".equals(fileNames)) && (fileNames.length() > 0)) {
 				String[] arry = StringUtil.parseString(fileNames,
 						Constant.STRING_REGEX);
-			
 
 				for (int i = 0, j = arry.length; i < j; i++) {
 					String fileName = arry[i];

@@ -1,13 +1,9 @@
 package ningbo.media.bean;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -26,9 +22,9 @@ public class EventSecondCategory {
 	
 	private String keywords_en ;
 	
-	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
-	@JoinColumn(name = "category1Id")
-	private EventFirstCategory eventFirstCategory ;
+	//@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
+	//@JoinColumn(name = "category1Id")
+	//private EventFirstCategory eventFirstCategory ;
 	
 	public EventSecondCategory(){}
 
@@ -72,13 +68,5 @@ public class EventSecondCategory {
 		this.keywords_en = keywords_en;
 	}
 
-	public EventFirstCategory getEventFirstCategory() {
-		return eventFirstCategory;
-	}
-
-	public void setEventFirstCategory(EventFirstCategory eventFirstCategory) {
-		this.eventFirstCategory = eventFirstCategory;
-	}
-	
 	
 }

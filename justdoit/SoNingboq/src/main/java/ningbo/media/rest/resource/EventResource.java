@@ -46,6 +46,8 @@ import ningbo.media.util.MD5;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -56,6 +58,8 @@ import com.sun.jersey.multipart.FormDataMultiPart;
 @Component
 @Scope("request")
 public class EventResource {
+	
+	private Logger logger = LoggerFactory.getLogger(getClass()) ;
 
 	@Resource
 	private EventService eventService;
@@ -161,7 +165,8 @@ public class EventResource {
 			return Response.ok(json.toString()).build();
 
 		} catch (Exception ex) {
-			json.put(Constant.CODE, JSONCode.LOCATION_EXCEPTION);
+			logger.error("System Exception.", ex) ;
+			json.put(Constant.MESSAGE, JSONCode.SERVER_EXCEPTION);
 			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 			return Response.ok(json.toString()).build();
 		}
@@ -228,28 +233,34 @@ public class EventResource {
 			event.setUserMd5Value(userMd5Value);
 			event.setCreateDateTime(new Date());
 			event.setTelephone(telephone);
+			
+			
+			if(null != base64Value && base64Value.trim().length() > 0){
+				String fileName = String.valueOf(System.currentTimeMillis());
+				StringBuffer sb = new StringBuffer();
+				String tempPath = FileUploadUtil.makeFileDir(null, request, true);
+				sb.append(tempPath).append(fileName);
 
-			String fileName = String.valueOf(System.currentTimeMillis());
-			StringBuffer sb = new StringBuffer();
-			String tempPath = FileUploadUtil.makeFileDir(null, request, true);
-			sb.append(tempPath).append(fileName);
+				String tempBase64Value = base64Value.replaceAll(" ", "+");
 
-			String tempBase64Value = base64Value.replaceAll(" ", "+");
+				boolean flag = Base64Image.generateImage(tempBase64Value, sb
+						.toString());
 
-			boolean flag = Base64Image.generateImage(tempBase64Value, sb
-					.toString());
+				if (!flag) {
+					File file = new File(sb.toString());
+					file.delete();
+					json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+					json.put(Constant.MESSAGE, JSONCode.MSG_BASE64_VALUE_INVALID);
+					return Response.ok(json.toString()).build();
+				}
 
-			if (!flag) {
-				File file = new File(sb.toString());
-				file.delete();
-				json.put(Constant.CODE, JSONCode.MODULEFILE_BASE64_INVALID);
-				return Response.ok(json.toString()).build();
+				String photo_path = FileHashCode.writeBase64File(request, sb
+						.toString());
+
+				event.setPhoto_path(photo_path);
 			}
 
-			String photo_path = FileHashCode.writeBase64File(request, sb
-					.toString());
-
-			event.setPhoto_path(photo_path);
+		
 
 			Integer eventId = eventService.save(event);
 			String md5Value = MD5.calcMD5(String.valueOf(eventId));
@@ -261,7 +272,8 @@ public class EventResource {
 			return Response.ok(json.toString()).build();
 
 		} catch (Exception ex) {
-			json.put(Constant.CODE, JSONCode.LOCATION_EXCEPTION);
+			logger.error("System Exception.", ex) ;
+			json.put(Constant.MESSAGE, JSONCode.SERVER_EXCEPTION);
 			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 			return Response.ok(json.toString()).build();
 		}
@@ -367,7 +379,8 @@ public class EventResource {
 			return Response.ok(json.toString()).build();
 
 		} catch (Exception ex) {
-			json.put(Constant.CODE, JSONCode.LOCATION_EXCEPTION);
+			logger.error("System Error.", ex) ;
+			json.put(Constant.MESSAGE, JSONCode.SERVER_EXCEPTION);
 			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 			return Response.ok(json.toString()).build();
 		}
@@ -556,6 +569,7 @@ public class EventResource {
 				tmpUser.setUsername(u.getUsername());
 				tempEventData.setUser(tmpUser);
 			}
+			
 			tempEventData.setTitle(temp.getTitle());
 			tempEventData.setSubject(temp.getSubject());
 			tempEventData.setMd5Value(temp.getMd5Value());
@@ -566,6 +580,7 @@ public class EventResource {
 			tempEventData.setTelephone(temp.getTelephone());
 			tempEventData.setOrganizer(temp.getOrganizer());
 			tempEventData.setPhoto_path(temp.getPhoto_path());
+			tempEventData.setAddress(temp.getAddress()) ;
 			
 			datas.add(tempEventData);
 		}
@@ -607,6 +622,7 @@ public class EventResource {
 			tmpUserEvent.setEndTime(temp.getEndTime());
 			tmpUserEvent.setOrganizer(temp.getOrganizer());
 			tmpUserEvent.setPhoto_path(temp.getPhoto_path());
+			tmpUserEvent.setAddress(temp.getAddress()) ;
 
 			datas.add(tmpUserEvent);
 		}
@@ -642,6 +658,7 @@ public class EventResource {
 			tmpUserEvent.setEndTime(temp.getEndTime());
 			tmpUserEvent.setOrganizer(temp.getOrganizer());
 			tmpUserEvent.setPhoto_path(temp.getPhoto_path());
+			tmpUserEvent.setAddress(temp.getAddress()) ;
 
 			datas.add(tmpUserEvent);
 		}

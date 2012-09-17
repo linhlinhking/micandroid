@@ -1,7 +1,6 @@
 package ningbo.media.rest.resource;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.annotation.Resource;
 import javax.ws.rs.FormParam;
@@ -29,6 +28,8 @@ import ningbo.media.util.StringUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -36,6 +37,8 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("request")
 public class NEventsResource {
+
+	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Resource
 	private NEventsService nEventsService;
@@ -128,10 +131,10 @@ public class NEventsResource {
 				json.put(Constant.MESSAGE, JSONCode.MSG_EVENT_CATEGORY_NOEXISTS);
 				return Response.ok(json.toString()).build();
 			}
-			if (StringUtil.isNumeric(price)){
-				event.setPrice(Double.valueOf(price)) ;
-			}else{
-				event.setPrice(0.0) ;
+			if (StringUtil.isNumeric(price)) {
+				event.setPrice(Double.valueOf(price));
+			} else {
+				event.setPrice(0.0);
 			}
 
 			event.setTitle(title);
@@ -164,27 +167,15 @@ public class NEventsResource {
 
 			EventDate d = null;
 			if (flag) {
-				if ((daysValue != null) && (daysValue.length() > 0)) {
-					List<String> tmpList = StringUtil.getCustomDateString(
-							daysValue, startDate, endDate);
-					for (String str : tmpList) {
-						EventDate ed = new EventDate();
-						ed.setStartDate(str);
-						ed.setEndDate(str);
-						ed.setStartTime(startTime);
-						ed.setEndTime(endTime);
-						ed.setnEvents(event);
-						eventDateService.save(ed);
-					}
-				} else {
-					d = new EventDate();
-					d.setStartDate(startDate);
-					d.setEndDate(endDate);
-					d.setStartTime(startTime);
-					d.setEndTime(endTime);
-					d.setnEvents(event);
-					eventDateService.save(d);
-				}
+				d = new EventDate();
+				d.setStartDate(startDate);
+				d.setEndDate(endDate);
+				d.setStartTime(startTime);
+				d.setEndTime(endTime);
+				d.setnEvents(event);
+				d.setRepeatType(repeatType);
+				d.setRepeatValue(daysValue) ;
+				eventDateService.saveOrUpdate(d);
 
 			} else {
 				d = new EventDate();
@@ -193,7 +184,7 @@ public class NEventsResource {
 				d.setEndTime(endTime);
 				d.setEndDate(startDate);
 				d.setnEvents(event);
-				eventDateService.save(d);
+				eventDateService.saveOrUpdate(d);
 			}
 
 			json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
@@ -202,6 +193,7 @@ public class NEventsResource {
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
+			logger.error("SaveOrUpdate Error!",ex) ;
 			json.put(Constant.MESSAGE, JSONCode.SERVER_EXCEPTION);
 			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 			return Response.ok(json.toString()).build();

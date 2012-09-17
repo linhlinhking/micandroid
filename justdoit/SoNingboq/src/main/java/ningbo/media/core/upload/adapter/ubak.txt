@@ -1,0 +1,64 @@
+
+List<Location> listLocations = new ArrayList<Location>();
+		List<SystemUser> listUsers = new ArrayList<SystemUser>();
+JSONObject json = new JSONObject();
+		String userId = form.getField("userId").getValue() ;
+		SystemUser u = systemUserService.get(Constant.MD5_FIELD,userId);
+		if (null == u) {
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+			json.put(Constant.MESSAGE, JSONCode.MSG_USER_NOEXISTS);
+			return Response.ok(json.toString()).build();
+		}
+		listUsers.add(u) ;
+
+		String locationid = form.getField("locationid").getValue() ;
+		Location loc = locationService.get(Constant.MD5_FIELD, locationid);
+		if (null == loc) {
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+			json.put(Constant.MESSAGE, JSONCode.MSG_LOCATION_NOEXISTS);
+			return Response.ok(json.toString()).build();
+		}
+		listLocations.add(loc) ;
+
+
+	StringBuffer bf = new StringBuffer();
+					bf.append(tmpPath).append(File.separator)
+							.append(item.getName());
+					
+					InputStream in = new FileInputStream(bf.toString());
+					ImageInformation inforImage = new ImageInformation();
+
+					Map<String, Object> m = FileHashCode.writeToFile(in,
+							bf.toString());
+
+					inforImage.setWidth(Double
+							.valueOf(m.get(Constant.WIDTH).toString()));
+					inforImage.setHeight(Double.valueOf(m.get(Constant.HEIGHT)
+							.toString()));
+					inforImage.setSize(Long
+							.valueOf(m.get(Constant.FILESIZE).toString()));
+
+					if (null != m.get(Constant.LATITUDE)) {
+						inforImage.setLatitude(Double.valueOf(m.get(Constant.LATITUDE)
+								.toString()));
+					}
+					if (null != m.get(Constant.LONGITUDE)) {
+						inforImage.setLongitude(Double.valueOf(m
+								.get(Constant.LONGITUDE).toString()));
+					}
+					if (null != m.get(Constant.TAKE_PHOTO_DATE)) {
+						inforImage.setTakePhotoDate(m.get(Constant.TAKE_PHOTO_DATE)
+								.toString());
+					}
+
+					String uuid = String.valueOf(m.get(Constant.UUID));
+					imageInformationService.save(inforImage);
+					
+					ModuleFile moduleFile = new ModuleFile();
+					moduleFile.setFileName(item.getName());
+					moduleFile.setFileHash(uuid);
+					moduleFile.setCreateTime(new Date());
+					moduleFile.setImageInfo(inforImage);
+					moduleFile.setSystemUsers(listUsers);
+					moduleFile.setLocations(listLocations) ;
+					moduleFileService.save(moduleFile);

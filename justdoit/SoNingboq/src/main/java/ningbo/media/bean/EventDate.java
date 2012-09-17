@@ -34,6 +34,11 @@ public class EventDate implements Serializable {
 
 	@Column(length = 12)
 	private String endTime;
+	
+	@Column(length = 12)
+	private String repeatType ;
+	
+	private String repeatValue ;
 
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
 	@JoinColumn(name = "event_id")
@@ -86,5 +91,23 @@ public class EventDate implements Serializable {
 	public void setnEvents(NEvents nEvents) {
 		this.nEvents = nEvents;
 	}
+
+	public String getRepeatType() {
+		return repeatType;
+	}
+
+	public void setRepeatType(String repeatType) {
+		this.repeatType = repeatType;
+	}
+
+	public String getRepeatValue() {
+		return repeatValue;
+	}
+
+	public void setRepeatValue(String repeatValue) {
+		this.repeatValue = repeatValue;
+	}
+	
+	
 
 }

@@ -88,6 +88,7 @@ public class JSONCode {
 	public static final String MODULEFILE_VALID_CHARACTER = "70006" ;
 	public static final String MODULEFILE_BASE64_INVALID = "70007" ;
 	public static final String NO_DATA = "No Data." ;
+	public static final String MSG_BASE64_VALUE_INVALID = "Base64 EnCode Error." ;
 	
 	public static final String MSG_MODULEFILE_DELETE_SUCCESS = "Deleted successfully." ;
 	public static final String MSG_MODULEFILE_DELETE_FAIL = "Delete failed" ;
@@ -122,6 +123,7 @@ public class JSONCode {
 	
 	/**Event Category*/
 	public static final String MSG_EVENT_CATEGORY_NOEXISTS = "No Event Category Data." ;
+	public static final String MSG_EVENT_SELECTED_REPEAT_TYPE = "Please select repeat type.[weeks,days,customs]" ;
 	
 	/**File Upload*/
 	public static final String MSG_UPLOAD_FILE_EXCEPTION = "Upload File Exception." ;

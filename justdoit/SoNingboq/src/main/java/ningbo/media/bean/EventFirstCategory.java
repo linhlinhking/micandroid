@@ -1,17 +1,15 @@
 package ningbo.media.bean;
 
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name = "tb_event_category1")
+@XmlRootElement
 public class EventFirstCategory {
 
 	@Id
@@ -26,8 +24,8 @@ public class EventFirstCategory {
 	
 	private String keywords_en ;
 	
-	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "eventFirstCategory")
-	private List<EventSecondCategory> eventSecondCategorys;
+	//@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "eventFirstCategory")
+	//private List<EventSecondCategory> eventSecondCategorys;
 	
 	public EventFirstCategory(){}
 
@@ -71,14 +69,6 @@ public class EventFirstCategory {
 		this.keywords_en = keywords_en;
 	}
 
-	public List<EventSecondCategory> getEventSecondCategorys() {
-		return eventSecondCategorys;
-	}
-
-	public void setEventSecondCategorys(
-			List<EventSecondCategory> eventSecondCategorys) {
-		this.eventSecondCategorys = eventSecondCategorys;
-	}
 	
 	
 }

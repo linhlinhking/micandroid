@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Insert title here</title>
+		<script type="text/javascript" charset="utf-8" src="../js/jquery-1.7.2.min.js"></script>
+	</head>
+	<body>
+		<button name="requestClick" id="requestClick">
+			Click
+		</button>
+	</body>
+
+	<script>
+		$(function() {
+			$("#requestClick").click(function() {
+
+				$.ajax({
+					url : "http://api.soningbo.com/resource/favorite/check/eccbc87e4b5ce2fe28308fd9f2a7baf3/e9b0945085eb3961bc04529c0f09e15c",
+					type : "GET",
+					dataType : "json",
+					beforeSend : function() {
+
+					},
+					success : function(json) {
+						alert(json.result);
+					},
+					complete : function() {
+
+					}
+				});
+
+			});
+
+		})
+
+	</script>
+</html>

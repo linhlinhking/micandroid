@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -8,7 +10,7 @@
 </head>
 
 <body>
-<form name="form1" method="post" action="https://api.searchningbo.com/resource/user/login">
+<form name="form1" method="post" action="http://localhost:9000/resource/user/login">
 <p>
   
   key<br>
@@ -54,7 +56,7 @@
 		<tr>
 			<td>url</td>
 			<td><a href="#"
-				class="external free" rel="nofollow">https://api.searchningbo.com/resource/user/login</a>
+				class="external free" rel="nofollow">http://localhost:9000/resource/user/login</a>
 			</td>
 		</tr>
 		<tr>

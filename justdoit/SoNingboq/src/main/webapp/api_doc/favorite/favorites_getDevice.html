@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="test.css" />
+<title>Favorites Get</title>
+</head>
+
+<body>
+
+
+<h2>
+		<span class="mw-headline">
+			Request instructions </span>
+	</h2>
+
+	<table width="95%" cellpadding="0" cellspacing="2" border="0"
+		class="paratable">
+
+		<tr>
+			<td>url</td>
+			<td><a href="#"
+				class="external free" rel="nofollow">https://api.searchningbo.com/resource/favorite/device/{deviceId}</a>
+			</td>
+		</tr>
+		<tr>
+			<td>format</td>
+			<td>json</td>
+		</tr>
+
+		<tr>
+			<td>http Request method</td>
+			<td>get</td>
+		</tr>
+		<tr>
+			<td>need authorize</td>
+			<td>true</td>
+		</tr>
+	</table>
+	<h2>
+		<span class="mw-headline">
+			Parameter Description </span>
+	</h2>
+	<table border="1" cellspacing="0" cellpadding="0" width="95%"
+		class="paratable" style="border-color: #CCCCCC;">
+		<tr>
+			<th width="10%">&nbsp;</th>
+			<th width="5%">required</th>
+			<th width="10%">type&scope</th>
+			<th width="75%">Description</th>
+		</tr>
+		<tr>
+			<td>key</td>
+			<td>true</td>
+			<td>String</td>
+			<td>Authorized verification of API calls</td>
+		</tr>
+		<tr>
+			<td>deviceId</td>
+			<td>true</td>
+			<td>String</td>
+			<td>query the user's favorites</td>
+		</tr>
+
+	</table>
+
+	<h2>
+		<span class="mw-headline">
+			return results </span>
+	</h2>
+	<pre class="brush: js;">{
+	example:<a href="https://api.searchningbo.com/resource/favorite/device/rt-10-yu-49">https://api.searchningbo.com/resource/favorite/device/rt-10-yu-49</a>
+		{
+		    "userId": "-1",
+		    "deviceId": "rt-10-yu-49",
+		    "loctions": [
+		        {
+		            "id": "100",
+		            "name": "台湾聚星环驰店",
+		            "address": "慈溪三北西大街350号",
+		            "latitude": "30.1773795",
+		            "longitude": "121.2361005"
+		        },
+		        {
+		            "id": "101",
+		            "name": "名帝烫染造型会所",
+		            "address": "象山县荔港路241号",
+		            "latitude": "29.2013535",
+		            "longitude": "121.9383885"
+		        }
+		    ]
+		}
+	}
+</pre>
+
+	<h2>
+		<span class="mw-headline"> Return Code Lists </span>
+	</h2>
+	<pre class="brush: js;">{
+}
+	</pre>
+</body>
+</html>

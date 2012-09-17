@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="../test.css" />
+<title>Favorites Get</title>
+</head>
+
+<body>
+
+
+<h2>
+		<span class="mw-headline">
+			Request instructions </span>
+	</h2>
+
+	<table width="95%" cellpadding="0" cellspacing="2" border="0"
+		class="paratable">
+
+		<tr>
+			<td>url</td>
+			<td><a href="#"
+				class="external free" rel="nofollow">http://api.soningbo.com/resource/favorite/user/{userId}</a>
+			</td>
+		</tr>
+		<tr>
+			<td>format</td>
+			<td>json</td>
+		</tr>
+
+		<tr>
+			<td>http Request method</td>
+			<td>get</td>
+		</tr>
+		<tr>
+			<td>need authorize</td>
+			<td>true</td>
+		</tr>
+	</table>
+	<h2>
+		<span class="mw-headline">
+			Parameter Description </span>
+	</h2>
+	<table border="1" cellspacing="0" cellpadding="0" width="95%"
+		class="paratable" style="border-color: #CCCCCC;">
+		<tr>
+			<th width="10%">&nbsp;</th>
+			<th width="5%">required</th>
+			<th width="10%">type&scope</th>
+			<th width="75%">Description</th>
+		</tr>
+		<tr>
+			<td>key</td>
+			<td>true</td>
+			<td>String</td>
+			<td>Authorized verification of API calls</td>
+		</tr>
+		<tr>
+			<td>userId</td>
+			<td>true</td>
+			<td>int</td>
+			<td>query the user's favorites</td>
+		</tr>
+
+	</table>
+
+	<h2>
+		<span class="mw-headline">
+			return results </span>
+	</h2>
+	<pre class="brush: js;">{
+	example:<a href="http://api.soningbo.com/resource/favorite/user/2">http://api.soningbo.com/resource/favorite/user/2</a>
+	
+	 {
+	    "userId": "2",
+	    "deviceId": "",
+	    "loctions": [
+	        {
+	            "id": "2",
+	            "name": "韩国美发中心开明街店",
+	            "address": "海曙区开明街329号万里大厦2楼",
+	            "latitude": "29.8731395",
+	            "longitude": "121.5473985"
+	        },
+	        {
+	            "id": "999",
+	            "name": "宁波市广告装潢设计公司",
+	            "address": "海曙区解放南路62号",
+	            "latitude": "29.8672725",
+	            "longitude": "121.5463585"
+	        }
+	    ]
+	}
+  }
+</pre>
+
+	<h2>
+		<span class="mw-headline"> Return Code Lists </span>
+	</h2>
+	<pre class="brush: js;">{
+	
+	}
+	</pre>
+</body>
+</html>

@@ -37,7 +37,7 @@ public class LocationDaoImpl extends BaseDaoImpl<Location, Integer> implements
 			sb
 					.append(" and m.name_en like ? or m.tags_en like ? or m.address_en like ? order by id  desc,name_en asc ");
 		}
-		List<Location> list = findByHql(sb.toString(), true, null,
+		List<Location> list = findByLikeHql(sb.toString(), true, null,
 				locationName, locationName, locationName);
 		return list;
 	}

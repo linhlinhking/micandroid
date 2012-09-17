@@ -36,7 +36,7 @@ public class SystemUserDaoImpl extends BaseDaoImpl<SystemUser, Integer>
 	public List<SystemUser> querySystemUserByName(String name) {
 		try{
 			String hql = "from SystemUser as model where 1=1 and model.username like ? " ;
-			List<SystemUser> list = findByHql(hql,true,null, name) ;
+			List<SystemUser> list = findByLikeHql(hql,true,null, name) ;
 			if(null != list){
 				return list ;
 			}

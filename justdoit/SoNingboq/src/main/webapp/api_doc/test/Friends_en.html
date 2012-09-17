@@ -1,0 +1,572 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>#sitename_en - #siteURL</title>
+		<link href="/css/global.css" rel="stylesheet" type="text/css">
+		<script type="text/javascript" src="/js/jquery1.7.js"></script>
+		<script src="/js/ajax.js"></script>
+		<script type="text/javascript"
+			src="http://ditu.google.cn/maps/api/js?sensor=false&language=zh-EN"></script>
+
+
+		<script type="text/javascript">
+	var map = null ;
+	var markersArray = [] ;
+	
+   function getContextPath(){
+      var contextPath = document.location.pathname;
+      return contextPath;
+   }
+   
+  $(function(){
+  	
+		var tempIds = $("input[name = 'userId']").val();
+		var cat1Url = apiurl + "/resource/friend/follow/" + tempIds;
+		var cat2Url = apiurl + "/resource/friend/fans/" + tempIds;
+		var cat3Url = apiurl + "/resource/friend/user/" + tempIds;
+		requestAjax(cat1Url,"following_ul_show","following");
+		
+		$("#cat1").click(function(){
+			$('#following_ul_show li').fadeOut().remove();
+			requestAjax(cat1Url,"following_ul_show","following");
+			
+		});
+		
+		$("#cat2").click(function(){
+			$('#following_ul_show li').fadeOut().remove();
+			requestAjax(cat2Url,"following_ul_show","followed");
+		
+		}) ;
+		
+		$("#cat3").click(function(){
+			$('#following_ul_show li').fadeOut().remove();
+			requestAjax(cat3Url,"following_ul_show","following");
+			
+		}) ;
+		
+		$("#search_friends_u").click(function(){
+			$('#following_ul_show li').fadeOut().remove();
+			var name = $("input[name='searchword']").val();
+			var searchUrl = apiurl + "/resource/friend/search/" + tempIds + "/" + name ;
+			requestAjax(searchUrl,"following_ul_show","search");
+		});
+		
+				
+	}) ;
+   
+   function requestAjax(url,eventEl,type){
+			$.ajax({
+				type:"GET",
+				url:url,
+				dateType:"json",
+				beforeSend:function(XMLHttpRequest){
+        			$("#data_loading").show();
+        		},
+				success:function(json){
+					showRelations(json,eventEl,type);
+
+					$("#data_loading").hide();
+				},
+				error:function(){
+        			alert("Throw Exception.");	
+					$("#data_loading").hide();
+        		}
+			});
+		}
+		
+		function showRelations(json,evt,type){
+			if(json == 'undefined' || json == null || "" ==json){
+				alert("No Data.");
+				$("#data_loading").hide();
+				return ;	
+			}
+			
+			if(json.friends.length > 0){
+				for(var i=0;i<json.friends.length;i++){
+					var item = json.friends[i];
+					addMarker(evt,item,i,type);
+				}
+			}else{
+					addMarker(evt,json.friends,0,type);
+			}
+		
+		}			
+				
+		function addMarker(el,item,v,t){
+		 var aId = el + v ;
+		 var imgPath = "" ;
+		 var tempPath = item.photo_path ;
+		 if(tempPath == 'undefined' || "0" == tempPath||tempPath == null){
+				imgPath="/images/username_photo.jpg";
+			}
+		 else{
+				imgPath=apiurl + "/upload/" + tempPath.substring(0,4) + "/" + tempPath.substring(4,8) + "/" + tempPath.substring(8,12) + "/" + tempPath.substring(12)+"-100x100" ;
+		 }	
+		 var flag = item.followingStatus;
+		 $('#' + el).append("<li class='lists_li'><input type='hidden' name='txt_"+aId+"' value='"+item.md5Value+"'/>")
+		 .append("<a href='#'><div class='photo_total'><div class='small_photo_shadow'></div><img src='"+imgPath+"' alt='朋友照片' /></div></a>")
+		 .append("<h1>"+item.username+"</h1><p>"+item.intro+"</p>")
+		 .append("<div class='bottom_line'> <span class='first_span'><a href='#'>View</a></span>")
+		 .append("<span class='chat_span'><a href='#'>Chat</a></span>")
+		 if("true" == flag){
+		 	.append("<span class='remark_span'><a href='#'>Remark</a></span>")
+		 }else{
+		 	.append("<span class='remark_span'><a href='#' id='add_"+aId+"' onclick='add(this.id)'>Add</a></span>")
+		 }
+		 .append("<span class='last_span'><a href='#' id='del_"+aId+"' onclick='del(this.id)'>Delete</a></span></div></li>");
+		 
+		 	
+		}
+		
+		
+ function del(v){
+	 $("#"+v).live("click",function(){
+			var str = v.substring(v.indexOf("_"));
+			var uid = $("input[name = 'userId']").val();
+			var k = $("input[name='txt"+str+"']").val();
+			var msg = "cancel Follow" ;
+			var delUrl = apiurl + "/resource/friend/delete";
+			friendOptions(delUrl,uid,k,msg);
+		});	
+	}
+	
+	
+	function add(v){
+		$("#"+v).live("click",function(){
+			var str = v.substring(v.indexOf("_"));
+			var uid = $("input[name = 'userId']").val();
+			var k = $("input[name='txt"+str+"']").val();
+			var addUrl = apiurl + "/resource/friend/add";
+			var msg = "Add Follow." ;
+			friendOptions(addUrl,uid,k,msg);
+		});
+	}
+	
+	function friendOptions(url,uid,fid,msg){
+			$.ajax({
+							type:"POST",
+							url:url,
+							data:"key=soningbo&userId="+uid+"&followId="+fid,
+							dataType:"json",
+							success:function(json){
+								if("true" == json.result){
+									alert(msg);
+								}else{
+									alert(json.message);	
+								}
+				 			},
+				 			error:function(){
+				 				alert("Throw Exception");	
+				 			},complete:function(){
+				 					
+				 			}
+				});
+				return false ;
+	}
+	
+	function testRemark(){
+			
+			$("#set_for_friend").text("Will");
+			$(".remark_alert").show().animate({
+		       height:'120',
+			   top:$('.friends_lists').scrollTop() - 10
+		             },{
+			   queue: false,
+			   duration:500,
+			   easing:'easeOutCirc'
+	    });
+	    
+	    //$("#btn_remark_add").click(function(){
+	    //		var remark = $("input[name='remark']").val();
+	    //	  $.post(apiurl+"/resource/friend/remark",{"key":"soningbo","userId":tempIds,"followId":v,"remark":remark},function(json){
+	    //			var msg = json.message ;
+	    //			alert(msg);
+						//var tmpValue = $("#friend_user_name").text() ;
+						//$("#friend_user_name").text(tmpValue + "(" + msg +")") ;
+	    //		});
+	    	
+	    //});
+	  
+	    
+		}
+		
+		function AddRemark(){
+			var md5Value=$("input[name='md5Value']").val();
+			var remark=$("input[name='remark']").val();
+			$.ajax({
+				type:"POST",
+				url:apiurl+"/resource/friend/remark",
+				data:"key=soningbo"+"&userId="+tempIds+"&followId="+md5Value+"&remark="+remark,
+				dataType:"json",
+				success:function(json){
+						var msg = json.message ;
+						var tmpValue = $("#friend_user_name").text() ;
+						$("#friend_user_name").text(tmpValue + "(" + msg +")") ;
+				}
+			});
+		}
+
+	
+	function initialize(){		
+		
+	var soNingboStyles = [
+  {
+    featureType: "poi",
+    stylers: [
+      { visibility: "off" }
+    ]
+  }
+,
+  {
+    featureType: "landscape",
+    stylers: [
+      { saturation: -22 }
+    ]
+  },{
+    featureType: "water",
+    stylers: [
+      { saturation: -32 },
+      { lightness: -6 }
+    ]
+  },{
+  }
+  ];
+  
+  
+
+  
+
+    	myLatLng = new google.maps.LatLng(29.865372,121.570606);
+    	
+		  //new google.maps
+      var myOptions = {
+            zoom: 11,
+            minZoom: 10,
+            maxZoom: 19,
+            streetViewControl: false,
+            mapTypeControl: false,
+            panControl: false,
+            scrollwheel: false,
+            center: myLatLng,
+						styles: soNingboStyles,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+      map = new google.maps.Map(document.getElementById('map_canvas'), myOptions);
+      //this.map = new google.maps.Map($('map_canvas'), myOptions);
+      myCenter = map.getCenter();
+
+			var boxText = document.createElement('div');
+			var inboxOptioins = {
+					content:boxText
+					,disableAutoPan:false
+					,maxWidth:0
+					,pixelOffset: new google.maps.Size(-140, 0)	
+					,zIndex: null
+					,boxStyle: { 
+			  		background: "url('tipbox.gif') no-repeat"
+			  		,opacity: 0.75
+			  		,width: "280px"
+			 		}
+					,closeBoxMargin: "10px 2px 2px 2px"
+					,closeBoxURL: "/images/close.gif"
+					,infoBoxClearance: new google.maps.Size(1, 1)
+					,isHidden: false
+					,pane: "floatPane"
+					,enableEventPropagation: false
+				};	
+				var ibs = new InfoBox(inboxOptioins);
+			
+
+
+	  doGeolocation();
+		  
+		  
+	
+	
+		google.maps.event.addListener(map, 'click', function() {
+			infoWindow.close();
+		});
+
+
+
+
+	
+
+	function clearAllMarkers(){
+		if(markersArray){
+			for (i in markersArray){
+					markersArray[i].setMap(null);
+				}
+				markersArray.length = 0;	
+		}
+			
+	}
+
+		
+function doGeolocation() {
+			
+		if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(success, error, {maximumAge:60000, timeout:5000, enableHighAccuracy:true});
+		} else {
+  		error('not supported');
+		}
+
+		}
+		
+		
+		
+function success(position) {
+		var coords = position.coords || position.coordinate || position;
+		var tempLat = parseFloat(coords.latitude) - parseFloat(0.0024725) ;
+		var tempLng = parseFloat(coords.longitude) + parseFloat(0.0042515) ;
+		var latLng = new google.maps.LatLng(tempLat, tempLng);
+    map.setCenter(latLng);
+    var marker = new google.maps.Marker({
+	    map: map,
+	    position: latLng,
+  		 });
+		}
+		
+ 
+  
+ function error(reason) {
+		alert(reason);  
+    }
+	
+	
+	
+		google.maps.event.addDomListener(satview, 'click', function (){
+				map.setMapTypeId(google.maps.MapTypeId.HYBRID);
+				$('#mapview').show()
+	    	$('#satview').hide()
+        });
+		
+		google.maps.event.addDomListener(mapview, 'click', function (){
+					map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
+					$('#mapview').hide()
+	    		$('#satview').show()
+     });
+ 
+    }
+    
+	google.maps.event.addDomListener(window, 'load', initialize);
+	
+  </script>
+	</head>
+	<body class="login_body">
+		<!-- TOP BAR EN START -->
+		<div tabindex="0" class="feedback" id="send_feedback">
+		</div>
+		<form class="feedback_form" id="send_feedback1">
+			<h1>
+				Send feedback to soningbo
+			</h1>
+			<h2>
+				We are happy to hear any suggestions and opinions you have for us
+			</h2>
+			<p>
+				You can also email us at feedback@soningbo.com
+			</p>
+			<div class="divider"></div>
+			<textarea class="feedback_content" id="feedback_content"></textarea>
+			<div class="reply">
+				<span>We'll reply to #useremail</span>
+				<div class="button send" id="closefeedback">
+					<span>Cancel</span>
+				</div>
+				<div class="button feedback_cancel">
+					<span id="send">Send</span>
+				</div>
+			</div>
+		</form>
+		<div class="container" id="container_full">
+			<header>
+			<div id="login_header">
+				<a href="http://www.soningbo.com"><img
+						src="/images/mini_logo.png" alt="搜宁波图标-红色猫头鹰" /> </a>
+				<div class="status_now" id="loading_box" style="display: none;">
+					Loading...
+				</div>
+				<ul>
+					<li id="showFeedbackTab">
+						<span class="header_span header_span_right">Feedback</span>
+					</li>
+					<li id="showNotificationTab">
+						<span class="header_span header_span_right notification">Notifications
+							<div class="notification_content" id="notificationTabInfo">
+								<div class="notification_content_title">
+									Notifications
+								</div>
+								<div class="notification_main">
+									<ul>
+										<li class="remind remind_title">
+											Notifications
+										</li>
+										<li class="remind">
+											<em>You have no notifications</em>
+										</li>
+										<li class="remind remind_bottom">
+											<a href="#">See all notifications</a>
+										</li>
+									</ul>
+								</div>
+							</div> </span>
+					</li>
+					<li id="showUsernameTab">
+						<span class="header_span username"><span>#username</span>
+							<div class="username_content">
+								<div class="username_content_title" id="userTabInfo">
+									#usename
+									<div class="username_main">
+										<div class="username_main_top">
+											<div class="username_main_top_photo">
+												<img src="/images/username_photo.jpg" id="photopath"
+													alt="用户头像" />
+											</div>
+											<div class="username_main_top_content">
+												<span class="lowercase">#useremail</span>
+												<ul>
+													<li>
+														<a href="%profile%">Profile</a>
+													</li>
+													<li>
+														<a href="%change_lang%">中文</a>
+													</li>
+												</ul>
+											</div>
+										</div>
+										<div class="username_main_bottom">
+											<a href="%logout%">Sign out</a>
+										</div>
+									</div>
+								</div>
+							</div> </span>
+					</li>
+				</ul>
+			</div>
+			</header>
+			<!-- END TOP BAR EN -->
+			<div class="body_full">
+				<div class="login_hidden">
+					<aside>
+					<div id="aside">
+						<div class="photo_change">
+							<div class="photo_bg">
+								<div class="personal_photo">
+									<img src="/images/username_photo.jpg" id="photopath_2"
+										alt="用户头像" />
+									<div class="photo_name"></div>
+									<div class="personal_photo_shadow">
+										<div class="name_inside">
+											#username
+										</div>
+										<input type="hidden" value="#useremail" name="feedEmail"
+											id="feedEmail">
+										<input type="hidden" value="#user_id_hidden" name="userId">
+									</div>
+								</div>
+								<div class="photo_right">
+									<a href="friends_en.html">
+										<div class="friends" id="show_following_number"></div>
+										<div class="followed" id="show_followed_number"></div> </a>
+								</div>
+							</div>
+						</div>
+						<div class="main_menu">
+							<ul>
+								<li class="main_menu_content" id="menu_place">
+									<a href="#places"> <span class="menu_img"><img
+												src="/images/location1.gif" alt="位置" /> </span> <span
+										class="menu_span">Places</span> </a>
+								</li>
+								<li class="main_menu_content" id="menu_favorite">
+									<a href="#favorites"> <span class="menu_img"><img
+												src="/images/favorite1.gif" alt="收藏" /> </span> <span
+										class="menu_span">Favorites</span> </a>
+								</li>
+								<li class="main_menu_content" id="menu_friend">
+									<a href="#friends" id="press_on"> <span class="menu_img"><img
+												src="/images/friends1.gif" alt="朋友" /> </span> <span
+										class="menu_span">Friends</span> </a>
+								</li>
+								<li class="main_menu_content" id="menu_event">
+									<a href="#events"> <span class="menu_img"><img
+												src="/images/details1.gif" alt="活动" /> </span> <span
+										class="menu_span">Events</span> </a>
+								</li>
+								<li class="main_menu_content" id="menu_my_place">
+									<a href="#my place"> <span class="menu_img"><img
+												src="/images/profile1.gif" alt="我的位置" /> </span> <span
+										class="menu_span">+ My Place</span> </a>
+								</li>
+							</ul>
+						</div>
+						<div class="foot_menu"></div>
+					</div>
+					</aside>
+					<section>
+					<div class="right_full">
+						<div class="place_map" style="position: relative; z-index: 5;">
+							<section id="wrapper">
+							<div id="map_canvas" style="width: 100%; height: 425px;"></div>
+							</section>
+							<!-- show on map start-->
+							<div class="location_information" style="display: none;">
+
+							</div>
+							<!-- show on map end-->
+						</div>
+						<div class="middle_column" style="z-index: 5;">
+							<div class="column_select press_tab" id="cat1">
+								<span id="c1">Following</span>
+							</div>
+							<div class="column_select" id="cat2">
+								<span id="c2">Followers</span>
+							</div>
+							<div class="column_select" id="cat3">
+								<span id="c3">Friends</span>
+							</div>
+							<div class="press_tab_shadow"></div>
+							<div class="input_div">
+								<input type="hidden" value="#user_id_hidden" name="userId">
+								<input type="hidden" value="#path" name="path">
+								<input class="middle_input" type="text" name="searchword"
+									id="searchword" required />
+								<textarea id="json_result" style="visibility: hidden">#jsonResult</textarea>
+								<div class="input_icon" id="search_friends_u">
+									<span></span>
+								</div>
+							</div>
+							<div id="data_loading"
+								style="float: left; margin-top: 5px; display: none;">
+								<img src="/images/ajax-loader.gif" />
+							</div>
+							<span class="right_span"><a id="hide_map" href="#">Hide
+									Map</a> </span>
+							<span class="right_span">
+								<div id="satview">
+									<a href="#">Satelite View</a>
+								</div>
+								<div id="mapview">
+									<a href="#">Map View</a>
+								</div> </span>
+						</div>
+						<div class="detail_lists friends_lists">
+							<!-- following -->
+							<ul class="friends_ul" id="following_ul_show">
+
+
+							</ul>
+
+
+
+
+						</div>
+					</div>
+					</section>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

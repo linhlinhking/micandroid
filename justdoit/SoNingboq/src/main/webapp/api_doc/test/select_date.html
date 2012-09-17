@@ -1,0 +1,766 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>#sitename_en - #siteURL</title>
+<link href="/css/global.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="../../js/jquery-1.7.2.min.js" ></script>
+<script type="text/javascript" src="basicinfo.js" ></script>
+
+</head>
+<body>
+ <div class="site_content_hours content_same">
+                    <div class="page_box" id="main_info">
+                      <span>Detail Info</span>
+                    </div>
+                    <ul class="week">
+                      <li class="openhours">
+                        <span>Mon:</span>
+                        <select name="mon_open" id="mon_open">
+                          <option value="0">12:00</option>
+                          <option value="1">12:30</option>
+                          <option value="2">13:00</option>
+                          <option value="3">13:30</option>
+                          <option value="4">14:00</option>
+                          <option value="5">14:30</option>
+                          <option value="6">15:00</option>
+                          <option value="7">15:30</option>
+                          <option value="8">16:00</option>
+                          <option value="9">16:30</option>
+                          <option value="10">17:00</option>
+                          <option value="11">17:30</option>
+                          <option value="12">18:00</option>
+                          <option value="13">18:30</option>
+                          <option value="14">19:00</option>
+                          <option value="15">19:30</option>
+                          <option value="16">20:00</option>
+                          <option value="17">20:30</option>
+                          <option value="18">21:00</option>
+                          <option value="19">21:30</option>
+                          <option value="20">22:00</option>
+                          <option value="21">22:30</option>
+                          <option value="22">23:00</option>
+                          <option value="23">23:30</option>
+                          <option value="24">00:00</option>
+                          <option value="25">00:30</option>
+                          <option value="26">01:00</option>
+                          <option value="27">01:30</option>
+                          <option value="28">02:00</option>
+                          <option value="29">02:30</option>
+                          <option value="30">03:00</option>
+                          <option value="31">03:30</option>
+                          <option value="32">04:00</option>
+                          <option value="33">04:30</option>
+                          <option value="34">05:00</option>
+                          <option value="35">05:30</option>
+                          <option value="36">06:00</option>
+                          <option value="37">06:30</option>
+                          <option value="38">07:00</option>
+                          <option value="39">07:30</option>
+                          <option value="40">08:00</option>
+                          <option value="41" selected>08:30</option>
+                          <option value="42">09:00</option>
+                          <option value="43">09:30</option>
+                          <option value="45">10:00</option>
+                          <option value="46">10:30</option>
+                          <option value="47">11:00</option>
+                          <option value="48">11:30</option>
+                        </select>
+                        <span class="openhours_line" id="mon_line" name="mon_line">-</span>
+                        <select class="openhours_select" id="mon_close" name="mon_close">
+                          <option value="0">12:00</option>
+                          <option value="1">12:30</option>
+                          <option value="2">13:00</option>
+                          <option value="3">13:30</option>
+                          <option value="4">14:00</option>
+                          <option value="5">14:30</option>
+                          <option value="6">15:00</option>
+                          <option value="7">15:30</option>
+                          <option value="8">16:00</option>
+                          <option value="9">16:30</option>
+                          <option value="10" selected>17:00</option>
+                          <option value="11">17:30</option>
+                          <option value="12">18:00</option>
+                          <option value="13">18:30</option>
+                          <option value="14">19:00</option>
+                          <option value="15">19:30</option>
+                          <option value="16">20:00</option>
+                          <option value="17">20:30</option>
+                          <option value="18">21:00</option>
+                          <option value="19">21:30</option>
+                          <option value="20">22:00</option>
+                          <option value="21">22:30</option>
+                          <option value="22">23:00</option>
+                          <option value="23">23:30</option>
+                          <option value="24">00:00</option>
+                          <option value="25">00:30</option>
+                          <option value="26">01:00</option>
+                          <option value="27">01:30</option>
+                          <option value="28">02:00</option>
+                          <option value="29">02:30</option>
+                          <option value="30">03:00</option>
+                          <option value="31">03:30</option>
+                          <option value="32">04:00</option>
+                          <option value="33">04:30</option>
+                          <option value="34">05:00</option>
+                          <option value="35">05:30</option>
+                          <option value="36">06:00</option>
+                          <option value="37">06:30</option>
+                          <option value="38">07:00</option>
+                          <option value="39">07:30</option>
+                          <option value="40">08:00</option>
+                          <option value="41">08:30</option>
+                          <option value="42">09:00</option>
+                          <option value="43">09:30</option>
+                          <option value="45">10:00</option>
+                          <option value="46">10:30</option>
+                          <option value="47">11:00</option>
+                          <option value="48">11:30</option>
+                        </select>
+                        <input type="checkbox" name="mon_chk" id="mon_chk" onClick="selectClosed(this.id);" />
+                        <label for="mon_chk" class="openhours_closed">Closed</label>
+                        <span class="apply_all"><a href="javascript:void(0);" onClick="applyAll();">Apply to all</a></span>
+                      </li>
+                      <li class="openhours">
+                        <span>Tue:</span>
+                        <select name="tue_open" id="tue_open">
+                          <option value="0">12:00</option>
+                          <option value="1">12:30</option>
+                          <option value="2">13:00</option>
+                          <option value="3">13:30</option>
+                          <option value="4">14:00</option>
+                          <option value="5">14:30</option>
+                          <option value="6">15:00</option>
+                          <option value="7">15:30</option>
+                          <option value="8">16:00</option>
+                          <option value="9">16:30</option>
+                          <option value="10">17:00</option>
+                          <option value="11">17:30</option>
+                          <option value="12">18:00</option>
+                          <option value="13">18:30</option>
+                          <option value="14">19:00</option>
+                          <option value="15">19:30</option>
+                          <option value="16">20:00</option>
+                          <option value="17">20:30</option>
+                          <option value="18">21:00</option>
+                          <option value="19">21:30</option>
+                          <option value="20">22:00</option>
+                          <option value="21">22:30</option>
+                          <option value="22">23:00</option>
+                          <option value="23">23:30</option>
+                          <option value="24">00:00</option>
+                          <option value="25">00:30</option>
+                          <option value="26">01:00</option>
+                          <option value="27">01:30</option>
+                          <option value="28">02:00</option>
+                          <option value="29">02:30</option>
+                          <option value="30">03:00</option>
+                          <option value="31">03:30</option>
+                          <option value="32">04:00</option>
+                          <option value="33">04:30</option>
+                          <option value="34">05:00</option>
+                          <option value="35">05:30</option>
+                          <option value="36">06:00</option>
+                          <option value="37">06:30</option>
+                          <option value="38">07:00</option>
+                          <option value="39">07:30</option>
+                          <option value="40">08:00</option>
+                          <option value="41" selected>08:30</option>
+                          <option value="42">09:00</option>
+                          <option value="43">09:30</option>
+                          <option value="45">10:00</option>
+                          <option value="46">10:30</option>
+                          <option value="47">11:00</option>
+                          <option value="48">11:30</option>
+                        </select>
+                        <span class="openhours_line" id="tue_line">-</span>
+                        <select class="openhours_select" name="tue_close" id="tue_close">
+                          <option value="0">12:00</option>
+                          <option value="1">12:30</option>
+                          <option value="2">13:00</option>
+                          <option value="3">13:30</option>
+                          <option value="4">14:00</option>
+                          <option value="5">14:30</option>
+                          <option value="6">15:00</option>
+                          <option value="7">15:30</option>
+                          <option value="8">16:00</option>
+                          <option value="9">16:30</option>
+                          <option value="10" selected>17:00</option>
+                          <option value="11">17:30</option>
+                          <option value="12">18:00</option>
+                          <option value="13">18:30</option>
+                          <option value="14">19:00</option>
+                          <option value="15">19:30</option>
+                          <option value="16">20:00</option>
+                          <option value="17">20:30</option>
+                          <option value="18">21:00</option>
+                          <option value="19">21:30</option>
+                          <option value="20">22:00</option>
+                          <option value="21">22:30</option>
+                          <option value="22">23:00</option>
+                          <option value="23">23:30</option>
+                          <option value="24">00:00</option>
+                          <option value="25">00:30</option>
+                          <option value="26">01:00</option>
+                          <option value="27">01:30</option>
+                          <option value="28">02:00</option>
+                          <option value="29">02:30</option>
+                          <option value="30">03:00</option>
+                          <option value="31">03:30</option>
+                          <option value="32">04:00</option>
+                          <option value="33">04:30</option>
+                          <option value="34">05:00</option>
+                          <option value="35">05:30</option>
+                          <option value="36">06:00</option>
+                          <option value="37">06:30</option>
+                          <option value="38">07:00</option>
+                          <option value="39">07:30</option>
+                          <option value="40">08:00</option>
+                          <option value="41">08:30</option>
+                          <option value="42">09:00</option>
+                          <option value="43">09:30</option>
+                          <option value="45">10:00</option>
+                          <option value="46">10:30</option>
+                          <option value="47">11:00</option>
+                          <option value="48">11:30</option>
+                        </select>
+                        <input type="checkbox" name="tue_chk" id="tue_chk" onClick="selectClosed(this.id);" />
+                        <label for="tue_chk" class="openhours_closed">Closed</label>
+                      </li>
+                      <li class="openhours">
+                        <span>Wed:</span>
+                        <select name="wed_open" id="wed_open">
+                          <option value="0">12:00</option>
+                          <option value="1">12:30</option>
+                          <option value="2">13:00</option>
+                          <option value="3">13:30</option>
+                          <option value="4">14:00</option>
+                          <option value="5">14:30</option>
+                          <option value="6">15:00</option>
+                          <option value="7">15:30</option>
+                          <option value="8">16:00</option>
+                          <option value="9">16:30</option>
+                          <option value="10">17:00</option>
+                          <option value="11">17:30</option>
+                          <option value="12">18:00</option>
+                          <option value="13">18:30</option>
+                          <option value="14">19:00</option>
+                          <option value="15">19:30</option>
+                          <option value="16">20:00</option>
+                          <option value="17">20:30</option>
+                          <option value="18">21:00</option>
+                          <option value="19">21:30</option>
+                          <option value="20">22:00</option>
+                          <option value="21">22:30</option>
+                          <option value="22">23:00</option>
+                          <option value="23">23:30</option>
+                          <option value="24">00:00</option>
+                          <option value="25">00:30</option>
+                          <option value="26">01:00</option>
+                          <option value="27">01:30</option>
+                          <option value="28">02:00</option>
+                          <option value="29">02:30</option>
+                          <option value="30">03:00</option>
+                          <option value="31">03:30</option>
+                          <option value="32">04:00</option>
+                          <option value="33">04:30</option>
+                          <option value="34">05:00</option>
+                          <option value="35">05:30</option>
+                          <option value="36">06:00</option>
+                          <option value="37">06:30</option>
+                          <option value="38">07:00</option>
+                          <option value="39">07:30</option>
+                          <option value="40">08:00</option>
+                          <option value="41" selected>08:30</option>
+                          <option value="42">09:00</option>
+                          <option value="43">09:30</option>
+                          <option value="45">10:00</option>
+                          <option value="46">10:30</option>
+                          <option value="47">11:00</option>
+                          <option value="48">11:30</option>
+                        </select>
+                        <span class="openhours_line" id="wed_line">-</span>
+                        <select class="openhours_select" id="wed_close" name="wed_close">
+                          <option value="0">12:00</option>
+                          <option value="1">12:30</option>
+                          <option value="2">13:00</option>
+                          <option value="3">13:30</option>
+                          <option value="4">14:00</option>
+                          <option value="5">14:30</option>
+                          <option value="6">15:00</option>
+                          <option value="7">15:30</option>
+                          <option value="8">16:00</option>
+                          <option value="9">16:30</option>
+                          <option value="10" selected>17:00</option>
+                          <option value="11">17:30</option>
+                          <option value="12">18:00</option>
+                          <option value="13">18:30</option>
+                          <option value="14">19:00</option>
+                          <option value="15">19:30</option>
+                          <option value="16">20:00</option>
+                          <option value="17">20:30</option>
+                          <option value="18">21:00</option>
+                          <option value="19">21:30</option>
+                          <option value="20">22:00</option>
+                          <option value="21">22:30</option>
+                          <option value="22">23:00</option>
+                          <option value="23">23:30</option>
+                          <option value="24">00:00</option>
+                          <option value="25">00:30</option>
+                          <option value="26">01:00</option>
+                          <option value="27">01:30</option>
+                          <option value="28">02:00</option>
+                          <option value="29">02:30</option>
+                          <option value="30">03:00</option>
+                          <option value="31">03:30</option>
+                          <option value="32">04:00</option>
+                          <option value="33">04:30</option>
+                          <option value="34">05:00</option>
+                          <option value="35">05:30</option>
+                          <option value="36">06:00</option>
+                          <option value="37">06:30</option>
+                          <option value="38">07:00</option>
+                          <option value="39">07:30</option>
+                          <option value="40">08:00</option>
+                          <option value="41">08:30</option>
+                          <option value="42">09:00</option>
+                          <option value="43">09:30</option>
+                          <option value="45">10:00</option>
+                          <option value="46">10:30</option>
+                          <option value="47">11:00</option>
+                          <option value="48">11:30</option>
+                        </select>
+                        <input type="checkbox" name="wed_chk" id="wed_chk" onClick="selectClosed(this.id);" />
+                        <label for="wed_chk" class="openhours_closed">Closed</label>
+                      </li>
+                      <li class="openhours">
+                        <span>Thur:</span>
+                        <select name="thru_open" id="thru_open">
+                          <option value="0">12:00</option>
+                          <option value="1">12:30</option>
+                          <option value="2">13:00</option>
+                          <option value="3">13:30</option>
+                          <option value="4">14:00</option>
+                          <option value="5">14:30</option>
+                          <option value="6">15:00</option>
+                          <option value="7">15:30</option>
+                          <option value="8">16:00</option>
+                          <option value="9">16:30</option>
+                          <option value="10">17:00</option>
+                          <option value="11">17:30</option>
+                          <option value="12">18:00</option>
+                          <option value="13">18:30</option>
+                          <option value="14">19:00</option>
+                          <option value="15">19:30</option>
+                          <option value="16">20:00</option>
+                          <option value="17">20:30</option>
+                          <option value="18">21:00</option>
+                          <option value="19">21:30</option>
+                          <option value="20">22:00</option>
+                          <option value="21">22:30</option>
+                          <option value="22">23:00</option>
+                          <option value="23">23:30</option>
+                          <option value="24">00:00</option>
+                          <option value="25">00:30</option>
+                          <option value="26">01:00</option>
+                          <option value="27">01:30</option>
+                          <option value="28">02:00</option>
+                          <option value="29">02:30</option>
+                          <option value="30">03:00</option>
+                          <option value="31">03:30</option>
+                          <option value="32">04:00</option>
+                          <option value="33">04:30</option>
+                          <option value="34">05:00</option>
+                          <option value="35">05:30</option>
+                          <option value="36">06:00</option>
+                          <option value="37">06:30</option>
+                          <option value="38">07:00</option>
+                          <option value="39">07:30</option>
+                          <option value="40">08:00</option>
+                          <option value="41" selected>08:30</option>
+                          <option value="42">09:00</option>
+                          <option value="43">09:30</option>
+                          <option value="45">10:00</option>
+                          <option value="46">10:30</option>
+                          <option value="47">11:00</option>
+                          <option value="48">11:30</option>
+                        </select>
+                        <span class="openhours_line" id="thru_line">-</span>
+                        <select class="openhours_select" id="thru_close" name="thru_close">
+                          <option value="0">12:00</option>
+                          <option value="1">12:30</option>
+                          <option value="2">13:00</option>
+                          <option value="3">13:30</option>
+                          <option value="4">14:00</option>
+                          <option value="5">14:30</option>
+                          <option value="6">15:00</option>
+                          <option value="7">15:30</option>
+                          <option value="8">16:00</option>
+                          <option value="9">16:30</option>
+                          <option value="10" selected>17:00</option>
+                          <option value="11">17:30</option>
+                          <option value="12">18:00</option>
+                          <option value="13">18:30</option>
+                          <option value="14">19:00</option>
+                          <option value="15">19:30</option>
+                          <option value="16">20:00</option>
+                          <option value="17">20:30</option>
+                          <option value="18">21:00</option>
+                          <option value="19">21:30</option>
+                          <option value="20">22:00</option>
+                          <option value="21">22:30</option>
+                          <option value="22">23:00</option>
+                          <option value="23">23:30</option>
+                          <option value="24">00:00</option>
+                          <option value="25">00:30</option>
+                          <option value="26">01:00</option>
+                          <option value="27">01:30</option>
+                          <option value="28">02:00</option>
+                          <option value="29">02:30</option>
+                          <option value="30">03:00</option>
+                          <option value="31">03:30</option>
+                          <option value="32">04:00</option>
+                          <option value="33">04:30</option>
+                          <option value="34">05:00</option>
+                          <option value="35">05:30</option>
+                          <option value="36">06:00</option>
+                          <option value="37">06:30</option>
+                          <option value="38">07:00</option>
+                          <option value="39">07:30</option>
+                          <option value="40">08:00</option>
+                          <option value="41">08:30</option>
+                          <option value="42">09:00</option>
+                          <option value="43">09:30</option>
+                          <option value="45">10:00</option>
+                          <option value="46">10:30</option>
+                          <option value="47">11:00</option>
+                          <option value="48">11:30</option>
+                        </select>
+                        <input type="checkbox" name="thru_chk" id="thru_chk" onClick="selectClosed(this.id);" />
+                        <label for="thru_chk" class="openhours_closed">Closed</label>
+                      </li>
+                      <li class="openhours">
+                        <span>Fri:</span>
+                        <select id="fri_open" name="fri_open">
+                          <option value="0">12:00</option>
+                          <option value="1">12:30</option>
+                          <option value="2">13:00</option>
+                          <option value="3">13:30</option>
+                          <option value="4">14:00</option>
+                          <option value="5">14:30</option>
+                          <option value="6">15:00</option>
+                          <option value="7">15:30</option>
+                          <option value="8">16:00</option>
+                          <option value="9">16:30</option>
+                          <option value="10">17:00</option>
+                          <option value="11">17:30</option>
+                          <option value="12">18:00</option>
+                          <option value="13">18:30</option>
+                          <option value="14">19:00</option>
+                          <option value="15">19:30</option>
+                          <option value="16">20:00</option>
+                          <option value="17">20:30</option>
+                          <option value="18">21:00</option>
+                          <option value="19">21:30</option>
+                          <option value="20">22:00</option>
+                          <option value="21">22:30</option>
+                          <option value="22">23:00</option>
+                          <option value="23">23:30</option>
+                          <option value="24">00:00</option>
+                          <option value="25">00:30</option>
+                          <option value="26">01:00</option>
+                          <option value="27">01:30</option>
+                          <option value="28">02:00</option>
+                          <option value="29">02:30</option>
+                          <option value="30">03:00</option>
+                          <option value="31">03:30</option>
+                          <option value="32">04:00</option>
+                          <option value="33">04:30</option>
+                          <option value="34">05:00</option>
+                          <option value="35">05:30</option>
+                          <option value="36">06:00</option>
+                          <option value="37">06:30</option>
+                          <option value="38">07:00</option>
+                          <option value="39">07:30</option>
+                          <option value="40">08:00</option>
+                          <option value="41" selected>08:30</option>
+                          <option value="42">09:00</option>
+                          <option value="43">09:30</option>
+                          <option value="45">10:00</option>
+                          <option value="46">10:30</option>
+                          <option value="47">11:00</option>
+                          <option value="48">11:30</option>
+                        </select>
+                        <span class="openhours_line" id="fri_line">-</span>
+                        <select class="openhours_select" id="fri_close" name="fri_close">
+                          <option value="0">12:00</option>
+                          <option value="1">12:30</option>
+                          <option value="2">13:00</option>
+                          <option value="3">13:30</option>
+                          <option value="4">14:00</option>
+                          <option value="5">14:30</option>
+                          <option value="6">15:00</option>
+                          <option value="7">15:30</option>
+                          <option value="8">16:00</option>
+                          <option value="9">16:30</option>
+                          <option value="10" selected>17:00</option>
+                          <option value="11">17:30</option>
+                          <option value="12">18:00</option>
+                          <option value="13">18:30</option>
+                          <option value="14">19:00</option>
+                          <option value="15">19:30</option>
+                          <option value="16">20:00</option>
+                          <option value="17">20:30</option>
+                          <option value="18">21:00</option>
+                          <option value="19">21:30</option>
+                          <option value="20">22:00</option>
+                          <option value="21">22:30</option>
+                          <option value="22">23:00</option>
+                          <option value="23">23:30</option>
+                          <option value="24">00:00</option>
+                          <option value="25">00:30</option>
+                          <option value="26">01:00</option>
+                          <option value="27">01:30</option>
+                          <option value="28">02:00</option>
+                          <option value="29">02:30</option>
+                          <option value="30">03:00</option>
+                          <option value="31">03:30</option>
+                          <option value="32">04:00</option>
+                          <option value="33">04:30</option>
+                          <option value="34">05:00</option>
+                          <option value="35">05:30</option>
+                          <option value="36">06:00</option>
+                          <option value="37">06:30</option>
+                          <option value="38">07:00</option>
+                          <option value="39">07:30</option>
+                          <option value="40">08:00</option>
+                          <option value="41">08:30</option>
+                          <option value="42">09:00</option>
+                          <option value="43">09:30</option>
+                          <option value="45">10:00</option>
+                          <option value="46">10:30</option>
+                          <option value="47">11:00</option>
+                          <option value="48">11:30</option>
+                        </select>
+                        <input type="checkbox" name="fri_chk" id="fri_chk" onClick="selectClosed(this.id);" />
+                        <label for="fri_chk" class="openhours_closed">Closed</label>
+                      </li>
+                      <li class="openhours">
+                        <span>Sat:</span>
+                        <select id="sat_open" name="sat_open">
+                          <option value="0">12:00</option>
+                          <option value="1">12:30</option>
+                          <option value="2">13:00</option>
+                          <option value="3">13:30</option>
+                          <option value="4">14:00</option>
+                          <option value="5">14:30</option>
+                          <option value="6">15:00</option>
+                          <option value="7">15:30</option>
+                          <option value="8">16:00</option>
+                          <option value="9">16:30</option>
+                          <option value="10">17:00</option>
+                          <option value="11">17:30</option>
+                          <option value="12">18:00</option>
+                          <option value="13">18:30</option>
+                          <option value="14">19:00</option>
+                          <option value="15">19:30</option>
+                          <option value="16">20:00</option>
+                          <option value="17">20:30</option>
+                          <option value="18">21:00</option>
+                          <option value="19">21:30</option>
+                          <option value="20">22:00</option>
+                          <option value="21">22:30</option>
+                          <option value="22">23:00</option>
+                          <option value="23">23:30</option>
+                          <option value="24">00:00</option>
+                          <option value="25">00:30</option>
+                          <option value="26">01:00</option>
+                          <option value="27">01:30</option>
+                          <option value="28">02:00</option>
+                          <option value="29">02:30</option>
+                          <option value="30">03:00</option>
+                          <option value="31">03:30</option>
+                          <option value="32">04:00</option>
+                          <option value="33">04:30</option>
+                          <option value="34">05:00</option>
+                          <option value="35">05:30</option>
+                          <option value="36">06:00</option>
+                          <option value="37">06:30</option>
+                          <option value="38">07:00</option>
+                          <option value="39">07:30</option>
+                          <option value="40">08:00</option>
+                          <option value="41" selected>08:30</option>
+                          <option value="42">09:00</option>
+                          <option value="43">09:30</option>
+                          <option value="45">10:00</option>
+                          <option value="46">10:30</option>
+                          <option value="47">11:00</option>
+                          <option value="48">11:30</option>
+                        </select>
+                        <span class="openhours_line" id="sat_line">-</span>
+                        <select class="openhours_select" id="sat_close" name="sat_close">
+                          <option value="0">12:00</option>
+                          <option value="1">12:30</option>
+                          <option value="2">13:00</option>
+                          <option value="3">13:30</option>
+                          <option value="4">14:00</option>
+                          <option value="5">14:30</option>
+                          <option value="6">15:00</option>
+                          <option value="7">15:30</option>
+                          <option value="8">16:00</option>
+                          <option value="9">16:30</option>
+                          <option value="10" selected>17:00</option>
+                          <option value="11">17:30</option>
+                          <option value="12">18:00</option>
+                          <option value="13">18:30</option>
+                          <option value="14">19:00</option>
+                          <option value="15">19:30</option>
+                          <option value="16">20:00</option>
+                          <option value="17">20:30</option>
+                          <option value="18">21:00</option>
+                          <option value="19">21:30</option>
+                          <option value="20">22:00</option>
+                          <option value="21">22:30</option>
+                          <option value="22">23:00</option>
+                          <option value="23">23:30</option>
+                          <option value="24">00:00</option>
+                          <option value="25">00:30</option>
+                          <option value="26">01:00</option>
+                          <option value="27">01:30</option>
+                          <option value="28">02:00</option>
+                          <option value="29">02:30</option>
+                          <option value="30">03:00</option>
+                          <option value="31">03:30</option>
+                          <option value="32">04:00</option>
+                          <option value="33">04:30</option>
+                          <option value="34">05:00</option>
+                          <option value="35">05:30</option>
+                          <option value="36">06:00</option>
+                          <option value="37">06:30</option>
+                          <option value="38">07:00</option>
+                          <option value="39">07:30</option>
+                          <option value="40">08:00</option>
+                          <option value="41">08:30</option>
+                          <option value="42">09:00</option>
+                          <option value="43">09:30</option>
+                          <option value="45">10:00</option>
+                          <option value="46">10:30</option>
+                          <option value="47">11:00</option>
+                          <option value="48">11:30</option>
+                        </select>
+                        <input type="checkbox" name="sat_chk" id="sat_chk" onClick="selectClosed(this.id);" />
+                        <label for="sat_chk" class="openhours_closed">Closed</label>
+                      </li>
+                      <li class="openhours">
+                        <span>Sun:</span>
+                        <select id="sun_open" name="sun_open">
+                          <option value="0">12:00</option>
+                          <option value="1">12:30</option>
+                          <option value="2">13:00</option>
+                          <option value="3">13:30</option>
+                          <option value="4">14:00</option>
+                          <option value="5">14:30</option>
+                          <option value="6">15:00</option>
+                          <option value="7">15:30</option>
+                          <option value="8">16:00</option>
+                          <option value="9">16:30</option>
+                          <option value="10">17:00</option>
+                          <option value="11">17:30</option>
+                          <option value="12">18:00</option>
+                          <option value="13">18:30</option>
+                          <option value="14">19:00</option>
+                          <option value="15">19:30</option>
+                          <option value="16">20:00</option>
+                          <option value="17">20:30</option>
+                          <option value="18">21:00</option>
+                          <option value="19">21:30</option>
+                          <option value="20">22:00</option>
+                          <option value="21">22:30</option>
+                          <option value="22">23:00</option>
+                          <option value="23">23:30</option>
+                          <option value="24">00:00</option>
+                          <option value="25">00:30</option>
+                          <option value="26">01:00</option>
+                          <option value="27">01:30</option>
+                          <option value="28">02:00</option>
+                          <option value="29">02:30</option>
+                          <option value="30">03:00</option>
+                          <option value="31">03:30</option>
+                          <option value="32">04:00</option>
+                          <option value="33">04:30</option>
+                          <option value="34">05:00</option>
+                          <option value="35">05:30</option>
+                          <option value="36">06:00</option>
+                          <option value="37">06:30</option>
+                          <option value="38">07:00</option>
+                          <option value="39">07:30</option>
+                          <option value="40">08:00</option>
+                          <option value="41" selected>08:30</option>
+                          <option value="42">09:00</option>
+                          <option value="43">09:30</option>
+                          <option value="45">10:00</option>
+                          <option value="46">10:30</option>
+                          <option value="47">11:00</option>
+                          <option value="48">11:30</option>
+                        </select>
+                        <span class="openhours_line" id="sun_line">-</span>
+                        <select class="openhours_select" id="sun_close" name="sun_close">
+                          <option value="0">12:00</option>
+                          <option value="1">12:30</option>
+                          <option value="2">13:00</option>
+                          <option value="3">13:30</option>
+                          <option value="4">14:00</option>
+                          <option value="5">14:30</option>
+                          <option value="6">15:00</option>
+                          <option value="7">15:30</option>
+                          <option value="8">16:00</option>
+                          <option value="9">16:30</option>
+                          <option value="10" selected>17:00</option>
+                          <option value="11">17:30</option>
+                          <option value="12">18:00</option>
+                          <option value="13">18:30</option>
+                          <option value="14">19:00</option>
+                          <option value="15">19:30</option>
+                          <option value="16">20:00</option>
+                          <option value="17">20:30</option>
+                          <option value="18">21:00</option>
+                          <option value="19">21:30</option>
+                          <option value="20">22:00</option>
+                          <option value="21">22:30</option>
+                          <option value="22">23:00</option>
+                          <option value="23">23:30</option>
+                          <option value="24">00:00</option>
+                          <option value="25">00:30</option>
+                          <option value="26">01:00</option>
+                          <option value="27">01:30</option>
+                          <option value="28">02:00</option>
+                          <option value="29">02:30</option>
+                          <option value="30">03:00</option>
+                          <option value="31">03:30</option>
+                          <option value="32">04:00</option>
+                          <option value="33">04:30</option>
+                          <option value="34">05:00</option>
+                          <option value="35">05:30</option>
+                          <option value="36">06:00</option>
+                          <option value="37">06:30</option>
+                          <option value="38">07:00</option>
+                          <option value="39">07:30</option>
+                          <option value="40">08:00</option>
+                          <option value="41">08:30</option>
+                          <option value="42">09:00</option>
+                          <option value="43">09:30</option>
+                          <option value="45">10:00</option>
+                          <option value="46">10:30</option>
+                          <option value="47">11:00</option>
+                          <option value="48">11:30</option>
+                        </select>
+                        <input type="checkbox" name="sun_chk" id="sun_chk" onClick="selectClosed(this.id);" />
+                        <label for="sun_chk" class="openhours_closed">Closed</label>
+                      </li>
+                    </ul>
+                    <div class="clear"></div>
+                  </div>
+                  
+                  
+                </body>
+              </html>

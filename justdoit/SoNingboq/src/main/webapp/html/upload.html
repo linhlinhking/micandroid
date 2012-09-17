@@ -7,20 +7,13 @@
 <title>jQuery File Upload Demo</title>
 <meta name="description" content="File Upload widget with multiple file selection, drag&amp;drop support, progress bar and preview images for jQuery. Supports cross-domain, chunked and resumable file uploads. Works with any server-side platform (Google App Engine, PHP, Python, Ruby on Rails, Java, etc.) that supports standard HTML form file uploads.">
 <meta name="viewport" content="width=device-width">
-<!-- Bootstrap CSS Toolkit styles -->
-<link rel="stylesheet" href="css/bootstrap.min.css">
-<!-- Generic page styles -->
-<link rel="stylesheet" href="css/style.css">
-<!-- Bootstrap styles for responsive website layout, supporting different screen sizes -->
-<link rel="stylesheet" href="css/bootstrap-responsive.min.css">
-<!-- Bootstrap CSS fixes for IE6 -->
-<!--[if lt IE 7]><link rel="stylesheet" href="css/bootstrap-ie6.min.css"><![endif]-->
-<!-- Bootstrap Image Gallery styles -->
-<link rel="stylesheet" href="css/bootstrap-image-gallery.min.css">
-<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
-<link rel="stylesheet" href="css/jquery.fileupload-ui.css">
-<!-- Shim to make HTML5 elements usable in older Internet Explorer versions -->
-<!--[if lt IE 9]><script src="js/html5.js"></script><![endif]-->
+<link rel="stylesheet" href="/css/plugin/bootstrap.min.css">
+<link rel="stylesheet" href="/css/plugin/style.css">
+<link rel="stylesheet" href="/css/plugin/bootstrap-responsive.min.css">
+<!--[if lt IE 7]><link rel="stylesheet" href="/css/plugin/bootstrap-ie6.min.css"><![endif]-->
+<link rel="stylesheet" href="/css/plugin/bootstrap-image-gallery.min.css">
+<link rel="stylesheet" href="/css/plugin/jquery.fileupload-ui.css">
+<!--[if lt IE 9]><script src="/js/plugin/html5.js"></script><![endif]-->
 </head>
 <body>
 
@@ -149,31 +142,31 @@
     </tr>
 {% } %}
 </script>
-<script src="js/jquery-1.7.2.min.js"></script>
+<script src="/js/jquery/jquery-1.5.2.min.js"></script>
 		<!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
-		<script src="js/vendor/jquery.ui.widget.js"></script>
+		<script src="/js/plugin/jquery.ui.widget.js"></script>
 		<!-- The Templates plugin is included to render the upload/download listings -->
-		<script src="js/tmpl.min.js"></script>
+		<script src="/js/plugin/tmpl.min.js"></script>
 		<!-- The Load Image plugin is included for the preview images and image resizing functionality -->
-		<script src="js/load-image.min.js"></script>
+		<script src="/js/plugin/load-image.min.js"></script>
 		<!-- The Canvas to Blob plugin is included for image resizing functionality -->
-		<script src="js/canvas-to-blob.min.js"></script>
+		<script src="/js/plugin/canvas-to-blob.min.js"></script>
 		<!-- Bootstrap JS and Bootstrap Image Gallery are not required, but included for the demo -->
-		<script src="js/bootstrap.min.js"></script>
-		<script src="js/bootstrap-image-gallery.min.js"></script>
+		<script src="/js/plugin/bootstrap.min.js"></script>
+		<script src="/js/plugin/bootstrap-image-gallery.min.js"></script>
 		<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
-		<script src="js/jquery.iframe-transport.js"></script>
+		<script src="/js/plugin/jquery.iframe-transport.js"></script>
 		<!-- The basic File Upload plugin -->
-		<script src="js/jquery.fileupload.js"></script>
+		<script src="/js/plugin/jquery.fileupload.js"></script>
 		<!-- The File Upload file processing plugin -->
-		<script src="js/jquery.fileupload-fp.js"></script>
+		<script src="/js/plugin/jquery.fileupload-fp.js"></script>
 		<!-- The File Upload user interface plugin -->
-		<script src="js/jquery.fileupload-ui.js"></script>
+		<script src="/js/plugin/jquery.fileupload-ui.js"></script>
 		<!-- The localization script -->
-		<script src="js/locale.js"></script>
+		<script src="/js/plugin/locale.js"></script>
 		<!-- The main application script -->
-		<script src="js/main.js"></script>
+		<script src="/js/plugin/main.js"></script>
 		<!-- The XDomainRequest Transport is included for cross-domain file deletion for IE8+ -->
-		<!--[if gte IE 8]><script src="js/cors/jquery.xdr-transport.js"></script><![endif]-->
+		<!--[if gte IE 8]><script src="/js/plugin/jquery.xdr-transport.js"></script><![endif]-->
 </body> 
 </html>

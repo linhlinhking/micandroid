@@ -23,11 +23,11 @@ public class UpdateDatabaseTest extends BaseTest {
 
 	@Test
 	public void testSaveAll(){
-		try{//45106
-			for(int i=45072;i<=45072;i++){
+		try{
+			for(int i=47597;i<=47706;i++){
 				Location loc = locationService.get(i);
 				List<SecondCategory> lists = new ArrayList<SecondCategory>();
-				SecondCategory sc = secondCategoryService.get(291) ;
+				SecondCategory sc = secondCategoryService.get(290) ;
 				lists.add(sc) ;
 				
 				Integer id = loc.getId() ;

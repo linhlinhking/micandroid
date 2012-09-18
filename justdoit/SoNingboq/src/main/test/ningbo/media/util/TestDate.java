@@ -22,7 +22,7 @@ public class TestDate {
 	@Test
 	public void test2(){
 		String dateString = "2012-08-01,2012-08-09,2012-08-26" ;
-		List<String> tmpList = StringUtil.getCustomDateString(dateString) ;
+		List<String> tmpList = StringUtil.getCustomDateString(dateString,"","") ;
 		
 		for(String str : tmpList){
 			System.out.println(str) ;

@@ -207,8 +207,8 @@ public class ModuleFileResource {
 				"/resource/modulefile/option?getthumb=").path("");
 		UriBuilder delFileUrl = UriBuilder.fromPath(
 				"/resource/modulefile/option?delfile=").path("");
-		// String linkUrl = "http://localhost:9000" ;
-		String linkUrl = Constant.API_URL;
+		String linkUrl = "http://localhost:9000";
+		//String linkUrl = Constant.API_URL;
 		String tmpPath = FileUpload.makeTempDir(request);
 		JSONArray jsonArry = new JSONArray();
 
@@ -231,17 +231,6 @@ public class ModuleFileResource {
 					obj.put("delete_type", "GET");
 
 					jsonArry.put(obj);
-					// FileData jsono = new FileData();
-					// jsono.setName(item.getName());
-					// jsono.setSize(String.valueOf(item.getSize()));
-					// jsono.setUrl(headUrl.toString()
-					// + getFileUrl.build("").getPath() + item.getName());
-					// jsono.setThumbnail_url(headUrl.toString()
-					// + getThumUrl.build("").getPath() + item.getName());
-					// jsono.setDelete_url(headUrl.toString()
-					// + delFileUrl.build("").getPath() + item.getName());
-					// jsono.setDelete_type("GET");
-					// lists.add(jsono);
 				}
 			}
 		} catch (Exception e) {
@@ -251,9 +240,6 @@ public class ModuleFileResource {
 			errorJSON.put(Constant.MESSAGE, JSONCode.MSG_UPLOAD_FILE_EXCEPTION);
 			return Response.ok(errorJSON.toString()).build();
 		}
-		// GenericEntity<JSONArray> entiry = new GenericEntity<JSONArray>(
-		// jsonArry) {
-		// };
 		return Response.ok(jsonArry.toString()).build();
 	}
 
@@ -300,13 +286,15 @@ public class ModuleFileResource {
 				for (int i = 0, j = arry.length; i < j; i++) {
 					String fileName = arry[i];
 					StringBuffer buffer = new StringBuffer();
-					buffer.append(Constant.API_URL).append(File.separator)
-							.append(Constant.TEMP).append(File.separator);
-					buffer.append(fileName);
-					InputStream in = new FileInputStream(buffer.toString());
+
+					buffer.append(
+							request.getSession().getServletContext()
+									.getRealPath("")).append(File.separator)
+							.append(Constant.TEMP).append(File.separator)
+							.append(fileName);
 
 					ImageInformation inforImage = new ImageInformation();
-					Map<String, Object> m = FileHashCode.writeToFile(in,
+					Map<String, Object> m = FileHashCode.writeToFile(request,
 							buffer.toString());
 
 					inforImage.setWidth(Double.valueOf(m.get(Constant.WIDTH)

@@ -59,6 +59,8 @@ import org.imgscalr.Scalr;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -70,6 +72,8 @@ import com.sun.jersey.multipart.FormDataParam;
 @Component
 @Scope("request")
 public class ModuleFileResource {
+	
+	private Logger logger = LoggerFactory.getLogger(getClass()) ;
 
 	@Resource
 	private ModuleFileService moduleFileService;
@@ -216,18 +220,26 @@ public class ModuleFileResource {
 			List<FileItem> items = uploadHandler.parseRequest(request);
 			for (FileItem item : items) {
 				if (!item.isFormField() && item.getSize() > 0) {
+					String realPath = "" ;
 					File file = new File(tmpPath, item.getName());
 					item.write(file);
+
+					String newName = FileUploadUtil.renameFile(tmpPath,
+							item.getName());
+					if(null != newName){
+						realPath = tmpPath + newName ;
+					}
+					logger.info(realPath);
 
 					JSONObject obj = new JSONObject();
 					obj.put("name", item.getName());
 					obj.put("size", item.getSize());
 					obj.put("url", linkUrl + getFileUrl.build("").getPath()
-							+ item.getName());
+							+ newName);
 					obj.put("thumbnail_url", linkUrl
-							+ getThumUrl.build("").getPath() + item.getName());
+							+ getThumUrl.build("").getPath() + newName);
 					obj.put("delete_url", linkUrl
-							+ delFileUrl.build("").getPath() + item.getName());
+							+ delFileUrl.build("").getPath() + newName);
 					obj.put("delete_type", "GET");
 
 					jsonArry.put(obj);

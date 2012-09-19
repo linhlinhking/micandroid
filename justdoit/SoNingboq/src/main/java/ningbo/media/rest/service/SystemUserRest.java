@@ -40,6 +40,8 @@ import ningbo.media.util.StringUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -50,6 +52,8 @@ import com.sun.jersey.multipart.FormDataMultiPart;
 @Component
 @Scope("request")
 public class SystemUserRest {
+
+	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Resource
 	private SystemUserService systemUserService;
@@ -78,6 +82,7 @@ public class SystemUserRest {
 		SystemUser u = systemUserService.get(Constant.MD5_FIELD, id);
 		if (null == u) {
 			String message = "The User Id [" + id + "] No Exists.";
+			logger.error(message) ;
 			throw Jerseys.buildException(Status.NOT_FOUND, message);
 		}
 		return Response.ok(getSystemUserData(u)).build();
@@ -140,7 +145,7 @@ public class SystemUserRest {
 			json.put(Constant.MESSAGE, JSONCode.MSG_KEY_INVALID);
 			return Response.ok(json.toString()).build();
 		}
-		SystemUser u = systemUserService.get(Constant.MD5_FIELD,id) ;
+		SystemUser u = systemUserService.get(Constant.MD5_FIELD, id);
 		u.setStatus(true);
 		try {
 			systemUserService.update(u);
@@ -346,13 +351,13 @@ public class SystemUserRest {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response resendEmail(@PathParam("id") String id) throws Exception {
-		SystemUser u = systemUserService.get(Constant.MD5_FIELD,id);
+		SystemUser u = systemUserService.get(Constant.MD5_FIELD, id);
 		JSONObject json = new JSONObject();
-		if(null == u){
+		if (null == u) {
 			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 			json.put(Constant.MESSAGE, JSONCode.MSG_USER_NOEXISTS);
 			return Response.ok(json.toString()).build();
-		}else{
+		} else {
 			String md5Value = u.getMd5Value();
 			String email = u.getEmail();
 			String username = u.getUsername();
@@ -364,7 +369,7 @@ public class SystemUserRest {
 		json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
 		json.put(Constant.MESSAGE, JSONCode.MSG_USER_RESEND_EMAIL);
 		return Response.ok(json.toString()).build();
-		
+
 	}
 
 	/**
@@ -396,7 +401,7 @@ public class SystemUserRest {
 				return Response.ok(json.toString()).build();
 			}
 
-			SystemUser u = systemUserService.get(Constant.MD5_FIELD,md5Value);
+			SystemUser u = systemUserService.get(Constant.MD5_FIELD, md5Value);
 			if (null != u) {
 				u.setWebsite(website);
 				u.setName_cn(name_cn);
@@ -420,8 +425,6 @@ public class SystemUserRest {
 			return Response.ok(json.toString()).build();
 		}
 	}
-
-
 
 	/**
 	 * 
@@ -449,12 +452,12 @@ public class SystemUserRest {
 				return Response.ok(json.toString()).build();
 			}
 
-			SystemUser u = systemUserService.get(Constant.MD5_FIELD, md5Value) ;
+			SystemUser u = systemUserService.get(Constant.MD5_FIELD, md5Value);
 			if (null != u) {
-				if(SystemUser.PASSWORD.equalsIgnoreCase(type)){
+				if (SystemUser.PASSWORD.equalsIgnoreCase(type)) {
 					String newPsd = MD5.calcMD5(value);
-					u.setPassword(newPsd) ;
-				}else if(SystemUser.SECURITY_EMAIL.equalsIgnoreCase(type)){
+					u.setPassword(newPsd);
+				} else if (SystemUser.SECURITY_EMAIL.equalsIgnoreCase(type)) {
 					u.setSecurityEmail(value);
 				}
 				u.setLastModifyTime(new Date());
@@ -509,7 +512,7 @@ public class SystemUserRest {
 				json.put(Constant.MESSAGE, JSONCode.MSG_USER_USER_MD5VALUE);
 				return Response.ok(json.toString()).build();
 			}
-			SystemUser u = systemUserService.get(Constant.MD5_FIELD,md5Value);
+			SystemUser u = systemUserService.get(Constant.MD5_FIELD, md5Value);
 			if (null == u) {
 				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 				json.put(Constant.MESSAGE, JSONCode.MSG_USER_NOEXISTS);
@@ -588,9 +591,9 @@ public class SystemUserRest {
 
 			return Response.ok(getSystemUserData(tempUser)).build();
 		} catch (RuntimeException ex) {
-			//ex.printStackTrace();
-			//json.put(Constant.CODE, JSONCode.THROWEXCEPTION);
-			//return Response.ok(json.toString()).build();
+			// ex.printStackTrace();
+			// json.put(Constant.CODE, JSONCode.THROWEXCEPTION);
+			// return Response.ok(json.toString()).build();
 			throw Jerseys.buildDefaultException(ex);
 		}
 

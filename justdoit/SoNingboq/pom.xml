@@ -12,7 +12,6 @@
 			<id>emoving</id>
 			<url>https://emoving.googlecode.com/svn/trunk/zhoubian/~maven/</url>
 		</repository>
-
 	</repositories>
 
 	<properties>
@@ -36,6 +35,7 @@
 		<standard-version>1.1.2</standard-version>
 		<logback-core-version>1.0.6</logback-core-version>
 		<logback-classic-version>1.0.6</logback-classic-version>
+		<jmargick-version>6.4.0</jmargick-version>
 	</properties>
 
 	<dependencies>
@@ -43,6 +43,13 @@
 			<version>${google-translate-version}</version> </dependency> -->
 		<!-- <dependency> <groupId>org.mortbay.jetty</groupId> <artifactId>jetty-embedded</artifactId> 
 			<version>${jetty-version}</version> </dependency> -->
+		<!-- 
+		<dependency>
+			<groupId>jmagick</groupId>
+			<artifactId>jmagick</artifactId>
+			<version>${jmargick-version}</version>
+		</dependency>
+		-->
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
@@ -85,11 +92,13 @@
 			<artifactId>commons-io</artifactId>
 			<version>${commons-io-version}</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>jmagick</groupId>
 			<artifactId>jmagick</artifactId>
 			<version>${jmagick-version}</version>
 		</dependency>
+		 
 		<dependency>
 			<groupId>com.drewnoakes</groupId>
 			<artifactId>metadata-extractor</artifactId>

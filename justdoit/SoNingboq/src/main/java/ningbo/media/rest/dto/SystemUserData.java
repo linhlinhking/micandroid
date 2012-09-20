@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import ningbo.media.bean.SystemUser;
 import ningbo.media.rest.WsConstants;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -56,7 +57,15 @@ public class SystemUserData {
 	private boolean followingStatus;
 
 	private UserProfileData userProfileData;
-
+	
+	
+	public SystemUserData(){}
+	public SystemUserData(SystemUser u){
+		if(null != u){
+			this.username = u.getUsername() ;
+			this.md5Value = u.getMd5Value() ;
+		}
+	}
 	public String getMd5Value() {
 		return md5Value;
 	}

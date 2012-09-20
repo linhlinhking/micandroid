@@ -3,6 +3,7 @@ package ningbo.media.bean;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -34,8 +35,8 @@ public class Event implements Serializable {
 	private String endDate;
 
 	private String endTime;
-	
-	private String telephone ;
+
+	private String telephone;
 
 	private String photo_path;
 
@@ -44,10 +45,13 @@ public class Event implements Serializable {
 	private String locationMd5Value;
 
 	private String userMd5Value;
-	
-	private Date createDateTime ;
-	
-	private Date updateDateTime ;
+
+	private Date createDateTime;
+
+	private Date updateDateTime;
+
+	@Column(name = "lastUpdater", length = 128)
+	private String lastUpdater;
 
 	public Event() {
 	}
@@ -179,6 +183,13 @@ public class Event implements Serializable {
 	public void setTelephone(String telephone) {
 		this.telephone = telephone;
 	}
-	
-	
+
+	public String getLastUpdater() {
+		return lastUpdater;
+	}
+
+	public void setLastUpdater(String lastUpdater) {
+		this.lastUpdater = lastUpdater;
+	}
+
 }

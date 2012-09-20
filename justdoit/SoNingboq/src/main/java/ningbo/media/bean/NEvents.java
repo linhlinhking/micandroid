@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -15,10 +16,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 @Entity
 @Table(name = "tb_events")
-public class NEvents implements Serializable{
-	
+public class NEvents implements Serializable {
+
 	private static final long serialVersionUID = -8691692488456362767L;
 
 	@Id
@@ -27,40 +30,48 @@ public class NEvents implements Serializable{
 
 	private String md5Value;
 
-	private String title;
+	private String title_cn;
 
-	private String subject;
+	private String subject_cn;
 
-	private String address;
+	private String address_cn;
 
-	private String telephone ;
+	private String title_en;
+
+	private String subject_en;
+
+	private String address_en;
+
+	private String telephone;
 
 	private String organizer;
-	
-	private boolean isRepeat ;
-	
-	private boolean isApproval;
-	
-	private Double price ;
 
-	private Date createDateTime ;
-	
-	private Date updateDateTime ;
-	
+	private boolean isApproval;
+
+	private Double price;
+
+	private Date createDateTime;
+
+	private Date updateDateTime;
+
+	@Column(name = "lastUpdater", length = 128)
+	private String lastUpdater;
+
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
 	@JoinColumn(name = "location_id")
 	private Location location;
-	
+
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
-	private SystemUser systemUser ;
-	
+	private SystemUser systemUser;
+
 	@ManyToOne
 	@JoinColumn(name = "category_id")
-	private EventCategory eventCategory ;
-	
+	private EventCategory eventCategory;
+
+	@JsonIgnore
 	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "nEvents")
-	private List<EventDate> eventDates ;
+	private List<EventDate> eventDates;
 
 	public Integer getId() {
 		return id;
@@ -78,28 +89,52 @@ public class NEvents implements Serializable{
 		this.md5Value = md5Value;
 	}
 
-	public String getTitle() {
-		return title;
+	public String getTitle_cn() {
+		return title_cn;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public void setTitle_cn(String title_cn) {
+		this.title_cn = title_cn;
 	}
 
-	public String getSubject() {
-		return subject;
+	public String getSubject_cn() {
+		return subject_cn;
 	}
 
-	public void setSubject(String subject) {
-		this.subject = subject;
+	public void setSubject_cn(String subject_cn) {
+		this.subject_cn = subject_cn;
 	}
 
-	public String getAddress() {
-		return address;
+	public String getAddress_cn() {
+		return address_cn;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public void setAddress_cn(String address_cn) {
+		this.address_cn = address_cn;
+	}
+
+	public String getTitle_en() {
+		return title_en;
+	}
+
+	public void setTitle_en(String title_en) {
+		this.title_en = title_en;
+	}
+
+	public String getSubject_en() {
+		return subject_en;
+	}
+
+	public void setSubject_en(String subject_en) {
+		this.subject_en = subject_en;
+	}
+
+	public String getAddress_en() {
+		return address_en;
+	}
+
+	public void setAddress_en(String address_en) {
+		this.address_en = address_en;
 	}
 
 	public String getTelephone() {
@@ -110,14 +145,6 @@ public class NEvents implements Serializable{
 		this.telephone = telephone;
 	}
 
-
-	public boolean isRepeat() {
-		return isRepeat;
-	}
-
-	public void setRepeat(boolean isRepeat) {
-		this.isRepeat = isRepeat;
-	}
 
 	public String getOrganizer() {
 		return organizer;
@@ -190,7 +217,15 @@ public class NEvents implements Serializable{
 	public void setPrice(Double price) {
 		this.price = price;
 	}
+
+	public String getLastUpdater() {
+		return lastUpdater;
+	}
+
+	public void setLastUpdater(String lastUpdater) {
+		this.lastUpdater = lastUpdater;
+	}
 	
 	
-	
+
 }

@@ -58,8 +58,8 @@ import com.sun.jersey.multipart.FormDataMultiPart;
 @Component
 @Scope("request")
 public class EventResource {
-	
-	private Logger logger = LoggerFactory.getLogger(getClass()) ;
+
+	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Resource
 	private EventService eventService;
@@ -74,9 +74,10 @@ public class EventResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<EventData> getAllEvent() throws JSONException {
-		//List<Event> list = eventService.getAllEventOrderByDate();
-		String today_frm = DateUtil.getNow(DateUtil.SHORT_FORMAT_TYPE) ;
-		List<Event> list = eventService.getEventsByType(today_frm, EventType.EVENTTODAY) ;
+		// List<Event> list = eventService.getAllEventOrderByDate();
+		String today_frm = DateUtil.getNow(DateUtil.SHORT_FORMAT_TYPE);
+		List<Event> list = eventService.getEventsByType(today_frm,
+				EventType.EVENTTODAY);
 		List<EventData> d = null;
 		if (null != list && list.size() > 0) {
 			d = getEventsByDateList(list);
@@ -90,8 +91,8 @@ public class EventResource {
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addEvent(FormDataMultiPart form, @Context
-	HttpServletRequest request) throws JSONException {
+	public Response addEvent(FormDataMultiPart form,
+			@Context HttpServletRequest request) throws JSONException {
 		JSONObject json = new JSONObject();
 		try {
 			String key = form.getField("key").getValue();
@@ -119,8 +120,8 @@ public class EventResource {
 			String address = form.getField("address").getValue();
 			String telephone = form.getField("telephone").getValue();
 
-			SystemUser tempUser = systemUserService
-					.get(Constant.MD5_FIELD,userMd5Value);
+			SystemUser tempUser = systemUserService.get(Constant.MD5_FIELD,
+					userMd5Value);
 			if (null == tempUser) {
 				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 				json.put(Constant.MESSAGE, JSONCode.MSG_USER_USER_MD5VALUE);
@@ -165,7 +166,7 @@ public class EventResource {
 			return Response.ok(json.toString()).build();
 
 		} catch (Exception ex) {
-			logger.error("System Exception.", ex) ;
+			logger.error("System Exception.", ex);
 			json.put(Constant.MESSAGE, JSONCode.SERVER_EXCEPTION);
 			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 			return Response.ok(json.toString()).build();
@@ -176,20 +177,19 @@ public class EventResource {
 	@Path("/add/base64")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addEventBase64(@FormParam("key")
-	String key, @FormParam("user_md5Value")
-	String userMd5Value, @FormParam("location_md5Value")
-	String locationMd5Value, @FormParam("title")
-	String title, @FormParam("subject")
-	String subject, @FormParam("startDate")
-	String startDate, @FormParam("startTime")
-	String startTime, @FormParam("endDate")
-	String endDate, @FormParam("endTime")
-	String endTime, @FormParam("address")
-	String address, @FormParam("telephone")
-	String telephone, @FormParam("base64Value")
-	String base64Value, @Context
-	HttpServletRequest request) throws JSONException {
+	public Response addEventBase64(@FormParam("key") String key,
+			@FormParam("user_md5Value") String userMd5Value,
+			@FormParam("location_md5Value") String locationMd5Value,
+			@FormParam("title") String title,
+			@FormParam("subject") String subject,
+			@FormParam("startDate") String startDate,
+			@FormParam("startTime") String startTime,
+			@FormParam("endDate") String endDate,
+			@FormParam("endTime") String endTime,
+			@FormParam("address") String address,
+			@FormParam("telephone") String telephone,
+			@FormParam("base64Value") String base64Value,
+			@Context HttpServletRequest request) throws JSONException {
 		JSONObject json = new JSONObject();
 		try {
 			Event event = new Event();
@@ -204,8 +204,8 @@ public class EventResource {
 				return Response.ok(json.toString()).build();
 			}
 
-			SystemUser tempUser = systemUserService
-					.get(Constant.MD5_FIELD,userMd5Value);
+			SystemUser tempUser = systemUserService.get(Constant.MD5_FIELD,
+					userMd5Value);
 			if (null == tempUser) {
 				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 				json.put(Constant.MESSAGE, JSONCode.MSG_USER_USER_MD5VALUE);
@@ -233,34 +233,33 @@ public class EventResource {
 			event.setUserMd5Value(userMd5Value);
 			event.setCreateDateTime(new Date());
 			event.setTelephone(telephone);
-			
-			
-			if(null != base64Value && base64Value.trim().length() > 0){
+
+			if (null != base64Value && base64Value.trim().length() > 0) {
 				String fileName = String.valueOf(System.currentTimeMillis());
 				StringBuffer sb = new StringBuffer();
-				String tempPath = FileUploadUtil.makeFileDir(null, request, true);
+				String tempPath = FileUploadUtil.makeFileDir(null, request,
+						true);
 				sb.append(tempPath).append(fileName);
 
 				String tempBase64Value = base64Value.replaceAll(" ", "+");
 
-				boolean flag = Base64Image.generateImage(tempBase64Value, sb
-						.toString());
+				boolean flag = Base64Image.generateImage(tempBase64Value,
+						sb.toString());
 
 				if (!flag) {
 					File file = new File(sb.toString());
 					file.delete();
 					json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
-					json.put(Constant.MESSAGE, JSONCode.MSG_BASE64_VALUE_INVALID);
+					json.put(Constant.MESSAGE,
+							JSONCode.MSG_BASE64_VALUE_INVALID);
 					return Response.ok(json.toString()).build();
 				}
 
-				String photo_path = FileHashCode.writeBase64File(request, sb
-						.toString());
+				String photo_path = FileHashCode.writeBase64File(request,
+						sb.toString());
 
 				event.setPhoto_path(photo_path);
 			}
-
-		
 
 			Integer eventId = eventService.save(event);
 			String md5Value = MD5.calcMD5(String.valueOf(eventId));
@@ -272,7 +271,7 @@ public class EventResource {
 			return Response.ok(json.toString()).build();
 
 		} catch (Exception ex) {
-			logger.error("System Exception.", ex) ;
+			logger.error("System Exception.", ex);
 			json.put(Constant.MESSAGE, JSONCode.SERVER_EXCEPTION);
 			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 			return Response.ok(json.toString()).build();
@@ -283,21 +282,21 @@ public class EventResource {
 	@Path("/edit/base64")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response editEvent(@FormParam("eventMd5Value")
-	String md5Value, @FormParam("key")
-	String key, @FormParam("user_md5Value")
-	String userMd5Value, @FormParam("location_md5Value")
-	String locationMd5Value, @FormParam("title")
-	String title, @FormParam("subject")
-	String subject, @FormParam("startDate")
-	String startDate, @FormParam("startTime")
-	String startTime, @FormParam("endDate")
-	String endDate, @FormParam("endTime")
-	String endTime, @FormParam("address")
-	String address, @FormParam("telephone")
-	String telephone, @FormParam("base64Value")
-	String base64Value, @Context
-	HttpServletRequest request) throws JSONException {
+	public Response editEvent(@FormParam("eventMd5Value") String md5Value,
+			@FormParam("key") String key,
+			@FormParam("user_md5Value") String userMd5Value,
+			@FormParam("location_md5Value") String locationMd5Value,
+			@FormParam("title") String title,
+			@FormParam("subject") String subject,
+			@FormParam("startDate") String startDate,
+			@FormParam("startTime") String startTime,
+			@FormParam("endDate") String endDate,
+			@FormParam("endTime") String endTime,
+			@FormParam("address") String address,
+			@FormParam("telephone") String telephone,
+			@FormParam("base64Value") String base64Value,
+			@FormParam("organizer") String organizer,
+			@Context HttpServletRequest request) throws JSONException {
 		JSONObject json = new JSONObject();
 		try {
 			if (key.isEmpty()) {
@@ -318,14 +317,15 @@ public class EventResource {
 				return Response.ok(json.toString()).build();
 			}
 
-			SystemUser tempUser = systemUserService
-					.get(Constant.MD5_FIELD,userMd5Value);
+			SystemUser tempUser = systemUserService.get(Constant.MD5_FIELD,
+					userMd5Value);
 			if (null == tempUser) {
 				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 				json.put(Constant.MESSAGE, JSONCode.MSG_USER_USER_MD5VALUE);
 				return Response.ok(json.toString()).build();
 			}
-			String organizer = tempUser.getUsername();
+
+			String updaterUser = tempUser.getUsername();
 
 			Location tempLocation = locationService.get(Constant.MD5_FIELD,
 					locationMd5Value);
@@ -341,12 +341,13 @@ public class EventResource {
 			event.setStartTime(startTime);
 			event.setEndDate(endDate);
 			event.setEndTime(endTime);
-			event.setOrganizer(organizer);
 			event.setAddress(address);
+			event.setOrganizer(organizer) ;
 			event.setLocationMd5Value(locationMd5Value);
 			event.setUserMd5Value(userMd5Value);
 			event.setTelephone(telephone);
 			event.setUpdateDateTime(new Date());
+			event.setLastUpdater(updaterUser);
 
 			if ((!"".equals(base64Value)) && (null != base64Value)) {
 				String fileName = String.valueOf(System.currentTimeMillis());
@@ -357,8 +358,8 @@ public class EventResource {
 
 				String tempBase64Value = base64Value.replaceAll(" ", "+");
 
-				boolean flag = Base64Image.generateImage(tempBase64Value, sb
-						.toString());
+				boolean flag = Base64Image.generateImage(tempBase64Value,
+						sb.toString());
 
 				if (!flag) {
 					File file = new File(sb.toString());
@@ -367,8 +368,8 @@ public class EventResource {
 					return Response.ok(json.toString()).build();
 				}
 
-				String photo_path = FileHashCode.writeBase64File(request, sb
-						.toString());
+				String photo_path = FileHashCode.writeBase64File(request,
+						sb.toString());
 				event.setPhoto_path(photo_path);
 			}
 
@@ -379,7 +380,7 @@ public class EventResource {
 			return Response.ok(json.toString()).build();
 
 		} catch (Exception ex) {
-			logger.error("System Error.", ex) ;
+			logger.error("System Error.", ex);
 			json.put(Constant.MESSAGE, JSONCode.SERVER_EXCEPTION);
 			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 			return Response.ok(json.toString()).build();
@@ -390,11 +391,11 @@ public class EventResource {
 	@Path("/delete")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteEvent(@FormParam("event_md5_value")
-	String eventMd5Value, @FormParam("key")
-	String key, @FormParam("user_md5_value")
-	String userMd5Value, @Context
-	HttpServletRequest request) throws JSONException {
+	public Response deleteEvent(
+			@FormParam("event_md5_value") String eventMd5Value,
+			@FormParam("key") String key,
+			@FormParam("user_md5_value") String userMd5Value,
+			@Context HttpServletRequest request) throws JSONException {
 		JSONObject json = new JSONObject();
 
 		try {
@@ -438,8 +439,8 @@ public class EventResource {
 	@Path("/user/{md5Value}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getEventByUser(@PathParam("md5Value")
-	String md5Value) throws JSONException {
+	public Response getEventByUser(@PathParam("md5Value") String md5Value)
+			throws JSONException {
 		JSONObject json = new JSONObject();
 		if (null == md5Value) {
 			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
@@ -462,8 +463,8 @@ public class EventResource {
 	@Path("/location/{md5Value}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getEventByLocation(@PathParam("md5Value")
-	String md5Value) throws JSONException {
+	public Response getEventByLocation(@PathParam("md5Value") String md5Value)
+			throws JSONException {
 		JSONObject json = new JSONObject();
 		LocationEventList lists = new LocationEventList();
 		if (null == md5Value) {
@@ -501,30 +502,32 @@ public class EventResource {
 	/**
 	 * @Description:获取指定日期或者指定日期之后的所有的活动。
 	 * @throws JSONException
-	 * @author Devon.Ning 
+	 * @author Devon.Ning
 	 * @param nowDate
 	 */
 	@Path("/date/{requestType}/{date_today}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getEventsByDate(@PathParam("date_today")
-	String nowDate,@PathParam("requestType")String reqType) throws JSONException {
+	public Response getEventsByDate(@PathParam("date_today") String nowDate,
+			@PathParam("requestType") String reqType) throws JSONException {
 		JSONObject json = new JSONObject();
 		Collection<EventData> datas = new ArrayList<EventData>();
-		List<Event> events = null ;
+		List<Event> events = null;
 		try {
 			if ("".equals(nowDate.trim()) || nowDate.length() < 0) {
 				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 				json.put(Constant.MESSAGE, JSONCode.MSG_EVENT_DATE_NOINPUT);
 				return Response.ok().build();
 			}
-			
-			if(EventRequestType.EQ.getValue().equalsIgnoreCase(reqType)){
-				events = eventService.getEventsByType(nowDate, EventType.EVENTTODAY) ;
-			}else if(EventRequestType.GT.getValue().equalsIgnoreCase(reqType)){
-				events = eventService.getEventsByType(nowDate,EventType.EVENTDATE);
-			}else{
-				events = new ArrayList<Event>() ;
+
+			if (EventRequestType.EQ.getValue().equalsIgnoreCase(reqType)) {
+				events = eventService.getEventsByType(nowDate,
+						EventType.EVENTTODAY);
+			} else if (EventRequestType.GT.getValue().equalsIgnoreCase(reqType)) {
+				events = eventService.getEventsByType(nowDate,
+						EventType.EVENTDATE);
+			} else {
+				events = new ArrayList<Event>();
 			}
 
 			datas = getEventsByDateList(events);
@@ -556,7 +559,7 @@ public class EventResource {
 			SystemUser u = systemUserService.get(Constant.MD5_FIELD, userMd5);
 			String locMd5 = temp.getLocationMd5Value();
 			Location loc = locationService.get(Constant.MD5_FIELD, locMd5);
-			if(null != loc){
+			if (null != loc) {
 				detail.setLatitude(loc.getLatitude());
 				detail.setLongitude(loc.getLongitude());
 				detail.setMd5Value(loc.getMd5Value());
@@ -564,12 +567,12 @@ public class EventResource {
 				detail.setName_en(loc.getName_en());
 				tempEventData.setLocation(detail);
 			}
-			if(null != u){
+			if (null != u) {
 				tmpUser.setMd5Value(u.getMd5Value());
 				tmpUser.setUsername(u.getUsername());
 				tempEventData.setUser(tmpUser);
 			}
-			
+
 			tempEventData.setTitle(temp.getTitle());
 			tempEventData.setSubject(temp.getSubject());
 			tempEventData.setMd5Value(temp.getMd5Value());
@@ -580,8 +583,8 @@ public class EventResource {
 			tempEventData.setTelephone(temp.getTelephone());
 			tempEventData.setOrganizer(temp.getOrganizer());
 			tempEventData.setPhoto_path(temp.getPhoto_path());
-			tempEventData.setAddress(temp.getAddress()) ;
-			
+			tempEventData.setAddress(temp.getAddress());
+
 			datas.add(tempEventData);
 		}
 
@@ -600,7 +603,7 @@ public class EventResource {
 			String locMd5 = temp.getLocationMd5Value();
 			Location loc = locationService.get(Constant.MD5_FIELD, locMd5);
 			LocationDetail detail = new LocationDetail();
-			if(null != loc){
+			if (null != loc) {
 				detail.setMd5Value(loc.getMd5Value());
 				detail.setLatitude(loc.getLatitude());
 				detail.setLongitude(loc.getLongitude());
@@ -608,7 +611,7 @@ public class EventResource {
 				detail.setName_en(loc.getName_en());
 				detail.setAddress_cn(loc.getAddress_cn());
 				detail.setAddress_en(loc.getAddress_en());
-				detail.setTelephone(loc.getTelephone()) ;
+				detail.setTelephone(loc.getTelephone());
 			}
 
 			tmpUserEvent.setLocation(detail);
@@ -617,12 +620,12 @@ public class EventResource {
 			tmpUserEvent.setMd5Value(temp.getMd5Value());
 			tmpUserEvent.setStartDate(temp.getStartDate());
 			tmpUserEvent.setStartTime(temp.getStartTime());
-			tmpUserEvent.setTelephone(temp.getTelephone()) ;
+			tmpUserEvent.setTelephone(temp.getTelephone());
 			tmpUserEvent.setEndDate(temp.getEndDate());
 			tmpUserEvent.setEndTime(temp.getEndTime());
 			tmpUserEvent.setOrganizer(temp.getOrganizer());
 			tmpUserEvent.setPhoto_path(temp.getPhoto_path());
-			tmpUserEvent.setAddress(temp.getAddress()) ;
+			tmpUserEvent.setAddress(temp.getAddress());
 
 			datas.add(tmpUserEvent);
 		}
@@ -641,7 +644,7 @@ public class EventResource {
 			String userMd5 = temp.getUserMd5Value();
 			SystemUser u = systemUserService.get(Constant.MD5_FIELD, userMd5);
 			SystemUserData detail = new SystemUserData();
-			if(null != u){
+			if (null != u) {
 				detail.setUsername(u.getUsername());
 				detail.setMd5Value(u.getMd5Value());
 				detail.setPhoto_path(u.getPhoto_path());
@@ -653,12 +656,12 @@ public class EventResource {
 			tmpUserEvent.setMd5Value(temp.getMd5Value());
 			tmpUserEvent.setStartDate(temp.getStartDate());
 			tmpUserEvent.setStartTime(temp.getStartTime());
-			tmpUserEvent.setTelephone(temp.getTelephone()) ;
+			tmpUserEvent.setTelephone(temp.getTelephone());
 			tmpUserEvent.setEndDate(temp.getEndDate());
 			tmpUserEvent.setEndTime(temp.getEndTime());
 			tmpUserEvent.setOrganizer(temp.getOrganizer());
 			tmpUserEvent.setPhoto_path(temp.getPhoto_path());
-			tmpUserEvent.setAddress(temp.getAddress()) ;
+			tmpUserEvent.setAddress(temp.getAddress());
 
 			datas.add(tmpUserEvent);
 		}

@@ -1,6 +1,5 @@
 package ningbo.media.admin.controller;
 
-import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -41,27 +40,9 @@ public class HomePageController extends BaseController {
 			e.printStackTrace();
 			model.addAttribute("msg", "get category operation is exception!");
 		}
-		
-		
 		return "msg" ;
 	}
 
-	@Override
-	public Long getResultSize() {
-		return null;
-	}
-
-	@Override
-	public List listResults(int firstResult, int maxResults) {
-		return null;
-	}
-
-	@Override
-	public void sortResults(List results, String field, String order) {
-
-	}
-
-	@Override
 	public ModelAndView index(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		return null;

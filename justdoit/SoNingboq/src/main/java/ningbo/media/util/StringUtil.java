@@ -8,8 +8,13 @@ import java.util.regex.Pattern;
 
 import ningbo.media.rest.util.DateUtil;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class StringUtil {
 
+	private static Logger logger = LoggerFactory.getLogger(StringUtil.class) ;
+	
 	public static String replaceBlank(String str) {
 		String dest = "";
 		if (str != null) {
@@ -89,8 +94,14 @@ public class StringUtil {
 	}
 
 	public static boolean isNumeric(String str) {
-		Pattern pattern = Pattern.compile("[0-9]*");
-		return pattern.matcher(str).matches();
+		try{
+			Pattern pattern = Pattern.compile("[0-9]*");
+			return pattern.matcher(str).matches();
+		}catch(Exception ex){
+			logger.error("The String is not Numeric.", ex) ;
+			return false ;
+		}
+		
 	}
 
 }

@@ -51,25 +51,6 @@ public class SystemUserController extends BaseController<SystemUser>{
 		return new JqgridPage<SystemUser>() ;
 	}
 
-	@Override
-	public Long getResultSize() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<SystemUser> listResults(int firstResult, int maxResults) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void sortResults(List<SystemUser> results, String field, String order) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public ModelAndView index(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		// TODO Auto-generated method stub

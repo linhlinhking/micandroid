@@ -57,11 +57,6 @@ public abstract class BaseController<T> extends MultiActionController {
 
 	private static ObjectMapper mapper = new ObjectMapper();
 
-	public abstract Long getResultSize();
-
-	public abstract List<T> listResults(int firstResult, int maxResults);
-
-	public abstract void sortResults(List<T> results, String field, String order);
 
 	/**
 	 * 不设置任何action参数时的默认 Action. 该函数名由xxx-servlet.xml配置文件中的
@@ -377,21 +372,6 @@ public abstract class BaseController<T> extends MultiActionController {
 		return res;
 	}
 
-	public String refreshGridModel() {
-		try {
-			List<T> results = Collections.emptyList();
-			record = this.getResultSize();
-			int from = rows * (page - 1);
-			int length = rows;
-			results = this.listResults(from, length);
-			this.setGridModel(results);
-			total = (int) Math.ceil((double) record / (double) rows);
-			return "jsongrid";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "error";
-		}
-	}
 
 	public List<T> getGridModel() {
 		return gridModel;

@@ -35,6 +35,8 @@ public class EventDate implements Serializable {
 	@Column(length = 12)
 	private String endTime;
 	
+	private boolean isRepeat ;
+	
 	@Column(length = 12)
 	private String repeatType ;
 	
@@ -107,7 +109,14 @@ public class EventDate implements Serializable {
 	public void setRepeatValue(String repeatValue) {
 		this.repeatValue = repeatValue;
 	}
-	
+
+	public boolean isRepeat() {
+		return isRepeat;
+	}
+
+	public void setRepeat(boolean isRepeat) {
+		this.isRepeat = isRepeat;
+	}
 	
 
 }

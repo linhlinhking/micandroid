@@ -5,6 +5,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import ningbo.media.bean.Location;
 import ningbo.media.rest.dto.AspectsCategoryData;
 import ningbo.media.rest.dto.FirstCategoryData;
 
@@ -48,6 +49,19 @@ public class LocationDetail {
 	private List<AspectsCategoryData> aspectsDatas;
 
 	public LocationDetail() {
+	}
+
+	public LocationDetail(Location l) {
+		if (null != l) {
+			this.address_cn = l.getAddress_cn();
+			this.address_en = l.getAddress_en();
+			this.name_cn = l.getName_cn();
+			this.name_en = l.getName_en() ;
+			this.latitude = l.getLatitude() ;
+			this.longitude = l.getLongitude() ;
+			this.md5Value = l.getMd5Value() ;
+		}
+
 	}
 
 	public String getMd5Value() {

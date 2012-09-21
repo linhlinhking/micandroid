@@ -66,19 +66,28 @@
 			<p class="validateTips">添加位置信息</p>
 			<form>
 				<fieldset>
-					<label for="locName">位置名称：</label> 
-					<input type="text" name="name_cn" id="locationName" class="text ui-widget-content ui-corner-all" /> 
-					<label for="locAddress">位置地址：</label> 
-					<input type="text" name="address_cn" id="locationAddress" class="text ui-widget-content ui-corner-all" />
-					<label for="locTelephone">电话号码：</label> 
-					<input type="text" name="telephone" id="locationTelephone" class="text ui-widget-content ui-corner-all" />
+					<label for="locName">位置名称：</label> <input type="text"
+						name="name_cn" id="locationName"
+						class="text ui-widget-content ui-corner-all" /> <label
+						for="locAddress">位置地址：</label> <input type="text"
+						name="address_cn" id="locationAddress"
+						class="text ui-widget-content ui-corner-all" /> <label
+						for="locTelephone">电话号码：</label> <input type="text"
+						name="telephone" id="locationTelephone"
+						class="text ui-widget-content ui-corner-all" />
 				</fieldset>
 			</form>
 		</div>
 
 	</div>
 
-	<div id="editLocation" style="display: none"></div>
+	<div id="editLocation" style="display: none">
+		<div id="dialog-form-edit" title="编辑位置信息">
+			<form action="">
+				
+			</form>
+		</div>
+	</div>
 
 </body>
 

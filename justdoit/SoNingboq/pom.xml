@@ -7,12 +7,8 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>searchningbo api</name>
 	<url>http://maven.apache.org</url>
-	<repositories>
-		<repository>
-			<id>emoving</id>
-			<url>https://emoving.googlecode.com/svn/trunk/zhoubian/~maven/</url>
-		</repository>
-	</repositories>
+
+
 
 	<properties>
 		<spring.version>3.1.0.RELEASE</spring.version>
@@ -36,6 +32,7 @@
 		<logback-core-version>1.0.6</logback-core-version>
 		<logback-classic-version>1.0.6</logback-classic-version>
 		<jmargick-version>6.4.0</jmargick-version>
+		<servletapi-version>2.4</servletapi-version>
 	</properties>
 
 	<dependencies>
@@ -43,13 +40,23 @@
 			<version>${google-translate-version}</version> </dependency> -->
 		<!-- <dependency> <groupId>org.mortbay.jetty</groupId> <artifactId>jetty-embedded</artifactId> 
 			<version>${jetty-version}</version> </dependency> -->
+		<!-- <dependency> <groupId>jmagick</groupId> <artifactId>jmagick</artifactId> 
+			<version>${jmargick-version}</version> </dependency> -->
 		<!-- 
 		<dependency>
-			<groupId>jmagick</groupId>
-			<artifactId>jmagick</artifactId>
-			<version>${jmargick-version}</version>
+			<groupId>servletapi</groupId>
+			<artifactId>servletapi</artifactId>
+			<version>${servletapi-version}</version>
 		</dependency>
 		-->
+			
+		<dependency>
+			<groupId>taglibs</groupId>
+			<artifactId>standard</artifactId>
+			<version>${standard-version}</version>
+		</dependency>
+		 
+		 
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
@@ -60,12 +67,7 @@
 			<artifactId>logback-core</artifactId>
 			<version>${logback-core-version}</version>
 		</dependency>
-		<dependency>
-			<groupId>taglibs</groupId>
-			<artifactId>standard</artifactId>
-			<version>${standard-version}</version>
-		</dependency>
-
+		 
 		<dependency>
 			<groupId>org.imgscalr</groupId>
 			<artifactId>imgscalr-lib</artifactId>
@@ -92,13 +94,13 @@
 			<artifactId>commons-io</artifactId>
 			<version>${commons-io-version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>jmagick</groupId>
 			<artifactId>jmagick</artifactId>
 			<version>${jmagick-version}</version>
 		</dependency>
-		 
+
 		<dependency>
 			<groupId>com.drewnoakes</groupId>
 			<artifactId>metadata-extractor</artifactId>
@@ -322,8 +324,6 @@
 			<version>20090211</version>
 		</dependency>
 
-
-
 		<!-- java mail begin -->
 		<dependency>
 			<groupId>javax.activation</groupId>
@@ -340,11 +340,7 @@
 			<artifactId>freemarker</artifactId>
 			<version>2.3.19</version>
 		</dependency>
-		<!-- java mail end -->
 
-
-		<!-- <dependency> <groupId>net.sf.json-lib</groupId> <artifactId>json-lib</artifactId> 
-			<version>2.4</version> </dependency> -->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
@@ -363,12 +359,14 @@
 			<version>5</version>
 			<scope>provided</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 			<scope>provided</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -376,10 +374,13 @@
 			<scope>test</scope>
 		</dependency>
 		<!-- Pin Yin -->
+
 		<dependency>
 			<groupId>pinyin4j</groupId>
 			<artifactId>pinyin4j</artifactId>
 			<version>2.5.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/src/main/webapp/lib/pinyin4j-2.5.0.jar</systemPath>
 		</dependency>
 
 		<dependency>

@@ -73,6 +73,18 @@ public class Location implements Serializable {
 	@Column(name="description_cn")
 	private String description_cn ;
 	
+	private boolean isAppoval ;
+	
+	@Column(length=128)
+	private String phoneNumberOne ;
+	
+	@Column(length=128)
+	private String phoneNumberTwo ;
+	
+	@Column(length=128)
+	private String phoneNumberThree ;
+	
+	
 	@JsonIgnore
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
 	@JoinTable(name = "locations_category", joinColumns = @JoinColumn(name = "location_id"),inverseJoinColumns=@JoinColumn(name = "category2_id"))
@@ -267,6 +279,37 @@ public class Location implements Serializable {
 		this.tags_en = tags_en;
 	}
 
-	
+	public boolean isAppoval() {
+		return isAppoval;
+	}
+
+	public void setAppoval(boolean isAppoval) {
+		this.isAppoval = isAppoval;
+	}
+
+	public String getPhoneNumberOne() {
+		return phoneNumberOne;
+	}
+
+	public void setPhoneNumberOne(String phoneNumberOne) {
+		this.phoneNumberOne = phoneNumberOne;
+	}
+
+	public String getPhoneNumberTwo() {
+		return phoneNumberTwo;
+	}
+
+	public void setPhoneNumberTwo(String phoneNumberTwo) {
+		this.phoneNumberTwo = phoneNumberTwo;
+	}
+
+	public String getPhoneNumberThree() {
+		return phoneNumberThree;
+	}
+
+	public void setPhoneNumberThree(String phoneNumberThree) {
+		this.phoneNumberThree = phoneNumberThree;
+	}
+
 	
 }

@@ -543,11 +543,10 @@ public class ModuleFileResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addLoctionFile(FormDataMultiPart form,
 			@FormDataParam("file") InputStream uploadFile,
-			@FormDataParam("file") FormDataContentDisposition fileDetail) {
-
+			@FormDataParam("file") FormDataContentDisposition fileDetail) throws JSONException {
+		JSONObject json = new JSONObject();
 		try {
 			UserModuleFiles files = new UserModuleFiles();
-			JSONObject json = new JSONObject();
 			List<Location> listLocations = new ArrayList<Location>();
 			ModuleFile moduleFile = new ModuleFile();
 			String key = form.getField("key").getValue();
@@ -569,6 +568,8 @@ public class ModuleFileResource {
 				json.put(Constant.CODE, JSONCode.MODULEFILE_TYPE_NOEXISTS);
 				return Response.ok(json.toString()).build();
 			}
+			
+			
 			listLocations.add(loc);
 
 			String fileName = fileDetail.getFileName();
@@ -609,6 +610,7 @@ public class ModuleFileResource {
 
 			Integer moduleFileId = moduleFileService.save(moduleFile);
 
+			/**link update by user*/
 			if ((!"".equals(md5Value)) && (null != md5Value)) {
 				files.setMd5Value(md5Value);
 				files.setFileId(moduleFileId);
@@ -616,13 +618,22 @@ public class ModuleFileResource {
 
 				userModuleFilesService.save(files);
 			}
+			
+			/**Update location*/
+			String defaultPhoto = loc.getPhoto_path() ;
+			if(null == defaultPhoto || "0".equals(defaultPhoto) || defaultPhoto == ""){
+				loc.setPhoto_path(uuid) ;
+				locationService.update(loc) ;
+			}
+			
 
 			json.put(Constant.CODE, JSONCode.SUCCESS);
 			json.put(Constant.FILEID, moduleFileId);
 			return Response.ok(json.toString()).build();
 		} catch (Exception ex) {
-			throw Jerseys.buildException(Status.INTERNAL_SERVER_ERROR,
-					ex.getMessage());
+			logger.error("Upload Image By Locaton Error.", ex) ;
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+			return Response.ok(json.toString()).build();
 		}
 
 	}

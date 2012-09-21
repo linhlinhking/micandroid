@@ -155,6 +155,12 @@ public class LocationRest {
 			detail.setTags_cn(location.getTags_cn());
 			detail.setTags_en(location.getTags_en());
 			detail.setTelephone(location.getTelephone());
+			detail.setPhoneNumberOne(location.getPhoneNumberOne()) ;
+			detail.setPhoneNumberTwo(location.getPhoneNumberTwo()) ;
+			detail.setPhoneNumberThree(location.getPhoneNumberThree()) ;
+			detail.setDescription_cn(location.getDescription_cn()) ;
+			detail.setDescription_en(location.getDescription_en()) ;
+			
 			if (null == location.getPhoto_path()) {
 				detail.setPhoto_path("0");
 			} else {

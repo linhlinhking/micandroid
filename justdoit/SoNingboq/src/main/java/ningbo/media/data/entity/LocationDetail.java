@@ -12,7 +12,9 @@ import ningbo.media.rest.dto.FirstCategoryData;
 @XmlType(name = "locationBean", propOrder = { "locationId", "md5Value",
 		"name_cn", "name_en", "address_cn", "photo_path", "address_en",
 		"latitude", "longitude", "name_py", "tags_cn", "tags_en", "telephone",
-		"category2_id", "firstCategoryData", "aspectsDatas" })
+		"category2_id", "isAppoval", "phoneNumberOne", "phoneNumberTwo",
+		"phoneNumberThree", "description_cn", "description_en",
+		"firstCategoryData", "aspectsDatas" })
 @XmlRootElement(name = "data")
 public class LocationDetail {
 
@@ -44,6 +46,18 @@ public class LocationDetail {
 
 	private String category2_id;
 
+	private String isAppoval;
+
+	private String phoneNumberOne;
+
+	private String phoneNumberTwo;
+
+	private String phoneNumberThree;
+
+	private String description_cn;
+
+	private String description_en;
+
 	private FirstCategoryData firstCategoryData;
 
 	private List<AspectsCategoryData> aspectsDatas;
@@ -56,10 +70,10 @@ public class LocationDetail {
 			this.address_cn = l.getAddress_cn();
 			this.address_en = l.getAddress_en();
 			this.name_cn = l.getName_cn();
-			this.name_en = l.getName_en() ;
-			this.latitude = l.getLatitude() ;
-			this.longitude = l.getLongitude() ;
-			this.md5Value = l.getMd5Value() ;
+			this.name_en = l.getName_en();
+			this.latitude = l.getLatitude();
+			this.longitude = l.getLongitude();
+			this.md5Value = l.getMd5Value();
 		}
 
 	}
@@ -191,5 +205,55 @@ public class LocationDetail {
 	public void setAspectsDatas(List<AspectsCategoryData> aspectsDatas) {
 		this.aspectsDatas = aspectsDatas;
 	}
+
+	public String getIsAppoval() {
+		return isAppoval;
+	}
+
+	public void setIsAppoval(String isAppoval) {
+		this.isAppoval = isAppoval;
+	}
+
+	public String getPhoneNumberOne() {
+		return phoneNumberOne;
+	}
+
+	public void setPhoneNumberOne(String phoneNumberOne) {
+		this.phoneNumberOne = phoneNumberOne;
+	}
+
+	public String getPhoneNumberTwo() {
+		return phoneNumberTwo;
+	}
+
+	public void setPhoneNumberTwo(String phoneNumberTwo) {
+		this.phoneNumberTwo = phoneNumberTwo;
+	}
+
+	public String getPhoneNumberThree() {
+		return phoneNumberThree;
+	}
+
+	public void setPhoneNumberThree(String phoneNumberThree) {
+		this.phoneNumberThree = phoneNumberThree;
+	}
+
+	public String getDescription_cn() {
+		return description_cn;
+	}
+
+	public void setDescription_cn(String description_cn) {
+		this.description_cn = description_cn;
+	}
+
+	public String getDescription_en() {
+		return description_en;
+	}
+
+	public void setDescription_en(String description_en) {
+		this.description_en = description_en;
+	}
+	
+	
 
 }

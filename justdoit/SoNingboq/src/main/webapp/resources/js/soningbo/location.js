@@ -71,6 +71,8 @@ $(function() {
 									CheckData : appover
 								});
 							}
+						},ondblClickRow:function(ids){
+							alert(ids);
 						}
 					});
 
@@ -129,6 +131,23 @@ $(function() {
 				close : function() {
 				}
 	});
+	
+	$("#dialog-form-edit").dialog({
+		autoOpen : false,
+		height : 480,
+		width : 960,
+		modal : true,
+		buttons : {
+			"保存" : function() {
+				
+			},
+			"取消" : function() {
+				$(this).dialog("close");
+			}
+		},
+		close : function() {
+		}
+});
 
 	
 	function addRow() {
@@ -136,7 +155,7 @@ $(function() {
 	}
 
 	function editRow() {
-		alert("edit");
+		$("#dialog-form-edit").dialog("open");
 	}
 	function deleteRow() {
 		alert("delete");

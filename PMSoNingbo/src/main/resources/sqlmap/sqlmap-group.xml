@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+    
+<sqlMap namespace="groupDo">
+
+  <typeAlias alias="groupDo" type="com.cisco.pmonitor.dao.dataobject.GroupDo"/>
+  <typeAlias alias="groupQuery" type="com.cisco.pmonitor.dao.query.GroupQuery"/>
+
+  <resultMap id="groupResult" class="groupDo">
+    <result property="id" column="ID"/>
+    <result property="name" column="NAME"/>
+    <result property="roomId" column="ROOM_ID"/>
+    <result property="description" column="DESCRIPTION"/>
+    <result property="owner" column="OWNER"/>
+  </resultMap>
+  
+  <resultMap id="queryResult" class="groupQuery">
+    <result property="id" column="ID"/>
+    <result property="name" column="NAME"/>
+    <result property="roomId" column="ROOM_ID"/>
+    <result property="room" column="ROOM"/>
+    <result property="department" column="DEPARTMENT"/>
+    <result property="description" column="DESCRIPTION"/>
+    <result property="owner" column="OWNER"/>
+  </resultMap>
+  
+  <select id="GroupDaoImpl.loadGroupsbyQuery" parameterClass="groupQuery"
+  												resultMap="queryResult">
+  	select pg.*, 
+  		   pr.NAME ROOM,
+  		   pd.NAME DEPARTMENT
+  	from pm_group pg
+	left join pm_room pr
+	on pg.ROOM_ID = pr.ID
+	left join pm_department pd
+	on pr.DEPARTMENT_ID = pd.ID
+	<dynamic prepend="WHERE">
+		<isNotEmpty prepend="AND" property="name">
+			pg.NAME like '%$name$%' <!-- 模糊匹配 -->
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="owner">
+			pg.OWNER like '%$owner$%'
+		</isNotEmpty>
+		<isGreaterThan prepend="AND" property="roomId" compareValue="0">
+			pg.ROOM_ID = #roomId#
+		</isGreaterThan>
+	</dynamic>
+		order by #sort# #order#
+		limit #page# , #rows#
+		
+  </select>
+  
+  <select id="GroupDaoImpl.loadTotalNumByQuery" parameterClass="groupQuery"
+  												resultClass="java.lang.Integer">
+  	select count(*)
+  	from pm_group pg
+	left join pm_room pr
+	on pg.ROOM_ID = pr.ID
+	left join pm_department pd
+	on pr.DEPARTMENT_ID = pd.ID
+	<dynamic prepend="WHERE">
+		<isNotEmpty prepend="AND" property="name">
+			pg.NAME like '%$name$%' <!-- 模糊匹配 -->
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="owner">
+			pg.OWNER like '%$owner$%'
+		</isNotEmpty>
+		<isGreaterThan prepend="AND" property="roomId" compareValue="0">
+			pg.ROOM_ID = #roomId#
+		</isGreaterThan>
+	</dynamic>
+		order by #sort# #order#
+		limit #page# , #rows#
+		
+  </select>
+
+  <select id="RoomDaoImpl.loadGroupsByRoomId" resultMap="groupResult" parameterClass="java.lang.Integer">
+  	<![CDATA[
+  	
+	  	select * from pm_group
+	  	where ROOM_ID = #value#
+  	]]>
+  </select>
+  
+  <select id="GroupDaoImpl.loadAllGroups" resultMap="groupResult">
+  	<![CDATA[
+  	
+	  	select * from pm_group
+  	]]>
+  </select>
+  
+  <insert id="GroupDaoImpl.insert" parameterClass="groupDo">
+  	<![CDATA[
+  		insert into pm_group (
+  			NAME,
+  			ROOM_ID,
+  			DESCRIPTION,
+  			OWNER
+  		)
+  		values (
+  			#name#,
+  			#roomId#,
+  			#description#,
+  			#owner#
+  		)
+  	]]>
+  	<selectKey resultClass="int" keyProperty="id" > 
+	      SELECT @@IDENTITY AS ID 
+	</selectKey> 
+  </insert>
+  
+  <update id="GroupDaoImpl.update" parameterClass="groupDo">
+  	<![CDATA[
+  		update pm_group set
+  			NAME = #name#,
+  			ROOM_ID = #roomId#,
+  			DESCRIPTION = #description#,
+  			OWNER = #owner#
+  		where ID = #id#
+  	]]>
+  </update>
+  
+  <delete id="GroupDaoImpl.delete" parameterClass="java.lang.Integer">
+  	<![CDATA[
+  		delete from pm_group
+  		where ID = #value#
+  	]]>
+  </delete>
+  
+  <select id="GroupDaoImpl.findGroupById" parameterClass="java.lang.Integer"
+  				resultMap="groupResult">
+  	<![CDATA[
+	  	select * from pm_group
+	  	where ID = #value#
+  	]]>
+  </select>
+  
+  <select id="GroupDaoImpl.findGroupByName" parameterClass="java.lang.String"
+				resultMap="groupResult">
+  	<![CDATA[
+	  	select * from pm_group
+	  	where NAME = #value#
+  	]]>
+  </select>
+
+</sqlMap>

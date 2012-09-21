@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+    
+<sqlMap namespace="equipmentDo">
+
+  <typeAlias alias="equipmentDo" type="com.cisco.pmonitor.dao.dataobject.EquipmentDo"/>
+  <typeAlias alias="equipmentQuery" type="com.cisco.pmonitor.dao.query.EquipmentQuery"/>
+
+  <resultMap id="equipmentResult" class="equipmentDo">
+    <result property="id" column="ID"/>
+    <result property="name" column="NAME"/>
+    <result property="owner" column="OWNER"/>
+    <result property="location" column="LOCATION"/>
+    <result property="description" column="DESCRIPTION"/>
+    <result property="status" column="STATUS"/>
+    <result property="roomId" column="ROOM_ID"/>
+    <result property="groupId" column="GROUP_ID"/>
+    <result property="departmentId" column="DEPARTMENT_ID"/>
+    <result property="grossPower" column="GROSSPOWER"/>
+  </resultMap>
+  <resultMap id="queryResult" class="equipmentQuery">
+    <result property="id" column="ID"/>
+    <result property="name" column="NAME"/>
+    <result property="owner" column="OWNER"/>
+    <result property="location" column="LOCATION"/>
+    <result property="description" column="DESCRIPTION"/>
+    <result property="status" column="STATUS"/>
+    <result property="roomId" column="ROOM_ID"/>
+    <result property="groupId" column="GROUP_ID"/>
+    <result property="departmentId" column="DEPARTMENT_ID"/>
+    <result property="room" column="ROOM"/>
+    <result property="group" column="GROUPNAME"/>
+    <result property="department" column="DEPARTMENT"/>
+    <result property="grossPower" column="GROSSPOWER"/>
+    <result property="reserver" column="RESERVER"/>
+    <result property="reserverTo" column="END_TIME"/>
+  </resultMap>
+  
+  <select id="EquipmentDaoImpl.loadEquipmentsbyQuery" parameterClass="equipmentQuery"
+  												resultMap="queryResult">
+  	
+  	select pe.*, 
+  		   pr.RESERVER, 
+  		   pr.END_TIME,
+  		   pu.USE_RATIO,
+  		   pro.NAME ROOM,
+  		   pg.NAME GROUPNAME,
+  		   pd.NAME DEPARTMENT
+    from pm_equipment pe
+  	left join (select * from pm_reserve where status = 1) pr
+	on	  pr.EQUIPMENT_ID = pe.ID
+ 	left join pm_use_ratio pu
+	on	  pu.EQUIPMENT_ID = pe.ID
+ 	left join			 pm_room pro
+	on   pe.ROOM_ID = pro.ID	
+	left join pm_group pg
+	on   pe.GROUP_ID = pg.ID	  
+ 	left join pm_department pd
+	on   pe.DEPARTMENT_ID = pd.ID
+	<dynamic prepend="WHERE">
+	<isNotEmpty prepend="AND" property="name">
+		pe.NAME like '%$name$%'
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="owner">
+		pe.OWNER like '%$owner$%'
+	</isNotEmpty>
+	<isGreaterThan prepend="AND" property="status" compareValue="-1">
+		pe.STATUS = #status#
+	</isGreaterThan>
+	<isGreaterThan prepend="AND" property="roomId" compareValue="0">
+		pe.ROOM_ID = #roomId#
+	</isGreaterThan>
+	<isGreaterThan prepend="AND" property="groupId" compareValue="0">
+		pe.GROUP_ID = #groupId#
+	</isGreaterThan>
+	<isGreaterThan prepend="AND" property="departmentId" compareValue="0">
+		pe.DEPARTMENT_ID = #departmentId#
+	</isGreaterThan>
+	</dynamic>
+	order by #sort# #order#
+	limit #page# , #rows#
+		
+  </select>
+  
+  <select id="EquipmentDaoImpl.loadTotalNumByQuery" parameterClass="equipmentQuery"
+  												resultClass="java.lang.Integer">
+  	select count(distinct(pe.ID))
+    from pm_equipment pe
+  	left join pm_reserve pr
+	on	  pr.EQUIPMENT_ID = pe.ID
+ 	left join pm_use_ratio pu
+	on	  pu.EQUIPMENT_ID = pe.ID
+ 	left join			 pm_room pro
+	on   pe.ROOM_ID = pro.ID	
+	left join pm_group pg
+	on   pe.GROUP_ID = pg.ID	  
+ 	left join pm_department pd
+	on   pe.DEPARTMENT_ID = pd.ID	  
+	<dynamic prepend="WHERE">
+	<isNotEmpty prepend="AND" property="name">
+		pe.NAME like '%$name$%'
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="owner">
+		pe.OWNER like '%$owner$%'
+	</isNotEmpty>
+	<isGreaterThan prepend="AND" property="status" compareValue="-1">
+		pe.STATUS = #status#
+	</isGreaterThan>
+	<isGreaterThan prepend="AND" property="roomId" compareValue="0">
+		pe.ROOM_ID = #roomId#
+	</isGreaterThan>
+	<isGreaterThan prepend="AND" property="groupId" compareValue="0">
+		pe.GROUP_ID = #groupId#
+	</isGreaterThan>
+	<isGreaterThan prepend="AND" property="departmentId" compareValue="0">
+		pe.DEPARTMENT_ID = #departmentId#
+	</isGreaterThan>
+	</dynamic>
+	order by #sort# #order#
+	limit #page# , #rows#
+  </select>
+
+  <select id="EquipmentDaoImpl.loadEquipmentsByGroupId" resultMap="equipmentResult" parameterClass="java.lang.Integer">
+  	<![CDATA[
+  	
+	  	select * from pm_equipment
+	  	where GROUP_ID = #value#
+  	]]>
+  </select>
+  
+  <select id="EquipmentDaoImpl.loadAllEquipments" resultMap="equipmentResult">
+  	<![CDATA[
+  	
+	  	select * from pm_equipment
+  	]]>
+  </select>
+  
+  <insert id="EquipmentDaoImpl.insert" parameterClass="equipmentDo">
+  	<![CDATA[
+  		insert into pm_equipment (
+  			NAME,
+  			OWNER,
+  			LOCATION,
+  			DESCRIPTION,
+  			STATUS,
+  			ROOM_ID,
+  			GROUP_ID,
+  			DEPARTMENT_ID,
+  			GROSSPOWER
+  		)
+  		values (
+  			#name#,
+  			#owner#,
+  			#location#,
+  			#description#,
+  			#status#,
+  			#roomId#,
+  			#groupId#,
+  			#departmentId#,
+  			#grossPower#
+  		)
+  	]]>
+  	<selectKey resultClass="int" keyProperty="id" > 
+	      SELECT @@IDENTITY AS ID 
+	</selectKey> 
+  </insert>
+  
+  <update id="EquipmentDaoImpl.update" parameterClass="equipmentDo">
+  	<![CDATA[
+  		update pm_equipment set
+  			NAME = #name#,
+  			LOCATION = #location#,
+  			DESCRIPTION = #description#,
+  			OWNER = #owner#,
+  			STATUS = #status#,
+  			ROOM_ID = #roomId#,
+  			GROUP_ID = #groupId#,
+  			DEPARTMENT_ID = #departmentId#,
+  			GROSSPOWER = #grossPower#
+  		where ID = #id#
+  	]]>
+  </update>
+  
+  <delete id="EquipmentDaoImpl.delete" parameterClass="java.lang.Integer">
+  	<![CDATA[
+  		delete from pm_equipment
+  		where ID = #value#
+  	]]>
+  </delete>
+  
+  <select id="EquipmentDaoImpl.findEquipmentById" parameterClass="java.lang.Integer"
+  				resultMap="equipmentResult">
+  	<![CDATA[
+	  	select * from pm_equipment
+	  	where ID = #value#
+  	]]>
+  </select>
+  
+  <select id="EquipmentDaoImpl.findEquipmentByName" parameterClass="java.lang.String"
+				resultMap="equipmentResult">
+  	<![CDATA[
+	  	select * from pm_equipment
+	  	where NAME = #value#
+  	]]>
+  </select>
+
+</sqlMap>

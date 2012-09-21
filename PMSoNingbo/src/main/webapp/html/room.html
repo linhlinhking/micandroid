@@ -1,0 +1,35 @@
+<script type="text/javascript">
+	$(function(){
+		$('#room_w').datagrid({
+			title:'',  
+		    width:'auto',  
+		    height:'auto',  
+		    remoteSort:false,  
+		    singleSelect:false,  
+		    nowrap:false,  
+		    fitColumns:false, 
+		    pageList:[10, 20, 40, 50],
+		    url:'room/query_list',  
+		    sortName: 'name',
+			sortOrder: 'asc',
+			idField:'id',
+			frozenColumns:[[
+				{field:'ck',checkbox:true},
+				{title:'ID',field:'id',width:50,sortable:true,hidden:true}
+			]],
+			columns:[[
+				{field:'name',title:'Name',width:180,rowspan:2,resizable:false},
+				{field:'owner',title:'Administrator',width:100,rowspan:2,resizable:false},
+				{field:'location',title:'Location',width:150,rowspan:4,resizable:false},
+				{field:'department',title:'Department',width:150,rowspan:4,resizable:false},
+				{field:'description',title:'Description',width:200,rowspan:2,resizable:false},
+			]],
+			pagination:true,
+			rownumbers:true,
+			onLoadSuccess:function(){  
+                $('#room_w').datagrid('clearSelections');
+            }  
+		});
+	});
+</script>
+<table id="room_w" toolbar="#toolbar"></table>

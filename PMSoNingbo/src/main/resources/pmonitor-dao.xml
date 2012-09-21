@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation=" 
+          http://www.springframework.org/schema/beans 
+          http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+          http://www.springframework.org/schema/tx 
+          http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+          http://www.springframework.org/schema/context 
+          http://www.springframework.org/schema/context/spring-context-3.0.xsd 
+          http://www.springframework.org/schema/aop 
+          http://www.springframework.org/schema/aop/spring-aop-3.0.xsd" default-autowire="byName">
+	 
+	 
+	 <bean id="userDao" class="com.cisco.pmonitor.dao.impl.UserDaoImpl"/>
+	 <bean id="groupDao" class="com.cisco.pmonitor.dao.impl.GroupDaoImpl"/>
+	 <bean id="departmentDao" class="com.cisco.pmonitor.dao.impl.DepartmentDaoImpl"/>
+	 <bean id="roomDao" class="com.cisco.pmonitor.dao.impl.RoomDaoImpl"/>
+	 <bean id="userGroupDao" class="com.cisco.pmonitor.dao.impl.UserGroupDaoImpl"/>
+	 <bean id="equipmentDao" class="com.cisco.pmonitor.dao.impl.EquipmentDaoImpl"/>
+	 <bean id="reserveDao" class="com.cisco.pmonitor.dao.impl.ReserveDaoImpl"/>
+	 <bean id="powerCyclerDao" class="com.cisco.pmonitor.dao.impl.PowerCyclerDaoImpl"/>
+	 <bean id="powercyclerEquipmentDao" class="com.cisco.pmonitor.dao.impl.PowercyclerEquipmentDaoImpl"/>
+	 <bean id="useRatioDao" class="com.cisco.pmonitor.dao.impl.UseRatioDaoImpl"/>
+</beans>

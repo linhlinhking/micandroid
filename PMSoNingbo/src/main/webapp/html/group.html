@@ -1,0 +1,34 @@
+<script type="text/javascript">
+	$(function(){
+		$('#group_w').datagrid({
+			title:'',  
+		    width:'auto',  
+		    height:'auto',  
+		    remoteSort:false,  
+		    singleSelect:false,  
+		    nowrap:false,  
+		    fitColumns:false, 
+		    pageList:[10, 20, 40, 50],
+		    url:'group/query_list',  
+		    sortName: 'name',
+			sortOrder: 'asc',
+			idField:'id',
+			frozenColumns:[[
+				{field:'ck',checkbox:true},
+				{title:'ID',field:'id',width:50,sortable:true,hidden:true}
+			]],
+			columns:[[
+				{field:'name',title:'Name',width:120,rowspan:2,resizable:false},
+				{field:'department',title:'Department',width:100,rowspan:2,resizable:false},
+				{field:'description',title:'Description',width:130,rowspan:2,resizable:false},
+				{field:'owner',title:'Owner',width:240,rowspan:4,resizable:false}
+			]],
+			pagination:true,
+			rownumbers:true,
+			onLoadSuccess:function(){  
+                $('#group_w').datagrid('clearSelections');
+            }  
+		});
+	});
+</script>
+<table id="group_w" toolbar="#toolbar"></table>

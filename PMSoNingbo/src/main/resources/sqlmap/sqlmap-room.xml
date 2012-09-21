@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+    
+<sqlMap namespace="roomDo">
+
+  <typeAlias alias="roomDo" type="com.cisco.pmonitor.dao.dataobject.RoomDo"/>
+  <typeAlias alias="roomQuery" type="com.cisco.pmonitor.dao.query.RoomQuery"/>
+
+  <resultMap id="roomResult" class="roomDo">
+    <result property="id" column="ID"/>
+    <result property="name" column="NAME"/>
+    <result property="location" column="LOCATION"/>
+    <result property="description" column="DESCRIPTION"/>
+    <result property="owner" column="OWNER"/>
+    <result property="departmentId" column="DEPARTMENT_ID"/>
+  </resultMap>
+  
+  <resultMap id="queryResult" class="roomQuery">
+    <result property="id" column="ID"/>
+    <result property="name" column="NAME"/>
+    <result property="location" column="LOCATION"/>
+    <result property="description" column="DESCRIPTION"/>
+    <result property="owner" column="OWNER"/>
+    <result property="departmentId" column="DEPARTMENT_ID"/>
+    <result property="department" column="DEPARTMENT"/>
+  </resultMap>
+  
+  <select id="RoomDaoImpl.loadRoomsbyQuery" parameterClass="roomQuery"
+  												resultMap="queryResult">
+  	select pr.*,
+  		   pd.NAME DEPARTMENT
+  	from pm_room pr
+	left join pm_department pd
+	on pr.DEPARTMENT_ID = pd.ID
+	<dynamic prepend="WHERE">
+		<isNotEmpty prepend="AND" property="name">
+			pr.NAME like '%$name$%' <!-- 模糊匹配 -->
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="owner">
+			pr.OWNER like '%$owner$%'
+		</isNotEmpty>
+		<isGreaterThan prepend="AND" property="departmentId" compareValue="0">
+			pr.DEPARTMENT_ID = #departmentId#
+		</isGreaterThan>
+		<isGreaterThan prepend="AND" property="id" compareValue="0">
+			pr.ID = #id#
+		</isGreaterThan>
+	</dynamic>
+		order by #sort# #order#
+		limit #page# , #rows#
+		
+  </select>
+  
+  <select id="RoomDaoImpl.loadTotalNumByQuery" parameterClass="roomQuery"
+  												resultClass="java.lang.Integer">
+  	select count(*)
+  	from pm_room pr
+	left join pm_department pd
+	on pr.DEPARTMENT_ID = pd.ID
+	<dynamic prepend="WHERE">
+		<isNotEmpty prepend="AND" property="name">
+			pr.NAME like '%$name$%' <!-- 模糊匹配 -->
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="owner">
+			pr.OWNER like '%$owner$%'
+		</isNotEmpty>
+		<isGreaterThan prepend="AND" property="departmentId" compareValue="0">
+			pr.DEPARTMENT_ID = #departmentId#
+		</isGreaterThan>
+		<isGreaterThan prepend="AND" property="id" compareValue="0">
+			pr.ID = #id#
+		</isGreaterThan>
+	</dynamic>
+		order by #sort# #order#
+		limit #page# , #rows#
+		
+  </select>
+
+  <select id="RoomDaoImpl.loadRoomsByDepartmentId" resultMap="roomResult" parameterClass="java.lang.Integer">
+  	<![CDATA[
+  	
+	  	select * from pm_room
+	  	where DEPARTMENT_ID = #value#
+  	]]>
+  </select>
+  
+  <select id="RoomDaoImpl.loadAllRooms" resultMap="roomResult">
+  	<![CDATA[
+  	
+	  	select * from pm_room
+  	]]>
+  </select>
+  
+  <insert id="RoomDaoImpl.insert" parameterClass="roomDo">
+  	<![CDATA[
+  		insert into pm_room (
+  			NAME,
+  			LOCATION,
+  			DESCRIPTION,
+  			OWNER,
+  			DEPARTMENT_ID
+  		)
+  		values (
+  			#name#,
+  			#location#,
+  			#description#,
+  			#owner#,
+  			#departmentId#
+  		)
+  	]]>
+  	<selectKey resultClass="int" keyProperty="id" > 
+	      SELECT @@IDENTITY AS ID 
+	</selectKey> 
+  </insert>
+  
+  <update id="RoomDaoImpl.update" parameterClass="roomDo">
+  	<![CDATA[
+  		update pm_room set
+  			NAME = #name#,
+  			LOCATION = #location#,
+  			DESCRIPTION = #description#,
+  			OWNER = #owner#,
+  			DEPARTMENT_ID = #departmentId#
+  		where ID = #id#
+  	]]>
+  </update>
+  
+  <delete id="RoomDaoImpl.delete" parameterClass="java.lang.Integer">
+  	<![CDATA[
+  		delete from pm_room
+  		where ID = #value#
+  	]]>
+  </delete>
+  
+  <select id="RoomDaoImpl.findRoomById" parameterClass="java.lang.Integer"
+  				resultMap="roomResult">
+  	<![CDATA[
+	  	select * from pm_room
+	  	where ID = #value#
+  	]]>
+  </select>
+  
+  <select id="RoomDaoImpl.findRoomByName" parameterClass="java.lang.String"
+				resultMap="roomResult">
+  	<![CDATA[
+	  	select * from pm_room
+	  	where NAME = #value#
+  	]]>
+  </select>
+
+</sqlMap>

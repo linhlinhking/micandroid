@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMapConfig      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+
+	<sqlMap resource="sqlmap/sqlmap-user.xml"/>
+	<sqlMap resource="sqlmap/sqlmap-group.xml"/>	
+	<sqlMap resource="sqlmap/sqlmap-department.xml"/>	
+	<sqlMap resource="sqlmap/sqlmap-room.xml"/>	
+	<sqlMap resource="sqlmap/sqlmap-user-group.xml"/>	
+	<sqlMap resource="sqlmap/sqlmap-equipment.xml"/>	
+	<sqlMap resource="sqlmap/sqlmap-reserve.xml"/>	
+	<sqlMap resource="sqlmap/sqlmap-powercycler.xml"/>	
+	<sqlMap resource="sqlmap/sqlmap-powercycler-equipment.xml"/>	
+	<sqlMap resource="sqlmap/sqlmap-useratio.xml"/>	
+</sqlMapConfig>

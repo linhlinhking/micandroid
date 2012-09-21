@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+    
+<sqlMap namespace="userDo">
+
+  <typeAlias alias="userDo" type="com.cisco.pmonitor.dao.dataobject.UserDo"/>
+  <typeAlias alias="userQuery" type="com.cisco.pmonitor.dao.query.UserQuery"/>
+  <resultMap id="userResult" class="userDo">
+    <result property="id" column="ID"/>
+    <result property="username" column="USERNAME"/>
+    <result property="password" column="PASSWORD"/>
+    <result property="email" column="EMAIL"/>
+    <result property="role" column="ROLE"/>
+    <result property="fullName" column="FULLNAME"/>
+    <result property="gmtCreate" column="GMT_CREATE"/>
+    <result property="gmtModified" column="GMT_MODIFIED"/>
+  </resultMap>
+  
+   <resultMap id="queryResult" class="userQuery">
+    <result property="id" column="ID"/>
+    <result property="username" column="USERNAME"/>
+    <result property="email" column="EMAIL"/>
+    <result property="role" column="ROLE"/>
+    <result property="fullName" column="FULLNAME"/>
+    <result property="gmtCreate" column="GMT_CREATE"/>
+    <result property="gmtModified" column="GMT_MODIFIED"/>
+  </resultMap>
+  
+  <select id="UserDaoImpl.loadUsersByQuery" parameterClass="userQuery"
+  												resultMap="queryResult">
+  	<![CDATA[
+  	
+	  	select * from pm_user
+  	]]>
+  	<dynamic prepend="WHERE">
+		<isNotEmpty prepend="AND" property="username">
+			USERNAME like '%$username$%'
+		</isNotEmpty>
+		<isNotNull prepend="AND" property="role">
+			ROLE = #role#
+		</isNotNull>
+	</dynamic>
+		order by #sort# #order#
+		limit #page# , #rows#
+		
+  </select>
+  
+  <select id="UserDaoImpl.loadTotalNumByQuery" parameterClass="userQuery"
+  												resultClass="java.lang.Integer">
+  	<![CDATA[
+  	
+	  	select count(*) from pm_user
+  	]]>
+  	<dynamic prepend="WHERE">
+		<isNotEmpty prepend="AND" property="username">
+			USERNAME like '%$username$%'
+		</isNotEmpty>
+		<isNotNull prepend="AND" property="role">
+			ROLE = #role#
+		</isNotNull>
+	</dynamic>
+		order by #sort# #order#
+		limit #page# , #rows#
+		
+  </select>
+
+  <select id="UserDaoImpl.loadAllUsers" resultMap="userResult">
+  	<![CDATA[
+  	
+	  	select * from pm_user
+  	]]>
+  </select>
+  
+  <insert id="UserDaoImpl.insert" parameterClass="userDo">
+  	<![CDATA[
+  		insert into pm_user (
+  			USERNAME,
+  			PASSWORD,
+  			EMAIL,
+  			FULLNAME,
+  			ROLE,
+  			GMT_CREATE,
+  			GMT_MODIFIED
+  		)
+  		values (
+  			#username#,
+  			#password#,
+  			#email#,
+  			#fullName#,
+  			#role#,
+  			#gmtCreate#,
+  			#gmtModified#
+  		)
+  	]]>
+  	<selectKey resultClass="int" keyProperty="id" > 
+	      SELECT @@IDENTITY AS ID 
+	</selectKey> 
+  </insert>
+  
+  <update id="UserDaoImpl.update" parameterClass="userDo">
+  	<![CDATA[
+  		update pm_user set
+  			USERNAME = #username#,
+  			PASSWORD = #password#,
+  			EMAIL = #email#,
+  			FULLNAME = #fullName#,
+  			ROLE = #role#,
+  			GMT_CREATE = #gmtCreate#,
+  			GMT_MODIFIED = #gmtModified#
+  		where ID = #id#
+  	]]>
+  </update>
+  
+  <delete id="UserDaoImpl.delete" parameterClass="java.lang.Integer">
+  	<![CDATA[
+  		delete from pm_user
+  		where ID = #value#
+  	]]>
+  </delete>
+  
+  <select id="UserDaoImpl.findUserById" parameterClass="java.lang.Integer"
+  				resultMap="userResult">
+  	<![CDATA[
+	  	select * from pm_user
+	  	where ID = #value#
+  	]]>
+  </select>
+  
+  <select id="UserDaoImpl.findUserByUsername" parameterClass="java.lang.String"
+				resultMap="userResult">
+  	<![CDATA[
+	  	select * from pm_user
+	  	where USERNAME = #value#
+  	]]>
+  </select>
+
+</sqlMap>

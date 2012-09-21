@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+    
+<sqlMap namespace="userGroupDo">
+
+  <typeAlias alias="userGroupDo" type="com.cisco.pmonitor.dao.dataobject.UserGroupDo"/>
+
+  <resultMap id="userGroupResult" class="userGroupDo">
+    <result property="id" column="ID"/>
+    <result property="username" column="USER_NAME"/>
+    <result property="groupId" column="GROUP_ID"/>
+    <result property="role" column="ROLE"/>
+  </resultMap>
+
+  <select id="UserGroupDaoImpl.loadAllUserGroups" resultMap="userGroupResult">
+  	<![CDATA[
+  	
+	  	select * from pm_user_group
+  	]]>
+  </select>
+  
+  <insert id="UserGroupDaoImpl.insert" parameterClass="userGroupDo">
+  	<![CDATA[
+  		insert into pm_user_group (
+  			USER_NAME,
+  			GROUP_ID,
+  			ROLE
+  		)
+  		values (
+  			#username#,
+  			#groupId#,
+  			#role#
+  		)
+  	]]>
+  	<selectKey resultClass="int" keyProperty="id" > 
+	      SELECT @@IDENTITY AS ID 
+	</selectKey> 
+  </insert>
+  
+  <update id="UserGroupDaoImpl.update" parameterClass="userGroupDo">
+  	<![CDATA[
+  		update pm_user_group set
+  			USER_NAME = #username#,
+  			GROUP_ID = #groupId#,
+  			ROLE = #role#
+  		where ID = #id#
+  	]]>
+  </update>
+  
+  <delete id="UserGroupDaoImpl.delete" parameterClass="java.lang.Integer">
+  	<![CDATA[
+  		delete from pm_user_group
+  		where ID = #value#
+  	]]>
+  </delete>
+  
+  <select id="UserGroupDaoImpl.findUserGroupById" parameterClass="java.lang.Integer"
+  				resultMap="userGroupResult">
+  	<![CDATA[
+	  	select * from pm_user_group
+	  	where ID = #value#
+  	]]>
+  </select>
+  
+  <select id="UserGroupDaoImpl.findUserGroupByUserName" parameterClass="java.lang.String"
+				resultMap="userGroupResult">
+  	<![CDATA[
+	  	select * from pm_user_group
+	  	where USER_NAME = #value#
+  	]]>
+  </select>
+  <select id="UserGroupDaoImpl.findUserGroupByUserAndGroup" parameterClass="java.util.Map"
+				resultMap="userGroupResult">
+  	<![CDATA[
+	  	select * from pm_user_group
+	  	where USER_NAME = #username#
+	  	and	GROUP_ID = #groupId#
+  	]]>
+  </select>
+
+</sqlMap>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+    
+<sqlMap namespace="reserveDo">
+
+  <typeAlias alias="reserveDo" type="com.cisco.pmonitor.dao.dataobject.ReserveDo"/>
+  <typeAlias alias="reserveQuery" type="com.cisco.pmonitor.dao.query.ReserveQuery"/>
+
+  <resultMap id="reserveResult" class="reserveDo">
+    <result property="id" column="ID"/>
+    <result property="reserver" column="RESERVER"/>
+    <result property="equipmentId" column="EQUIPMENT_ID"/>
+    <result property="startTime" column="START_TIME"/>
+    <result property="endTime" column="END_TIME"/>
+    <result property="status" column="STATUS"/>
+    <result property="description" column="DESCRIPTION"/>
+  </resultMap>
+  <resultMap id="queryResult" class="reserveQuery">
+    <result property="id" column="ID"/>
+    <result property="reserver" column="RESERVER"/>
+    <result property="equipmentId" column="EQUIPMENT_ID"/>
+    <result property="equipmentName" column="EQUIPMENT_NAME"/>
+    <result property="startTime" column="START_TIME"/>
+    <result property="endTime" column="END_TIME"/>
+    <result property="status" column="STATUS"/>
+    <result property="description" column="DESCRIPTION"/>
+  </resultMap>
+  
+  <select id="ReserveDaoImpl.loadReservesByQuery" parameterClass="reserveQuery"
+  												resultMap="queryResult">
+  	select pr.*, pe.NAME EQUIPMENT_NAME 
+  	from pm_reserve pr, pm_equipment pe
+	where pr.EQUIPMENT_ID = pe.ID
+	and pr.EQUIPMENT_ID = #equipmentId#
+	order by #sort# #order#
+	limit #page# , #rows#
+		
+  </select>
+  
+  <select id="ReserveDaoImpl.loadTotalNumByQuery" parameterClass="reserveQuery"
+  												resultClass="java.lang.Integer">
+  	select count(*) 
+  	from pm_reserve pr, pm_equipment pe
+	where pr.EQUIPMENT_ID = pe.ID
+	and pr.EQUIPMENT_ID = #equipmentId#
+	order by #sort# #order#
+	limit #page# , #rows#
+		
+  </select>
+  
+  <select id="ReserveDaoImpl.loadAllReserves" resultMap="queryResult">
+  	<![CDATA[
+  	
+	  	select pr.*, pe.NAME EQUIPMENT_NAME from pm_reserve pr, pm_equipment pe
+	  	where pr.EQUIPMENT_ID = pe.ID
+  	]]>
+  </select>
+  
+   <select id="ReserveDaoImpl.loadTotalNum" parameterClass="reserveQuery"
+  												resultClass="java.lang.Integer">
+  	<![CDATA[
+  	
+	  	select count(*) from pm_reserve pr, pm_equipment pe
+	  	where pr.EQUIPMENT_ID = pe.ID
+  	]]>
+  </select>
+  
+  <insert id="ReserveDaoImpl.insert" parameterClass="reserveDo">
+  	<![CDATA[
+  		insert into pm_reserve (
+  			RESERVER,
+  			EQUIPMENT_ID,
+  			START_TIME,
+  			END_TIME,
+  			STATUS,
+  			DESCRIPTION
+  		)
+  		values (
+  			#reserver#,
+  			#equipmentId#,
+  			#startTime#,
+  			#endTime#,
+  			#status#,
+  			#description#
+  		)
+  	]]>
+  	<selectKey resultClass="int" keyProperty="id" > 
+	      SELECT @@IDENTITY AS ID 
+	</selectKey> 
+  </insert>
+  
+  <update id="ReserveDaoImpl.update" parameterClass="reserveDo">
+  	<![CDATA[
+  		update pm_reserve set
+  			RESERVER = #reserver#,
+  			EQUIPMENT_ID = #equipmentId#,
+  			START_TIME = #startTime#,
+  			END_TIME = #endTime#,
+  			STATUS = #status#,
+  			DESCRIPTION = #description#
+  		where ID = #id#
+  	]]>
+  </update>
+  
+  <delete id="ReserveDaoImpl.delete" parameterClass="java.lang.Integer">
+  	<![CDATA[
+  		delete from pm_reserve
+  		where ID = #value#
+  	]]>
+  </delete>
+  
+  <select id="ReserveDaoImpl.findReserveById" parameterClass="java.lang.Integer"
+  				resultMap="reserveResult">
+  	<![CDATA[
+	  	select * from pm_reserve
+	  	where ID = #value#
+  	]]>
+  </select>
+  <select id="ReserveDaoImpl.findReserveByEquipmentId" parameterClass="java.util.Map"
+  				resultMap="reserveResult">
+  	<![CDATA[
+	  	select * from pm_reserve
+	  	where EQUIPMENT_ID = #equipmentId#
+	  	and STATUS = #status#
+  	]]>
+  </select>
+  
+</sqlMap>

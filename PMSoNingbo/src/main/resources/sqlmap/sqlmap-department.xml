@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+    
+<sqlMap namespace="departmentDo">
+
+  <typeAlias alias="departmentDo" type="com.cisco.pmonitor.dao.dataobject.DepartmentDo"/>
+  <typeAlias alias="departmentQuery" type="com.cisco.pmonitor.dao.query.DepartmentQuery"/>
+
+  <resultMap id="departmentResult" class="departmentDo">
+    <result property="id" column="ID"/>
+    <result property="name" column="NAME"/>
+    <result property="description" column="DESCRIPTION"/>
+  </resultMap>
+  
+  <select id="DepartmentDaoImpl.loadDepartmentsbyQuery" parameterClass="departmentQuery"
+  												resultMap="departmentResult">
+  	<![CDATA[
+  	
+	  	select * from pm_department
+  	]]>
+  	<dynamic prepend="WHERE">
+		<isNotEmpty prepend="AND" property="name">
+			NAME like #name#
+		</isNotEmpty>
+		<isGreaterThan prepend="AND" property="id" compareValue="0">
+			ID = #id#
+		</isGreaterThan>
+	</dynamic>
+		order by #sort# #order#
+		limit #page# , #rows#
+		
+  </select>
+  
+  <select id="DepartmentDaoImpl.loadTotalNumByQuery" parameterClass="departmentQuery"
+  												resultClass="java.lang.Integer">
+  	<![CDATA[
+  	
+	  	select count(*) from pm_department
+  	]]>
+  	<dynamic prepend="WHERE">
+		<isNotEmpty prepend="AND" property="name">
+			NAME like #name#
+		</isNotEmpty>
+		<isGreaterThan prepend="AND" property="id" compareValue="0">
+			ID = #id#
+		</isGreaterThan>
+	</dynamic>
+		order by #sort# #order#
+		limit #page# , #rows#
+		
+  </select>
+
+  <select id="DepartmentDaoImpl.loadAllDepartments" resultMap="departmentResult">
+  	<![CDATA[
+  	
+	  	select * from pm_department
+  	]]>
+  </select>
+  
+  <insert id="DepartmentDaoImpl.insert" parameterClass="departmentDo">
+  	<![CDATA[
+  		insert into pm_department (
+  			NAME,
+  			DESCRIPTION
+  		)
+  		values (
+  			#name#,
+  			#description#
+  		)
+  	]]>
+  	<selectKey resultClass="int" keyProperty="id" > 
+	      SELECT @@IDENTITY AS ID 
+	</selectKey> 
+  </insert>
+  
+  <update id="DepartmentDaoImpl.update" parameterClass="departmentDo">
+  	<![CDATA[
+  		update pm_department set
+  			NAME = #name#,
+  			DESCRIPTION = #description#
+  		where ID = #id#
+  	]]>
+  </update>
+  
+  <delete id="DepartmentDaoImpl.delete" parameterClass="java.lang.Integer">
+  	<![CDATA[
+  		delete from pm_department
+  		where ID = #value#
+  	]]>
+  </delete>
+  
+  <select id="DepartmentDaoImpl.findDepartmentById" parameterClass="java.lang.Integer"
+  				resultMap="departmentResult">
+  	<![CDATA[
+	  	select * from pm_department
+	  	where ID = #value#
+  	]]>
+  </select>
+  
+  <select id="DepartmentDaoImpl.findDepartmentByName" parameterClass="java.lang.String"
+				resultMap="departmentResult">
+  	<![CDATA[
+	  	select * from pm_department
+	  	where NAME = #value#
+  	]]>
+  </select>
+
+</sqlMap>

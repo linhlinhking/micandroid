@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+    
+<sqlMap namespace="useRatioDo">
+
+  <typeAlias alias="useRatioDo" type="com.cisco.pmonitor.dao.dataobject.UseRatioDo"/>
+
+  <resultMap id="useRatioDoResult" class="useRatioDo">
+    <result property="id" column="ID"/>
+    <result property="equipmentId" column="EQUIPMENT_ID"/>
+    <result property="useTime" column="USE_TIME"/>
+    <result property="idleTime" column="IDLE_TIME"/>
+    <result property="useRatio" column="USE_RATIO"/>
+  </resultMap>
+
+  <select id="UseRatioDaoImpl.loadAllUseRatios" resultMap="useRatioDoResult">
+  	<![CDATA[
+  	
+	  	select * from pm_use_ratio
+  	]]>
+  </select>
+  
+  <insert id="UseRatioDaoImpl.insert" parameterClass="useRatioDo">
+  	<![CDATA[
+  		insert into pm_use_ratio (
+  			EQUIPMENT_ID,
+  			USE_TIME,
+  			IDLE_TIME,
+  			USE_RATIO
+  		)
+  		values (
+  			#equipmentId#,
+  			#useTime#,
+  			#idleTime#,
+  			#useRatio#
+  		)
+  	]]>
+  	<selectKey resultClass="int" keyProperty="id" > 
+	      SELECT @@IDENTITY AS ID 
+	</selectKey> 
+  </insert>
+  
+  <update id="UseRatioDaoImpl.update" parameterClass="useRatioDo">
+  		update pm_use_ratio set
+  			USE_TIME = #username#,
+  			IDLE_TIME = #groupId#,
+  			USE_RATIO = #role#
+  		<dynamic prepend="WHERE">
+			<isGreaterThan prepend="AND" property="id" compareValue="0">
+				ID = #id#
+			</isGreaterThan>
+			<isGreaterThan prepend="AND" property="equipmentId" compareValue="0">
+				EQUIPMENT_ID = #equipmentId#
+			</isGreaterThan>
+		</dynamic>
+  </update>
+
+</sqlMap>

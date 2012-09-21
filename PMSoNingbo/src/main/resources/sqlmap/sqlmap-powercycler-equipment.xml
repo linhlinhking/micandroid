@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+    
+<sqlMap namespace="powercyclerEquipmentDo">
+
+  <typeAlias alias="powercyclerEquipmentDo" type="com.cisco.pmonitor.dao.dataobject.PowercyclerEquipmentDo"/>
+  <typeAlias alias="powercyclerEquipmentQuery" type="com.cisco.pmonitor.dao.query.PowercyclerEquipmentQuery"/>
+
+  <resultMap id="powercyclerEquipmentResult" class="powercyclerEquipmentDo">
+    <result property="id" column="ID"/>
+    <result property="powercyclerId" column="POWERCYCLER_ID"/>
+    <result property="equipmentId" column="EQUIPMENT_ID"/>
+    <result property="outlet" column="OUTLET"/>
+    <result property="status" column="STATUS"/>
+  </resultMap>
+  <resultMap id="queryResult" class="powercyclerEquipmentQuery">
+    <result property="id" column="ID"/>
+    <result property="powercyclerId" column="POWERCYCLER_ID"/>
+    <result property="equipmentId" column="EQUIPMENT_ID"/>
+    <result property="outlet" column="OUTLET"/>
+    <result property="status" column="STATUS"/>
+    <result property="powercycler" column="POWERCYCLER"/>
+    <result property="equipment" column="EQUIPMENT"/>
+    <result property="owner" column="OWNER"/>
+  </resultMap>
+  
+  <select id="PowercyclerEquipmentDaoImpl.loadPowercyclerEquipmentsbyQuery" parameterClass="powercyclerEquipmentQuery"
+  												resultMap="queryResult">
+  	
+  	select ppe.*,
+  		   pp.NAME POWERCYCLER,
+  		   pe.NAME EQUIPMENT,
+  		   pe.OWNER OWNER
+  	from pm_powercycler_equipment ppe,
+  		 pm_powercycler pp,
+  		 pm_equipment pe	
+    where ppe.POWERCYCLER_ID = pp.ID
+    and ppe.EQUIPMENT_ID = pe.ID	
+	<isNotNull prepend="AND" property="owner">
+		pe.OWNER like '%$owner$%'
+	</isNotNull>
+	<isNotNull prepend="AND" property="equipmentId">
+		ppe.EQUIPMENT_ID = #equipmentId#
+	</isNotNull>
+	<isGreaterThan prepend="AND" property="status" compareValue="-1">
+		ppe.STATUS = #status#
+	</isGreaterThan>
+	<isGreaterThan prepend="AND" property="powercyclerId" compareValue="0">
+		ppe.powercyclerId = #powercyclerId#
+	</isGreaterThan>
+	order by #sort# #order#
+	limit #page# , #rows#
+		
+  </select>
+  
+  <select id="PowercyclerEquipmentDaoImpl.loadTotalNumByQuery" parameterClass="powercyclerEquipmentQuery"
+  												resultClass="java.lang.Integer">
+  	select count(*)
+  	from pm_powercycler_equipment ppe,
+  		 pm_powercycler pp,
+  		 pm_equipment pe	
+    where ppe.POWERCYCLER_ID = pp.ID
+    and ppe.EQUIPMENT_ID = pe.ID	
+	<isNotNull prepend="AND" property="owner">
+		pe.OWNER like '%$owner$%'
+	</isNotNull>
+	<isNotNull prepend="AND" property="equipmentId">
+		ppe.EQUIPMENT_ID = #equipmentId#
+	</isNotNull>
+	<isGreaterThan prepend="AND" property="status" compareValue="-1">
+		ppe.STATUS = #status#
+	</isGreaterThan>
+	<isGreaterThan prepend="AND" property="powercyclerId" compareValue="0">
+		ppe.powercyclerId = #powercyclerId#
+	</isGreaterThan>
+	order by #sort# #order#
+	limit #page# , #rows#
+  </select>
+
+  <select id="PowercyclerEquipmentDaoImpl.loadAllPowercyclerEquipments" resultMap="powercyclerEquipmentResult">
+  	<![CDATA[
+  	
+	  	select * from pm_powercycler_equipment
+  	]]>
+  </select>
+  
+  <insert id="PowercyclerEquipmentDaoImpl.insert" parameterClass="powercyclerEquipmentDo">
+  	<![CDATA[
+  		insert into pm_powercycler_equipment (
+  			POWERCYCLER_ID,
+  			EQUIPMENT_ID,
+  			OUTLET,
+  			STATUS
+  		)
+  		values (
+  			#powercyclerId#,
+  			#equipmentId#,
+  			#outlet#,
+  			#status#
+  		)
+  	]]>
+  	<selectKey resultClass="int" keyProperty="id" > 
+	      SELECT @@IDENTITY AS ID 
+	</selectKey> 
+  </insert>
+  
+  <update id="PowercyclerEquipmentDaoImpl.update" parameterClass="powercyclerEquipmentDo">
+  	<![CDATA[
+  		update pm_powercycler_equipment set
+  			POWERCYCLER_ID = #powercyclerId#,
+  			EQUIPMENT_ID = #equipmentId#,
+  			OUTLET = #outlet#,
+  			STATUS = #status#
+  		where ID = #id#
+  	]]>
+  </update>
+  
+  <delete id="PowercyclerEquipmentDaoImpl.delete" parameterClass="java.lang.Integer">
+  	<![CDATA[
+  		delete from pm_powercycler_equipment
+  		where ID = #value#
+  	]]>
+  </delete>
+  
+  <select id="PowercyclerEquipmentDaoImpl.findPowercyclerEquipmentById" parameterClass="java.lang.Integer"
+  				resultMap="powercyclerEquipmentResult">
+  	<![CDATA[
+	  	select * from pm_powercycler_equipment
+	  	where ID = #value#
+  	]]>
+  </select>
+  
+  <select id="PowercyclerEquipmentDaoImpl.findPowercyclerAndOutlet" parameterClass="java.util.Map"
+  				resultMap="powercyclerEquipmentResult">
+  	<![CDATA[
+	  	select * from pm_powercycler_equipment
+	  	where POWERCYCLER_ID = #powercyclerId#
+	  	and OUTLET = #outlet#
+  	]]>
+  </select>
+  
+</sqlMap>

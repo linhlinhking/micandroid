@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+    
+<sqlMap namespace="powerCyclerDo">
+
+  <typeAlias alias="powerCyclerDo" type="com.cisco.pmonitor.dao.dataobject.PowerCyclerDo"/>
+  <typeAlias alias="powerCyclerQuery" type="com.cisco.pmonitor.dao.query.PowerCyclerQuery"/>
+
+  <resultMap id="powerCyclerResult" class="powerCyclerDo">
+    <result property="id" column="ID"/>
+    <result property="name" column="NAME"/>
+    <result property="type" column="TYPE"/>
+    <result property="host" column="HOST"/>
+    <result property="from" column="OUTLET_FROM"/>
+    <result property="to" column="OUTLET_TO"/>
+    <result property="status" column="STATUS"/>
+    <result property="loginUser" column="LOGIN_USER"/>
+    <result property="loginPwd" column="LOGIN_PWD"/>
+    <result property="enablePwd" column="ENABLE_PWD"/>
+    <result property="protocol" column="PROTOCOL"/>
+    <result property="on" column="POWER_ON"/>
+    <result property="off" column="POWER_OFF"/>
+  </resultMap>
+  <resultMap id="queryResult" class="powerCyclerQuery">
+    <result property="id" column="ID"/>
+    <result property="name" column="NAME"/>
+    <result property="type" column="TYPE"/>
+    <result property="host" column="HOST"/>
+    <result property="from" column="OUTLET_FROM"/>
+    <result property="to" column="OUTLET_TO"/>
+    <result property="status" column="STATUS"/>
+    <result property="loginUser" column="LOGIN_USER"/>
+    <result property="loginPwd" column="LOGIN_PWD"/>
+    <result property="enablePwd" column="ENABLE_PWD"/>
+    <result property="protocol" column="PROTOCOL"/>
+    <result property="on" column="POWER_ON"/>
+    <result property="off" column="POWER_OFF"/>
+  </resultMap>
+  
+  <select id="PowerCyclerDaoImpl.loadPowerCyclersbyQuery" parameterClass="powerCyclerQuery"
+  												resultMap="queryResult">
+  	
+  	select * from pm_powercycler
+	<dynamic prepend="WHERE">
+	<isNotEmpty prepend="AND" property="name">
+		NAME like '%$name$%'
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="host">
+		HOST like '%$host$%'
+	</isNotEmpty>
+	<isGreaterThan prepend="AND" property="type" compareValue="0">
+		TYPE = #type#
+	</isGreaterThan>
+	<isGreaterThan prepend="AND" property="status" compareValue="-1">
+		STATUS = #status#
+	</isGreaterThan>
+	<isGreaterThan prepend="AND" property="protocol" compareValue="0">
+		PROTOCOL = #protocol#
+	</isGreaterThan>
+	</dynamic>
+	order by #sort# #order#
+	limit #page# , #rows#
+		
+  </select>
+  
+  <select id="PowerCyclerDaoImpl.loadTotalNumByQuery" parameterClass="powerCyclerQuery"
+  												resultClass="java.lang.Integer">
+  	select count(*) from pm_powercycler
+	<dynamic prepend="WHERE">
+	<isNotEmpty prepend="AND" property="name">
+		NAME like '%$name$%'
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="host">
+		HOST like '%$host$%'
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="type">
+		TYPE= #type#
+	</isNotEmpty>
+	<isGreaterThan prepend="AND" property="status" compareValue="-1">
+		STATUS = #status#
+	</isGreaterThan>
+	<isGreaterThan prepend="AND" property="protocol" compareValue="0">
+		PROTOCOL = #protocol#
+	</isGreaterThan>
+	</dynamic>
+	order by #sort# #order#
+	limit #page# , #rows#
+  </select>
+
+  <select id="PowerCyclerDaoImpl.loadAllPowerCyclers" resultMap="powerCyclerResult">
+  	<![CDATA[
+  	
+	  	select * from pm_powercycler
+  	]]>
+  </select>
+  
+  <insert id="PowerCyclerDaoImpl.insert" parameterClass="powerCyclerDo">
+  	<![CDATA[
+  		insert into pm_powercycler (
+  			NAME,
+  			TYPE,
+  			HOST,
+  			OUTLET_FROM,
+  			OUTLET_TO,
+  			STATUS,
+  			LOGIN_USER,
+  			LOGIN_PWD,
+  			ENABLE_PWD,
+  			PROTOCOL,
+  			POWER_ON,
+  			POWER_OFF
+  		)
+  		values (
+  			#name#,
+  			#type#,
+  			#host#,
+  			#from#,
+  			#to#,
+  			#status#,
+  			#loginUser#,
+  			#loginPwd#,
+  			#enablePwd#,
+  			#protocol#,
+  			#on#,
+  			#off#
+  		)
+  	]]>
+  	<selectKey resultClass="int" keyProperty="id" > 
+	      SELECT @@IDENTITY AS ID 
+	</selectKey> 
+  </insert>
+  
+  <update id="PowerCyclerDaoImpl.update" parameterClass="powerCyclerDo">
+  	<![CDATA[
+  		update pm_powercycler set
+  			NAME = #name#,
+  			TYPE = #type#,
+  			HOST = #host#,
+  			OUTLET_FROM = #from#,
+  			OUTLET_TO = #to#,
+  			STATUS = #status#,
+  			LOGIN_USER = #loginUser#,
+  			LOGIN_PWD = #loginPwd#,
+  			ENABLE_PWD = #enablePwd#,
+  			PROTOCOL = #protocol#,
+  			POWER_ON = #on#,
+  			POWER_OFF = #off#
+  		where ID = #id#
+  	]]>
+  </update>
+  
+  <delete id="PowerCyclerDaoImpl.delete" parameterClass="java.lang.Integer">
+  	<![CDATA[
+  		delete from pm_powercycler
+  		where ID = #value#
+  	]]>
+  </delete>
+  
+  <select id="PowerCyclerDaoImpl.findPowerCyclerById" parameterClass="java.lang.Integer"
+  				resultMap="powerCyclerResult">
+  	<![CDATA[
+	  	select * from pm_powercycler
+	  	where ID = #value#
+  	]]>
+  </select>
+  
+  <select id="PowerCyclerDaoImpl.findPowerCyclerByName" parameterClass="java.lang.String"
+				resultMap="powerCyclerResult">
+  	<![CDATA[
+	  	select * from pm_powercycler
+	  	where NAME = #value#
+  	]]>
+  </select>
+
+</sqlMap>

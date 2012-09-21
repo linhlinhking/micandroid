@@ -13,6 +13,7 @@
 			<li><a href="#">用户管理</a></li>
 		 -->
 			<li><a href="#">系统设置</a></li>
+			<li><a href="/admin/logout">注销登陆</a></li>
 		</ul>
 	</div>
 </div>

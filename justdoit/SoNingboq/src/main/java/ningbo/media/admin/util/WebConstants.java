@@ -1,6 +1,6 @@
 package ningbo.media.admin.util;
 
-public class WebConstants {
+public final class WebConstants {
 
 	public static final String SONINGBO_USER_SESSION = "SONINGBO_USER_SESSION" ;
 	

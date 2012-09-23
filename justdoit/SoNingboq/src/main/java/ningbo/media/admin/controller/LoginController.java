@@ -44,7 +44,6 @@ public class LoginController {
 				return "login";
 			}
 			setSession(request, sysUser);
-			//
 			return "main";
 
 		}

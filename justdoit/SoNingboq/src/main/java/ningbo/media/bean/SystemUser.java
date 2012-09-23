@@ -18,7 +18,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 
@@ -346,6 +345,7 @@ public class SystemUser implements Serializable {
 	public void setSecurityEmail(String securityEmail) {
 		this.securityEmail = securityEmail;
 	}
+
 
 	
 }

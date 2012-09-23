@@ -12,7 +12,7 @@
 
 	<properties>
 		<spring.version>3.1.0.RELEASE</spring.version>
-		<spring.security.version>3.1.0.RELEASE</spring.security.version>
+		<spring.security.core.version>3.1.0.RELEASE</spring.security.core.version>
 		<ibatis.version>2.3.4.726</ibatis.version>
 		<cxf.version>2.4.3</cxf.version>
 		<hibernate.version>3.6.1.Final</hibernate.version>
@@ -32,7 +32,8 @@
 		<logback-core-version>1.0.6</logback-core-version>
 		<logback-classic-version>1.0.6</logback-classic-version>
 		<jmargick-version>6.4.0</jmargick-version>
-		<servletapi-version>2.4</servletapi-version>
+		<servletapi-version>2.5</servletapi-version>
+		<commons-codec-version>1.7</commons-codec-version>
 	</properties>
 
 	<dependencies>
@@ -42,21 +43,16 @@
 			<version>${jetty-version}</version> </dependency> -->
 		<!-- <dependency> <groupId>jmagick</groupId> <artifactId>jmagick</artifactId> 
 			<version>${jmargick-version}</version> </dependency> -->
-		<!-- 
+		<!-- <dependency> <groupId>taglibs</groupId> <artifactId>standard</artifactId> 
+			<version>${standard-version}</version> </dependency> -->
+
+
 		<dependency>
-			<groupId>servletapi</groupId>
-			<artifactId>servletapi</artifactId>
-			<version>${servletapi-version}</version>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>${commons-codec-version}</version>
 		</dependency>
-		-->
-			
-		<dependency>
-			<groupId>taglibs</groupId>
-			<artifactId>standard</artifactId>
-			<version>${standard-version}</version>
-		</dependency>
-		 
-		 
+
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
@@ -67,7 +63,7 @@
 			<artifactId>logback-core</artifactId>
 			<version>${logback-core-version}</version>
 		</dependency>
-		 
+
 		<dependency>
 			<groupId>org.imgscalr</groupId>
 			<artifactId>imgscalr-lib</artifactId>
@@ -227,6 +223,16 @@
 		</dependency>
 
 		<!-- spring end -->
+		<!-- Spring Security -->
+		<!-- <dependency> <groupId>org.springframework.security</groupId> <artifactId>spring-security-core</artifactId> 
+			<version>${spring.security.core.version}</version> <type>jar</type> <scope>compile</scope> 
+			</dependency> <dependency> <groupId>org.springframework.security</groupId> 
+			<artifactId>spring-security-web</artifactId> <version>${spring.security.core.version}</version> 
+			<type>jar</type> <scope>compile</scope> </dependency> <dependency> <groupId>org.springframework.security</groupId> 
+			<artifactId>spring-security-config</artifactId> <version>${spring.security.core.version}</version> 
+			<type>jar</type> <scope>compile</scope> </dependency> <dependency> <groupId>org.springframework.security</groupId> 
+			<artifactId>spring-security-taglibs</artifactId> <version>${spring.security.core.version}</version> 
+			<type>jar</type> <scope>compile</scope> </dependency> -->
 		<!-- Hibernate begin -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -354,17 +360,27 @@
 		</dependency>
 
 		<dependency>
-			<groupId>javaee</groupId>
+			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
-			<version>5</version>
+			<version>6.0</version>
 			<scope>provided</scope>
 		</dependency>
+		<!-- <dependency> <groupId>javaee</groupId> <artifactId>javaee-api</artifactId> 
+			<version>5</version> <scope>provided</scope> </dependency> -->
 
+		<!-- Servlet -->
+		<!-- <dependency> <groupId>javax.servlet</groupId> <artifactId>servlet-api</artifactId> 
+			<version>${servletapi-version}</version> <scope>provided</scope> </dependency> -->
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.1</version>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
-			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -382,14 +398,19 @@
 			<scope>system</scope>
 			<systemPath>${basedir}/src/main/webapp/lib/pinyin4j-2.5.0.jar</systemPath>
 		</dependency>
-
+		<dependency>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib</artifactId>
+			<version>2.4</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/src/main/webapp/lib/json-lib-2.4-jdk15.jar</systemPath>
+		</dependency>
 		<dependency>
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
 			<version>${fileupload-version}</version>
 		</dependency>
 	</dependencies>
-
 
 	<build>
 		<finalName>api</finalName>

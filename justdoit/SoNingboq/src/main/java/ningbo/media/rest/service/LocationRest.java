@@ -496,8 +496,8 @@ public class LocationRest {
 			Integer locationId = location.getId();
 			String md5_value = location.getMd5Value();
 			if (null == md5_value) {
-				String md5Value = MD5.calcMD5(String.valueOf(locationId));
-				location.setMd5Value(md5Value);
+				md5_value = MD5.calcMD5(String.valueOf(locationId));
+				location.setMd5Value(md5_value);
 				location = locationService.saveOrUpdate(location);
 			}
 

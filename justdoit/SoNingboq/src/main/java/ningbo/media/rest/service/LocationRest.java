@@ -37,6 +37,7 @@ import ningbo.media.rest.util.FileHashCode;
 import ningbo.media.rest.util.FileUpload;
 import ningbo.media.rest.util.FileUploadUtil;
 import ningbo.media.rest.util.JSONCode;
+import ningbo.media.rest.util.StringUtils;
 import ningbo.media.service.LocationService;
 import ningbo.media.service.ModuleFileService;
 import ningbo.media.service.SecondCategoryService;
@@ -47,9 +48,10 @@ import ningbo.media.util.MD5;
 import ningbo.media.util.Pinyin;
 import ningbo.media.util.TranslateUtil;
 
-import org.apache.commons.lang.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -60,6 +62,8 @@ import com.sun.jersey.multipart.FormDataMultiPart;
 @Component
 @Scope("request")
 public class LocationRest {
+
+	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Resource
 	private LocationService locationService;
@@ -76,25 +80,11 @@ public class LocationRest {
 	@Resource
 	private SystemUserService systemUserService;
 
-	@Context
-	private HttpServletRequest req;
-
 	@Path("/showAll")
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
 	public List<Location> getAllLocations() {
 		return locationService.getAll();
-	}
-
-	@Path("/test")
-	@POST
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response getTestRequest() throws JSONException {
-		JSONObject json = new JSONObject();
-		String uname = req.getParameter("uname") ;
-		json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS) ;
-		json.put(Constant.MESSAGE, uname) ;
-		return Response.ok(json.toString()).build();
 	}
 
 	@Path("/showPage")
@@ -155,12 +145,12 @@ public class LocationRest {
 			detail.setTags_cn(location.getTags_cn());
 			detail.setTags_en(location.getTags_en());
 			detail.setTelephone(location.getTelephone());
-			detail.setPhoneNumberOne(location.getPhoneNumberOne()) ;
-			detail.setPhoneNumberTwo(location.getPhoneNumberTwo()) ;
-			detail.setPhoneNumberThree(location.getPhoneNumberThree()) ;
-			detail.setDescription_cn(location.getDescription_cn()) ;
-			detail.setDescription_en(location.getDescription_en()) ;
-			
+			detail.setPhoneNumberOne(location.getPhoneNumberOne());
+			detail.setPhoneNumberTwo(location.getPhoneNumberTwo());
+			detail.setPhoneNumberThree(location.getPhoneNumberThree());
+			detail.setDescription_cn(location.getDescription_cn());
+			detail.setDescription_en(location.getDescription_en());
+
 			if (null == location.getPhoto_path()) {
 				detail.setPhoto_path("0");
 			} else {
@@ -256,6 +246,7 @@ public class LocationRest {
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
+	@Deprecated
 	public Response addLocation(FormDataMultiPart form,
 			@Context HttpServletRequest request) throws JSONException {
 		String key = form.getField("key").getValue();
@@ -346,8 +337,8 @@ public class LocationRest {
 			if ("".equals(userId) || null == userId) {
 				userId = "0";
 			}
-			SystemUser sysUser = systemUserService
-					.get(Constant.MD5_FIELD,userId);
+			SystemUser sysUser = systemUserService.get(Constant.MD5_FIELD,
+					userId);
 			if (null == sysUser) {
 				json.put(Constant.MESSAGE, JSONCode.MSG_USER_NOEXISTS);
 				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
@@ -376,7 +367,7 @@ public class LocationRest {
 	 * @return
 	 * @throws JSONException
 	 */
-	@Path("/base64/add")
+	@Path("/base64/addOrUpdate")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addLocationBase64(@FormParam("key") String key,
@@ -389,60 +380,91 @@ public class LocationRest {
 			@FormParam("category2_id") String category2_id,
 			@FormParam("user_id") String user_id,
 			@FormParam("base64Value") String base64Value,
+			@FormParam("description_cn") String descriptionCn,
+			@FormParam("description_en") String descriptionEn,
+			@FormParam("phoneNumberOne") String phoneNumberOne,
+			@FormParam("phoneNumberTwo") String phoneNumberTwo,
+			@FormParam("phoneNumberThree") String phoneNumberThree,
+			@FormParam("md5Value") String locationMd5Value,
 			@Context HttpServletRequest request) throws JSONException {
 		JSONObject json = new JSONObject();
 		UserLocations userlocTemp = new UserLocations();
+		Location location = null;
 		try {
-			Location location = new Location();
 			if (key.isEmpty()) {
-				json.put(Constant.CODE, JSONCode.GLOBAL_KEYISNULL);
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_ISNULL);
 				return Response.ok(json.toString()).build();
-
 			}
 			if (!Constant.KEY.equals(key)) {
-				json.put(Constant.CODE, JSONCode.GLOBAL_KEYINPUTINVALID);
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_INVALID);
 				return Response.ok(json.toString()).build();
+			}
+
+			if (StringUtils.hasText(locationMd5Value)) {
+				location = locationService.get(Constant.MD5_FIELD,
+						locationMd5Value);
+				if (null != location) {
+					location.setUpdateDateTime(new Date());
+				} else {
+					json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+					json.put(Constant.MESSAGE, JSONCode.MSG_LOCATION_NOEXISTS);
+					return Response.ok(json.toString()).build();
+				}
+			} else {
+				location = new Location();
+				location.setCreateDateTime(new Date());
 			}
 
 			String name_en = TranslateUtil.getEnglishByChinese(name_cn);
 			String tags_en = TranslateUtil.getEnglishByChinese(tags_cn);
 
-			String name_py = Pinyin.getPinYin(name_cn);
-			String address_en = Pinyin.getPinYin(address_cn);
+			String name_py = Pinyin.getPinYin(name_cn.trim());
+			String address_en = Pinyin.getPinYin(address_cn.trim());
 
 			String fileName = String.valueOf(System.currentTimeMillis());
 			StringBuffer sb = new StringBuffer();
 			String tempPath = FileUploadUtil.makeFileDir(null, request, true);
 			sb.append(tempPath).append(fileName);
 
-			String tempBase64Value = base64Value.replaceAll(" ", "+");
+			String photo_path = null;
+			if (null != base64Value && base64Value.length() > 0) {
+				String tempBase64Value = base64Value.replaceAll(" ", "+");
+				boolean flag = Base64Image.generateImage(tempBase64Value,
+						sb.toString());
+				if (!flag) {
+					File file = new File(sb.toString());
+					file.delete();
+					json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+					json.put(Constant.MESSAGE,
+							JSONCode.MSG_BASE64_VALUE_INVALID);
+					return Response.ok(json.toString()).build();
+				}
 
-			boolean flag = Base64Image.generateImage(tempBase64Value,
-					sb.toString());
-
-			if (!flag) {
-				File file = new File(sb.toString());
-				file.delete();
-				json.put(Constant.CODE, JSONCode.MODULEFILE_BASE64_INVALID);
-				return Response.ok(json.toString()).build();
+				photo_path = FileHashCode.writeBase64File(request,
+						sb.toString());
 			}
-
-			String photo_path = FileHashCode.writeBase64File(request,
-					sb.toString());
 
 			location.setName_cn(name_cn);
 			location.setName_en(name_en);
 			location.setAddress_cn(address_cn);
 			location.setAddress_en(address_en);
+			location.setName_py(name_py);
+			location.setTags_cn(tags_cn);
+			location.setTags_en(tags_en);
 			location.setTelephone(telephone);
+			location.setDescription_cn(descriptionCn);
+			location.setDescription_en(descriptionEn);
+			location.setPhoneNumberOne(phoneNumberOne);
+			location.setPhoneNumberTwo(phoneNumberTwo);
+			location.setPhoneNumberThree(phoneNumberThree);
+
 			if (null == photo_path) {
 				location.setPhoto_path("0");
 			} else {
 				location.setPhoto_path(photo_path);
 			}
-			location.setName_py(name_py);
-			location.setTags_cn(tags_cn);
-			location.setTags_en(tags_en);
 
 			if (!longitude.isEmpty())
 				location.setLongitude(Double.parseDouble(longitude));
@@ -450,30 +472,42 @@ public class LocationRest {
 				location.setLatitude(Double.parseDouble(latitude));
 
 			List<SecondCategory> listSc = new ArrayList<SecondCategory>();
-			SecondCategory sc = secondCategoryService.get(Integer
-					.valueOf(category2_id));
-			if (sc == null) {
-				json.put(Constant.CODE, JSONCode.LOCATION_CATEGORY_NOEXISTS);
-				Response.ok(json.toString()).build();
-			} else {
-				listSc.add(sc);
+			if (null != category2_id) {
+				SecondCategory sc = null;
+				try {
+					sc = secondCategoryService.get(Integer
+							.valueOf(category2_id));
+					if (sc == null) {
+						json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+						json.put(Constant.MESSAGE,
+								JSONCode.MSG_LOCATION_SELECTE_CATEGORY);
+						Response.ok(json.toString()).build();
+					} else {
+						listSc.add(sc);
+					}
+				} catch (Exception ex) {
+					logger.error("Category2 id is wrong.category2_id:"
+							+ category2_id, ex);
+				}
 			}
-
 			location.setSecondCategorys(listSc);
 
-			Integer locationId = locationService.save(location);
-			String md5Value = MD5.calcMD5(String.valueOf(locationId));
-			location = locationService.get(locationId);
-			location.setMd5Value(md5Value);
-			locationService.update(location);
+			location = locationService.saveOrUpdate(location);
+			Integer locationId = location.getId();
+			String md5_value = location.getMd5Value();
+			if (null == md5_value) {
+				String md5Value = MD5.calcMD5(String.valueOf(locationId));
+				location.setMd5Value(md5Value);
+				location = locationService.saveOrUpdate(location);
+			}
 
 			if ("".equals(user_id) || null == user_id) {
 				// json.put(Constant.MESSAGE, JSONCode.MSG_LOCATION_NO_LOGIN);
 				// json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 				// return Response.ok(json.toString()).build();
 			} else {
-				SystemUser sysUser = systemUserService
-						.get(Constant.MD5_FIELD,user_id);
+				SystemUser sysUser = systemUserService.get(Constant.MD5_FIELD,
+						user_id);
 				if (null == sysUser) {
 					json.put(Constant.MESSAGE, JSONCode.MSG_USER_NOEXISTS);
 					json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
@@ -484,14 +518,18 @@ public class LocationRest {
 				userlocTemp.setMd5Value(user_id);
 				userlocTemp.setAddedDate(new Date());
 				userLocationsService.save(userlocTemp);
+				
+				logger.info("Location be added successfully by "
+						+ sysUser.getUsername() + ",Time:" + new Date());
 			}
 
 			json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
-			json.put(Constant.LOCATIONID, locationId);
+			json.put(Constant.LOCATIONID, md5_value);
 			return Response.ok(json.toString()).build();
 		} catch (Exception ex) {
-			ex.printStackTrace();
-			json.put(Constant.CODE, JSONCode.LOCATION_EXCEPTION);
+			logger.error("Device add location Exception.",ex) ;
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+			json.put(Constant.MESSAGE, JSONCode.SERVER_EXCEPTION);
 			return Response.ok(json.toString()).build();
 		}
 	}
@@ -507,11 +545,19 @@ public class LocationRest {
 			@FormParam("longitude") String longitude,
 			@FormParam("latitude") String latitude,
 			@FormParam("category2_id") String category2_id,
-			@FormParam("user_id") String user_id) throws JSONException {
+			@FormParam("user_id") String user_id,
+			@FormParam("description_cn") String descriptionCn,
+			@FormParam("description_en") String descriptionEn,
+			@FormParam("phoneNumberOne") String phoneNumberOne,
+			@FormParam("phoneNumberTwo") String phoneNumberTwo,
+			@FormParam("phoneNumberThree") String phoneNumberThree,
+			@FormParam("md5Value") String locationMd5Value)
+			throws JSONException {
 		JSONObject json = new JSONObject();
 		UserLocations userlocTemp = new UserLocations();
+		Location location = null;
 		try {
-			Location location = new Location();
+
 			if (key.isEmpty()) {
 				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_ISNULL);
@@ -521,6 +567,21 @@ public class LocationRest {
 				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_INVALID);
 				return Response.ok(json.toString()).build();
+			}
+
+			if (StringUtils.hasText(locationMd5Value)) {
+				location = locationService.get(Constant.MD5_FIELD,
+						locationMd5Value);
+				if (null != location) {
+					location.setUpdateDateTime(new Date());
+				} else {
+					json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+					json.put(Constant.MESSAGE, JSONCode.MSG_LOCATION_NOEXISTS);
+					return Response.ok(json.toString()).build();
+				}
+			} else {
+				location = new Location();
+				location.setCreateDateTime(new Date());
 			}
 
 			String name_en = TranslateUtil.getEnglishByChinese(name_cn);
@@ -537,6 +598,11 @@ public class LocationRest {
 			location.setName_py(name_py);
 			location.setTags_cn(tags_cn);
 			location.setTags_en(tags_en);
+			location.setDescription_cn(descriptionCn);
+			location.setDescription_en(descriptionEn);
+			location.setPhoneNumberOne(phoneNumberOne);
+			location.setPhoneNumberTwo(phoneNumberTwo);
+			location.setPhoneNumberThree(phoneNumberThree);
 
 			if (!longitude.isEmpty())
 				location.setLongitude(Double.parseDouble(longitude));
@@ -544,32 +610,42 @@ public class LocationRest {
 				location.setLatitude(Double.parseDouble(latitude));
 
 			List<SecondCategory> listSc = new ArrayList<SecondCategory>();
-			SecondCategory sc = secondCategoryService.get(Integer
-					.valueOf(category2_id));
-			if (sc == null) {
-				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
-				json.put(Constant.MESSAGE,
-						JSONCode.MSG_LOCATION_SELECTE_CATEGORY);
-				Response.ok(json.toString()).build();
-			} else {
-				listSc.add(sc);
+			if (null != category2_id) {
+				SecondCategory sc = null;
+				try {
+					sc = secondCategoryService.get(Integer
+							.valueOf(category2_id));
+					if (sc == null) {
+						json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+						json.put(Constant.MESSAGE,
+								JSONCode.MSG_LOCATION_SELECTE_CATEGORY);
+						Response.ok(json.toString()).build();
+					} else {
+						listSc.add(sc);
+					}
+				} catch (Exception ex) {
+					logger.error("Category2 id is wrong.category2_id:"
+							+ category2_id, ex);
+				}
 			}
-
 			location.setSecondCategorys(listSc);
 
-			Integer locationId = locationService.save(location);
-			String md5Value = MD5.calcMD5(String.valueOf(locationId));
-			location = locationService.get(locationId);
-			location.setMd5Value(md5Value);
-			locationService.update(location);
+			location = locationService.saveOrUpdate(location);
+			Integer locationId = location.getId();
+			String md5_value = location.getMd5Value();
+			if (null == md5_value) {
+				String md5Value = MD5.calcMD5(String.valueOf(locationId));
+				location.setMd5Value(md5Value);
+				location = locationService.saveOrUpdate(location);
+			}
 
 			if ("".equals(user_id) || null == user_id) {
 				// json.put(Constant.MESSAGE, JSONCode.MSG_LOCATION_NO_LOGIN);
 				// json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 				// return Response.ok(json.toString()).build();
 			} else {
-				SystemUser sysUser = systemUserService
-						.get(Constant.MD5_FIELD,user_id);
+				SystemUser sysUser = systemUserService.get(Constant.MD5_FIELD,
+						user_id);
 				if (null == sysUser) {
 					json.put(Constant.MESSAGE, JSONCode.MSG_USER_NOEXISTS);
 					json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
@@ -580,13 +656,16 @@ public class LocationRest {
 				userlocTemp.setMd5Value(user_id);
 				userlocTemp.setAddedDate(new Date());
 				userLocationsService.save(userlocTemp);
+
+				logger.info("Location be added successfully by "
+						+ sysUser.getUsername() + ",Time:" + new Date());
 			}
 
 			json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
-			json.put(Constant.LOCATIONID, md5Value);
+			json.put(Constant.LOCATIONID, md5_value);
 			return Response.ok(json.toString()).build();
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			logger.error("WebSite add Location Exception.", ex) ;
 			json.put(Constant.MESSAGE, JSONCode.SERVER_EXCEPTION);
 			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 			return Response.ok(json.toString()).build();
@@ -629,7 +708,7 @@ public class LocationRest {
 				json.put(Constant.MESSAGE, JSONCode.MSG_USER_USER_MD5VALUE);
 				return Response.ok(json.toString()).build();
 			}
-			SystemUser u = systemUserService.get(Constant.MD5_FIELD,md5Value);
+			SystemUser u = systemUserService.get(Constant.MD5_FIELD, md5Value);
 			if (null == u) {
 				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 				json.put(Constant.MESSAGE, JSONCode.MSG_USER_NOEXISTS);
@@ -708,6 +787,7 @@ public class LocationRest {
 	@Path("/base64/edit")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
+	@Deprecated
 	public Response editLocationBase64(@FormParam("key") String key,
 			@FormParam("locationId") String locationId,
 			@FormParam("name_cn") String name_cn,

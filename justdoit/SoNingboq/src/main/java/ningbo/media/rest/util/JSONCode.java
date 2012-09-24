@@ -61,8 +61,9 @@ public class JSONCode {
 	public static final String MSG_LOCATION_MD5_NOEXISTS = "No The Location by Md5 Value." ;
 	public static final String MSG_LOCATION_MD5_ISNULL = "Can't get MD5 Value" ;
 	public static final String MSG_LOCATION_NOEXISTS = "No The Location Data."; 
-	public static final String MSG_LOCATION_SELECTE_CATEGORY = "Please Select Category." ;
+	public static final String MSG_LOCATION_SELECTE_CATEGORY = "No Category Be Selected." ;
 	public static final String MSG_LOCATION_UPDATE_AVATAR = "Location's Avatar Update." ;
+	
 	
 	/**Comment-5*/
 	public static final String COMMENT_THROWEXCEPTION = "40001" ;

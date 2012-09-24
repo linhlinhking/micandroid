@@ -1,6 +1,7 @@
 package ningbo.media.bean;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -37,7 +38,7 @@ public class Location implements Serializable {
 	@Column(name="name_cn",nullable=false)
 	private String name_cn;
 
-	@Column(name="name_py",nullable=false)
+	@Column(name="name_py")
 	private String name_py ;
 	
 	@Column(name="md5_value")
@@ -83,6 +84,10 @@ public class Location implements Serializable {
 	
 	@Column(length=128)
 	private String phoneNumberThree ;
+	
+	private Date createDateTime ;
+	
+	private Date updateDateTime ;
 	
 	
 	@JsonIgnore
@@ -310,6 +315,24 @@ public class Location implements Serializable {
 	public void setPhoneNumberThree(String phoneNumberThree) {
 		this.phoneNumberThree = phoneNumberThree;
 	}
+
+	public Date getCreateDateTime() {
+		return createDateTime;
+	}
+
+	public void setCreateDateTime(Date createDateTime) {
+		this.createDateTime = createDateTime;
+	}
+
+	public Date getUpdateDateTime() {
+		return updateDateTime;
+	}
+
+	public void setUpdateDateTime(Date updateDateTime) {
+		this.updateDateTime = updateDateTime;
+	}
+	
+	
 
 	
 }

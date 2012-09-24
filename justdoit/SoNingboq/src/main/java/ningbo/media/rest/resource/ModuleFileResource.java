@@ -72,8 +72,8 @@ import com.sun.jersey.multipart.FormDataParam;
 @Component
 @Scope("request")
 public class ModuleFileResource {
-	
-	private Logger logger = LoggerFactory.getLogger(getClass()) ;
+
+	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Resource
 	private ModuleFileService moduleFileService;
@@ -211,8 +211,8 @@ public class ModuleFileResource {
 				"/resource/modulefile/option?getthumb=").path("");
 		UriBuilder delFileUrl = UriBuilder.fromPath(
 				"/resource/modulefile/option?delfile=").path("");
-		String linkUrl = "http://localhost:9000";
-		//String linkUrl = Constant.API_URL;
+		//String linkUrl = "http://localhost:9000";
+		String linkUrl = Constant.API_URL;
 		String tmpPath = FileUpload.makeTempDir(request);
 		JSONArray jsonArry = new JSONArray();
 
@@ -220,14 +220,14 @@ public class ModuleFileResource {
 			List<FileItem> items = uploadHandler.parseRequest(request);
 			for (FileItem item : items) {
 				if (!item.isFormField() && item.getSize() > 0) {
-					String realPath = "" ;
+					String realPath = "";
 					File file = new File(tmpPath, item.getName());
 					item.write(file);
 
 					String newName = FileUploadUtil.renameFile(tmpPath,
 							item.getName());
-					if(null != newName){
-						realPath = tmpPath + newName ;
+					if (null != newName) {
+						realPath = tmpPath + newName;
 					}
 					logger.info(realPath);
 
@@ -543,7 +543,8 @@ public class ModuleFileResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addLoctionFile(FormDataMultiPart form,
 			@FormDataParam("file") InputStream uploadFile,
-			@FormDataParam("file") FormDataContentDisposition fileDetail) throws JSONException {
+			@FormDataParam("file") FormDataContentDisposition fileDetail)
+			throws JSONException {
 		JSONObject json = new JSONObject();
 		try {
 			UserModuleFiles files = new UserModuleFiles();
@@ -568,8 +569,7 @@ public class ModuleFileResource {
 				json.put(Constant.CODE, JSONCode.MODULEFILE_TYPE_NOEXISTS);
 				return Response.ok(json.toString()).build();
 			}
-			
-			
+
 			listLocations.add(loc);
 
 			String fileName = fileDetail.getFileName();
@@ -610,7 +610,7 @@ public class ModuleFileResource {
 
 			Integer moduleFileId = moduleFileService.save(moduleFile);
 
-			/**link update by user*/
+			/** link update by user */
 			if ((!"".equals(md5Value)) && (null != md5Value)) {
 				files.setMd5Value(md5Value);
 				files.setFileId(moduleFileId);
@@ -618,20 +618,20 @@ public class ModuleFileResource {
 
 				userModuleFilesService.save(files);
 			}
-			
-			/**Update location*/
-			String defaultPhoto = loc.getPhoto_path() ;
-			if(null == defaultPhoto || "0".equals(defaultPhoto) || defaultPhoto == ""){
-				loc.setPhoto_path(uuid) ;
-				locationService.update(loc) ;
+
+			/** Update location */
+			String defaultPhoto = loc.getPhoto_path();
+			if (null == defaultPhoto || "0".equals(defaultPhoto)
+					|| defaultPhoto == "") {
+				loc.setPhoto_path(uuid);
+				locationService.update(loc);
 			}
-			
 
 			json.put(Constant.CODE, JSONCode.SUCCESS);
 			json.put(Constant.FILEID, moduleFileId);
 			return Response.ok(json.toString()).build();
 		} catch (Exception ex) {
-			logger.error("Upload Image By Locaton Error.", ex) ;
+			logger.error("Upload Image By Locaton Error.", ex);
 			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 			return Response.ok(json.toString()).build();
 		}
@@ -720,41 +720,45 @@ public class ModuleFileResource {
 		JSONObject json = new JSONObject();
 		try {
 			if (!StringUtils.hasText(key)) {
-				json.put(Constant.CODE, JSONCode.KEYISNULL);
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_ISNULL);
 				return Response.ok(json.toString()).build();
 			} else if (!key.equals(Constant.KEY)) {
-				json.put(Constant.CODE, JSONCode.KEYINPUTINVALID);
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_INVALID);
 				return Response.ok(json.toString()).build();
 			}
 
-			UserModuleFiles flag = userModuleFilesService
-					.getUserModuleFilesByUserId(Integer.valueOf(fileId),
-							md5Value);
+			if (null != fileId) {
+				UserModuleFiles flag = userModuleFilesService
+						.getUserModuleFilesByUserId(Integer.valueOf(fileId),
+								md5Value);
+				if (null != flag) {
+					ModuleFile tempFile = moduleFileService.get(Integer
+							.valueOf(fileId));
+					String uuid = "";
 
-			if (null != flag) {
-				ModuleFile tempFile = moduleFileService.get(Integer
-						.valueOf(fileId));
-				String uuid = "";
+					if (null != tempFile) {
+						ImageInformation infor = tempFile.getImageInfo();
+						uuid = tempFile.getFileHash();
 
-				if (null != tempFile) {
-					ImageInformation infor = tempFile.getImageInfo();
-					uuid = tempFile.getFileHash();
+						if ((!"0".equals(uuid)) && (null != uuid)) {
+							FileUploadUtil.delFile(uuid, request);
+						}
 
-					if ((!"0".equals(uuid)) && (null != uuid)) {
-						FileUploadUtil.delFile(uuid, request);
+						moduleFileService.delete(tempFile);
+						imageInformationService.delete(infor);
 					}
-
-					moduleFileService.delete(tempFile);
-					imageInformationService.delete(infor);
+					userModuleFilesService.delete(flag);
+					json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
+					json.put(Constant.MESSAGE,
+							JSONCode.MSG_MODULEFILE_DELETE_SUCCESS);
+					return Response.ok(json.toString()).build();
 				}
-				userModuleFilesService.delete(flag);
-				json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
-				json.put(Constant.MESSAGE,
-						JSONCode.MSG_MODULEFILE_DELETE_SUCCESS);
-				return Response.ok(json.toString()).build();
 			}
+
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			logger.info("Delete Image Error.", ex);
 		}
 		json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 		json.put(Constant.MESSAGE, JSONCode.MSG_MODULEFILE_DELETE_FAIL);
@@ -771,7 +775,6 @@ public class ModuleFileResource {
 				mimetype = mtMap.getContentType(file);
 			}
 		}
-		// System.out.println("mimetype: " + mimetype);
 		return mimetype;
 	}
 
@@ -781,7 +784,6 @@ public class ModuleFileResource {
 		if (pos > 0 && pos < filename.length() - 1) {
 			suffix = filename.substring(pos + 1);
 		}
-		// System.out.println("suffix: " + suffix);
 		return suffix;
 	}
 

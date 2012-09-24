@@ -104,7 +104,7 @@ public class Pinyin {
     }  
   
     public static void main(String[] args) {  
-        String cnStr = "八佰伴发艺沙廊(老银泰店)";  
+        String cnStr = "woshi地dfdfd   址  ";  
     	//String enStr = "ningboshang传媒waichmei" ;
         //System.out.println(isChinese(enStr)) ;
         System.out.println(getPinYin(cnStr));  

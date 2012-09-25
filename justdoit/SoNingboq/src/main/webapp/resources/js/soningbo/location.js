@@ -72,7 +72,7 @@ $(function() {
 								});
 							}
 						},ondblClickRow:function(ids){
-							alert(ids);
+							editRow();
 						}
 					});
 
@@ -115,7 +115,7 @@ $(function() {
 		cursor : "pointer"
 	});
 	
-	$("#dialog-form").dialog({
+	$("#add-location-dialog-form").dialog({
 				autoOpen : false,
 				height : 480,
 				width : 960,
@@ -132,7 +132,7 @@ $(function() {
 				}
 	});
 	
-	$("#dialog-form-edit").dialog({
+	$("#edit-location-dialog-form").dialog({
 		autoOpen : false,
 		height : 480,
 		width : 960,
@@ -151,11 +151,11 @@ $(function() {
 
 	
 	function addRow() {
-		$("#dialog-form").dialog("open");
+		$("#add-location-dialog-form").dialog("open");
 	}
 
 	function editRow() {
-		$("#dialog-form-edit").dialog("open");
+		$("#edit-location-dialog-form").dialog("open");
 	}
 	function deleteRow() {
 		alert("delete");

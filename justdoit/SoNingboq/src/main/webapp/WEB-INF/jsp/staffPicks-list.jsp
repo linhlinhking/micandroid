@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/common/taglib.jsp"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,18 +44,17 @@
 		<%@ include file="/common/head-menu.jsp"%>
 		<!-- Loading Second Menu end -->
 
-	
-		<c:if test="${sonbUser != null}">
 		<div id="wrapper">
+
 			<!-- Loading right Menu start -->
-			<%@ include file="/common/content.jsp"%>
+			<%@ include file="/common/staff/staff-content.jsp"%>
 			<!-- Loading right Menu end -->
 
 			<!-- Loading right Menu start -->
 			<%@ include file="/common/right.jsp"%>
 			<!-- Loading right Menu end -->
 		</div>
-		</c:if>
+
 
 		<!-- Loading footer start -->
 		<%@ include file="/common/footer.jsp"%>
@@ -64,4 +64,5 @@
 	</div>
 </body>
 <!-- /admin/user/getAll -->
+<script type="text/javascript" src="/js/soningbo/staffpicks.js"></script>
 </html>

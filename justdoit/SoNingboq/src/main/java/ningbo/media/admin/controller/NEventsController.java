@@ -13,6 +13,7 @@ import ningbo.media.bean.NEvents;
 import ningbo.media.core.page.Pagination;
 import ningbo.media.core.web.BaseController;
 import ningbo.media.service.NEventsService;
+import ningbo.media.web.util.SessionHandler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
 
 @Controller
 @RequestMapping("/admin/event")
@@ -64,5 +66,15 @@ public class NEventsController extends BaseController<NEvents>{
 			HttpServletResponse response) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@RequestMapping(value = "/add", method = RequestMethod.GET)
+	public String toAdd(HttpServletRequest request) {
+		return SessionHandler.verifySession(request, "admin/event/add");
+	}
+	
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
+	public String doAdd(HttpServletRequest request) {
+		return SessionHandler.verifySession(request, "admin/event/add");
 	}
 }

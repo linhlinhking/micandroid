@@ -63,6 +63,7 @@ public class JSONCode {
 	public static final String MSG_LOCATION_NOEXISTS = "No The Location Data."; 
 	public static final String MSG_LOCATION_SELECTE_CATEGORY = "No Category Be Selected." ;
 	public static final String MSG_LOCATION_UPDATE_AVATAR = "Location's Avatar Update." ;
+	public static final String MSG_LOCATION_DELETE_SUCCESS = "Delete Location success." ;
 	
 	
 	/**Comment-5*/

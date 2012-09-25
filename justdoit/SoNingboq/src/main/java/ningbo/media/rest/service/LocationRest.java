@@ -367,7 +367,7 @@ public class LocationRest {
 	 * @return
 	 * @throws JSONException
 	 */
-	@Path("/base64/addOrUpdate")
+	@Path("/base64/add")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addLocationBase64(@FormParam("key") String key,
@@ -986,18 +986,20 @@ public class LocationRest {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteByMd5(@PathParam("md5Value") String md5Value,
-			@Context HttpServletRequest request) {
+			@Context HttpServletRequest request) throws JSONException {
 		JSONObject json = new JSONObject();
 		String realPath = request.getSession().getServletContext()
 				.getRealPath("");
 		try {
 			if (null == md5Value || md5Value.length() < 0) {
-				json.put(Constant.CODE, JSONCode.LOCATIONID_NOINPUT);
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_LOCATION_MD5_NOEXISTS);
 				return Response.ok(json.toString()).build();
 			}
 			Location loc = locationService.queryLocationByMd5(md5Value);
 			if (null == loc) {
-				json.put(Constant.CODE, JSONCode.LOCATION_NOEXISTS);
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_LOCATION_NOEXISTS);
 				return Response.ok(json.toString()).build();
 			}
 			Integer locId = loc.getId();
@@ -1026,11 +1028,14 @@ public class LocationRest {
 				userLocationsService.delete(tempUserLocation);
 			}
 
-			json.put(Constant.CODE, JSONCode.SUCCESS);
+			json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
+			json.put(Constant.MESSAGE, JSONCode.MSG_LOCATION_DELETE_SUCCESS);
 			return Response.ok(json.toString()).build();
 		} catch (Exception ex) {
-			ex.printStackTrace();
-			return null;
+			logger.error("Delete Location Error.", ex) ;
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
+			json.put(Constant.MESSAGE, JSONCode.SERVER_EXCEPTION);
+			return Response.ok(json.toString()).build();
 		}
 
 	}

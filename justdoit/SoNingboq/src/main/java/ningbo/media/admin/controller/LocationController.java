@@ -10,6 +10,7 @@ import ningbo.media.admin.jqgrid.JqgridPage;
 import ningbo.media.bean.Location;
 import ningbo.media.core.page.Pagination;
 import ningbo.media.core.web.BaseController;
+import ningbo.media.rest.util.Constant;
 import ningbo.media.service.LocationService;
 
 import org.slf4j.Logger;
@@ -59,11 +60,20 @@ public class LocationController extends BaseController<Location> {
 
 	
 	@RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
-	public String toUpdate(@PathVariable("id") int id, Model model)
+	public String toUpdate(@PathVariable("id") String id, Model model)
 			throws Exception {
-		model.addAttribute("user", "");
-		model.addAttribute("deptList","");
-		return "user/update";
+		if(id == null || id.length() < 0){
+			logger.error("Can't get the location's MD5Value.") ;
+			return "location-list" ;
+		}
+		Location loc = locationService.get(Constant.MD5_FIELD, id) ;
+		if(null != loc){
+			model.addAttribute("location",loc);
+			
+			return "location-list";
+		}
+		
+		return "location-list" ;
 	}
 	
 	

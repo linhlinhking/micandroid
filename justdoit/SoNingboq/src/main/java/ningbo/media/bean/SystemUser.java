@@ -79,6 +79,8 @@ public class SystemUser implements Serializable {
 	
 	private String msn ;
 	
+	private boolean employeeIs ;
+	
 	@Column(name="security_email")
 	private String securityEmail ;
 
@@ -344,6 +346,16 @@ public class SystemUser implements Serializable {
 
 	public void setSecurityEmail(String securityEmail) {
 		this.securityEmail = securityEmail;
+	}
+
+
+	public boolean isEmployeeIs() {
+		return employeeIs;
+	}
+
+
+	public void setEmployeeIs(boolean employeeIs) {
+		this.employeeIs = employeeIs;
 	}
 
 

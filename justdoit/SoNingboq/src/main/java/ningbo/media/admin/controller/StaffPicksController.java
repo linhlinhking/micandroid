@@ -49,7 +49,7 @@ public class StaffPicksController {
 
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public String toSave(HttpServletRequest request) {
-		return SessionHandler.verifySession(request, "admin/staff/add");
+		return SessionHandler.verifySession(request, "admin/login");
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)

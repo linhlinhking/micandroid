@@ -17,12 +17,12 @@
 				<li><a href="#" class="search">搜索位置</a></li>
 			</ul></li>
 		<li><h3>
-				<a href="#" class="manage">事件审核</a>
+				<a href="#" class="manage">活动审核</a>
 			</h3>
 			<ul>
-				<li><a href="#" class="manage_page">管理事件</a></li>
-				<li><a href="#" class="cart">待审核事件</a></li>
-				<li><a href="#" class="search">搜索事件</a></li>
+				<li><a href="/admin/event" class="manage_page">管理活动</a></li>
+				<li><a href="#" class="cart">待审核活动</a></li>
+				<li><a href="#" class="search">搜索活动</a></li>
 			</ul></li>
 		<li>
 			<li><h3>
@@ -50,6 +50,10 @@
 				<li><a href="/admin/user" class="group">管理用户</a></li>
 				<li><a href="#" class="search">搜索用户</a></li>
 				<li><a href="#" class="online">在线用户</a></li>
+				
+				<c:if test="${sonbUser.employeeIs}">
+				<li><a href="/admin/staff" class="staffPicks">员工推荐</a></li>
+				</c:if>
 			</ul>
 		</li>
 		<li>

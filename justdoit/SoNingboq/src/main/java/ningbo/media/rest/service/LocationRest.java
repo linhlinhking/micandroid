@@ -215,7 +215,7 @@ public class LocationRest {
 	@Path("/category/{id : \\d+}")
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	public List<Location> getAllLocationsBySecondCategory(
+	public List<LocationDetail> getAllLocationsBySecondCategory(
 			@PathParam("id") String id) {
 		if (id == null) {
 			return null;
@@ -223,16 +223,13 @@ public class LocationRest {
 		SecondCategory secondCategory = secondCategoryService.get(Integer
 				.valueOf(id));
 		if (secondCategory == null) {
-			return new ArrayList<Location>();
+			return new ArrayList<LocationDetail>();
 		}
 		// secondCategory.getLocations();
 		List<Location> listLocation = locationService
 				.queryLocationsById(Integer.valueOf(id));
-		int size = listLocation.size();
-		if (size == 1) {
-			// listLocation.add(new Location());
-		}
-		return listLocation;
+		
+		return fillLocationDetail(listLocation);
 	}
 
 	/**
@@ -518,7 +515,7 @@ public class LocationRest {
 				userlocTemp.setMd5Value(user_id);
 				userlocTemp.setAddedDate(new Date());
 				userLocationsService.save(userlocTemp);
-				
+
 				logger.info("Location be added successfully by "
 						+ sysUser.getUsername() + ",Time:" + new Date());
 			}
@@ -527,7 +524,7 @@ public class LocationRest {
 			json.put(Constant.LOCATIONID, md5_value);
 			return Response.ok(json.toString()).build();
 		} catch (Exception ex) {
-			logger.error("Device add location Exception.",ex) ;
+			logger.error("Device add location Exception.", ex);
 			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 			json.put(Constant.MESSAGE, JSONCode.SERVER_EXCEPTION);
 			return Response.ok(json.toString()).build();
@@ -665,7 +662,7 @@ public class LocationRest {
 			json.put(Constant.LOCATIONID, md5_value);
 			return Response.ok(json.toString()).build();
 		} catch (Exception ex) {
-			logger.error("WebSite add Location Exception.", ex) ;
+			logger.error("WebSite add Location Exception.", ex);
 			json.put(Constant.MESSAGE, JSONCode.SERVER_EXCEPTION);
 			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 			return Response.ok(json.toString()).build();
@@ -1032,11 +1029,23 @@ public class LocationRest {
 			json.put(Constant.MESSAGE, JSONCode.MSG_LOCATION_DELETE_SUCCESS);
 			return Response.ok(json.toString()).build();
 		} catch (Exception ex) {
-			logger.error("Delete Location Error.", ex) ;
+			logger.error("Delete Location Error.", ex);
 			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 			json.put(Constant.MESSAGE, JSONCode.SERVER_EXCEPTION);
 			return Response.ok(json.toString()).build();
 		}
 
+	}
+
+	private List<LocationDetail> fillLocationDetail(List<Location> list) {
+		List<LocationDetail> tempList = new ArrayList<LocationDetail>();
+		if (null != list && list.size() > 0) {
+			for (int i = 0, j = list.size(); i < j; i++) {
+				LocationDetail detail = new LocationDetail(list.get(i),true);
+				tempList.add(detail) ;
+			}
+			return tempList ;
+		}
+		return null;
 	}
 }

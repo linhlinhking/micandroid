@@ -5,7 +5,9 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import ningbo.media.bean.FirstCategory;
 import ningbo.media.bean.Location;
+import ningbo.media.bean.SecondCategory;
 import ningbo.media.rest.dto.AspectsCategoryData;
 import ningbo.media.rest.dto.FirstCategoryData;
 
@@ -14,7 +16,8 @@ import ningbo.media.rest.dto.FirstCategoryData;
 		"latitude", "longitude", "name_py", "tags_cn", "tags_en", "telephone",
 		"category2_id", "isAppoval", "phoneNumberOne", "phoneNumberTwo",
 		"phoneNumberThree", "description_cn", "description_en",
-		"firstCategoryData", "aspectsDatas" })
+		"firstCategoryNameEn", "firstCategoryNameCn", "secondCategoryNameEn",
+		"secondCategoryNameCn", "firstCategoryData", "aspectsDatas" })
 @XmlRootElement(name = "data")
 public class LocationDetail {
 
@@ -58,6 +61,14 @@ public class LocationDetail {
 
 	private String description_en;
 
+	private String firstCategoryNameEn;
+
+	private String firstCategoryNameCn;
+
+	private String secondCategoryNameEn;
+
+	private String secondCategoryNameCn;
+
 	private FirstCategoryData firstCategoryData;
 
 	private List<AspectsCategoryData> aspectsDatas;
@@ -66,16 +77,52 @@ public class LocationDetail {
 	}
 
 	public LocationDetail(Location l) {
-		if (null != l) {
-			this.address_cn = l.getAddress_cn();
-			this.address_en = l.getAddress_en();
-			this.name_cn = l.getName_cn();
-			this.name_en = l.getName_en();
-			this.latitude = l.getLatitude();
-			this.longitude = l.getLongitude();
-			this.md5Value = l.getMd5Value();
-		}
+		new LocationDetail(l, false);
+	}
 
+	public LocationDetail(Location l, boolean flag) {
+		if (null != l) {
+			if (flag) {
+				this.address_cn = l.getAddress_cn();
+				this.address_en = l.getAddress_en();
+				this.name_cn = l.getName_cn();
+				this.name_en = l.getName_en();
+				this.latitude = l.getLatitude();
+				this.longitude = l.getLongitude();
+				this.md5Value = l.getMd5Value();
+				this.telephone = l.getTelephone();
+				this.photo_path = l.getPhoto_path();
+				this.name_py = l.getName_py();
+				this.tags_cn = l.getTags_cn();
+				this.tags_en = l.getTags_en();
+				this.isAppoval = String.valueOf(l.isAppoval());
+				
+				List<SecondCategory> scList = l.getSecondCategorys();
+				SecondCategory sc = null;
+				if (null != scList && scList.size() > 0) {
+					sc = scList.get(0);
+					if (null != sc) {
+						this.secondCategoryNameCn = sc.getName_cn();
+						this.secondCategoryNameEn = sc.getName_en();
+
+						FirstCategory fc = sc.getFirstCategory();
+						if (null != fc) {
+							this.firstCategoryNameCn = fc.getName_cn();
+							this.firstCategoryNameEn = fc.getName_en();
+						}
+					}
+				}
+
+			} else {
+				this.address_cn = l.getAddress_cn();
+				this.address_en = l.getAddress_en();
+				this.name_cn = l.getName_cn();
+				this.name_en = l.getName_en();
+				this.latitude = l.getLatitude();
+				this.longitude = l.getLongitude();
+				this.md5Value = l.getMd5Value();
+			}
+		}
 	}
 
 	public String getMd5Value() {
@@ -253,7 +300,37 @@ public class LocationDetail {
 	public void setDescription_en(String description_en) {
 		this.description_en = description_en;
 	}
-	
-	
+
+	public String getFirstCategoryNameEn() {
+		return firstCategoryNameEn;
+	}
+
+	public void setFirstCategoryNameEn(String firstCategoryNameEn) {
+		this.firstCategoryNameEn = firstCategoryNameEn;
+	}
+
+	public String getFirstCategoryNameCn() {
+		return firstCategoryNameCn;
+	}
+
+	public void setFirstCategoryNameCn(String firstCategoryNameCn) {
+		this.firstCategoryNameCn = firstCategoryNameCn;
+	}
+
+	public String getSecondCategoryNameEn() {
+		return secondCategoryNameEn;
+	}
+
+	public void setSecondCategoryNameEn(String secondCategoryNameEn) {
+		this.secondCategoryNameEn = secondCategoryNameEn;
+	}
+
+	public String getSecondCategoryNameCn() {
+		return secondCategoryNameCn;
+	}
+
+	public void setSecondCategoryNameCn(String secondCategoryNameCn) {
+		this.secondCategoryNameCn = secondCategoryNameCn;
+	}
 
 }

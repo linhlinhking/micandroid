@@ -18,7 +18,7 @@ public class LocationList {
 		this.locations = locations ;
 	}
 	
-	@XmlElement(name = "location")
+	@XmlElement(name = "data")
 	public Collection<LocationData> getData(){
 		return locations ;
 	}

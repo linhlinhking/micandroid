@@ -16,4 +16,13 @@
 			<li><a href="/admin/logout">注销登陆</a></li>
 		</ul>
 	</div>
+	<div id="top-panel">
+	<div id="panel">
+		<ul>
+			<li><a href="#" class="search">搜索</a></li>
+			<li><a href="#" class="feed">RSS Feed</a></li>
+			<li>当前登陆用户：${sonbUser.username}</li>
+		</ul>
+	</div>
+</div>
 </div>

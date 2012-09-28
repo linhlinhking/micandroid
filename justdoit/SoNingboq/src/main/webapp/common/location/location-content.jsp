@@ -18,10 +18,107 @@
 		</p>
 		 -->
 	</div>
+	<!-- 
 	<div id="infowrap" style="height: 578px">
 		<table id="grid"></table>
 		<div id="pager"></div>
 	</div>
+	 -->
+	 
+<div class="location_count">
+  <div class="total_loc">
+  
+    <div class="location">
+      <div class="parts">
+        <div class="border">
+          <img src="/images/100x100.png" />
+          <p><a href="#">编辑</a>  <a href="#">审核</a>  <a href="#">删除</a></p>
+        </div>
+      </div>
+      <div class="parts margin">
+        <p>名称：世纪星滑冰俱乐部</p>
+        <p>地址：宁波市鄞州区宁南北路1288号联盛广场A区四楼</p>
+        <p>关键字：医疗健康，药品，医疗器械，零售</p>
+        <p>类别：运动&休闲娱乐 /滑雪</p>
+        <p>电话号码：0574-28905555/5588&nbsp;&nbsp;&nbsp;&nbsp;营业时间：8:30~22:00</p>
+        <p>信息完整度：90%</p>
+      </div>
+    </div>
+    
+        <div class="location">
+      <div class="parts">
+        <div class="border">
+          <img src="/images/100x100.png" />
+          <p>编辑  审核  删除</p>
+        </div>
+      </div>
+      <div class="parts margin">
+        <p>名称：世纪星滑冰俱乐部</p>
+        <p>地址：宁波市鄞州区宁南北路1288号联盛广场A区四楼</p>
+        <p>关键字：医疗健康，药品，医疗器械，零售</p>
+        <p>类别：运动&休闲娱乐 /滑雪</p>
+        <p>电话号码：0574-28905555/5588&nbsp;&nbsp;&nbsp;&nbsp;营业时间：8:30~22:00</p>
+        <p>信息完整度：90%</p>
+      </div>
+    </div>
+    
+        <div class="location">
+      <div class="parts">
+        <div class="border">
+          <img src="/images/100x100.png" />
+          <p>编辑  审核  删除</p>
+        </div>
+      </div>
+      <div class="parts margin">
+        <p>名称：世纪星滑冰俱乐部</p>
+        <p>地址：宁波市鄞州区宁南北路1288号联盛广场A区四楼</p>
+        <p>关键字：医疗健康，药品，医疗器械，零售</p>
+        <p>类别：运动&休闲娱乐 /滑雪</p>
+        <p>电话号码：0574-28905555/5588&nbsp;&nbsp;&nbsp;&nbsp;营业时间：8:30~22:00</p>
+        <p>信息完整度：90%</p>
+      </div>
+    </div>
+    
+     <div class="location">
+      <div class="parts">
+        <div class="border">
+          <img src="/images/100x100.png" />
+          <p>编辑  审核  删除</p>
+        </div>
+      </div>
+      <div class="parts margin">
+        <p>名称：世纪星滑冰俱乐部</p>
+        <p>地址：宁波市鄞州区宁南北路1288号联盛广场A区四楼</p>
+        <p>关键字：医疗健康，药品，医疗器械，零售</p>
+        <p>类别：运动&休闲娱乐 /滑雪</p>
+        <p>电话号码：0574-28905555/5588&nbsp;&nbsp;&nbsp;&nbsp;营业时间：8:30~22:00</p>
+        <p>信息完整度：90%</p>
+      </div>
+    </div>
+    
+     <div class="location">
+      <div class="parts">
+        <div class="border">
+          <img src="/images/100x100.png" />
+          <p>编辑  审核  删除</p>
+        </div>
+      </div>
+      <div class="parts margin">
+        <p>名称：世纪星滑冰俱乐部</p>
+        <p>地址：宁波市鄞州区宁南北路1288号联盛广场A区四楼</p>
+        <p>关键字：医疗健康，药品，医疗器械，零售</p>
+        <p>类别：运动&休闲娱乐 /滑雪</p>
+        <p>电话号码：0574-28905555/5588&nbsp;&nbsp;&nbsp;&nbsp;营业时间：8:30~22:00</p>
+        <p>信息完整度：90%</p>
+      </div>
+    </div>
+    
+
+    
+
+
+    </div>
+  </div>
 </div>
 
 <div id="addLocation" style="display: none">

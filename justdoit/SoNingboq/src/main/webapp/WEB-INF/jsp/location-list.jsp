@@ -26,7 +26,7 @@
 		<%@ include file="/common/header.jsp"%>
 		<!-- loading header end -->
 		<!-- Loading Second Menu start -->
-		<%@ include file="/common/head-menu.jsp"%>
+		
 		<!-- Loading Second Menu end -->
 
 		<div id="wrapper">

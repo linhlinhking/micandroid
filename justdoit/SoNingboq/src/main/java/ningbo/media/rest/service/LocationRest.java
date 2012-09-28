@@ -891,6 +891,7 @@ public class LocationRest {
 		}
 	}
 
+	
 	@Path("/search/{name}")
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
@@ -900,7 +901,7 @@ public class LocationRest {
 		LocationData d = null;
 		for (Location l : list) {
 			d = new LocationData();
-			d.setId(l.getId());
+			d.setLocationId(l.getId()) ;
 			d.setName_cn(l.getName_cn());
 			d.setName_en(l.getName_en());
 			d.setMd5Value(l.getMd5Value());
@@ -922,6 +923,8 @@ public class LocationRest {
 		}
 		return new LocationList(listData);
 	}
+	
+	
 
 	@Path("/nearby/{latitude}/{longitude}")
 	@GET

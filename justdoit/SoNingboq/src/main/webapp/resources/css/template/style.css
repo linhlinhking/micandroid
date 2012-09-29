@@ -51,32 +51,33 @@ select {
 
 #header {
 	width: 960px;
-	height:100px;
-	position:fixed;
-	z-index:100;
-	background-color:#BD3F09;
+	height: 100px;
+	position: fixed;
+	z-index: 100;
+	background-color: #BD3F09;
 }
 
 #header h2 {
-	position:fixed;
-	top:10px;
+	position: fixed;
+	top: 10px;
 }
 
 #content {
 	width: 740px;
-	position:relative;
+	position: relative;
 	margin: 0px 0 10px 200px;
 	padding: 10px;
-	top:100px;
+	top: 100px;
 }
+
 #sidebar {
 	background: #FFF;
 	width: 170px;
 	float: right;
 	padding: 10px;
-	position:fixed;
-	top:100px;
-	height:672px;
+	position: fixed;
+	top: 100px;
+	height: 672px;
 }
 
 #footer {
@@ -122,8 +123,8 @@ select {
 *********************/
 #topmenu {
 	width: 700px;
-	position:fixed;
-	top:35px;
+	position: fixed;
+	top: 35px;
 	voice-family: inherit;
 }
 
@@ -152,8 +153,8 @@ select {
 	padding: 5px;
 	height: 20px;
 	width: 950px;
-	position:fixed;
-	top:65px;
+	position: fixed;
+	top: 65px;
 }
 
 #top-panel ul {
@@ -457,11 +458,13 @@ form#form #button1:hover,form#form #button2:hover {
 }
 
 .location .parts .border img {
-	
+	width: 100px;
+	height: 100px;
 }
 
 .location .margin {
 	margin-left: 30px;
+	width: 600px;
 }
 
 .location .margin p {

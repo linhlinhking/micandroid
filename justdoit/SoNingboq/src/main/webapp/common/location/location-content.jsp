@@ -17,6 +17,7 @@
 				in sales</a> and a total of <strong>$328.24 profit </strong>
 		</p>
 		 -->
+	<input id="locations_total" type="hidden" value="${total}" name="locations_total">
 	</div>
 	<!-- 
 	<div id="infowrap" style="height: 578px">
@@ -26,100 +27,14 @@
 	 -->
 	 
 <div class="location_count">
-  <div class="total_loc">
+  <div class="total_loc" id="content_location">
   
-    <div class="location">
-      <div class="parts">
-        <div class="border">
-          <img src="/images/100x100.png" />
-          <p><a href="#">编辑</a>  <a href="#">审核</a>  <a href="#">删除</a></p>
-        </div>
-      </div>
-      <div class="parts margin">
-        <p>名称：世纪星滑冰俱乐部</p>
-        <p>地址：宁波市鄞州区宁南北路1288号联盛广场A区四楼</p>
-        <p>关键字：医疗健康，药品，医疗器械，零售</p>
-        <p>类别：运动&休闲娱乐 /滑雪</p>
-        <p>电话号码：0574-28905555/5588&nbsp;&nbsp;&nbsp;&nbsp;营业时间：8:30~22:00</p>
-        <p>信息完整度：90%</p>
-      </div>
     </div>
-    
-        <div class="location">
-      <div class="parts">
-        <div class="border">
-          <img src="/images/100x100.png" />
-          <p>编辑  审核  删除</p>
-        </div>
-      </div>
-      <div class="parts margin">
-        <p>名称：世纪星滑冰俱乐部</p>
-        <p>地址：宁波市鄞州区宁南北路1288号联盛广场A区四楼</p>
-        <p>关键字：医疗健康，药品，医疗器械，零售</p>
-        <p>类别：运动&休闲娱乐 /滑雪</p>
-        <p>电话号码：0574-28905555/5588&nbsp;&nbsp;&nbsp;&nbsp;营业时间：8:30~22:00</p>
-        <p>信息完整度：90%</p>
-      </div>
-    </div>
-    
-        <div class="location">
-      <div class="parts">
-        <div class="border">
-          <img src="/images/100x100.png" />
-          <p>编辑  审核  删除</p>
-        </div>
-      </div>
-      <div class="parts margin">
-        <p>名称：世纪星滑冰俱乐部</p>
-        <p>地址：宁波市鄞州区宁南北路1288号联盛广场A区四楼</p>
-        <p>关键字：医疗健康，药品，医疗器械，零售</p>
-        <p>类别：运动&休闲娱乐 /滑雪</p>
-        <p>电话号码：0574-28905555/5588&nbsp;&nbsp;&nbsp;&nbsp;营业时间：8:30~22:00</p>
-        <p>信息完整度：90%</p>
-      </div>
-    </div>
-    
-     <div class="location">
-      <div class="parts">
-        <div class="border">
-          <img src="/images/100x100.png" />
-          <p>编辑  审核  删除</p>
-        </div>
-      </div>
-      <div class="parts margin">
-        <p>名称：世纪星滑冰俱乐部</p>
-        <p>地址：宁波市鄞州区宁南北路1288号联盛广场A区四楼</p>
-        <p>关键字：医疗健康，药品，医疗器械，零售</p>
-        <p>类别：运动&休闲娱乐 /滑雪</p>
-        <p>电话号码：0574-28905555/5588&nbsp;&nbsp;&nbsp;&nbsp;营业时间：8:30~22:00</p>
-        <p>信息完整度：90%</p>
-      </div>
-    </div>
-    
-     <div class="location">
-      <div class="parts">
-        <div class="border">
-          <img src="/images/100x100.png" />
-          <p>编辑  审核  删除</p>
-        </div>
-      </div>
-      <div class="parts margin">
-        <p>名称：世纪星滑冰俱乐部</p>
-        <p>地址：宁波市鄞州区宁南北路1288号联盛广场A区四楼</p>
-        <p>关键字：医疗健康，药品，医疗器械，零售</p>
-        <p>类别：运动&休闲娱乐 /滑雪</p>
-        <p>电话号码：0574-28905555/5588&nbsp;&nbsp;&nbsp;&nbsp;营业时间：8:30~22:00</p>
-        <p>信息完整度：90%</p>
-      </div>
-    </div>
-    
-
-    
-
-
-    </div>
+    <div id="Pagination" class="pagination"><!-- 这里显示分页 --></div>
   </div>
 </div>
+
+
 
 <div id="addLocation" style="display: none">
 		<div id="add-location-dialog-form" title="添加位置信息">
@@ -143,3 +58,34 @@
 			
 		</div>
 </div>
+
+<script type="text/template" id="template_location">
+
+
+	
+			<div class="location">
+		      <div class="parts">
+		        <div class="border">
+		<@ if(photo_path == 'undefined' || "0" == photo_path || photo_path == null){@>
+		<img src="/images/shop_photo_gray.gif" />
+		<@}@> 
+		<@ if(photo_path != null && photo_path != "0"){@>
+		<img src='<@="http://api.soningbo.com/upload/" + photo_path.substring(0,4) + "/" + photo_path.substring(4,8) + "/" + photo_path.substring(8,12) + "/" + photo_path.substring(12)+"-100x100" @>' />
+		<@}@>
+		          
+		         <p><a href="/admin/location/edit/<@=id @>" id="<@=md5Value @>" class="edit_<@=id @>">编辑</a>  <a href="/admin/location/appoval/<@=id @>" id="<@=md5Value @>" class="appoval_<@=id @>">审核</a>  <a href="/admin/location/delete/<@=id @>" id="<@=md5Value @>" class="delete_<@=id @>">删除</a></p>
+		        </div>
+		      </div>
+		       <div class="parts margin">
+		        <p>名称：<@=name_cn @></p>
+		        <p>地址：<@=address_cn @></p>
+		        <p>关键字：<@=tags_cn @></p>
+		        <p>类别：
+		        <p>电话号码：<@=telephone @>&nbsp;&nbsp;&nbsp;&nbsp;营业时间：8:30~22:00</p>
+		        <p>信息完整度：90%</p>
+		      </div>
+		    </div>	
+
+
+	
+</script>

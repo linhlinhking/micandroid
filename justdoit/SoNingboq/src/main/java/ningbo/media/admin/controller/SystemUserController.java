@@ -47,7 +47,6 @@ public class SystemUserController extends BaseController<SystemUser>{
 			
 			return jq ;
 		}
-		
 		return new JqgridPage<SystemUser>() ;
 	}
 

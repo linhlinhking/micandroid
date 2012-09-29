@@ -33,8 +33,9 @@ public class LocationController extends BaseController<Location> {
 	private LocationService locationService;
 
 	@RequestMapping
-	public String getEventPage(HttpServletRequest request,
-			HttpServletResponse response) {
+	public String getEventPage(Model model) {
+		Long total = locationService.getTotalCount() ;
+		model.addAttribute("total", total) ;
 		return "location-list";
 	}
 
@@ -58,28 +59,44 @@ public class LocationController extends BaseController<Location> {
 		return new JqgridPage<Location>();
 	}
 
-	
 	@RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
 	public String toUpdate(@PathVariable("id") String id, Model model)
 			throws Exception {
-		if(id == null || id.length() < 0){
-			logger.error("Can't get the location's MD5Value.") ;
-			return "location-list" ;
-		}
-		Location loc = locationService.get(Constant.MD5_FIELD, id) ;
-		if(null != loc){
-			model.addAttribute("location",loc);
-			
+		if (id == null || id.length() < 0) {
+			logger.error("Can't get the location's MD5Value.");
 			return "location-list";
 		}
-		
-		return "location-list" ;
+		Location loc = locationService.get(Constant.MD5_FIELD, id);
+		if (null != loc) {
+			model.addAttribute("location", loc);
+
+			return "location-list";
+		}
+
+		return "location-list";
 	}
-	
-	
 
 	public ModelAndView index(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
+		return null;
+	}
+
+	// @PathVariable("pageNumber") String pageNumber,
+	// @PathVariable("pageSize") String pageSize
+	@RequestMapping(value = "/getData/{pageNumber}/{pageSize}", method = RequestMethod.GET)
+	public @ResponseBody
+	List<Location> getDatasByPage(
+			@PathVariable("pageNumber") String pageNumber,
+			@PathVariable("pageSize") String pageSize) {
+		if (pageNumber == null || pageSize == null) {
+			return null;
+		}
+		Pagination<Location> p = locationService.getAllByPage(
+				Integer.valueOf(pageNumber), Integer.valueOf(pageSize));
+		List<Location> lists = p.getList();
+		if (null != lists && lists.size() > 0) {
+			return lists;
+		}
 		return null;
 	}
 

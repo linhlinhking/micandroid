@@ -8,6 +8,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Dashboard - Admin Template</title>
 <%@ include file="/common/css.jsp"%>
+<link rel="stylesheet" type="text/css" href="/css/pagination/pagination.css" />
 <!-- JS Imports -->
 <script type="text/javascript" src="/js/jquery/jquery-1.5.2.min.js"></script>
 <script>
@@ -48,6 +49,7 @@
 
 </body>
 <!-- /admin/user/getAll -->
-<%@ include file="/common/jslib.jsp"%>
+<script type="text/javascript" src="/js/pagination/jquery.pagination.js"></script>
+<%@ include file="/common/mvc.jsp" %>
 <script type="text/javascript" src="/js/soningbo/location.js"></script>
 </html>

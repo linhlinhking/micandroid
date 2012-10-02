@@ -7,7 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ningbo.media.admin.jqgrid.JqgridPage;
+import ningbo.media.bean.FirstCategory;
 import ningbo.media.bean.Location;
+import ningbo.media.bean.SecondCategory;
 import ningbo.media.core.page.Pagination;
 import ningbo.media.core.web.BaseController;
 import ningbo.media.rest.util.Constant;
@@ -34,8 +36,8 @@ public class LocationController extends BaseController<Location> {
 
 	@RequestMapping
 	public String getEventPage(Model model) {
-		Long total = locationService.getTotalCount() ;
-		model.addAttribute("total", total) ;
+		Long total = locationService.getTotalCount();
+		model.addAttribute("total", total);
 		return "location-list";
 	}
 
@@ -97,6 +99,20 @@ public class LocationController extends BaseController<Location> {
 		if (null != lists && lists.size() > 0) {
 			return lists;
 		}
+		return null;
+	}
+
+	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+	public String toEditLocation(@PathVariable("id") String id, Model model) {
+		if (null == id || id.length() < 0) {
+			return "location-list";
+		}
+		Location location = locationService.get(Integer.valueOf(id));
+		if (null != location) {
+			model.addAttribute("location", location) ;
+			return "location-edit" ;
+		}
+
 		return null;
 	}
 

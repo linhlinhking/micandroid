@@ -13,7 +13,9 @@ import ningbo.media.bean.SecondCategory;
 import ningbo.media.core.page.Pagination;
 import ningbo.media.core.web.BaseController;
 import ningbo.media.rest.util.Constant;
+import ningbo.media.service.FirstCategoryService;
 import ningbo.media.service.LocationService;
+import ningbo.media.service.SecondCategoryService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +35,12 @@ public class LocationController extends BaseController<Location> {
 
 	@Resource
 	private LocationService locationService;
+	
+	@Resource
+	private FirstCategoryService firstCategoryService ;
+	
+	@Resource
+	private SecondCategoryService secondCategoryService ;
 
 	@RequestMapping
 	public String getEventPage(Model model) {
@@ -109,6 +117,11 @@ public class LocationController extends BaseController<Location> {
 		}
 		Location location = locationService.get(Integer.valueOf(id));
 		if (null != location) {
+			List<FirstCategory> firstList = firstCategoryService.getAll() ;
+			List<SecondCategory> secondList = secondCategoryService.getAll() ;
+			
+			model.addAttribute("fistList", firstList) ;
+			model.addAttribute("secondList", secondList);
 			model.addAttribute("location", location) ;
 			return "location-edit" ;
 		}

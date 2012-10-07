@@ -1,0 +1,23 @@
+#slider .slider-shadow {
+	background-image: none;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/template_1/slider-shadow.png',
+		sizingMethod='crop' );
+}
+
+#slider .socials-bg {
+	background-image: none;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/template_1/socials-bg.png',
+		sizingMethod='crop' );
+}
+
+#slider .slider-navigation .slider-navigation-bg {
+	background-image: none;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/template_1/slider-navigation.png',
+		sizingMethod='image' );
+}
+
+#slider .slide-data-bg {
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/template_1/slider-data.png',
+		sizingMethod='image' );
+	background-image: none;
+}

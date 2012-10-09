@@ -738,5 +738,21 @@ public class SystemUserRest {
 		}
 		return data;
 	}
+	
+	@Path("/number")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getRegisterNumber() throws JSONException{
+		JSONObject json = new JSONObject() ;
+		try{
+			Long num = systemUserService.getTotalCount() ;
+			json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS) ;
+			json.put(Constant.DATA,num) ;
+		}catch(Exception ex){
+			ex.printStackTrace() ;
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL) ;
+		}
+		return Response.ok(json.toString()).build() ;
+	}
 
 }

@@ -26,6 +26,7 @@ import ningbo.media.bean.ModuleFile;
 import ningbo.media.bean.SecondCategory;
 import ningbo.media.bean.SystemUser;
 import ningbo.media.bean.UserLocations;
+import ningbo.media.bean.enums.DirectoryType;
 import ningbo.media.data.api.LocationList;
 import ningbo.media.data.entity.LocationData;
 import ningbo.media.data.entity.LocationDetail;
@@ -33,7 +34,6 @@ import ningbo.media.rest.dto.AspectsCategoryData;
 import ningbo.media.rest.dto.FirstCategoryData;
 import ningbo.media.rest.util.Constant;
 import ningbo.media.rest.util.FieldsData;
-import ningbo.media.rest.util.FileHashCode;
 import ningbo.media.rest.util.FileUpload;
 import ningbo.media.rest.util.FileUploadUtil;
 import ningbo.media.rest.util.JSONCode;
@@ -422,7 +422,7 @@ public class LocationRest {
 
 			String fileName = String.valueOf(System.currentTimeMillis());
 			StringBuffer sb = new StringBuffer();
-			String tempPath = FileUploadUtil.makeFileDir(null, request, true);
+			String tempPath = FileUploadUtil.makeFileDir(null, request,DirectoryType.UPLOAD, true);
 			sb.append(tempPath).append(fileName);
 
 			String photo_path = null;
@@ -439,7 +439,7 @@ public class LocationRest {
 					return Response.ok(json.toString()).build();
 				}
 
-				photo_path = FileHashCode.writeBase64File(request,
+				photo_path = FileUploadUtil.writeBase64File(request,
 						sb.toString());
 			}
 
@@ -631,8 +631,8 @@ public class LocationRest {
 			Integer locationId = location.getId();
 			String md5_value = location.getMd5Value();
 			if (null == md5_value) {
-				String md5Value = MD5.calcMD5(String.valueOf(locationId));
-				location.setMd5Value(md5Value);
+				md5_value = MD5.calcMD5(String.valueOf(locationId));
+				location.setMd5Value(md5_value);
 				location = locationService.saveOrUpdate(location);
 			}
 
@@ -1016,6 +1016,7 @@ public class LocationRest {
 					moduleFileService.delete(temp);// 删除记录
 				}
 			}
+			
 			String photoPath = loc.getPhoto_path();
 			if ((null != photoPath) && (!(photoPath.equals("0")))) {
 				FileUploadUtil.delFile(photoPath, request);

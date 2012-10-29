@@ -4,7 +4,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ningbo.media.admin.util.Result;
 import ningbo.media.bean.Location;
 import ningbo.media.bean.StaffPicks;
 import ningbo.media.bean.SystemUser;
@@ -78,7 +77,7 @@ public class StaffPicksController {
 			staff = new StaffPicks();
 			staff.setLocation(location);
 		}
-		Result<Integer> rs;
+		
 
 		return null;
 	}

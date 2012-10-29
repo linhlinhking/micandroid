@@ -62,5 +62,6 @@ public class SystemUserServiceImpl extends BaseServiceImpl<SystemUser, Integer>
 		}
 		return rs;
 	}
+	
 
 }

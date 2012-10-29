@@ -124,8 +124,8 @@ public class FileUpload {
 			os.close();
 			in.close();
 
-			String uuid = FileHashCode
-					.writeBase64File(request, temp.toString());
+			String uuid = FileUploadUtil.writeBase64File(request,
+					temp.toString());
 
 			return uuid;
 		} catch (IOException ex) {

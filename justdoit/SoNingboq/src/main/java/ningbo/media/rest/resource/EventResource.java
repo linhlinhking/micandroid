@@ -22,6 +22,7 @@ import javax.ws.rs.core.Response;
 import ningbo.media.bean.Event;
 import ningbo.media.bean.Location;
 import ningbo.media.bean.SystemUser;
+import ningbo.media.bean.enums.DirectoryType;
 import ningbo.media.bean.enums.EventRequestType;
 import ningbo.media.bean.enums.EventType;
 import ningbo.media.data.api.EventList;
@@ -34,7 +35,6 @@ import ningbo.media.data.entity.UserEventData;
 import ningbo.media.rest.dto.SystemUserData;
 import ningbo.media.rest.util.Constant;
 import ningbo.media.rest.util.DateUtil;
-import ningbo.media.rest.util.FileHashCode;
 import ningbo.media.rest.util.FileUpload;
 import ningbo.media.rest.util.FileUploadUtil;
 import ningbo.media.rest.util.JSONCode;
@@ -238,7 +238,7 @@ public class EventResource {
 				String fileName = String.valueOf(System.currentTimeMillis());
 				StringBuffer sb = new StringBuffer();
 				String tempPath = FileUploadUtil.makeFileDir(null, request,
-						true);
+						DirectoryType.UPLOAD, true);
 				sb.append(tempPath).append(fileName);
 
 				String tempBase64Value = base64Value.replaceAll(" ", "+");
@@ -255,7 +255,7 @@ public class EventResource {
 					return Response.ok(json.toString()).build();
 				}
 
-				String photo_path = FileHashCode.writeBase64File(request,
+				String photo_path = FileUploadUtil.writeBase64File(request,
 						sb.toString());
 
 				event.setPhoto_path(photo_path);
@@ -342,7 +342,7 @@ public class EventResource {
 			event.setEndDate(endDate);
 			event.setEndTime(endTime);
 			event.setAddress(address);
-			event.setOrganizer(organizer) ;
+			event.setOrganizer(organizer);
 			event.setLocationMd5Value(locationMd5Value);
 			event.setUserMd5Value(userMd5Value);
 			event.setTelephone(telephone);
@@ -353,7 +353,7 @@ public class EventResource {
 				String fileName = String.valueOf(System.currentTimeMillis());
 				StringBuffer sb = new StringBuffer();
 				String tempPath = FileUploadUtil.makeFileDir(null, request,
-						true);
+						DirectoryType.UPLOAD, true);
 				sb.append(tempPath).append(fileName);
 
 				String tempBase64Value = base64Value.replaceAll(" ", "+");
@@ -368,7 +368,7 @@ public class EventResource {
 					return Response.ok(json.toString()).build();
 				}
 
-				String photo_path = FileHashCode.writeBase64File(request,
+				String photo_path = FileUploadUtil.writeBase64File(request,
 						sb.toString());
 				event.setPhoto_path(photo_path);
 			}

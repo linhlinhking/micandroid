@@ -40,6 +40,7 @@ public class Constant {
 	public static final String MD5_FIELD = "md5Value" ;
 	public static final String SYSTEM_USER_TYPE = "User" ;
 	public static final String PROFILEID = "profileId" ;
+	public static final String PRODUCTID = "productId" ;
 	public static final String PROFILE_EXT_USERID = "systemUser.id" ;
 	public static final String LOCATIONEXT_LINK_LOCATION = "location.id" ;
 	
@@ -58,5 +59,9 @@ public class Constant {
 	public static final String API_URL = "http://api.soningbo.com" ;
 	
 	//public static final String API_URL = "http://localhost:9000" ;
+	
+	public static final String UPLOAD = "upload" ; 
+	public static final String PRODUCT = "product" ;
+	public static final String USERDIR = "profile" ;
 	
 }

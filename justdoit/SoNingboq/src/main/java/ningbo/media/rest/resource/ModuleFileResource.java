@@ -35,9 +35,9 @@ import ningbo.media.bean.Location;
 import ningbo.media.bean.ModuleFile;
 import ningbo.media.bean.SystemUser;
 import ningbo.media.bean.UserModuleFiles;
+import ningbo.media.bean.enums.DirectoryType;
 import ningbo.media.rest.dto.ModuleFileData;
 import ningbo.media.rest.util.Constant;
-import ningbo.media.rest.util.FileHashCode;
 import ningbo.media.rest.util.FileUpload;
 import ningbo.media.rest.util.FileUploadUtil;
 import ningbo.media.rest.util.JSONCode;
@@ -211,7 +211,7 @@ public class ModuleFileResource {
 				"/resource/modulefile/option?getthumb=").path("");
 		UriBuilder delFileUrl = UriBuilder.fromPath(
 				"/resource/modulefile/option?delfile=").path("");
-		//String linkUrl = "http://localhost:9000";
+		// String linkUrl = "http://localhost:9000";
 		String linkUrl = Constant.API_URL;
 		String tmpPath = FileUpload.makeTempDir(request);
 		JSONArray jsonArry = new JSONArray();
@@ -263,7 +263,6 @@ public class ModuleFileResource {
 			@FormParam("userId") String userId, @FormParam("key") String key,
 			@Context HttpServletRequest request) throws JSONException {
 		JSONObject json = new JSONObject();
-		List<SystemUser> listUsers = new ArrayList<SystemUser>();
 		ModuleFile moduleFile = new ModuleFile();
 		List<Location> listLocations = new ArrayList<Location>();
 		UserModuleFiles files = new UserModuleFiles();
@@ -306,7 +305,7 @@ public class ModuleFileResource {
 							.append(fileName);
 
 					ImageInformation inforImage = new ImageInformation();
-					Map<String, Object> m = FileHashCode.writeToFile(request,
+					Map<String, Object> m = FileUploadUtil.writeToFile(request,
 							buffer.toString());
 
 					inforImage.setWidth(Double.valueOf(m.get(Constant.WIDTH)
@@ -335,7 +334,7 @@ public class ModuleFileResource {
 					moduleFile.setCreateTime(new Date());
 					moduleFile.setImageInfo(inforImage);
 					moduleFile.setLocations(listLocations);
-					moduleFile.setSystemUsers(listUsers);
+					moduleFile.setSystemUser(u);
 
 					Integer moduleFileId = moduleFileService.save(moduleFile);
 
@@ -366,39 +365,41 @@ public class ModuleFileResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addModuleFile(FormDataMultiPart form,
 			@FormDataParam("file") InputStream uploadFile,
-			@FormDataParam("file") FormDataContentDisposition fileDetail) {
+			@FormDataParam("file") FormDataContentDisposition fileDetail,
+			@Context HttpServletRequest request) {
 
 		try {
 			JSONObject json = new JSONObject();
-			List<SystemUser> listUsers = new ArrayList<SystemUser>();
 			ModuleFile moduleFile = new ModuleFile();
 			String key = form.getField("key").getValue();
 			String userId = form.getField("userId").getValue();
 
 			if (!StringUtils.hasText(key)) {
-				json.put(Constant.CODE, JSONCode.KEYISNULL);
+				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_ISNULL);
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 				return Response.ok(json.toString()).build();
 			} else if (!key.equals(Constant.KEY)) {
-				json.put(Constant.CODE, JSONCode.KEYINPUTINVALID);
+				json.put(Constant.MESSAGE, JSONCode.MSG_KEY_INVALID);
+				json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 				return Response.ok(json.toString()).build();
 			}
 
-			SystemUser u = systemUserService.get(Integer.valueOf(userId));
+			SystemUser u = systemUserService.get(Constant.MD5_FIELD,userId);
 			if (null == u) {
 				json.put(Constant.CODE, JSONCode.MODULEFILE_TYPE_NOEXISTS);
 				return Response.ok(json.toString()).build();
 			}
-			listUsers.add(u);
 
 			String fileName = fileDetail.getFileName();
 			StringBuffer sb = new StringBuffer();
-			String tempPath = FileHashCode.makeTempFileDir();
+			String tempPath = FileUploadUtil.makeFileDir(null, request,
+					DirectoryType.UPLOAD, true);
 			sb.append(tempPath).append(fileName);
 
 			ImageInformation inforImage = new ImageInformation();
 
-			Map<String, Object> m = FileHashCode.writeToFile(uploadFile,
-					sb.toString());
+			Map<String, Object> m = FileUploadUtil.writeToFile(uploadFile,
+					sb.toString(), request, DirectoryType.UPLOAD);
 
 			inforImage.setWidth(Double
 					.valueOf(m.get(Constant.WIDTH).toString()));
@@ -427,7 +428,7 @@ public class ModuleFileResource {
 			moduleFile.setFileHash(uuid);
 			moduleFile.setCreateTime(new Date());
 			moduleFile.setImageInfo(inforImage);
-			moduleFile.setSystemUsers(listUsers);
+			moduleFile.setSystemUser(u);
 
 			Integer moduleFileId = moduleFileService.save(moduleFile);
 			json.put(Constant.CODE, JSONCode.SUCCESS);
@@ -471,7 +472,8 @@ public class ModuleFileResource {
 
 			String fileName = String.valueOf(System.currentTimeMillis());
 			StringBuffer sb = new StringBuffer();
-			String tempPath = FileUploadUtil.makeFileDir(null, request, true);
+			String tempPath = FileUploadUtil.makeFileDir(null, request,
+					DirectoryType.UPLOAD, true);
 			sb.append(tempPath).append(fileName);
 
 			String tempBase64 = imageBase64.replaceAll(" ", "+");
@@ -485,7 +487,7 @@ public class ModuleFileResource {
 			}
 
 			ImageInformation inforImage = new ImageInformation();
-			Map<String, Object> m = FileHashCode.writeToFile(request,
+			Map<String, Object> m = FileUploadUtil.writeToFile(request,
 					sb.toString());
 
 			inforImage.setWidth(Double
@@ -543,8 +545,8 @@ public class ModuleFileResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addLoctionFile(FormDataMultiPart form,
 			@FormDataParam("file") InputStream uploadFile,
-			@FormDataParam("file") FormDataContentDisposition fileDetail)
-			throws JSONException {
+			@FormDataParam("file") FormDataContentDisposition fileDetail,
+			@Context HttpServletRequest request) throws JSONException {
 		JSONObject json = new JSONObject();
 		try {
 			UserModuleFiles files = new UserModuleFiles();
@@ -574,12 +576,13 @@ public class ModuleFileResource {
 
 			String fileName = fileDetail.getFileName();
 			StringBuffer sb = new StringBuffer();
-			String tempPath = FileHashCode.makeTempFileDir();
+			String tempPath = FileUploadUtil.makeFileDir(null, request,
+					DirectoryType.UPLOAD, true);
 			sb.append(tempPath).append(fileName);
 
 			ImageInformation inforImage = new ImageInformation();
-			Map<String, Object> m = FileHashCode.writeToFile(uploadFile,
-					sb.toString());
+			Map<String, Object> m = FileUploadUtil.writeToFile(uploadFile,
+					sb.toString(), request, DirectoryType.UPLOAD);
 
 			inforImage.setWidth(Double
 					.valueOf(m.get(Constant.WIDTH).toString()));
@@ -667,7 +670,8 @@ public class ModuleFileResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response resizeImageByCustomer(@PathParam("fileId") Integer fileId,
 			@PathParam("width") Integer width,
-			@PathParam("height") Integer height) {
+			@PathParam("height") Integer height,
+			@Context HttpServletRequest request) {
 		JSONObject json = new JSONObject();
 		try {
 
@@ -684,7 +688,8 @@ public class ModuleFileResource {
 
 			String fileHash = tempFile.getFileHash();
 			StringBuffer buffer = new StringBuffer();
-			String filePath = FileHashCode.makeFileDir(fileHash);
+			String filePath = FileUploadUtil.makeFileDir(fileHash, request,
+					DirectoryType.UPLOAD, false);
 			buffer.append(filePath).append(fileHash.substring(12));
 
 			File srcFile = new File(buffer.toString());

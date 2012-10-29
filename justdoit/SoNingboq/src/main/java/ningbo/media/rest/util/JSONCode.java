@@ -48,6 +48,7 @@ public class JSONCode {
 	public static final String MSG_USER_USER_MD5VALUE = "No The User Of Md5 value" ;
 	public static final String MSG_USER_AVATAR_UPDATE = "The User Avatar Aleady Update." ;
 	public static final String MSG_USER_MD5VALUE_ISNULL = "Can't get MD5 Value." ;
+	public static final String MSG_USER_SEND_EMAIL_ERROR = "Send Validate Email Error." ;
 	
 	public static final String MSG_FAVORITE_ALREADY_EXIST = "Already Favorite." ;
 	public static final String MSG_FAVORITE_LOCATION_SUCCESS = "Favorite Successfully." ;

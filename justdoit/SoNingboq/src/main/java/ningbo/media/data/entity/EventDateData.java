@@ -43,7 +43,7 @@ public class EventDateData {
 			}else{
 				this.isRepeat = "false" ;
 			}
-			this.repeatType = d.getRepeatType() ;
+			this.repeatType = d.getRepeatType().getValue() ;
 			this.repeatValue = d.getRepeatValue() ;
 		}
 	}

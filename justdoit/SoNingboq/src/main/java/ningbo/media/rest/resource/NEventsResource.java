@@ -21,6 +21,7 @@ import ningbo.media.bean.EventDate;
 import ningbo.media.bean.Location;
 import ningbo.media.bean.NEvents;
 import ningbo.media.bean.SystemUser;
+import ningbo.media.bean.enums.RepeatType;
 import ningbo.media.data.entity.NEventData;
 import ningbo.media.rest.util.Constant;
 import ningbo.media.rest.util.JSONCode;
@@ -189,7 +190,7 @@ public class NEventsResource {
 				d.setStartTime(startTime);
 				d.setEndTime(endTime);
 				d.setnEvents(event);
-				d.setRepeatType(repeatType);
+				d.setRepeatType(RepeatType.valueOf(repeatType));
 				d.setRepeatValue(daysValue);
 				d.setRepeat(flagRepeat);
 
@@ -226,14 +227,14 @@ public class NEventsResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllEvents(@PathParam("dataType") String dataType,
 			@PathParam("dateValue") String dateValue) throws JSONException {
-		JSONObject json = new JSONObject() ;
+		JSONObject json = new JSONObject();
 		try {
 			List<NEvents> events = nEventsService.getEventsByType(dateValue);
 			List<NEventData> datas = new ArrayList<NEventData>();
 			if (null != events && events.size() > 0) {
 				for (int i = 0, j = events.size(); i < j; i++) {
 					NEventData d = new NEventData(events.get(i));
-					
+
 					datas.add(d);
 				}
 				GenericEntity<List<NEventData>> entrys = new GenericEntity<List<NEventData>>(
@@ -249,6 +250,5 @@ public class NEventsResource {
 		}
 		return Response.ok(json.toString()).build();
 	}
-	
-	
+
 }

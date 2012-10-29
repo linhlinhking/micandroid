@@ -53,7 +53,7 @@ public class LocationDaoImpl extends BaseDaoImpl<Location, Integer> implements
 			if (null == categoryId) {
 				return null;
 			}
-			String hql = "select bean from Location as bean left join bean.secondCategorys as s where 1=1 and s.id = ? order by bean.id desc";
+			String hql = "select bean from Location as bean left join bean.secondCategorys as s where 1=1 and s.id = ? order by (case   WHEN   bean.photo_path is NULL OR bean.photo_path = '0'  then   1  else  0  end), bean.id desc ";
 			List<Location> loc = findByHql(hql, categoryId);
 			if (null != loc) {
 				return loc;

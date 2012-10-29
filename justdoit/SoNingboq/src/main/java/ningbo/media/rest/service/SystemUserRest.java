@@ -82,7 +82,7 @@ public class SystemUserRest {
 		SystemUser u = systemUserService.get(Constant.MD5_FIELD, id);
 		if (null == u) {
 			String message = "The User Id [" + id + "] No Exists.";
-			logger.error(message) ;
+			logger.error(message);
 			throw Jerseys.buildException(Status.NOT_FOUND, message);
 		}
 		return Response.ok(getSystemUserData(u)).build();
@@ -226,25 +226,25 @@ public class SystemUserRest {
 		u.setDatetime(new Date());
 		u.setUserType(Constant.USERTYPE_USER);
 		u.setStatus(false);
-		try {
-			Integer id = systemUserService.save(u);
-			String md5Value = MD5.calcMD5(String.valueOf(id));
-			u = systemUserService.get(id);
-			u.setMd5Value(md5Value);
-			systemUserService.update(u);
 
+		Integer id = systemUserService.save(u);
+		String md5Value = MD5.calcMD5(String.valueOf(id));
+		u = systemUserService.get(id);
+		u.setMd5Value(md5Value);
+		systemUserService.update(u);
+
+		try {
 			StringCode code = new StringCode();
 			String tempKey = code.encrypt(key);
 			sendMgrService.sendHtmlMail(email, username, md5Value, tempKey,
 					SendEmailType.REGISTER);
-			json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
-			json.put(Constant.USERID, md5Value);
-			return Response.ok(json.toString()).build();
 		} catch (Exception ex) {
-			ex.printStackTrace();
-			json.put(Constant.CODE, JSONCode.SERVER_EXCEPTION);
-			return Response.ok(json.toString()).build();
+			logger.error(JSONCode.MSG_USER_SEND_EMAIL_ERROR, ex) ;
 		}
+		json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
+		json.put(Constant.USERID, md5Value);
+		return Response.ok(json.toString()).build();
+
 	}
 
 	/**
@@ -738,21 +738,21 @@ public class SystemUserRest {
 		}
 		return data;
 	}
-	
+
 	@Path("/number")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getRegisterNumber() throws JSONException{
-		JSONObject json = new JSONObject() ;
-		try{
-			Long num = systemUserService.getTotalCount() ;
-			json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS) ;
-			json.put(Constant.DATA,num) ;
-		}catch(Exception ex){
-			ex.printStackTrace() ;
-			json.put(Constant.RESULT, JSONCode.RESULT_FAIL) ;
+	public Response getRegisterNumber() throws JSONException {
+		JSONObject json = new JSONObject();
+		try {
+			Long num = systemUserService.getTotalCount();
+			json.put(Constant.RESULT, JSONCode.RESULT_SUCCESS);
+			json.put(Constant.DATA, num);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			json.put(Constant.RESULT, JSONCode.RESULT_FAIL);
 		}
-		return Response.ok(json.toString()).build() ;
+		return Response.ok(json.toString()).build();
 	}
 
 }

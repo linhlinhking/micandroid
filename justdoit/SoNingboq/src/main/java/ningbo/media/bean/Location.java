@@ -89,8 +89,6 @@ public class Location implements Serializable {
 	
 	private Date updateDateTime ;
 	
-	
-	@JsonIgnore
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
 	@JoinTable(name = "locations_category", joinColumns = @JoinColumn(name = "location_id"),inverseJoinColumns=@JoinColumn(name = "category2_id"))
 	private List<SecondCategory> secondCategorys;
@@ -110,6 +108,10 @@ public class Location implements Serializable {
 	@JsonIgnore
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE },mappedBy = "locations")
 	private List<TempUser> tempUsers ;
+	
+	@JsonIgnore
+	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "location")
+	private List<LocationProduct> locationProducts ;
 	
 	
 	public Location() {
@@ -331,8 +333,14 @@ public class Location implements Serializable {
 	public void setUpdateDateTime(Date updateDateTime) {
 		this.updateDateTime = updateDateTime;
 	}
-	
-	
 
+	public List<LocationProduct> getLocationProducts() {
+		return locationProducts;
+	}
+
+	public void setLocationProducts(List<LocationProduct> locationProducts) {
+		this.locationProducts = locationProducts;
+	}
+	
 	
 }

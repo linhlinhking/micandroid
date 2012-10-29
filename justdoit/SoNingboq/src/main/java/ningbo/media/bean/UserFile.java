@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "tb_files_user")
+@Table(name = "tbl_files_user")
 public class UserFile implements Serializable{
 
 	private static final long serialVersionUID = -400634601767090513L;

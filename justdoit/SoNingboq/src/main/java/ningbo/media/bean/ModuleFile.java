@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -35,18 +36,23 @@ public class ModuleFile implements Serializable{
 	
 	private Date createTime;
 	
-
 	@OneToOne
 	@JoinColumn(name = "inforId")
 	private ImageInformation imageInfo;
 	
-	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
 	@JoinTable(name = "tb_files_user", joinColumns = @JoinColumn(name = "fileId"),inverseJoinColumns=@JoinColumn(name = "userId"))
-	private List<SystemUser> systemUsers ;
+	private SystemUser systemUser ;
+	
 	
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
 	@JoinTable(name = "tb_files_location", joinColumns = @JoinColumn(name = "fileId"),inverseJoinColumns=@JoinColumn(name = "locationId"))
 	private List<Location> locations ;
+	
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
+	@JoinTable(name = "tb_files_product", joinColumns = @JoinColumn(name = "fileId"),inverseJoinColumns=@JoinColumn(name = "productId"))
+	private LocationProduct locationProduct ;
+	
 
 	public Integer getId() {
 		return id;
@@ -96,12 +102,13 @@ public class ModuleFile implements Serializable{
 		this.imageInfo = imageInfo;
 	}
 
-	public List<SystemUser> getSystemUsers() {
-		return systemUsers;
+
+	public SystemUser getSystemUser() {
+		return systemUser;
 	}
 
-	public void setSystemUsers(List<SystemUser> systemUsers) {
-		this.systemUsers = systemUsers;
+	public void setSystemUser(SystemUser systemUser) {
+		this.systemUser = systemUser;
 	}
 
 	public List<Location> getLocations() {
@@ -110,6 +117,14 @@ public class ModuleFile implements Serializable{
 
 	public void setLocations(List<Location> locations) {
 		this.locations = locations;
+	}
+
+	public LocationProduct getLocationProduct() {
+		return locationProduct;
+	}
+
+	public void setLocationProduct(LocationProduct locationProduct) {
+		this.locationProduct = locationProduct;
 	}
 
 	

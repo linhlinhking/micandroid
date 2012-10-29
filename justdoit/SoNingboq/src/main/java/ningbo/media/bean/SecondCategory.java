@@ -16,6 +16,8 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 @Entity
 @Table(name = "category2")
 @XmlRootElement
@@ -37,15 +39,18 @@ public class SecondCategory implements Serializable {
 	
 	private String keywords_cn ;
 	
+	@JsonIgnore
 	private String description_cn ;
 	
+	@JsonIgnore
 	private String description_en ;
 
+	@JsonIgnore
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
 	@JoinColumn(name = "category1_id")
 	private FirstCategory firstCategory;
 
-	
+	@JsonIgnore
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE },mappedBy = "secondCategorys")
 	private List<Location> locations;
 	

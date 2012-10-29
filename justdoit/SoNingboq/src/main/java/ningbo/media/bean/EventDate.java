@@ -5,6 +5,8 @@ import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import ningbo.media.bean.enums.RepeatType;
 
 @Entity
 @Table(name = "tb_events_date")
@@ -37,10 +41,13 @@ public class EventDate implements Serializable {
 	
 	private boolean isRepeat ;
 	
-	@Column(length = 12)
-	private String repeatType ;
+	@Enumerated(EnumType.STRING)
+	@Column(length = 12,name="repeat_type")
+	private RepeatType repeatType ;
 	
 	private String repeatValue ;
+	
+	private String frequency ;
 
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
 	@JoinColumn(name = "event_id")
@@ -94,11 +101,13 @@ public class EventDate implements Serializable {
 		this.nEvents = nEvents;
 	}
 
-	public String getRepeatType() {
+	
+
+	public RepeatType getRepeatType() {
 		return repeatType;
 	}
 
-	public void setRepeatType(String repeatType) {
+	public void setRepeatType(RepeatType repeatType) {
 		this.repeatType = repeatType;
 	}
 
@@ -117,6 +126,13 @@ public class EventDate implements Serializable {
 	public void setRepeat(boolean isRepeat) {
 		this.isRepeat = isRepeat;
 	}
-	
 
+	public String getFrequency() {
+		return frequency;
+	}
+
+	public void setFrequency(String frequency) {
+		this.frequency = frequency;
+	}
+	
 }

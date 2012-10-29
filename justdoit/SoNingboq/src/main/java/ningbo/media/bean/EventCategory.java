@@ -25,6 +25,10 @@ public class EventCategory implements Serializable{
 	
 	private String name_en ;
 	
+	private String tags_cn ;
+	
+	private String tags_en ;
+	
 	private String keywords_cn ;
 	
 	private String keywords_en ;
@@ -82,5 +86,22 @@ public class EventCategory implements Serializable{
 		this.nEvents = nEvents;
 	}
 
+	public String getTags_cn() {
+		return tags_cn;
+	}
 
+	public void setTags_cn(String tags_cn) {
+		this.tags_cn = tags_cn;
+	}
+
+	public String getTags_en() {
+		return tags_en;
+	}
+
+	public void setTags_en(String tags_en) {
+		this.tags_en = tags_en;
+	}
+
+
+	
 }

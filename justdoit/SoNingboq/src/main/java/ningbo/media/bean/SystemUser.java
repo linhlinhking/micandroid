@@ -84,7 +84,7 @@ public class SystemUser implements Serializable {
 	@Column(name="security_email")
 	private String securityEmail ;
 
-	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE },mappedBy = "systemUsers")
+	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE },mappedBy = "systemUser")
 	private List<ModuleFile> moduleFiles ;
 	
 	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "systemUser")
@@ -93,7 +93,6 @@ public class SystemUser implements Serializable {
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
 	@JoinTable(name = "in_favorite_user", joinColumns = @JoinColumn(name = "userId"),inverseJoinColumns=@JoinColumn(name = "locationId"))
 	private List<Location> locations ;
-	
 	
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE },mappedBy = "systemUsers")
 	private List<TempUser> tempUsers ;

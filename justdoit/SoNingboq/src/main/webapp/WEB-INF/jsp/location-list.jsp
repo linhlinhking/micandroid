@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/common/taglib.jsp"%>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,7 +32,7 @@
 		<div id="wrapper">
 
 			<!-- Loading right Menu start -->
-			<%@ include file="/common/location/location-content.jsp"%>
+			<%@ include file="/common/location/list.jsp"%>
 			<!-- Loading right Menu end -->
 
 			<!-- Loading right Menu start -->
@@ -49,6 +48,7 @@
 
 </body>
 <!-- /admin/user/getAll -->
+<script type="text/javascript" src="/js/jquery/jquery-ui-1.8.23.custom.min.js"></script>
 <script type="text/javascript" src="/js/pagination/jquery.pagination.js"></script>
 <%@ include file="/common/mvc.jsp" %>
 <script type="text/javascript" src="/js/soningbo/location.js"></script>

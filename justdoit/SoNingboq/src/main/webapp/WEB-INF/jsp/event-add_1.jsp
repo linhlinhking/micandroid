@@ -10,7 +10,6 @@
 <link rel="stylesheet" type="text/css" href="/css/template/theme.css" />
 <link rel="stylesheet" type="text/css" href="/css/template/style.css" />
 
-
 <!-- CSS Imports-->
 <link rel="stylesheet" type="text/css" media="screen"
 	href="/css/jquery/redmond/jquery-ui-1.8.23.custom.css" />
@@ -20,7 +19,7 @@
 	href="/css/soningbo/event.css" />
 
 <!-- JS Imports -->
-<script type="text/javascript" src="/js/jquery/jquery-1.5.2.min.js"></script>
+<script type="text/javascript" src="/js/jquery/jquery-1.7.2.min.js"></script>
 <script type="text/javascript"
 	src="/js/jquery/jquery-ui-1.8.12.custom.min.js"></script>
 <script type="text/javascript" src="/js/datejs/date.js"></script>
@@ -47,7 +46,7 @@
 		<div id="wrapper">
 
 			<!-- Loading right Menu start -->
-			<%@ include file="/common/event/event-list.jsp"%>
+			<%@ include file="/common/event/event-content.jsp"%>
 			<!-- Loading right Menu end -->
 
 			<!-- Loading right Menu start -->

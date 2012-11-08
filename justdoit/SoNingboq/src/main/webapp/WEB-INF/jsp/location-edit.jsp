@@ -49,4 +49,7 @@
 
 </body>
 <!-- /admin/user/getAll -->
+<script type="text/javascript"
+	src="/js/jquery/jquery-ui-1.8.23.custom.min.js"></script>
+<script type="text/javascript" src="/js/soningbo/location-edit.js"></script>
 </html>

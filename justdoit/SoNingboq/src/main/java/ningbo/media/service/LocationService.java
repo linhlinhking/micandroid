@@ -21,5 +21,7 @@ public interface LocationService extends BaseService<Location,Integer> {
 	
 	public Pagination<Location> getAllByPage(int pageNo,int pageSize);
 	
+	public Pagination<Location> getLocationsById(int pageNo,int pageSize,int categoryId);
+	
 	
 }

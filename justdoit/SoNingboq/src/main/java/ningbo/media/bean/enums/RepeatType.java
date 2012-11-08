@@ -1,7 +1,7 @@
 package ningbo.media.bean.enums;
 
 public enum RepeatType {
-	WEEKS("week"),DAYS("day"),CUSTOMS("custom"),MONTH("month") ;
+	WEEKS("weeks"),DAYS("days"),CUSTOMS("customs"),MONTHS("months") ;
 	
 	private String value ;
 	

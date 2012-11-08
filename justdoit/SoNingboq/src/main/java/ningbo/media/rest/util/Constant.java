@@ -61,7 +61,10 @@ public class Constant {
 	//public static final String API_URL = "http://localhost:9000" ;
 	
 	public static final String UPLOAD = "upload" ; 
-	public static final String PRODUCT = "product" ;
-	public static final String USERDIR = "profile" ;
+	public static final String PRODUCTDIR = "products" ;
+	public static final String USERDIR = "profiles" ;
+	public static final String EVENTDIR = "events" ;
+	public static final String EVENTICONDIR = "icons" ;
+	public static final String EVENTPOSTERDIR = "posters" ;
 	
 }

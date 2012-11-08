@@ -137,6 +137,11 @@ public class LocationServiceImpl extends BaseServiceImpl<Location, Integer>
 		}
 		return locationDao.getAllByPage(pageNo, pageSize);
 	}
+
+	public Pagination<Location> getLocationsById(int pageNo, int pageSize,
+			int categoryId) {
+		return locationDao.getLocationsById(pageNo, pageSize, categoryId);
+	}
 	
 	
 

@@ -16,7 +16,6 @@ import ningbo.media.util.MagickImageScale;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 public class FileUploadUtil {
 
 	private static Logger logger = LoggerFactory
@@ -42,11 +41,24 @@ public class FileUploadUtil {
 				.getRealPath("");
 
 		buffer.append(realPath).append(File.separator);
-		if (type.equals(DirectoryType.PRODUCT)) {
-			buffer.append(Constant.PRODUCT);
+		if (type.equals(DirectoryType.PRODUCTDIR)) {
+			buffer.append(Constant.UPLOAD).append(FILE_SEPARATOR)
+					.append(Constant.PRODUCTDIR);
 		} else if (type.equals(DirectoryType.USERDIR)) {
-			buffer.append(Constant.USERDIR);
-		} else {
+			buffer.append(Constant.UPLOAD).append(FILE_SEPARATOR)
+					.append(Constant.USERDIR);
+		} else if (type.equals(DirectoryType.EVENTDIR)) {
+			buffer.append(Constant.UPLOAD).append(FILE_SEPARATOR)
+					.append(Constant.EVENTDIR);
+		} else if (type.equals(DirectoryType.EVENTICONDIR)) {
+			buffer.append(Constant.UPLOAD).append(FILE_SEPARATOR)
+					.append(Constant.EVENTDIR).append(FILE_SEPARATOR)
+					.append(Constant.EVENTICONDIR);
+		} else if (type.equals(DirectoryType.EVENTPOSTERDIR)) {
+			buffer.append(Constant.UPLOAD).append(FILE_SEPARATOR)
+					.append(Constant.EVENTDIR).append(FILE_SEPARATOR)
+					.append(Constant.EVENTPOSTERDIR);
+		}else {
 			buffer.append(Constant.UPLOAD);
 		}
 		if (isTemp) {
@@ -177,7 +189,7 @@ public class FileUploadUtil {
 
 	public static Map<String, Object> writeToFile(
 			InputStream uploadedInputStream, String uploadedFileLocation,
-			HttpServletRequest request,DirectoryType type) {
+			HttpServletRequest request, DirectoryType type) {
 		Map<String, Object> map = new HashMap<String, Object>(7);
 		try {
 			OutputStream out = new FileOutputStream(new File(
@@ -190,7 +202,7 @@ public class FileUploadUtil {
 				out.write(bytes, 0, read);
 			}
 			String uuid = FileHashCode.getFileMD5(uploadedFileLocation);
-			String tempPath = makeFileDir(uuid,request,type,false);
+			String tempPath = makeFileDir(uuid, request, type, false);
 			StringBuffer sb = new StringBuffer();
 			sb.append(tempPath).append(File.separator)
 					.append(uuid.substring(12));
@@ -238,7 +250,6 @@ public class FileUploadUtil {
 		}
 
 	}
-	
 
 	/**
 	 * copy file
@@ -271,12 +282,12 @@ public class FileUploadUtil {
 		}
 
 	}
-	
+
 	/**
-	 *  @功能：保存临时目录文件到UUID目录
+	 * @功能：保存临时目录文件到UUID目录
 	 * 
-	 *  @param request 
-	 *  @param tempFilePath 
+	 * @param request
+	 * @param tempFilePath
 	 * 
 	 */
 	public static Map<String, Object> writeToFile(HttpServletRequest request,
@@ -284,7 +295,8 @@ public class FileUploadUtil {
 		Map<String, Object> map = new HashMap<String, Object>(7);
 		try {
 			String uuid = FileHashCode.getFileMD5(tempFilePath);
-			String tempPath = FileUploadUtil.makeFileDir(uuid, request, DirectoryType.UPLOAD,false);
+			String tempPath = FileUploadUtil.makeFileDir(uuid, request,
+					DirectoryType.UPLOAD, false);
 			StringBuffer sb = new StringBuffer();
 			sb.append(tempPath).append(uuid.substring(12));
 
@@ -337,7 +349,8 @@ public class FileUploadUtil {
 	 * @功能：处理移动终端的图片上传。
 	 * 
 	 * @param request
-	 * @param tempFilePath.
+	 * @param tempFilePath
+	 *            .
 	 * 
 	 * @return path
 	 * 
@@ -346,7 +359,8 @@ public class FileUploadUtil {
 			String tempFilePath) {
 		try {
 			String uuid = FileHashCode.getFileMD5(tempFilePath);
-			String tempPath = FileUploadUtil.makeFileDir(uuid, request, DirectoryType.UPLOAD,false);
+			String tempPath = FileUploadUtil.makeFileDir(uuid, request,
+					DirectoryType.UPLOAD, false);
 			StringBuffer sb = new StringBuffer();
 			sb.append(tempPath).append(uuid.substring(12));
 
@@ -386,6 +400,12 @@ public class FileUploadUtil {
 			return null;
 		}
 
+	}
+
+	public static String getFileExt(String fileName) {
+		int lastPoint = fileName.lastIndexOf(".");
+		String ext = fileName.substring(lastPoint);
+		return ext;
 	}
 
 }

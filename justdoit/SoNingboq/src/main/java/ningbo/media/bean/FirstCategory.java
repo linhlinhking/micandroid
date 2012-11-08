@@ -13,6 +13,8 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 
 @Entity
 @Table(name = "category1")
@@ -39,10 +41,12 @@ public class FirstCategory implements Serializable {
 	
 	private String description_en ;
 
+	@JsonIgnore
 	@XmlTransient
 	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "firstCategory")
 	private List<SecondCategory> secondCategorys;
 	
+	@JsonIgnore
 	@XmlTransient
 	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "firstCategory")
 	private List<AspectsCategory> aspectsCategorys ;

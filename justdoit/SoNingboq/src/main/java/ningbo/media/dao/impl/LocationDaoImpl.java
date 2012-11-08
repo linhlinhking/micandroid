@@ -66,6 +66,15 @@ public class LocationDaoImpl extends BaseDaoImpl<Location, Integer> implements
 		}
 		return null;
 	}
+	
+	public Pagination<Location> getLocationsById(int pageNo,int pageSize,int categoryId){
+		final Finder f = Finder.create("select bean from Location as bean left join bean.secondCategorys as s where 1=1 and s.id =:categoryId order by (case   WHEN   bean.photo_path is NULL OR bean.photo_path = '0'  then   1  else  0  end), bean.id desc ") ;
+		f.append(" order by bean.id desc ") ;
+		
+		f.setParam("categoryId", categoryId) ;
+		
+		return findByPage(f, pageNo, pageSize);
+	}
 
 	public Pagination<Location> getAllByPage(int pageNo, int pageSize) {
 		final Finder f = Finder.create("from Location as bean where 1=1 ") ;

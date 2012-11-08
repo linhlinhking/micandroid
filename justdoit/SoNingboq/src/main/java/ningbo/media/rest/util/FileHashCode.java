@@ -21,6 +21,16 @@ public class FileHashCode {
 		}
 		return str;
 	}
+	
+	public static String getFileMD5(InputStream is) {
+		String str = "";
+		try {
+			str = getHash(is, "MD5");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return str;
+	}
 
 	public static String getFileSHA1(String filename) {
 		String str = "";
@@ -74,10 +84,18 @@ public class FileHashCode {
 		fis.close();
 		return toHexString(md5.digest());
 	}
+	
+	private static String getHash(InputStream is,String hashType) throws Exception{
+		byte buffer[] = new byte[1024];
+		MessageDigest md5 = MessageDigest.getInstance(hashType);
+		for (int numRead = 0; (numRead = is.read(buffer)) > 0;) {
+			md5.update(buffer, 0, numRead);
+		}
+		return toHexString(md5.digest());
+	}
 
 	
 	private static String toHexString(byte b[]) {
-		System.out.println(b.length);
 		StringBuilder sb = new StringBuilder(b.length * 2);
 		for (int i = 0; i < b.length; i++) {
 			// sb.append(hexChar[(b[i] & 0xf0) >>> 4]);

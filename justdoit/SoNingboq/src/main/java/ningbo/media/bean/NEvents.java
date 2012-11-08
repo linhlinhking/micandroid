@@ -45,6 +45,12 @@ public class NEvents implements Serializable {
 	private String telephone;
 
 	private String organizer;
+	
+	@Column(name="event_icon")
+	private String eventIcon ;
+	
+	@Column(name="poster_image")
+	private String posterImage ;
 
 	private boolean isApproval;
 
@@ -224,6 +230,22 @@ public class NEvents implements Serializable {
 
 	public void setLastUpdater(String lastUpdater) {
 		this.lastUpdater = lastUpdater;
+	}
+
+	public String getEventIcon() {
+		return eventIcon;
+	}
+
+	public void setEventIcon(String eventIcon) {
+		this.eventIcon = eventIcon;
+	}
+
+	public String getPosterImage() {
+		return posterImage;
+	}
+
+	public void setPosterImage(String posterImage) {
+		this.posterImage = posterImage;
 	}
 	
 	

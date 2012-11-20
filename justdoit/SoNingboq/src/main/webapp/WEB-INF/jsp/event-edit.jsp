@@ -10,24 +10,17 @@
 <link rel="stylesheet" type="text/css" href="/css/template/theme.css" />
 <link rel="stylesheet" type="text/css" href="/css/template/style.css" />
 
+
 <!-- CSS Imports-->
 <link rel="stylesheet" type="text/css" media="screen"
 	href="/css/jquery/redmond/jquery-ui-1.8.23.custom.css" />
-	
-<link rel="stylesheet" href="/css/plugin/bootstrap.min.css">
-<link rel="stylesheet" href="/css/plugin/style.css">
-<link rel="stylesheet" href="/css/plugin/bootstrap-responsive.min.css">
-<!--[if lt IE 7]><link rel="stylesheet" href="/css/plugin/bootstrap-ie6.min.css"><![endif]-->
-<link rel="stylesheet" href="/css/plugin/bootstrap-image-gallery.min.css">
-<link rel="stylesheet" href="/css/plugin/jquery.fileupload-ui.css">
-<link rel="stylesheet" href="/css/template/autocomplete.css">
+<link rel="stylesheet" type="text/css" href="/css/ui/bootstrap-responsive.css" />
+<link rel="stylesheet" type="text/css" href="/css/main/main.css" />
+<link rel="stylesheet" type="text/css" href="/css/soningbo/event.css" />
+<link rel="stylesheet" type="text/css" href="/css/ui/bootstrap-cerulean.css" />
+<link rel="stylesheet" type="text/css" href="/css/ui/charisma-app.css" />
+<link rel="stylesheet" type="text/css" href="/css/ui/colorbox.css" />
 
-<!--[if lt IE 9]><script src="/js/plugin/html5.js"></script><![endif]-->
-
-<link rel="stylesheet" type="text/css" media="screen"
-	href="/css/main/main.css" />
-<link rel="stylesheet" type="text/css" media="screen"
-	href="/css/soningbo/event.css" />
 
 <!-- JS Imports -->
 <script type="text/javascript" src="/js/jquery/jquery-1.7.2.min.js"></script>
@@ -57,7 +50,7 @@
 		<div id="wrapper">
 
 			<!-- Loading right Menu start -->
-			<%@ include file="/common/event/event-content.jsp"%>
+			<%@ include file="/common/event/event-edit.jsp"%>
 			<!-- Loading right Menu end -->
 
 			<!-- Loading right Menu start -->
@@ -70,23 +63,10 @@
 		<%@ include file="/common/footer.jsp"%>
 		<!-- Loading footer end -->
 
-
 	</div>
 </body>
 <!-- /admin/user/getAll -->
-<script src="/js/plugin/jquery.ui.widget.js"></script>
-<script src="/js/plugin/tmpl.min.js"></script>
-<script src="/js/plugin/load-image.min.js"></script>
-<script src="/js/plugin/canvas-to-blob.min.js"></script>
-<script src="/js/plugin/bootstrap.min.js"></script>
-<script src="/js/plugin/bootstrap-image-gallery.min.js"></script>
-<script src="/js/plugin/jquery.iframe-transport.js"></script>
-<script src="/js/plugin/jquery.fileupload.js"></script>
-<script src="/js/plugin/jquery.fileupload-fp.js"></script>
-<script src="/js/plugin/jquery.fileupload-ui.js"></script>
-<script src="/js/plugin/locale.js"></script>
-<script src="/js/plugin/main.js"></script>
-<script type="text/javascript" src="/js/soningbo/events.js"></script>
-<script type="text/javascript" src="/js/soningbo/jquery.form.js"></script>
+<script type="text/javascript" src="/js/ui/jquery.colorbox.min.js"></script>
+<script type="text/javascript" src="/js/soningbo/events-edit.js"></script>
 
 </html>

@@ -46,6 +46,7 @@ import ningbo.media.service.UserLocationsService;
 import ningbo.media.util.Base64Image;
 import ningbo.media.util.MD5;
 import ningbo.media.util.Pinyin;
+import ningbo.media.util.StringUtil;
 import ningbo.media.util.TranslateUtil;
 
 import org.json.JSONException;
@@ -228,7 +229,7 @@ public class LocationRest {
 		// secondCategory.getLocations();
 		List<Location> listLocation = locationService
 				.queryLocationsById(Integer.valueOf(id));
-		
+
 		return fillLocationDetail(listLocation);
 	}
 
@@ -422,7 +423,8 @@ public class LocationRest {
 
 			String fileName = String.valueOf(System.currentTimeMillis());
 			StringBuffer sb = new StringBuffer();
-			String tempPath = FileUploadUtil.makeFileDir(null, request,DirectoryType.UPLOAD, true);
+			String tempPath = FileUploadUtil.makeFileDir(null, request,
+					DirectoryType.UPLOAD, true);
 			sb.append(tempPath).append(fileName);
 
 			String photo_path = null;
@@ -891,7 +893,6 @@ public class LocationRest {
 		}
 	}
 
-	
 	@Path("/search/{name}")
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
@@ -901,7 +902,7 @@ public class LocationRest {
 		LocationData d = null;
 		for (Location l : list) {
 			d = new LocationData();
-			d.setLocationId(l.getId()) ;
+			d.setLocationId(l.getId());
 			d.setName_cn(l.getName_cn());
 			d.setName_en(l.getName_en());
 			d.setMd5Value(l.getMd5Value());
@@ -923,21 +924,25 @@ public class LocationRest {
 		}
 		return new LocationList(listData);
 	}
-	
-	
 
-	@Path("/nearby/{latitude}/{longitude}")
+	@Path("/nearby/{latitude}/{longitude}/{distance}")
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
 	public List<LocationDetail> getNearByLocations(
 			@PathParam("latitude") String latitude,
-			@PathParam("longitude") String longitude) throws JSONException {
+			@PathParam("longitude") String longitude,
+			@PathParam("distance") String distance) throws JSONException {
 		try {
 			if (null == latitude || null == longitude) {
 				return null;
 			}
+			if (null == distance || !StringUtil.isNumeric(distance)) {
+				distance = "0";
+			} 
+			
 			List<LocationDetail> list = locationService.queryLoctionsByLat(
-					Double.valueOf(latitude), Double.valueOf(longitude));
+					Double.valueOf(latitude), Double.valueOf(longitude),
+					Double.valueOf(distance));
 			if (null == list || list.size() < 0) {
 				return null;
 			}
@@ -1016,7 +1021,7 @@ public class LocationRest {
 					moduleFileService.delete(temp);// 删除记录
 				}
 			}
-			
+
 			String photoPath = loc.getPhoto_path();
 			if ((null != photoPath) && (!(photoPath.equals("0")))) {
 				FileUploadUtil.delFile(photoPath, request);
@@ -1045,10 +1050,10 @@ public class LocationRest {
 		List<LocationDetail> tempList = new ArrayList<LocationDetail>();
 		if (null != list && list.size() > 0) {
 			for (int i = 0, j = list.size(); i < j; i++) {
-				LocationDetail detail = new LocationDetail(list.get(i),true);
-				tempList.add(detail) ;
+				LocationDetail detail = new LocationDetail(list.get(i), true);
+				tempList.add(detail);
 			}
-			return tempList ;
+			return tempList;
 		}
 		return null;
 	}

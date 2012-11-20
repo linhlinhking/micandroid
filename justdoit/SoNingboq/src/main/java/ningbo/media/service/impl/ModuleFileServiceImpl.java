@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import ningbo.media.admin.exception.ServiceException;
 import ningbo.media.bean.ImageInformation;
 import ningbo.media.bean.ModuleFile;
 import ningbo.media.core.service.impl.BaseServiceImpl;
@@ -13,6 +14,8 @@ import ningbo.media.dao.ModuleFileDao;
 import ningbo.media.rest.dto.ModuleFileData;
 import ningbo.media.service.ModuleFileService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -21,15 +24,17 @@ import org.springframework.stereotype.Service;
 public class ModuleFileServiceImpl extends BaseServiceImpl<ModuleFile, Integer>
 		implements ModuleFileService {
 
+	private Logger logger = LoggerFactory.getLogger(getClass());
+
 	@Resource
 	private ModuleFileDao moduleFileDao;
-	
+
 	@Resource
-	private ImageInformationDao imageInformationDao ;
+	private ImageInformationDao imageInformationDao;
 
 	@Autowired
-	public ModuleFileServiceImpl(@Qualifier("moduleFileDao")
-	ModuleFileDao moduleFileDao) {
+	public ModuleFileServiceImpl(
+			@Qualifier("moduleFileDao") ModuleFileDao moduleFileDao) {
 		super(moduleFileDao);
 	}
 
@@ -110,45 +115,58 @@ public class ModuleFileServiceImpl extends BaseServiceImpl<ModuleFile, Integer>
 		return null;
 	}
 
-	
 	public ModuleFileData getModuleFileById(Integer fileId) {
-		try{
-			ModuleFile tempFile = moduleFileDao.get(fileId) ;
-			
+		try {
+			ModuleFile tempFile = moduleFileDao.get(fileId);
+
 			ModuleFileData data = new ModuleFileData();
-			if(null != tempFile){
-				data.setFileName(tempFile.getFileName()) ;
-				data.setFilePath(tempFile.getFileHash()) ;
-				data.setWidth(tempFile.getImageInfo().getWidth()) ;
-				data.setHeight(tempFile.getImageInfo().getHeight()) ;
-				
-				return data ;
+			if (null != tempFile) {
+				data.setFileName(tempFile.getFileName());
+				data.setFilePath(tempFile.getFileHash());
+				data.setWidth(tempFile.getImageInfo().getWidth());
+				data.setHeight(tempFile.getImageInfo().getHeight());
+
+				return data;
 			}
-		}catch(Exception ex){
-			ex.printStackTrace() ;
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 		return null;
 	}
 
 	public boolean deleteModuleFileByUserId(Integer userId, String locationMd5) {
-		//boolean flag = false ;
-		
-		
+		// boolean flag = false ;
+
 		return false;
 	}
 
 	public boolean deleteModuleFile(Integer id) {
-		boolean flag = false ;
-		try{
-			ModuleFile moduleFile = moduleFileDao.get(id) ;
-			ImageInformation info = moduleFile.getImageInfo() ;
-			imageInformationDao.delete(info) ;
-			moduleFileDao.delete(moduleFile) ;
-			flag = true ;
-		}catch(Exception ex){
-			ex.printStackTrace() ;
+		boolean flag = false;
+		try {
+			ModuleFile moduleFile = moduleFileDao.get(id);
+			ImageInformation info = moduleFile.getImageInfo();
+			imageInformationDao.delete(info);
+			moduleFileDao.delete(moduleFile);
+			flag = true;
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 		return flag;
+	}
+
+	public List<ModuleFile> queryFilesByEventId(Integer eventId)
+			throws ServiceException {
+		try {
+			String hql = "select m from ModuleFile as m ,NEventFile as n where 1=1 and m.id = n.fileId and n.eventId = ? ";
+			List<ModuleFile> files = moduleFileDao.findByHql(hql, eventId);
+
+			return files;
+		} catch (Exception ex) {
+			logger.error(
+					"Query Event files Error.The event's id is " + eventId, ex);
+			return null;
+		}
+
 	}
 
 }

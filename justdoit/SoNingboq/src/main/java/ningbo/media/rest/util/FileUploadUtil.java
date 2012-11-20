@@ -27,6 +27,35 @@ public class FileUploadUtil {
 	}
 
 	/**
+	 * 功能：获取目录类型
+	 * 
+	 * @param type
+	 *            请求的目录类型
+	 * 
+	 * @return DirectoryType
+	 */
+	public static DirectoryType getDirectoryType(String type) {
+		DirectoryType dType = null;
+		if (type.equals(Constant.EVENTDIR)) {
+			dType = DirectoryType.EVENTDIR;
+		} else if (type.equals(Constant.PRODUCTDIR)) {
+			dType = DirectoryType.PRODUCTDIR;
+		} else if (type.equals(Constant.EVENTICONDIR)) {
+			dType = DirectoryType.EVENTICONDIR;
+		} else if (type.equals(Constant.EVENTPOSTERDIR)) {
+			dType = DirectoryType.EVENTPOSTERDIR;
+		} else if (type.equals(Constant.TEMP)) {
+			dType = DirectoryType.TEMPDIR;
+		} else if (type.equals(Constant.USERDIR)) {
+			dType = DirectoryType.USERDIR;
+		} else {
+			dType = DirectoryType.UPLOAD;
+		}
+
+		return dType;
+	}
+
+	/**
 	 * example:/Users/ning/upload/1180/8011/8099/
 	 * 
 	 * @param uuid
@@ -58,7 +87,7 @@ public class FileUploadUtil {
 			buffer.append(Constant.UPLOAD).append(FILE_SEPARATOR)
 					.append(Constant.EVENTDIR).append(FILE_SEPARATOR)
 					.append(Constant.EVENTPOSTERDIR);
-		}else {
+		} else {
 			buffer.append(Constant.UPLOAD);
 		}
 		if (isTemp) {
@@ -249,6 +278,41 @@ public class FileUploadUtil {
 			return null;
 		}
 
+	}
+
+	/**
+	 * 功能：生成不同尺寸的图片
+	 * @param srcFile 原图的绝对路径。 
+	 * 
+	 */
+	public static boolean createDiffSize(String srcFile) {
+		boolean flag = false ;
+		ResizeEnum[] resizes = ResizeEnum.values();
+		try {
+			File file = new File(srcFile);
+			for (ResizeEnum re : resizes) {
+				StringBuffer temp = new StringBuffer();
+				temp.append(srcFile).append("-");
+				String tmp = re.getName();
+				String[] tmps = tmp.split("x");
+
+				temp.append(tmp);
+				File destFile = new File(temp.toString());
+				Integer width = Integer.valueOf(tmps[0]);
+				Integer height = Integer.valueOf(tmps[1]);
+				if (width == height) {
+					MagickImageScale.resizeFix(file, destFile, width,
+							height, false);
+				} else {
+					MagickImageScale.resizeFix(file, destFile, width, 800);
+				}
+				flag = true ;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("create different size error.", e) ;
+		}
+		return flag ;
 	}
 
 	/**

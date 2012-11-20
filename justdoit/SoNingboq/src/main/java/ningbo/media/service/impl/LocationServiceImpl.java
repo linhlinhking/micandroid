@@ -62,8 +62,8 @@ public class LocationServiceImpl extends BaseServiceImpl<Location, Integer>
 
 	@SuppressWarnings("unchecked")
 	public List<LocationDetail> queryLoctionsByLat(Double latitude,
-			Double longitude) {
-
+			Double longitude,Double distance) {
+		
 		double area = 0.001000;
 		double frontLat = latitude + area;
 		double backLat = latitude - area;

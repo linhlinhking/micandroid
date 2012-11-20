@@ -189,7 +189,6 @@ public class FriendsRest {
 				} else {
 					data.setRemark(remark) ;
 				}
-
 				if (null != tmpUser.getPhoto_path()) {
 					data.setPhoto_path(tmpUser.getPhoto_path());
 				} else {
@@ -255,6 +254,7 @@ public class FriendsRest {
 	public Response searchFriends(@PathParam("name")String name,@PathParam("id")String id){
 		return Response.ok(queryFriendsByName(id,name)).build() ;
 	}
+	
 	
 	private FriendList queryFriendsByName(String id,String name) {
 		List<SystemUser> list = systemUserService.querySystemUserByName(name) ;

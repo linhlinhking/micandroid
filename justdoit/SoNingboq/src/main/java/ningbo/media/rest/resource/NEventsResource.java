@@ -85,7 +85,10 @@ public class NEventsResource {
 			@FormParam("isRepeat") String isRepeat,
 			@FormParam("repeat_type") String repeatType,
 			@FormParam("price") String price,
-			@FormParam("days_value") String daysValue,
+			@FormParam("repeatValue") String daysValue,
+			@FormParam("frequency")String frequency ,
+			@FormParam("event_icon")String event_icon,
+			@FormParam("poster_image")String poster_image,
 			@FormParam("event_md5Value") String eventMd5Value)
 			throws JSONException {
 		JSONObject json = new JSONObject();
@@ -161,6 +164,8 @@ public class NEventsResource {
 			event.setTitle_en(title_en);
 			event.setSubject_en(subject_en);
 			event.setAddress_en(address_en);
+			event.setEventIcon(event_icon) ;
+			event.setPosterImage(poster_image) ;
 
 			// FormDataBodyPart part = form.getField("photo_path");
 			// String fileName = part.getContentDisposition().getFileName();
@@ -190,9 +195,10 @@ public class NEventsResource {
 				d.setStartTime(startTime);
 				d.setEndTime(endTime);
 				d.setnEvents(event);
-				d.setRepeatType(RepeatType.valueOf(repeatType));
+				d.setRepeatType(RepeatType.valueOf(repeatType.toUpperCase()));
 				d.setRepeatValue(daysValue);
 				d.setRepeat(flagRepeat);
+				d.setFrequency(frequency) ;
 
 				eventDateService.saveOrUpdate(d);
 
@@ -204,6 +210,7 @@ public class NEventsResource {
 				d.setEndDate(startDate);
 				d.setnEvents(event);
 				d.setRepeat(flagRepeat);
+				d.setFrequency(frequency) ;
 
 				eventDateService.saveOrUpdate(d);
 			}

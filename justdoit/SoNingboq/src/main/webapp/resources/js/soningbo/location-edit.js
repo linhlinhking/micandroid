@@ -22,8 +22,55 @@ $(function(){
 	}) ;
 	
 	$("#infowrap").tabs();
+	/**打开对话框*/
+	$("#show_location_images").click(function(){
+		$("#dialog_location_images").dialog("open");
+	});
+	
+	$("#show_locationExt_infor").click(function(){
+		$("#dialog_locationExt_infor").dialog("open");
+	});
+	$("#dialog_location_images").dialog({
+		autoOpen : false,
+		title:"选择图片上传",
+		height : 300,
+		width : 600,
+		modal : true,
+		buttons : {
+			"确定" : function(){
+				
+				$(this).dialog("close");
+			},
+			"取消" : function() {
+				$(this).dialog("close");
+			}
+		},
+		close : function() {
+		}
+	});
+	
+	$("#dialog_locationExt_infor").dialog({
+		autoOpen : false,
+		title:"位置扩展信息",
+		height : 300,
+		width : 600,
+		modal : true,
+		buttons : {
+			"确定" : function(){
+				
+				$(this).dialog("close");
+			},
+			"取消" : function() {
+				$(this).dialog("close");
+			}
+		},
+		close : function() {
+		}
+	});
 	
 });
+
+
 
 function getImagePath(imgPath,apiurl) {
 	var imgUrl = "";

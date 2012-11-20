@@ -21,7 +21,6 @@ a,a:visited {
 
 img {
 	border: 0;
-	margin: 1px;
 }
 
 p {
@@ -454,10 +453,11 @@ form#form #button1:hover,form#form #button2:hover {
 	
 }
 
-.location .parts .border img {
+.location .parts .border .location_img {
 	width: 100px;
 	height: 100px;
 }
+
 
 .location .margin {
 	margin-left: 30px;

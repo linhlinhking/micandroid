@@ -1,0 +1,34 @@
+
+.autocomplete {
+	border: 1px solid #9ACCFB;
+	background-color: white;
+	text-align: left;
+	position: absolute;
+	top: 187px;
+	left: 167px;
+	height: 200px;
+	width: 280px;
+	overFlow-x: hidden;
+	overFlow-y: scroll;
+	scrollBar-face-color: green;
+	scrollBar-hightLight-color: red;
+	scrollBar-3dLight-color: orange;
+	scrollBar-darkshadow-color: blue;
+	scrollBar-shadow-color: yellow;
+	scrollBar-arrow-color: purple;
+	scrollBar-track-color: black;
+	scrollBar-base-color: pink;
+	z-index:5;
+}
+
+.autocomplete li {
+	list-style-type: none;
+}
+
+.clickable {
+	cursor: default;
+}
+
+.highlight {
+	background-color: #9ACCFB;
+}

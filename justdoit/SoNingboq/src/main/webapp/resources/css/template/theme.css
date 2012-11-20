@@ -4,7 +4,7 @@ body {
 }
 
 a,a:visited {
-	color: #a43708;
+	color: #A43708;
 }
 
 input {
@@ -160,21 +160,26 @@ form#form #button1:hover,form#form #button2:hover {
 	border-radius: 5px;
 	margin: 2px 3px;
 	overflow: hidden;
-	color: #2e99de;
 	padding: 5px;
 	cursor: pointer;
 }
-
+#rightnow span a {
+	color: #2e99de;
+}
 #rightnow span:hover {
+	background-color: #bbb;
+	text-shadow: 1px 1px 0 #777;
+}
+#rightnow span:hover a {
 	color: #fff;
+}
+#rightnow .hover_span {
 	background-color: #bbb;
 	text-shadow: 1px 1px 0 #777;
 }
 
-#rightnow .hover_span {
+#rightnow .hover_span a {
 	color: #fff;
-	background-color: #bbb;
-	text-shadow: 1px 1px 0 #777;
 }
 
 .sel_category_rightnow {
@@ -200,13 +205,17 @@ form#form #button1:hover,form#form #button2:hover {
 #secondRigtnow span {
 	float: left;
 	padding: 4px 8px;
-	color: #333;
 	text-shadow: 1px 1px #BBBBBB;
 	cursor: pointer;
 	background: url("/images/gnav_sub.png") repeat-x center top;
 }
+#secondRigtnow span a {
+	color: #2e99de;
+}
 #secondRigtnow .click_span {
-	background-position:0 -240px;
-	color: #fff;
+	background:#bbb;
 	text-shadow: none;
+}
+#secondRigtnow .click_span a {
+	color: #fff;
 }

@@ -7,9 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
-
 import ningbo.media.bean.enums.DirectoryType;
 import ningbo.media.util.MagickImageScale;
 
@@ -309,7 +307,6 @@ public class FileUploadUtil {
 				flag = true ;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			logger.error("create different size error.", e) ;
 		}
 		return flag ;

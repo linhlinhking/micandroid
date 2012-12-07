@@ -2,6 +2,14 @@ package com.xero.admin.controller;
 
 import static org.springframework.web.context.request.RequestAttributes.SCOPE_SESSION;
 
+import java.util.Date;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
 import org.scribe.model.Token;
@@ -16,20 +24,28 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.xero.admin.bean.SystemUser;
+import com.xero.admin.service.SystemUserService;
 import com.xero.core.api.SessionAttributes;
 import com.xero.core.api.server.OAuthServiceProvider;
+import com.xero.core.controller.BaseController;
+import com.xero.core.web.WebConstants;
 
 @Controller
-public class XeroController {
+public class XeroController extends BaseController{
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Autowired
 	@Qualifier("xeroServiceProvider")
 	private OAuthServiceProvider xeroServiceProvider;
+
+	@Resource
+	private SystemUserService systemUserService;
 
 	@RequestMapping(value = { "/test" }, method = RequestMethod.GET)
 	public ModelAndView indexLogin() {
@@ -60,12 +76,19 @@ public class XeroController {
 	@RequestMapping(value = { "/oauth/xero/callback" }, method = RequestMethod.GET)
 	public ModelAndView callback(
 			@RequestParam(value = "oauth_verifier", required = false) String oauthVerifier,
-			WebRequest request) {
-
+			WebRequest request, NativeWebRequest nativeRequest) {
+		ModelAndView mav = new ModelAndView();
+		
 		// getting request tocken
 		OAuthService service = xeroServiceProvider.getService();
 		Token requestToken = (Token) request.getAttribute(
 				SessionAttributes.ATTR_OAUTH_REQUEST_TOKEN, SCOPE_SESSION);
+		HttpServletRequest httpReuqest = nativeRequest
+				.getNativeRequest(HttpServletRequest.class);
+		SystemUser currentSessionUser = (SystemUser) httpReuqest.getSession(
+				false).getAttribute(WebConstants.XERO_USER_SESSION);
+
+		// request.get
 
 		// getting access token
 		Verifier verifier = new Verifier(oauthVerifier);
@@ -82,12 +105,37 @@ public class XeroController {
 		service.signRequest(accessToken, oauthRequest);
 		Response oauthResponse = oauthRequest.send();
 		String jsonString = oauthResponse.getBody();
-		if(jsonString == "" || jsonString.length() < 0){
-			logger.error("Can't get response's data .") ;
+		if (jsonString == "" || jsonString.length() < 0) {
+			logger.error("Can't get response's data .");
+			//设置为异常页面
+			mav.setViewName("redirect:/") ;
+		} else {
+			try {
+				JSONObject jsonObj = new JSONObject(jsonString);
+				JSONArray jsonArray = jsonObj.getJSONArray("Users");
+				if (jsonArray.length() > 0) {
+					JSONObject json = jsonArray.getJSONObject(0);
+					String xeroId = json.getString("UserID");
+					String localXeroId = currentSessionUser.getXeroId();
+					if (null == localXeroId
+							|| !localXeroId.equalsIgnoreCase(xeroId)) {
+						currentSessionUser.setXeroId(xeroId);
+					}
+					
+					currentSessionUser.setUpdateDateTime(new Date());
+					currentSessionUser = systemUserService
+							.saveOrUpdate(currentSessionUser);
+					
+					setSession(httpReuqest, currentSessionUser, false);
+					mav.setViewName("redirect:/contact") ;
+				}
+			} catch (JSONException e) {
+				logger.error("Prase Json Error Or Connection Timeout.", e);
+				//设置为异常页面
+				mav.setViewName("redirect:/") ;
+			}
 		}
-		System.out.println(jsonString);
 
-		ModelAndView mav = new ModelAndView("redirect:/");
 		return mav;
 	}
 }

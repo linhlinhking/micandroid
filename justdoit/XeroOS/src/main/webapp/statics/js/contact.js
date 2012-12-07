@@ -1,4 +1,5 @@
 $(function() {
+	var currentUserId = $("input[name='userId']").val() ;
 	$(".add_button").click(function() {
 		$.ajax({
 			url : '/contact-add',
@@ -8,7 +9,7 @@ $(function() {
 				"companyName" : $("input[name='companyName']").val(),
 				"uemail" : $("input[name='uemail']").val(),
 				"telephone" : $("input[name='telephone']").val(),
-				"userId" : $("input[name='userId']").val(),
+				"userId" : currentUserId,
 				"groupId" : $("input[name='groupId']").val()
 			},
 			success : function(res) {
@@ -36,7 +37,7 @@ $(function() {
 		$(".sup_field").removeClass("selected_field");
 		$(".cus_field").addClass("selected_field");
 		$("input[name='groupId']").val(1);
-		getContactsByItem("customer","1","/contact-list");
+		getContactsByItem("customer","1","/contact-list",currentUserId);
 	});
 	
 	$(".sup_field").click(function(){
@@ -50,7 +51,7 @@ $(function() {
 		$(".cus_field").removeClass("selected_field");
 		$(".sup_field").addClass("selected_field");
 		$("input[name='groupId']").val(2);
-		getContactsByItem("supplier","2","/contact-list");
+		getContactsByItem("supplier","2","/contact-list",currentUserId);
 	});
 	
 	$(".n_area").toggle(function(){
@@ -72,17 +73,18 @@ $(function() {
 	});
   
   
-	getContactsByItem("all","","/contact-list");
+	getContactsByItem("all","","/contact-list",currentUserId);
 
 });
 
-function getContactsByItem(type,id,url){
+function getContactsByItem(type,id,url,userId){
 	$.ajax({
 		url : url,
 		type : 'GET',
 		dataType : 'json',
 		data : {
 			"id" : id,
+			"userId":userId
 			'type' : type
 		},
 		success : showCurrentContacts

@@ -1,6 +1,5 @@
 package com.xero.website.controller;
 
-
 import java.util.Date;
 
 import javax.annotation.Resource;
@@ -21,6 +20,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
 import com.xero.admin.bean.type.ContactType;
+import com.xero.admin.util.XeroApiURLContants;
 import com.xero.core.Response.ResponseCollection;
 import com.xero.core.Response.ResponseEntity;
 import com.xero.core.api.server.OAuthServiceProvider;
@@ -75,8 +75,8 @@ public class ContactController extends BaseController {
 	public String getContactsByXero(WebRequest request,
 			NativeWebRequest nativeRequest) {
 		OAuthService service = xeroServiceProvider.getService();
-		String jsonString = signXeroApi(request,
-				"https://api.xero.com/api.xro/2.0/Contacts", service,Verb.GET);
+		String jsonString = signXeroApi(request, XeroApiURLContants.CONTACTS,
+				service, Verb.GET);
 		return jsonString;
 	}
 

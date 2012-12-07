@@ -28,6 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.xero.admin.bean.SystemUser;
 import com.xero.admin.service.SystemUserService;
+import com.xero.admin.util.XeroApiURLContants;
 import com.xero.core.api.SessionAttributes;
 import com.xero.core.api.server.OAuthServiceProvider;
 import com.xero.core.controller.BaseController;
@@ -109,8 +110,8 @@ public class XeroController extends BaseController {
 		// service.signRequest(accessToken, oauthRequest);
 		// Response oauthResponse = oauthRequest.send();
 		// String jsonString = oauthResponse.getBody();
-		String jsonString = signXeroApi(request,
-				"https://api.xero.com/api.xro/2.0/Users", service, Verb.GET);
+		String jsonString = signXeroApi(request, XeroApiURLContants.USERS, service,
+				Verb.GET);
 		if ("" != jsonString && jsonString.length() > 0) {
 			try {
 				JSONObject jsonObj = new JSONObject(jsonString);

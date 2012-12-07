@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.scribe.model.OAuthRequest;
-import org.scribe.model.Response;
 import org.scribe.model.Token;
 import org.scribe.model.Verb;
 import org.scribe.model.Verifier;
@@ -36,7 +34,7 @@ import com.xero.core.controller.BaseController;
 import com.xero.core.web.WebConstants;
 
 @Controller
-public class XeroController extends BaseController{
+public class XeroController extends BaseController {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -78,7 +76,7 @@ public class XeroController extends BaseController{
 			@RequestParam(value = "oauth_verifier", required = false) String oauthVerifier,
 			WebRequest request, NativeWebRequest nativeRequest) {
 		ModelAndView mav = new ModelAndView();
-		
+
 		// getting request tocken
 		OAuthService service = xeroServiceProvider.getService();
 		Token requestToken = (Token) request.getAttribute(
@@ -87,7 +85,13 @@ public class XeroController extends BaseController{
 				.getNativeRequest(HttpServletRequest.class);
 		SystemUser currentSessionUser = (SystemUser) httpReuqest.getSession(
 				false).getAttribute(WebConstants.XERO_USER_SESSION);
-		//invalidateSession(httpReuqest) ;
+		// if you logout,but you want to link the xero .we will tell you login
+		// in first.
+		if (null == currentSessionUser) {
+			mav.setViewName("redirect:/");
+			return mav;
+		}
+		// invalidateSession(httpReuqest) ;
 		// request.get
 
 		// getting access token
@@ -99,17 +103,15 @@ public class XeroController extends BaseController{
 				accessToken, SCOPE_SESSION);
 
 		// getting user profile
-		OAuthRequest oauthRequest = new OAuthRequest(Verb.GET,
-				"https://api.xero.com/api.xro/2.0/Users");
-		oauthRequest.addHeader("Accept", "application/json");
-		service.signRequest(accessToken, oauthRequest);
-		Response oauthResponse = oauthRequest.send();
-		String jsonString = oauthResponse.getBody();
-		if (jsonString == "" || jsonString.length() < 0) {
-			logger.error("Can't get response's data .");
-			//设置为异常页面
-			mav.setViewName("redirect:/") ;
-		} else {
+		// OAuthRequest oauthRequest = new OAuthRequest(Verb.GET,
+		// "https://api.xero.com/api.xro/2.0/Users");
+		// oauthRequest.addHeader("Accept", "application/json");
+		// service.signRequest(accessToken, oauthRequest);
+		// Response oauthResponse = oauthRequest.send();
+		// String jsonString = oauthResponse.getBody();
+		String jsonString = signXeroApi(request,
+				"https://api.xero.com/api.xro/2.0/Users", service, Verb.GET);
+		if ("" != jsonString && jsonString.length() > 0) {
 			try {
 				JSONObject jsonObj = new JSONObject(jsonString);
 				JSONArray jsonArray = jsonObj.getJSONArray("Users");
@@ -120,20 +122,22 @@ public class XeroController extends BaseController{
 					if (null == localXeroId
 							|| !localXeroId.equalsIgnoreCase(xeroId)) {
 						currentSessionUser.setXeroId(xeroId);
+						currentSessionUser.setUpdateDateTime(new Date());
+						currentSessionUser = systemUserService
+								.saveOrUpdate(currentSessionUser);
+						setSession(httpReuqest, currentSessionUser, false);
 					}
-					
-					currentSessionUser.setUpdateDateTime(new Date());
-					currentSessionUser = systemUserService
-							.saveOrUpdate(currentSessionUser);
-					
-					setSession(httpReuqest, currentSessionUser, false);
-					mav.setViewName("redirect:/contact") ;
+					mav.setViewName("redirect:/contact");
 				}
 			} catch (JSONException e) {
 				logger.error("Prase Json Error Or Connection Timeout.", e);
-				//设置为异常页面
-				mav.setViewName("redirect:/") ;
+				// 设置为异常页面
+				mav.setViewName("redirect:/");
 			}
+		} else {
+			logger.error("Can't get response's data .");
+			// 设置为异常页面
+			mav.setViewName("redirect:/");
 		}
 
 		return mav;

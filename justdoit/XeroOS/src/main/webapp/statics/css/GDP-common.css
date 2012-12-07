@@ -764,9 +764,13 @@ body {
 	line-height:30px;
 	font-size:14px;
 	font-weight:bold;
-	color:#54934c;
 	text-indent:30px;
 	cursor:pointer;
+}
+.login_container .contact_content .left_section ul li a {
+	display:block;
+	color:#54934c;
+	text-decoration:none;
 }
 .login_container .contact_content .left_section ul li:nth-child(1) {
 	background:url(../images/contacts_icon.jpg) no-repeat 0 7px;
@@ -777,7 +781,7 @@ body {
 .login_container .contact_content .left_section ul li:nth-child(3) {
 	background:url(../images/reports_icon.jpg) no-repeat 0 5px;
 }
-.login_container .contact_content .left_section ul .selected {
+.login_container .contact_content .left_section ul .selected a {
 	color:#4e4e4c;
 }
 .login_container .contact_content .right_section {

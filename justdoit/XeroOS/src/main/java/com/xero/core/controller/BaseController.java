@@ -22,7 +22,16 @@ public class BaseController {
 		}
 
 	}
-	
+
+	public void invalidateSession(HttpServletRequest request) {
+		HttpSession session = request.getSession(false);
+		if (null != session
+				&& null != session.getAttribute(WebConstants.XERO_USER_SESSION)) {
+			session.invalidate();
+		}
+		
+	}
+
 	/**
 	 * 添加用户的cookie
 	 * 
@@ -30,16 +39,18 @@ public class BaseController {
 	 * @param user
 	 * 
 	 */
-	public static void setCookie(HttpServletResponse response,HttpServletRequest request, SystemUser user,boolean isRember) {
-		Integer expiry = 0 ;
-		if(isRember){
-			expiry = WebConstants.COOKIE_MAX_AGE ;
+	public void setCookie(HttpServletResponse response,
+			HttpServletRequest request, SystemUser user, boolean isRember) {
+		Integer expiry = 0;
+		if (isRember) {
+			expiry = WebConstants.COOKIE_MAX_AGE;
 		}
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(user.getId()).append(":").append(user.getUemail())
 				.append(":").append(WebConstants.WEB_KEY);
 		String base64CookieValue = EncodeUtil.base64UrlSafeEncode(buffer
 				.toString().getBytes());
-		CookieUtil.setCookie(request, response, WebConstants.COOKIE_DOMAIN_NAME, base64CookieValue, expiry) ;
+		CookieUtil.setCookie(request, response,
+				WebConstants.COOKIE_DOMAIN_NAME, base64CookieValue, expiry);
 	}
 }

@@ -57,28 +57,31 @@ public class ContactController {
 		return res;
 	}
 
-	@RequestMapping(value = "/contact-list", method = RequestMethod.GET,produces={"application/json"})
+	@RequestMapping(value = "/contact-list", method = RequestMethod.GET, produces = { "application/json" })
 	@ResponseBody
-	public ResponseCollection<Contact> getContactsById(@RequestParam("id") Integer id,
-			@RequestParam(value="type",required=false) String type,HttpServletRequest request){
-		ContactType currentType = null ;
-		if(null != type && type.equalsIgnoreCase("customer")){
-			currentType = ContactType.CUSTOMER ;
-		}else if(type.equalsIgnoreCase("supplier")){
-			currentType = ContactType.SUPPLIER ;
-		}else{
-			currentType = ContactType.ALL ;
+	public ResponseCollection<Contact> getContactsById(
+			@RequestParam("id") Integer id, @RequestParam("userId") Integer userId,
+			@RequestParam(value = "type", required = false) String type,
+			HttpServletRequest request) {
+		ContactType currentType = null;
+		if (null != type && type.equalsIgnoreCase("customer")) {
+			currentType = ContactType.CUSTOMER;
+		} else if (type.equalsIgnoreCase("supplier")) {
+			currentType = ContactType.SUPPLIER;
+		} else {
+			currentType = ContactType.ALL;
 		}
-		
-		ResponseCollection<Contact> res = contactService.queryContactById(id, currentType) ;
-		if(SessionHandler.verifySession(request)){
-			return res ;
+
+		ResponseCollection<Contact> res = contactService.queryContactById(id,
+				userId, currentType);
+		if (SessionHandler.verifySession(request)) {
+			return res;
 		}
-		
-		res.setData(null) ;
-		res.setResult(false) ;
-		res.setMessage("Authorization Error.") ;
-		
-		return res ;
+
+		res.setData(null);
+		res.setResult(false);
+		res.setMessage("Authorization Error.");
+
+		return res;
 	}
 }

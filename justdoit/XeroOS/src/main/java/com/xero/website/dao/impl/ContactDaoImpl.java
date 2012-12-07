@@ -19,15 +19,17 @@ public class ContactDaoImpl extends BaseDaoImpl<Contact, Integer> implements
 		super(Contact.class);
 	}
 
-	public List<Contact> queryContactById(Integer id,ContactType type) throws DaoException{
+	public List<Contact> queryContactById(Integer id,Integer userId, ContactType type)
+			throws DaoException {
 		String hql = "";
-		List<Contact>  list = new ArrayList<Contact>() ;
-		if(type.equals(ContactType.SUPPLIER) || type.equals(ContactType.CUSTOMER)){
-			hql = "from Contact as c where 1=1 and c.groupId = ? order by c.companyName asc ,c.id desc " ;
-			list = findByHql(hql, id) ;
-		}else{
-			hql = "from Contact as c where 1=1 order by c.companyName asc ,c.id desc ";
-			list = findByHql(hql) ;
+		List<Contact> list = new ArrayList<Contact>();
+		if (type.equals(ContactType.SUPPLIER)
+				|| type.equals(ContactType.CUSTOMER)) {
+			hql = "from Contact as c where 1=1 and c.groupId = ? and c.userId = ? order by c.companyName asc ,c.id desc ";
+			list = findByHql(hql, id,userId);
+		} else {
+			hql = "from Contact as c where 1=1 and c.userId = ? order by c.companyName asc ,c.id desc ";
+			list = findByHql(hql,userId);
 		}
 		return list;
 	}

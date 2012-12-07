@@ -30,10 +30,10 @@ public class ContactServiceImpl extends BaseServiceImpl<Contact, Integer>
 		super(contactDao);
 	}
 
-	public ResponseCollection<Contact> queryContactById(Integer id,
+	public ResponseCollection<Contact> queryContactById(Integer id,Integer userId,
 			ContactType type) throws ServiceException {
 		ResponseCollection<Contact> res = new ResponseCollection<Contact>(false) ;
-		List<Contact> list = contactDao.queryContactById(id, type) ;
+		List<Contact> list = contactDao.queryContactById(id,userId, type) ;
 		if(null == list){
 			res.setData(null) ;
 		}else{

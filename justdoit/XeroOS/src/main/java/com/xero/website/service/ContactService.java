@@ -9,5 +9,5 @@ import com.xero.website.bean.Contact;
 public interface ContactService extends BaseService<Contact, Integer> {
 
 	public ResponseCollection<Contact> queryContactById(Integer id,
-			ContactType type) throws ServiceException;
+			Integer userId, ContactType type) throws ServiceException;
 }

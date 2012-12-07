@@ -66,7 +66,7 @@ filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='
       <a href="/"><img src="/images/gdp_logo.png" alt="GDP_logo"></a>
       <span>Global Design &amp; Production</span>
       <ul>
-        <li><a href="/">Sign Out</a></li>
+        <li><a href="/logout">Sign Out</a></li>
         <li><a href="#">Manage Users</a></li>
         <li><a href="#">${leftDays} Days Remaining</a></li>
       </ul>

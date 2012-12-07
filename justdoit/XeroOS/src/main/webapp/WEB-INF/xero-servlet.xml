@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns="http://www.springframework.org/schema/beans"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd 
+	   		http://www.springframework.org/schema/mvc 
+			http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd 
+			http://www.springframework.org/schema/util     
+       		http://www.springframework.org/schema/util/spring-util-3.0.xsd
+			http://www.springframework.org/schema/context 
+			http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+	<mvc:annotation-driven />
+
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+		<!-- 拦截器注册 -->
+		<property name="interceptors">
+			<bean class="com.xero.core.web.interceptor.SharedRenderVariableInterceptor" />
+		</property>
+	</bean>
+
+	<mvc:resources location="/statics/,/" mapping="/**" />
+
+	<util:properties id="applicationConfig" location="classpath:api.properties" />
+	<context:property-placeholder
+		properties-ref="applicationConfig" />
+
+	<!-- Declare a view resolver -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/template/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="5120000" />
+		<property name="maxInMemorySize" value="4096" />
+	</bean>
+
+	<context:component-scan base-package="com.xero.*.controller" />
+
+	<!-- oauth -->
+	<bean id="xeroServiceConfig" class="com.xero.core.api.server.OAuthServiceConfig">
+		<constructor-arg value="${app.config.oauth.xero.apikey}" />
+		<constructor-arg value="${app.config.oauth.xero.apisecret}" />
+		<constructor-arg value="${app.config.oauth.xero.callback}" />
+		<constructor-arg value="com.xero.core.api.XeroApi" />
+	</bean>
+
+	<bean id="xeroServiceProvider" class="com.xero.core.api.server.OAuthServiceProvider">
+		<constructor-arg name="config" ref="xeroServiceConfig" />
+	</bean>
+
+</beans>

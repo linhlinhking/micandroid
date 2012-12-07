@@ -10,31 +10,8 @@
 <link href="/css/GDP-common.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="/js/placeholder.js"></script>
-<script>
-$(function(){
-	
-	$(".pnu_area").toggle(function(){
-		$(".pnu_area strong").css("background-position","0 -8px");
-	},function(){
-		$(".pnu_area strong").css("background-position","0 0");
-	});
-	$(".pna_area").toggle(function(){
-		$(".pna_area strong").css("background-position","0 -8px");
-	},function(){
-		$(".pna_area strong").css("background-position","0 0");
-	});
-	$(".dov_area").toggle(function(){
-		$(".dov_area strong").css("background-position","0 -8px");
-	},function(){
-		$(".dov_area strong").css("background-position","0 0");
-	});
-	$(".sup_area").toggle(function(){
-		$(".sup_area strong").css("background-position","0 -8px");
-	},function(){
-		$(".sup_area strong").css("background-position","0 0");
-	});
-});
-</script>
+<script type="text/javascript" src="/js/report.js"></script>
+
 </head>
 <!--[if lte IE 8]>
 
@@ -70,7 +47,7 @@ $(function(){
       <a href="/"><img src="/images/gdp_logo.png" alt="GDP_logo"></a>
       <span>Global Design &amp; Production</span>
       <ul>
-        <li><a href="#">Sign Out</a></li>
+        <li><a href="/logout">Sign Out</a></li>
         <li><a href="#">Manage Users</a></li>
         <li><a href="#">27 Days Remaining</a></li>
       </ul>
@@ -78,11 +55,12 @@ $(function(){
     <div class="contact_content report_content">
       <div class="left_section">
         <ul>
-          <li class="ie_f">Contacts</li>
-          <li class="ie_s">Projects</li>
-          <li class="ie_t selected">Reports</li>
+          <li class="ie_f"><a href="/contact">Contacts</a></li>
+          <li class="ie_s"><a href="/project">Projects</a></li>
+          <li class="ie_t selected"><a href="/report">Reports</a></li>
         </ul>
       </div>
+      
       <div class="right_section">
         <div class="report_title">
           <span>Reports</span>

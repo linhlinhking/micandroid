@@ -10,54 +10,8 @@
 <link href="/css/GDP-common.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="/js/placeholder.js"></script>
-<script>
-$(function(){
-	$(".cus_field").click(function(){
-		$(".selected_bg").css({
-		'-webkit-transform':'rotate(-180deg)',
-        '-moz-transform':'rotate(-180deg)',
-        '-ms-transform':'rotate(-180deg)',
-        '-o-transform':'rotate(-180deg)',
-        'transform':'rotate(-180deg)'
-		});
-		$(".sup_field").removeClass("selected_field");
-		$(".cus_field").addClass("selected_field");
-	});
-	
-	$(".sup_field").click(function(){
-		$(".selected_bg").css({
-		'-webkit-transform':'rotate(0deg)',
-        '-moz-transform':'rotate(0deg)',
-        '-ms-transform':'rotate(0deg)',
-        '-o-transform':'rotate(0deg)',
-        'transform':'rotate(0deg)'
-		});
-		$(".cus_field").removeClass("selected_field");
-		$(".sup_field").addClass("selected_field");
-	});
-	
-	$(".ed_area").toggle(function(){
-		$(".ed_area strong").css("background-position","0 -8px");
-	},function(){
-		$(".ed_area strong").css("background-position","0 0");
-	});
-	$(".sd_area").toggle(function(){
-		$(".sd_area strong").css("background-position","0 -8px");
-	},function(){
-		$(".sd_area strong").css("background-position","0 0");
-	});
-	$(".pn_area").toggle(function(){
-		$(".pn_area strong").css("background-position","0 -8px");
-	},function(){
-		$(".pn_area strong").css("background-position","0 0");
-	});
-	$(".na_area").toggle(function(){
-		$(".na_area strong").css("background-position","0 -8px");
-	},function(){
-		$(".na_area strong").css("background-position","0 0");
-	});
-});
-</script>
+<script type="text/javascript" src="/js/project.js"></script>
+
 </head>
 <!--[if lte IE 8]>
 
@@ -93,7 +47,7 @@ $(function(){
       <a href="/"><img src="/images/gdp_logo.png" alt="GDP_logo"></a>
       <span>Global Design &amp; Production</span>
       <ul>
-        <li><a href="/">Sign Out</a></li>
+        <li><a href="/logout">Sign Out</a></li>
         <li><a href="#">Manage Users</a></li>
         <li><a href="#">27 Days Remaining</a></li>
       </ul>
@@ -101,9 +55,9 @@ $(function(){
     <div class="contact_content project_content">
       <div class="left_section">
         <ul>
-          <li class="ie_f">Contacts</li>
-          <li class="ie_s selected">Projects</li>
-          <li class="ie_t">Reports</li>
+          <li class="ie_f"><a href="/contact">Contacts</a></li>
+          <li class="ie_s selected"><a href="/project">Projects</a></li>
+          <li class="ie_t"><a href="/report">Reports</a></li>
         </ul>
       </div>
       <div class="right_section">

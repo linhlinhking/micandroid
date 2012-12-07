@@ -74,11 +74,12 @@ filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='
     <div class="contact_content">
       <div class="left_section">
         <ul>
-          <li class="selected ie_f">Contacts</li>
-          <li class="ie_s">Projects</li>
-          <li class="ie_t">Reports</li>
+          <li class="selected ie_f"><a href="/contact">Contacts</a></li>
+          <li class="ie_s"><a href="/project">Projects</a></li>
+          <li class="ie_t"><a href="/report">Reports</a></li>
         </ul>
       </div>
+      
       <div class="right_section">
         <div class="contact_title">
           <span>Contacts</span>
@@ -121,6 +122,8 @@ filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='
           </ul>
         </div>
       </div>
+    
+    
     </div>
   </div>
 </body>

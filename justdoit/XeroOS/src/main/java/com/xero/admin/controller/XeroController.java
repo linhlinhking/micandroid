@@ -87,7 +87,7 @@ public class XeroController extends BaseController{
 				.getNativeRequest(HttpServletRequest.class);
 		SystemUser currentSessionUser = (SystemUser) httpReuqest.getSession(
 				false).getAttribute(WebConstants.XERO_USER_SESSION);
-		invalidateSession(httpReuqest) ;
+		//invalidateSession(httpReuqest) ;
 		// request.get
 
 		// getting access token

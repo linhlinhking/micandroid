@@ -1,32 +1,45 @@
 package com.xero.website.controller;
 
+
 import java.util.Date;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.scribe.model.Verb;
+import org.scribe.oauth.OAuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.context.request.WebRequest;
 
 import com.xero.admin.bean.type.ContactType;
 import com.xero.core.Response.ResponseCollection;
 import com.xero.core.Response.ResponseEntity;
+import com.xero.core.api.server.OAuthServiceProvider;
+import com.xero.core.controller.BaseController;
 import com.xero.core.web.SessionHandler;
 import com.xero.website.bean.Contact;
 import com.xero.website.service.ContactService;
 
 @Controller
-public class ContactController {
+public class ContactController extends BaseController {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Resource
 	private ContactService contactService;
+
+	@Autowired
+	@Qualifier("xeroServiceProvider")
+	private OAuthServiceProvider xeroServiceProvider;
 
 	@RequestMapping(value = "/contact-add", method = RequestMethod.POST)
 	@ResponseBody
@@ -57,10 +70,21 @@ public class ContactController {
 		return res;
 	}
 
+	@RequestMapping(value = "/contact-xero", method = RequestMethod.GET, produces = { "application/json" })
+	@ResponseBody
+	public String getContactsByXero(WebRequest request,
+			NativeWebRequest nativeRequest) {
+		OAuthService service = xeroServiceProvider.getService();
+		String jsonString = signXeroApi(request,
+				"https://api.xero.com/api.xro/2.0/Contacts", service,Verb.GET);
+		return jsonString;
+	}
+
 	@RequestMapping(value = "/contact-list", method = RequestMethod.GET, produces = { "application/json" })
 	@ResponseBody
 	public ResponseCollection<Contact> getContactsById(
-			@RequestParam("id") Integer id, @RequestParam("userId") Integer userId,
+			@RequestParam("id") Integer id,
+			@RequestParam("userId") Integer userId,
 			@RequestParam(value = "type", required = false) String type,
 			HttpServletRequest request) {
 		ContactType currentType = null;

@@ -67,12 +67,6 @@
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 
-	<!-- <servlet> <servlet-name>Callback</servlet-name> <servlet-class>net.oauth.client.Callback</servlet-class> 
-		</servlet> <servlet> <servlet-name>XeroConsumer</servlet-name> <servlet-class>com.xero.admin.servlet.XeroOAuthServlet</servlet-class> 
-		</servlet> <servlet-mapping> <servlet-name>Callback</servlet-name> <url-pattern>/OAuth/Callback</url-pattern> 
-		</servlet-mapping> <servlet-mapping> <servlet-name>XeroConsumer</servlet-name> 
-		<url-pattern>/login-xero</url-pattern> </servlet-mapping> -->
-
 	<servlet-mapping>
 		<servlet-name>XeroOSServlet</servlet-name>
 		<url-pattern>/</url-pattern>

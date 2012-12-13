@@ -1,10 +1,15 @@
 package com.xero.website.controller;
 
+import static org.springframework.web.context.request.RequestAttributes.SCOPE_SESSION;
+
 import java.util.Date;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.scribe.model.OAuthRequest;
+import org.scribe.model.Response;
+import org.scribe.model.Token;
 import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
 import org.slf4j.Logger;
@@ -23,6 +28,7 @@ import com.xero.admin.bean.type.ContactType;
 import com.xero.admin.util.XeroApiURLContants;
 import com.xero.core.Response.ResponseCollection;
 import com.xero.core.Response.ResponseEntity;
+import com.xero.core.api.SessionAttributes;
 import com.xero.core.api.server.OAuthServiceProvider;
 import com.xero.core.controller.BaseController;
 import com.xero.core.web.SessionHandler;
@@ -44,23 +50,49 @@ public class ContactController extends BaseController {
 	@RequestMapping(value = "/contact-add", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<Contact> doAdd(
-			@RequestParam(value = "companyName", required = false) String companyName,
-			@RequestParam("uemail") String uemail,
-			@RequestParam("telephone") String telephone,
+			@RequestParam(value = "Name", required = false) String companyName,
+			@RequestParam("EmailAddress") String uemail,
+			@RequestParam("DefaultNumber") String telephone,
 			@RequestParam("userId") Integer userId,
-			@RequestParam("groupId") Integer groupId) {
+			@RequestParam("groupId") Integer groupId,
+			@RequestParam(value = "isXero", required = false) Integer isXero,
+			WebRequest request) {
 		ResponseEntity<Contact> res = new ResponseEntity<Contact>(false);
 		try {
-			Contact contact = new Contact();
-			contact.setCompanyName(companyName);
-			contact.setTelephone(telephone);
-			contact.setUemail(uemail);
-			contact.setGroupId(groupId);
-			contact.setUserId(userId);
-			contact.setCreateDateTime(new Date());
-			contact = contactService.saveOrUpdate(contact);
-			res.setResult(true);
-			res.setData(contact);
+			if (null != isXero && isXero == 1) {
+				String jsonString = "";
+				Token accessToken = (Token) request.getAttribute(
+						SessionAttributes.ATTR_OAUTH_ACCESS_TOKEN,
+						SCOPE_SESSION);
+				if (null != accessToken) {
+					String xmlValue = "<Contacts><Contact><Name>Gem</Name></Contact></Contacts>";
+					OAuthService service = xeroServiceProvider.getService();
+					OAuthRequest oauthRequest = new OAuthRequest(Verb.POST,"https://api.xero.com/api.xro/2.0/Contacts");
+					//XeroApiURLContants.CONTACTS);
+					oauthRequest.addHeader("Accept", "application/json");
+				
+					oauthRequest.addPayload(xmlValue);
+					
+					service.signRequest(accessToken, oauthRequest);
+					Response oauthResponse = oauthRequest.send();
+					jsonString = oauthResponse.getBody();
+
+				}
+
+				res.setResult(true);
+				res.setJson(jsonString);
+			} else {
+				Contact contact = new Contact();
+				contact.setCompanyName(companyName);
+				contact.setTelephone(telephone);
+				contact.setUemail(uemail);
+				contact.setGroupId(groupId);
+				contact.setUserId(userId);
+				contact.setCreateDateTime(new Date());
+				contact = contactService.saveOrUpdate(contact);
+				res.setResult(true);
+				res.setData(contact);
+			}
 
 		} catch (Exception ex) {
 			logger.error("Save Contact Error.", ex);

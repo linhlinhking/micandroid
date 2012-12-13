@@ -2,6 +2,7 @@ package com.xero.core.controller;
 
 import static org.springframework.web.context.request.RequestAttributes.SCOPE_SESSION;
 
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -43,7 +44,7 @@ public class BaseController {
 	}
 
 	public String signXeroApi(WebRequest request, String url,
-			OAuthService service,Verb v) {
+			OAuthService service, Verb v) {
 		String jsonString = "";
 		Token accessToken = (Token) request.getAttribute(
 				SessionAttributes.ATTR_OAUTH_ACCESS_TOKEN, SCOPE_SESSION);
@@ -51,6 +52,23 @@ public class BaseController {
 			// OAuthService service = xeroServiceProvider.getService();
 			OAuthRequest oauthRequest = new OAuthRequest(v, url);
 			oauthRequest.addHeader("Accept", "application/json");
+			service.signRequest(accessToken, oauthRequest);
+			Response oauthResponse = oauthRequest.send();
+			jsonString = oauthResponse.getBody();
+
+		}
+		return jsonString;
+	}
+
+	public String postXeroApi(WebRequest request, String url,
+			OAuthService service, Verb v) {
+		String jsonString = "";
+		Token accessToken = (Token) request.getAttribute(
+				SessionAttributes.ATTR_OAUTH_ACCESS_TOKEN, SCOPE_SESSION);
+		if (null != accessToken) {
+			OAuthRequest oauthRequest = new OAuthRequest(v, url);
+			oauthRequest.addHeader("Accept", "application/json");
+			
 			service.signRequest(accessToken, oauthRequest);
 			Response oauthResponse = oauthRequest.send();
 			jsonString = oauthResponse.getBody();

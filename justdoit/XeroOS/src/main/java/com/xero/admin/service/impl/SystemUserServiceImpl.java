@@ -1,5 +1,7 @@
 package com.xero.admin.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.apache.commons.lang.StringUtils;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.xero.admin.bean.SystemUser;
 import com.xero.admin.dao.SystemUserDao;
 import com.xero.admin.service.SystemUserService;
+import com.xero.core.Response.ResponseCollection;
 import com.xero.core.Response.ResponseEntity;
 import com.xero.core.Response.ResponseMessage;
 import com.xero.core.common.service.impl.BaseServiceImpl;
@@ -49,15 +52,27 @@ public class SystemUserServiceImpl extends BaseServiceImpl<SystemUser, Integer>
 		return res;
 	}
 
-	
-	public ResponseMessage checkEmail(String uemail)
-			throws ServiceException {
-		ResponseMessage res = new ResponseMessage() ;
-		if(systemUserDao.checkEmail(uemail)){
-			res.setResult(true) ;
+	public ResponseMessage checkEmail(String uemail) throws ServiceException {
+		ResponseMessage res = new ResponseMessage();
+		if (systemUserDao.checkEmail(uemail)) {
+			res.setResult(true);
 			logger.error("User's Email is Exists.The Email is" + uemail);
-		}else{
+		} else {
+			res.setResult(false);
+		}
+		return res;
+	}
+
+	public ResponseCollection<SystemUser> getAllUser(){
+		ResponseCollection<SystemUser> res = new ResponseCollection<SystemUser>(false);
+		try{
+			List<SystemUser> lists = systemUserDao.getAllUser() ;
+			res.setResult(true) ;
+			res.setData(lists) ;
+		}catch(ServiceException se){
+			logger.error("Get All User Error On Service", se) ;
 			res.setResult(false) ;
+			res.setData(null) ;
 		}
 		return res;
 	}

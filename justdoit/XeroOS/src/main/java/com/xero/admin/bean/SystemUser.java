@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import com.xero.core.bean.BaseEntity;
 
 @Table(name = "tb_user")
@@ -16,20 +18,28 @@ public class SystemUser extends BaseEntity {
 
 	public final static String UEMAIL = "uemail" ;
 	
+	private String username ;
+	
 	private String uemail;
 
+	@JsonIgnore
 	private String password;
 
+	@JsonIgnore
 	private Integer planId;
 
 	private Date expiredDateTime;
 
 	private String registerIpAddress;
+	
+	private Date lastSeen ;
 
 	private String language;
 	
+	@JsonIgnore
 	private String xeroId ;
 
+	@JsonIgnore
 	@Column(name = "join_in_type")
 	private String joinInType;
 
@@ -96,7 +106,22 @@ public class SystemUser extends BaseEntity {
 	public void setXeroId(String xeroId) {
 		this.xeroId = xeroId;
 	}
-	
-	
 
+	public Date getLastSeen() {
+		return lastSeen;
+	}
+
+	public void setLastSeen(Date lastSeen) {
+		this.lastSeen = lastSeen;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	
+	
 }

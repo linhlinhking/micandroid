@@ -5,13 +5,17 @@ import java.util.List;
 public class ResponseCollection<E extends Object> {
 
 	protected Boolean result;
-	
+
 	protected List<E> data;
-	
-	protected String message ;
-	
-	public ResponseCollection(Boolean result){
-		this.result = result ;
+
+	protected String message;
+
+	public ResponseCollection() {
+		new ResponseCollection<E>(false);
+	}
+
+	public ResponseCollection(Boolean result) {
+		this.result = result;
 	}
 
 	public Boolean getResult() {
@@ -38,5 +42,4 @@ public class ResponseCollection<E extends Object> {
 		this.message = message;
 	}
 
-	
 }

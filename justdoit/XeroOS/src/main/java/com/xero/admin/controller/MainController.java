@@ -29,6 +29,10 @@ public class MainController {
 	public ModelAndView contact(HttpServletRequest request) {
 		ModelAndView model = new ModelAndView();
 		HttpSession session = request.getSession(false);
+		if(null == session){
+			model.setViewName("redirect:/");
+			return model ;
+		}
 		SystemUser sysUser = (SystemUser) session
 				.getAttribute(WebConstants.XERO_USER_SESSION);
 		if (null != session && null != sysUser) {

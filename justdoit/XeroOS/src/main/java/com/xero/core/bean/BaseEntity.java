@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 @MappedSuperclass
 public class BaseEntity  implements Serializable{
 
@@ -24,6 +26,7 @@ public class BaseEntity  implements Serializable{
 	
 	protected Date updateDateTime ;
 	
+	@JsonIgnore
 	@Transient
 	protected DateFields dateFields;
 

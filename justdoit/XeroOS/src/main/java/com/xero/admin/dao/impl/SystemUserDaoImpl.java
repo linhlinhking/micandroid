@@ -1,5 +1,9 @@
 package com.xero.admin.dao.impl;
 
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.xero.admin.bean.SystemUser;
@@ -12,6 +16,8 @@ import com.xero.core.security.MD5Util;
 @Repository("systemUserDao")
 public class SystemUserDaoImpl extends BaseDaoImpl<SystemUser, Integer>
 		implements SystemUserDao {
+	
+	private Logger logger = LoggerFactory.getLogger(getClass()) ;
 
 	public SystemUserDaoImpl() {
 		super(SystemUser.class);
@@ -28,14 +34,25 @@ public class SystemUserDaoImpl extends BaseDaoImpl<SystemUser, Integer>
 		return u;
 	}
 
-	public boolean checkEmail(String uemail) {
-		boolean flag = false ;
+	public boolean checkEmail(String uemail) throws DaoException {
+		boolean flag = false;
 		String reg = JoinUsType.REGISTRATION.toString();
 		String hql = "from SystemUser as u where 1=1 and u.uemail = ? and u.joinInType = ? ";
-		SystemUser u = (SystemUser)findUnique(hql, uemail, reg);
-		if(null != u){
-			flag = true ;
+		SystemUser u = (SystemUser) findUnique(hql, uemail, reg);
+		if (null != u) {
+			flag = true;
 		}
 		return flag;
+	}
+
+	public List<SystemUser> getAllUser() {
+		List<SystemUser> lists = null ;
+		try {
+			String hql = "from SystemUser as u where 1=1 order by u.username,u.uemail ";
+			lists = findByHql(hql) ;
+		} catch (DaoException ex) {
+			logger.error("Get All User Error.", ex) ;
+		}
+		return lists;
 	}
 }

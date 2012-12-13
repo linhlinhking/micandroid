@@ -6,6 +6,8 @@ public class ResponseEntity<E extends Object> {
 
 	protected E data;
 	
+	protected String json ;
+	
 	public ResponseEntity(Boolean result){
 		this.result = result ;
 	}
@@ -25,4 +27,16 @@ public class ResponseEntity<E extends Object> {
 	public void setData(E data) {
 		this.data = data;
 	}
+
+	public String getJson() {
+		return json;
+	}
+
+	public void setJson(String json) {
+		this.json = json;
+	}
+
+	
+	
+	
 }

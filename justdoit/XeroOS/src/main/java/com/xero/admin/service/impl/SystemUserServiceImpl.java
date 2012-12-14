@@ -63,16 +63,34 @@ public class SystemUserServiceImpl extends BaseServiceImpl<SystemUser, Integer>
 		return res;
 	}
 
-	public ResponseCollection<SystemUser> getAllUser(){
-		ResponseCollection<SystemUser> res = new ResponseCollection<SystemUser>(false);
-		try{
-			List<SystemUser> lists = systemUserDao.getAllUser() ;
-			res.setResult(true) ;
-			res.setData(lists) ;
-		}catch(ServiceException se){
-			logger.error("Get All User Error On Service", se) ;
-			res.setResult(false) ;
-			res.setData(null) ;
+	public ResponseCollection<SystemUser> getAllUser() {
+		ResponseCollection<SystemUser> res = new ResponseCollection<SystemUser>(
+				false);
+		try {
+			List<SystemUser> lists = systemUserDao.getAllUser();
+			res.setResult(true);
+			res.setData(lists);
+		} catch (ServiceException se) {
+			logger.error("Get All User Error On Service", se);
+			res.setResult(false);
+			res.setData(null);
+		}
+		return res;
+	}
+
+	public ResponseCollection<SystemUser> getUsersByPlanId(Integer planId,
+			Integer companyId) throws ServiceException {
+		ResponseCollection<SystemUser> res = new ResponseCollection<SystemUser>(
+				false);
+		try {
+			List<SystemUser> lists = systemUserDao.getUsersByPlanId(planId,
+					companyId);
+			res.setResult(true);
+			res.setData(lists);
+		} catch (ServiceException se) {
+			logger.error("Get All User Error On Service", se);
+			res.setResult(false);
+			res.setData(null);
 		}
 		return res;
 	}

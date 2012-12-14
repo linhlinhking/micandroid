@@ -3,9 +3,12 @@ package com.xero.core.common.dao.impl;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.List;
+
 import javax.annotation.Resource;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -209,6 +212,26 @@ public class BaseDaoImpl<E, PK extends Serializable> implements BaseDao<E, PK> {
 
 	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
 		this.hibernateTemplate = hibernateTemplate;
+	}
+
+	public List<E> findByNativeSql(final String hql, final Object... values) {
+		return getHibernateTemplate().execute(new HibernateCallback<List<E>>() {
+
+			@SuppressWarnings("unchecked")
+			public List<E> doInHibernate(Session session)
+					throws HibernateException, SQLException {
+				// Query query = session.createQuery(hql);
+				// session.createSQLQuery(hql).addEntity(entityClass).list() ;
+				SQLQuery query = session.createSQLQuery(hql);
+				if (values != null) {
+					for (int i = 0, j = values.length; i < j; i++) {
+						query.setParameter(i, values[i]);
+					}
+				}
+				return query.addEntity(entityClass).list();
+			}
+
+		});
 	}
 
 }

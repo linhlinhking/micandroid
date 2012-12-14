@@ -13,9 +13,8 @@ public class DateUtil {
 	public final static String FORMAT_YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
 
 	public final static String FORMAT_YYYY_N_MM_Y_MM_R = "yyyy年MM月dd日";
-	
-	public final static String FORMAT_MM_DD_YYYY = "MM/dd/yyyy";
 
+	public final static String FORMAT_MM_DD_YYYY = "MM/dd/yyyy";
 
 	private DateUtil() {
 		super();
@@ -63,7 +62,7 @@ public class DateUtil {
 	 * @return Date
 	 */
 	public static Date strToEnDate(String dateStr) {
-		return strToDate(dateStr,FORMAT_MM_DD_YYYY);
+		return strToDate(dateStr, FORMAT_MM_DD_YYYY);
 	}
 
 	/**
@@ -81,9 +80,29 @@ public class DateUtil {
 		Date date = dateFormat.parse(dateStr, new ParsePosition(0));
 		return date;
 	}
-	
-	public static void main(String args[]){
-		System.out.println(strToEnDate("12/12/2012")) ;
+
+	public static Date millisToDate(String millis) {
+		if (null == millis) {
+			return null;
+		}
+		Calendar cal = Calendar.getInstance();
+		cal.setTimeInMillis(Long.valueOf(millis));
+		return cal.getTime();
 	}
+
+	public static void main(String args[]) {
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		long now = System.currentTimeMillis();
+		String v = "1357269821000";
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(Long.valueOf(v));
+		System.out.println(now + " = " + formatter.format(calendar.getTime()));
+		
+		String email = "leyxan.nb@gmail.com" ;
+		String[] arry = email.split("@") ;
+		System.out.println(arry[0]) ;
+	}
+	
+	
 
 }

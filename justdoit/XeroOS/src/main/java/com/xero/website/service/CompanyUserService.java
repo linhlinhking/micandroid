@@ -5,4 +5,5 @@ import com.xero.website.bean.CompanyUser;
 
 public interface CompanyUserService extends BaseService<CompanyUser, Integer> {
 
+	
 }

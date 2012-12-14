@@ -72,7 +72,9 @@ public interface BaseDao<E, PK extends Serializable> {
 	public void evict(Object object);
 
 	public Object findUnique(String hql, Object... values);
-	
-	public List<E> findByHql(String hql,Object... values);
+
+	public List<E> findByHql(String hql, Object... values);
+
+	public List<E> findByNativeSql(String hql, Object... values);
 
 }

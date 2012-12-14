@@ -15,4 +15,7 @@ public interface SystemUserService extends BaseService<SystemUser, Integer> {
 	public ResponseMessage checkEmail(String uemail) throws ServiceException;
 
 	public ResponseCollection<SystemUser> getAllUser() throws ServiceException;
+
+	public ResponseCollection<SystemUser> getUsersByPlanId(Integer planId,Integer companyId)
+			throws ServiceException;
 }

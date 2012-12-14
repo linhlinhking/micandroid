@@ -16,8 +16,8 @@ import com.xero.core.security.MD5Util;
 @Repository("systemUserDao")
 public class SystemUserDaoImpl extends BaseDaoImpl<SystemUser, Integer>
 		implements SystemUserDao {
-	
-	private Logger logger = LoggerFactory.getLogger(getClass()) ;
+
+	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	public SystemUserDaoImpl() {
 		super(SystemUser.class);
@@ -46,12 +46,24 @@ public class SystemUserDaoImpl extends BaseDaoImpl<SystemUser, Integer>
 	}
 
 	public List<SystemUser> getAllUser() {
-		List<SystemUser> lists = null ;
+		List<SystemUser> lists = null;
 		try {
 			String hql = "from SystemUser as u where 1=1 order by u.username,u.uemail ";
-			lists = findByHql(hql) ;
+			lists = findByHql(hql);
 		} catch (DaoException ex) {
-			logger.error("Get All User Error.", ex) ;
+			logger.error("Get All User Error.", ex);
+		}
+		return lists;
+	}
+
+	public List<SystemUser> getUsersByPlanId(Integer planId, Integer companyId)
+			throws DaoException {
+		List<SystemUser> lists = null;
+		try {
+			String hql = "select u.* from tb_user as u inner join tb_company_user as c where 1=1 and u.id = c.userId and u.planId = ? and c.companyId = ? ";
+			lists = findByNativeSql(hql, planId, companyId);
+		} catch (DaoException ex) {
+			logger.error("Get All User Error.", ex);
 		}
 		return lists;
 	}

@@ -6,7 +6,7 @@ public class ResponseMessage {
 
 	protected String message;
 	
-	protected String statusCode ;
+	protected int statusCode ;
 	
 	protected String url ;
 
@@ -26,11 +26,11 @@ public class ResponseMessage {
 		this.message = message;
 	}
 
-	public String getStatusCode() {
+	public int getStatusCode() {
 		return statusCode;
 	}
 
-	public void setStatusCode(String statusCode) {
+	public void setStatusCode(int statusCode) {
 		this.statusCode = statusCode;
 	}
 

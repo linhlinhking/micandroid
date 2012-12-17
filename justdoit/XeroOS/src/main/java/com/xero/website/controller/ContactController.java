@@ -29,6 +29,7 @@ import com.xero.admin.util.XeroApiURLContants;
 import com.xero.core.Response.ResponseCollection;
 import com.xero.core.Response.ResponseEntity;
 import com.xero.core.api.SessionAttributes;
+import com.xero.core.api.XeroXmlParam;
 import com.xero.core.api.server.OAuthServiceProvider;
 import com.xero.core.controller.BaseController;
 import com.xero.core.web.SessionHandler;
@@ -61,24 +62,27 @@ public class ContactController extends BaseController {
 		try {
 			if (null != isXero && isXero == 1) {
 				String jsonString = "";
+				// GET the xero's accessToken.
 				Token accessToken = (Token) request.getAttribute(
 						SessionAttributes.ATTR_OAUTH_ACCESS_TOKEN,
 						SCOPE_SESSION);
 				if (null != accessToken) {
-					String xmlValue = "<Contacts><Contact><Name>Gem</Name></Contact></Contacts>";
+					String xmlValue = XeroXmlParam.postContactXml(companyName,
+							uemail, telephone);
+					// If the AccessToken Exists.Get Authorization Service.
 					OAuthService service = xeroServiceProvider.getService();
-					OAuthRequest oauthRequest = new OAuthRequest(Verb.POST,"https://api.xero.com/api.xro/2.0/Contacts");
-					//XeroApiURLContants.CONTACTS);
+					// Send post request to xero.
+					OAuthRequest oauthRequest = new OAuthRequest(Verb.POST,
+							XeroApiURLContants.CONTACTS);
+					// Accept Response Type by JSON
 					oauthRequest.addHeader("Accept", "application/json");
-				
-					oauthRequest.addPayload(xmlValue);
-					
+					// Add POST's parameter to xero api.
+					oauthRequest.addBodyParameter("xml", xmlValue);
 					service.signRequest(accessToken, oauthRequest);
 					Response oauthResponse = oauthRequest.send();
+					// Get Xero's Response.
 					jsonString = oauthResponse.getBody();
-
 				}
-
 				res.setResult(true);
 				res.setJson(jsonString);
 			} else {
@@ -90,6 +94,7 @@ public class ContactController extends BaseController {
 				contact.setUserId(userId);
 				contact.setCreateDateTime(new Date());
 				contact = contactService.saveOrUpdate(contact);
+				
 				res.setResult(true);
 				res.setData(contact);
 			}

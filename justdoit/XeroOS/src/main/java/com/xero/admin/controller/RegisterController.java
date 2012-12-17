@@ -104,7 +104,7 @@ public class RegisterController extends BaseController {
 		} catch (Exception ex) {
 			logger.error("Current " + uemail + "Registe Error.", ex);
 			resMsg.setResult(false);
-			resMsg.setStatusCode("500");
+			resMsg.setStatusCode(500);
 			resMsg.setMessage("Registration Error.");
 			resMsg.setUrl("register");
 		}

@@ -60,7 +60,7 @@ public class SystemUserDaoImpl extends BaseDaoImpl<SystemUser, Integer>
 			throws DaoException {
 		List<SystemUser> lists = null;
 		try {
-			String hql = "select u.* from tb_user as u inner join tb_company_user as c where 1=1 and u.id = c.userId and u.planId = ? and c.companyId = ? ";
+			String hql = "select u.* from tb_user as u inner join tb_company_user as c where 1=1 and u.id = c.userId and u.planId = ? and c.companyId = ? and u.deleted = 0 ";
 			lists = findByNativeSql(hql, planId, companyId);
 		} catch (DaoException ex) {
 			logger.error("Get All User Error.", ex);

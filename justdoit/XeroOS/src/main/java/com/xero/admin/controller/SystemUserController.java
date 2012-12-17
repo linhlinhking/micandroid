@@ -22,6 +22,7 @@ import com.xero.admin.service.SystemUserService;
 import com.xero.admin.util.DateUtil;
 import com.xero.core.Response.ResponseCollection;
 import com.xero.core.Response.ResponseEntity;
+import com.xero.core.Response.ResponseMessage;
 import com.xero.core.security.MD5Util;
 import com.xero.core.web.WebConstants;
 import com.xero.website.bean.Company;
@@ -178,6 +179,35 @@ public class SystemUserController {
 			res.setResult(false);
 		}
 
+		return res;
+	}
+
+	@RequestMapping(value = "/user-delete", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseMessage doDelete(HttpServletRequest request,
+			@RequestParam("userId") Integer id) {
+		ResponseMessage res = new ResponseMessage();
+		try {
+			SystemUser sysUser = systemUserService.get(id);
+			HttpSession session = request.getSession(false);
+			if (null != sysUser) {
+				SystemUser currentSignUser = (SystemUser) session
+						.getAttribute(WebConstants.XERO_USER_SESSION);
+				if(sysUser.getId().equals(currentSignUser.getId())){
+					res.setResult(true) ;
+					res.setStatusCode(600) ;
+				}else{
+					sysUser.setDeleted(true);
+					systemUserService.saveOrUpdate(sysUser);
+					res.setResult(true);
+				}
+			}else{
+				res.setResult(false);
+			}
+			res.setUrl("/user");
+		} catch (Exception ex) {
+			logger.error("Delete User Error.User'Id is" + id, ex);
+		}
 		return res;
 	}
 

@@ -123,12 +123,12 @@ public class ContactController extends BaseController {
 			@RequestParam("userId") Integer userId,
 			HttpServletRequest request) {
 		ResponseCollection<Contact> res = contactService.queryContactById(groupId,userId);
-		if (SessionHandler.verifySession(request)) {
-			return res;
-		}
-		res.setData(null);
-		res.setResult(false);
-		res.setMessage("Authorization Error.");
+		//if (SessionHandler.verifySession(request)) {
+		//	return res;
+		//}
+		//res.setData(null);
+		//res.setResult(false);
+		//res.setMessage("Authorization Error.");
 
 		return res;
 	}

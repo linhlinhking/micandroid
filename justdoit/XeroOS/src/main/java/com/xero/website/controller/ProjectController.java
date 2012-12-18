@@ -17,11 +17,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.xero.admin.bean.SystemUser;
 import com.xero.admin.util.DateUtil;
+import com.xero.core.Response.ResponseCollection;
 import com.xero.core.Response.ResponseEntity;
 import com.xero.core.controller.BaseController;
 import com.xero.core.web.WebConstants;
 import com.xero.website.bean.Project;
+import com.xero.website.bean.ProjectSupplier;
+import com.xero.website.bean.type.ProjectType;
 import com.xero.website.service.ProjectService;
+import com.xero.website.service.ProjectSupplierService;
 
 @Controller
 public class ProjectController extends BaseController {
@@ -30,6 +34,9 @@ public class ProjectController extends BaseController {
 
 	@Resource
 	private ProjectService projectService;
+	
+	@Resource
+	private ProjectSupplierService projectSupplierService ;
 
 	@RequestMapping(value = "/project", method = RequestMethod.GET)
 	public ModelAndView index(HttpServletRequest request) {
@@ -56,23 +63,24 @@ public class ProjectController extends BaseController {
 		return model;
 	}
 
-	
 	@RequestMapping(value = "/project-add", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<Project> doProject(
 			HttpServletRequest request,
 			@RequestParam("proName") String proName,
 			@RequestParam("customerId") String customerId,
+			@RequestParam("customerName") String customerName,
 			@RequestParam("startDate") String startDate,
 			@RequestParam("startDate") String endDate,
-			@RequestParam(required = false, value = "suppliers") String supplierIds) {
+			@RequestParam(required = false, value = "supplierId") String supplierId,
+			@RequestParam("supplierName") String supplierName) {
 		ResponseEntity<Project> res = new ResponseEntity<Project>(false);
 		try {
-			
-		
+
 			Project p = new Project();
 			p.setProjectName(proName);
 			p.setCustomerId(customerId);
+			p.setCustomerName(customerName) ;
 			p.setCreateDateTime(new Date());
 			Date sDate = (startDate != null) ? DateUtil.strToEnDate(startDate)
 					: null;
@@ -80,8 +88,17 @@ public class ProjectController extends BaseController {
 					: null;
 			p.setStartDate(sDate);
 			p.setEndDate(eDate);
+			p.setStatus(ProjectType.ACTIVE.toString()) ;
 
 			p = projectService.saveOrUpdate(p);
+			
+			Integer projectId = p.getId() ;
+			ProjectSupplier ps = new ProjectSupplier() ;
+			ps.setProjectId(projectId) ;
+			ps.setSupplierId(supplierId) ;
+			ps.setSupplierName(supplierName) ;
+			
+			projectSupplierService.saveOrUpdate(ps) ;
 
 			res.setResult(true);
 			res.setData(p);
@@ -90,5 +107,11 @@ public class ProjectController extends BaseController {
 			res.setData(null);
 		}
 		return res;
+	}
+	
+	@RequestMapping(value = "/project-list", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseCollection<Project> getAllProject(HttpServletRequest request){
+		return projectService.getAllProject() ;
 	}
 }

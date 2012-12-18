@@ -14,6 +14,8 @@ public class ProjectSupplier extends BaseEntity{
 	private Integer projectId ;
 	
 	private String supplierId ;
+	
+	private String supplierName ;
 
 	public Integer getProjectId() {
 		return projectId;
@@ -30,4 +32,14 @@ public class ProjectSupplier extends BaseEntity{
 	public void setSupplierId(String supplierId) {
 		this.supplierId = supplierId;
 	}
+
+	public String getSupplierName() {
+		return supplierName;
+	}
+
+	public void setSupplierName(String supplierName) {
+		this.supplierName = supplierName;
+	}
+	
+	
 }

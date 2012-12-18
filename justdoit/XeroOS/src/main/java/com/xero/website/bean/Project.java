@@ -21,8 +21,11 @@ public class Project extends BaseEntity{
 	
 	private String customerId ;
 	
+	private String customerName ;
 	
-
+	private String status ;
+	
+	
 	public String getProjectName() {
 		return projectName;
 	}
@@ -55,6 +58,21 @@ public class Project extends BaseEntity{
 		this.customerId = customerId;
 	}
 
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
 
 }

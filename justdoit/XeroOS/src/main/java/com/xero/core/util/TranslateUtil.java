@@ -15,6 +15,7 @@ public class TranslateUtil {
 	private static TranslateUtil instance = null;
 
 	private TranslateUtil() {
+		
 	}
 
 	public static synchronized TranslateUtil getInstance() {

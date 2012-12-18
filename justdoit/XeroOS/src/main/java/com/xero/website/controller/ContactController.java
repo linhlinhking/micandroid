@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
-import com.xero.admin.bean.type.ContactType;
 import com.xero.admin.util.XeroApiURLContants;
 import com.xero.core.Response.ResponseCollection;
 import com.xero.core.Response.ResponseEntity;
@@ -120,25 +119,13 @@ public class ContactController extends BaseController {
 	@RequestMapping(value = "/contact-list", method = RequestMethod.GET, produces = { "application/json" })
 	@ResponseBody
 	public ResponseCollection<Contact> getContactsById(
-			@RequestParam("id") Integer id,
+			@RequestParam("groupId") Integer groupId,
 			@RequestParam("userId") Integer userId,
-			@RequestParam(value = "type", required = false) String type,
 			HttpServletRequest request) {
-		ContactType currentType = null;
-		if (null != type && type.equalsIgnoreCase("customer")) {
-			currentType = ContactType.CUSTOMER;
-		} else if (type.equalsIgnoreCase("supplier")) {
-			currentType = ContactType.SUPPLIER;
-		} else {
-			currentType = ContactType.ALL;
-		}
-
-		ResponseCollection<Contact> res = contactService.queryContactById(id,
-				userId, currentType);
+		ResponseCollection<Contact> res = contactService.queryContactById(groupId,userId);
 		if (SessionHandler.verifySession(request)) {
 			return res;
 		}
-
 		res.setData(null);
 		res.setResult(false);
 		res.setMessage("Authorization Error.");

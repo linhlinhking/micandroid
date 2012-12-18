@@ -36,6 +36,8 @@ public class SystemUser extends BaseEntity {
 
 	private String language;
 	
+	private Integer linkXero ;
+	
 	@JsonIgnore
 	private String xeroId ;
 
@@ -122,6 +124,16 @@ public class SystemUser extends BaseEntity {
 	public void setUsername(String username) {
 		this.username = username;
 	}
+
+	public Integer getLinkXero() {
+		return linkXero;
+	}
+
+	public void setLinkXero(Integer linkXero) {
+		this.linkXero = linkXero;
+	}
+	
+	
 	
 	
 }

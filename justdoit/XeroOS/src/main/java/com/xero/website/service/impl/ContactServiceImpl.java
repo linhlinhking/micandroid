@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.xero.admin.bean.type.ContactType;
 import com.xero.core.Response.ResponseCollection;
 import com.xero.core.common.service.impl.BaseServiceImpl;
 import com.xero.core.exception.ServiceException;
@@ -30,10 +29,9 @@ public class ContactServiceImpl extends BaseServiceImpl<Contact, Integer>
 		super(contactDao);
 	}
 
-	public ResponseCollection<Contact> queryContactById(Integer id,Integer userId,
-			ContactType type) throws ServiceException {
+	public ResponseCollection<Contact> queryContactById(Integer groupId,Integer userId) throws ServiceException {
 		ResponseCollection<Contact> res = new ResponseCollection<Contact>(false) ;
-		List<Contact> list = contactDao.queryContactById(id,userId, type) ;
+		List<Contact> list = contactDao.queryContactById(groupId,userId) ;
 		if(null == list){
 			res.setData(null) ;
 		}else{

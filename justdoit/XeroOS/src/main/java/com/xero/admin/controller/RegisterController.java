@@ -51,11 +51,12 @@ public class RegisterController extends BaseController {
 	public ResponseMessage doRegister(HttpServletRequest request,
 			@RequestParam("companyName") String companyName,
 			@RequestParam("uemail") String uemail,
-			@RequestParam("password") String password) throws Exception {
+			@RequestParam("password") String password,
+			@RequestParam("linkXero") Integer linkXero) throws Exception {
 		ResponseMessage resMsg = new ResponseMessage();
 		try {
 			Company cmp = new Company();
-			
+
 			cmp.setCompanyName(companyName);
 			cmp.setCreateDateTime(new Date());
 			Integer companyId = companyService.save(cmp);
@@ -70,17 +71,15 @@ public class RegisterController extends BaseController {
 			if ("" != password && null != password) {
 				password = MD5Util.calcMD5(password);
 			}
-			
-			
 
 			SystemUser sysUser = new SystemUser();
-			String username = "" ;
-			
-			Date expiredDate = DateUtil.addDate(new Date(), 30) ;
-			
-			if("" != uemail && uemail != null){
-				String temp[] = uemail.split("@") ;
-				username = temp[0] ;
+			String username = "";
+
+			Date expiredDate = DateUtil.addDate(new Date(), 30);
+
+			if ("" != uemail && uemail != null) {
+				String temp[] = uemail.split("@");
+				username = temp[0];
 			}
 			sysUser.setJoinInType(JoinUsType.REGISTRATION.toString());
 			sysUser.setCreateDateTime(new Date());
@@ -88,7 +87,9 @@ public class RegisterController extends BaseController {
 			sysUser.setPlanId(1);
 			sysUser.setExpiredDateTime(expiredDate);
 			sysUser.setUemail(uemail);
-			sysUser.setUsername(username) ;
+			sysUser.setUsername(username);
+			sysUser.setLinkXero(linkXero) ;
+			
 			Integer userId = systemUserService.save(sysUser);
 
 			CompanyUser link = new CompanyUser();

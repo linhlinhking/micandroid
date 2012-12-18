@@ -30,8 +30,4 @@ public class ProjectSupplier extends BaseEntity{
 	public void setSupplierId(String supplierId) {
 		this.supplierId = supplierId;
 	}
-	
-	
-	
-
 }

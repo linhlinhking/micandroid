@@ -29,9 +29,9 @@ public class MainController {
 	public ModelAndView contact(HttpServletRequest request) {
 		ModelAndView model = new ModelAndView();
 		HttpSession session = request.getSession(false);
-		if(null == session){
+		if (null == session) {
 			model.setViewName("redirect:/");
-			return model ;
+			return model;
 		}
 		SystemUser sysUser = (SystemUser) session
 				.getAttribute(WebConstants.XERO_USER_SESSION);
@@ -42,17 +42,17 @@ public class MainController {
 			} else {
 				int leftDays = DateUtil.daysOfTwoDate(new Date(), ep);
 				model.addObject("leftDays", leftDays);
+				model.addObject("isLinkXero", sysUser.getLinkXero());
 				model.setViewName("/contact");
 			}
 		} else {
 			model.setViewName("redirect:/");
 		}
-		
+
 		return model;
 	}
 
-	
-	public void justForCookie(HttpServletRequest request){
+	public void justForCookie(HttpServletRequest request) {
 		ModelAndView model = new ModelAndView();
 		Cookie cookie = CookieUtil.getCookie(request,
 				WebConstants.COOKIE_DOMAIN_NAME);
@@ -72,7 +72,7 @@ public class MainController {
 					model.addObject("leftDays", leftDays);
 					model.setViewName("/contact");
 				}
-			}else{
+			} else {
 				model.setViewName("redirect:/");
 			}
 

@@ -20,6 +20,8 @@ public class Project extends BaseEntity{
 	private Date endDate ;
 	
 	private String customerId ;
+	
+	
 
 	public String getProjectName() {
 		return projectName;

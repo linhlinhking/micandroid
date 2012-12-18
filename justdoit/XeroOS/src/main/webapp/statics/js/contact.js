@@ -1,17 +1,21 @@
+
+/**Store Customers to Localstorage*/
 var currentCustomers = [];
+/**Store Suppliers to Localstorage*/
 var currentSuppliers = [];
+/**Store All Contacts to Localstorage*/
 var currentAllContacts = [];
 var xeroStorage = new XeroStorage();
 
 $(function() {
 	var currentUserId = $("input[name='userId']").val();
+	var isXero = $("input[name='isLinkXero']").val() ;
 	
 	$(".add_button").click(function() {
 		var Name = $("input[name='companyName']").val();
 		var EmailAddress = $("input[name='uemail']").val();
 		var DefaultNumber = $("input[name='telephone']").val() ;
 		var groupId = $("input[name='groupId']").val();
-		var isXero = $("input[name='isLinkXero']").val() ;
 		
 		$.ajax({
 			url : '/contact-add?random=' + (new Date()),
@@ -39,11 +43,11 @@ $(function() {
 		});
 	});
 
+	
 	$(".all_field").click(function() {
 		$(".sup_field").removeClass("selected_field");
 		$(".cus_field").removeClass("selected_field");
 		$(".all_field").addClass("selected_field");
-		// getContactsByItem("all","","/contact-list",currentUserId);
 		getContactsByType('All');
 	});
 
@@ -52,7 +56,6 @@ $(function() {
 		$(".sup_field").removeClass("selected_field");
 		$(".cus_field").addClass("selected_field");
 		$("input[name='groupId']").val(1);
-		// getContactsByItem("customer", "1", "/contact-list", currentUserId);
 		getContactsByType('Customer');
 	});
 
@@ -61,7 +64,6 @@ $(function() {
 		$(".cus_field").removeClass("selected_field");
 		$(".sup_field").addClass("selected_field");
 		$("input[name='groupId']").val(2);
-		// getContactsByItem("supplier", "2", "/contact-list", currentUserId);
 		getContactsByType('Supplier');
 	});
 
@@ -87,11 +89,23 @@ $(function() {
 		});
 	});
 
-	// getContactsByItem("all","","/contact-list",currentUserId);
-	getContactsByXero("/contact-xero");
+	selLoadingWay(isXero,currentUserId);
 
 });
 
+function selLoadingWay(id,userId){
+	if(id == 1){
+		getContactsByXero("/contact-xero");
+	}else{
+		getContactsByItem("/contact-list",userId);
+	}
+}
+
+/**
+ * @param url
+ * @Descripton Link to Xero.Get All Contact from Xero. 
+ * @author Devon.ning
+ */
 function getContactsByXero(url) {
 	$.ajax({
 		url : url,
@@ -136,30 +150,28 @@ function getContactsByXero(url) {
 	});
 }
 
+
+/**
+ * @param type (ALL SUPPLIER CUSTOMER)
+ * @Description Click Each Button,Back the Contacts'Data.
+ * @author Devon.ning 
+ */
 function getContactsByType(type) {
-	// var jsonRes = $("#jsonResult").val();
-	// if (null == jsonRes || "" == jsonRes || jsonRes == 'undefined') {
-	// window.top.location.href = "/oauth/xero";
-	// return;
-	// }
 	var obj = xeroStorage.get("currentAllContacts");
 	var myData = JSON.parse(obj);
 	if (myData != "" && myData != null) {
 		$(".c_details_content li").remove();
 		switch (type) {
 		case 'All':
-			// getDataByAll(lists);
 			getDataByType(myData);
 			break;
 		case 'Supplier':
-			// getDataBySupplier(lists);
 			var obj = xeroStorage.get("currentSuppliers");
 			var tempObj = "[" + obj + "]";
 			var tempJson = JSON.parse(tempObj);
 			getDataByType(tempJson);
 			break;
 		case 'Customer':
-			// getDataByCustomer(lists);
 			var obj = xeroStorage.get("currentCustomers");
 			var tempObj = "[" + obj + "]";
 			var tempJson = JSON.parse(tempObj);
@@ -172,6 +184,13 @@ function getContactsByType(type) {
 	}
 }
 
+/**
+ * @param lists Json for Contact.
+ * @Descriptioin show the data on page.
+ * 
+ * @author Devon.ning 
+ * 
+ */
 function getDataByType(lists) {
 	if (null == lists || "" == lists) {
 		return;
@@ -189,77 +208,55 @@ function getDataByType(lists) {
 	}
 }
 
-function getDataBySupplier(lists) {
-	var obj = xeroStorage.get("currentSuppliers");
-	var tempObj = "[" + obj + "]";
-	var tempJson = JSON.parse(tempObj);
-	console.log(tempJson);
 
-	for ( var i = 0, j = lists.length; i < j; i++) {
-		var item = lists[i];
-		var n = item.Name;
-		var e = item.EmailAddress;
-		var t = item.Phones[1].PhoneNumber;
-		var _e = (e == "") ? '--' : e;
-		var _t = (t == "") ? '--' : t;
-		if (item.IsSupplier) {
-			showAddContact(_t, _e, n);
-		}
-	}
-}
 
-function getDataByCustomer(lists) {
-
-	for ( var i = 0, j = lists.length; i < j; i++) {
-		var item = lists[i];
-		var n = item.Name;
-		var e = item.EmailAddress;
-		var t = item.Phones[1].PhoneNumber;
-
-		var _e = (e == "") ? '--' : e;
-		var _t = (t == "") ? '--' : t;
-		if (item.IsCustomer) {
-			showAddContact(_t, _e, n);
-		}
-	}
-}
-
-function getDataByAll(lists) {
-	for ( var i = 0, j = lists.length; i < j; i++) {
-		var item = lists[i];
-		var n = item.Name;
-		var e = item.EmailAddress;
-		var t = item.Phones[1].PhoneNumber;
-		var _e = (e == "") ? '--' : e;
-		var _t = (t == "") ? '--' : t;
-		showAddContact(_t, _e, n);
-	}
-}
-
-function getContactsByItem(type, id, url, userId) {
+/**
+ * @param url Link to local data
+ * @param groupId (1=customers 2=suppliers)
+ * @param userId for current sign in user. 
+ * @Description get Contacts from local db.
+ * @author Devon.Ning
+ */
+function getContactsByItem(url,userId) {
 	$.ajax({
 		url : url,
 		type : 'GET',
 		dataType : 'json',
 		data : {
-			"id" : id,
-			"userId" : userId,
-			'type' : type
+			"groupId" : $("input[name='groupId']").val(),
+			"userId" : userId
 		},
 		success : showCurrentContacts
 	});
 }
 
+/**
+ * @param res Response from Server.
+ * @Description Set localStorage data.
+ */
 function showCurrentContacts(res) {
 	if (res.result) {
 		$(".c_details_content li").remove();
 		var json = res.data;
+		var jsonList = JSON.stringify(json);
+		
+		xeroStorage.set("currentAllContacts", jsonList);
 		if (json.length > 0) {
 			for ( var i = 0, j = json.length; i < j; i++) {
 				var temp = json[i];
+				
+				var itemTxt = JSON.stringify(temp);
+				
 				var t = temp.telephone;
 				var e = temp.uemail;
 				var n = temp.companyName;
+				
+				if (temp.groupId == 1) {
+					currentCustomers.push(itemTxt);
+				}
+				if (temp.groupId == 2) {
+					currentSuppliers.push(itemTxt);
+				}
 
 				showAddContact(t, e, n);
 			}
@@ -270,6 +267,7 @@ function showCurrentContacts(res) {
 	}
 }
 
+
 function showAddContact(t, e, n) {
 	$(".c_details_content:first").append(
 			"<li class='li_default'><div class='info_area p_info'>" + t
@@ -279,6 +277,10 @@ function showAddContact(t, e, n) {
 
 }
 
+/**
+ * @Description clear added form data.
+ * @author Devon.Ning
+ */
 function clearContact(){
 	$("input[name='companyName']").val("");
 	$("input[name='uemail']").val("");

@@ -75,12 +75,17 @@ xero.Register = function() {
 			rt = e.data.validateEmail(e) && e.data.validatePassword(e)
 					&& e.data.validateProtocol(e);
 			e.data.focus = false;
+			
 			xe = e.data.validateXero(e);
 
 			if (rt) {
 				var uemail = $.trim($("#register_email").val());
 				var upass = $.trim($("#password_ie").val());
 				var cmpName = $("#register_companyName").val();
+				var linkXero = 0 ;
+				if(xe){
+					linkXero = 1 ;
+				}
 
 				$.ajax({
 					type : 'POST',
@@ -89,7 +94,8 @@ xero.Register = function() {
 					data : {
 						"companyName" : cmpName,
 						"uemail" : uemail,
-						"password" : upass
+						"password" : upass,
+						"linkXero": linkXero
 					},
 					success : function(res) {
 						if (res.result && xe) {

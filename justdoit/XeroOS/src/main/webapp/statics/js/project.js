@@ -83,7 +83,9 @@ $(function() {
 		changeYear : true
 	});﻿	
 	
-	
+	$(".c_details_content li").die().live("click",function(){
+		window.top.location.href="/project-detail" ;
+	});
 
 	$(".add_button").click(function() {
 			$.ajax({

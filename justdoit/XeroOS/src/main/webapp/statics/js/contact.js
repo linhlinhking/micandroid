@@ -101,6 +101,14 @@ function selLoadingWay(id,userId){
 	}
 }
 
+function isLinkedXero(){
+	var isXero = $("input[name='isLinkXero']").val() ;
+	if(isXero == 1){
+		return true ;
+	}
+	return false ;
+}
+
 /**
  * @param url
  * @Descripton Link to Xero.Get All Contact from Xero. 
@@ -163,24 +171,36 @@ function getContactsByType(type) {
 		$(".c_details_content li").remove();
 		switch (type) {
 		case 'All':
-			getDataByType(myData);
+			if(isLinkedXero()){
+				getDataByType(myData);
+			}else{
+				getLocalDataByType(myData);
+			}
 			break;
 		case 'Supplier':
 			var obj = xeroStorage.get("currentSuppliers");
 			var tempObj = "[" + obj + "]";
 			var tempJson = JSON.parse(tempObj);
-			getDataByType(tempJson);
+			if(isLinkedXero()){
+				getDataByType(tempJson);
+			}else{
+				getLocalDataByType(tempJson);
+			}
 			break;
 		case 'Customer':
 			var obj = xeroStorage.get("currentCustomers");
 			var tempObj = "[" + obj + "]";
 			var tempJson = JSON.parse(tempObj);
-			getDataByType(tempJson);
+			if(isLinkedXero()){
+				getDataByType(tempJson);
+			}else{
+				getLocalDataByType(tempJson);
+			}
 			break;
 		}
 
 	} else {
-		alert("Connection Timeout.");
+		//alert("Connection Timeout.");
 	}
 }
 
@@ -200,6 +220,30 @@ function getDataByType(lists) {
 		var n = item.Name;
 		var e = item.EmailAddress;
 		var t = item.Phones[1].PhoneNumber;
+		var _e = (e == "") ? '--' : e;
+		var _t = (t == "") ? '--' : t;
+
+		showAddContact(_t, _e, n);
+
+	}
+}
+
+/**
+ * @param get Local lists Json for Contact.
+ * @Descriptioin show the data on page.
+ * 
+ * @author Devon.ning 
+ * 
+ */
+function getLocalDataByType(lists) {
+	if (null == lists || "" == lists) {
+		return;
+	}
+	for ( var i = 0, j = lists.length; i < j; i++) {
+		var item = lists[i];
+		var n = item.companyName;
+		var e = item.uemail;
+		var t = item.telephone;
 		var _e = (e == "") ? '--' : e;
 		var _t = (t == "") ? '--' : t;
 
@@ -260,6 +304,8 @@ function showCurrentContacts(res) {
 
 				showAddContact(t, e, n);
 			}
+			xeroStorage.set("currentCustomers", currentCustomers);
+			xeroStorage.set("currentSuppliers", currentSuppliers);
 		}
 
 	} else {

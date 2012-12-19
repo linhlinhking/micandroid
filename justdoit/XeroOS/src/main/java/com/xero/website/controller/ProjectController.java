@@ -68,13 +68,15 @@ public class ProjectController extends BaseController {
 	public ResponseEntity<Project> doProject(
 			HttpServletRequest request,
 			@RequestParam("proName") String proName,
+			@RequestParam("poNumber")String poNumber,
 			@RequestParam("customerId") String customerId,
 			@RequestParam("customerName") String customerName,
 			@RequestParam("startDate") String startDate,
 			@RequestParam("endDate") String endDate,
 			@RequestParam(required = false, value = "supplierId") String supplierId,
 			@RequestParam("supplierName") String supplierName,
-			@RequestParam("supplierLang") String supplierLanguage) {
+			@RequestParam("supplierLang") String supplierLanguage,
+			@RequestParam("userId") Integer userId) {
 		ResponseEntity<Project> res = new ResponseEntity<Project>(false);
 		try {
 
@@ -90,6 +92,8 @@ public class ProjectController extends BaseController {
 			p.setStartDate(sDate);
 			p.setEndDate(eDate);
 			p.setStatus(ProjectType.ACTIVE.toString());
+			p.setUserId(userId) ;
+			p.setPoNumber(poNumber) ;
 
 			p = projectService.saveOrUpdate(p);
 
@@ -99,6 +103,7 @@ public class ProjectController extends BaseController {
 			ps.setSupplierId(supplierId);
 			ps.setSupplierName(supplierName);
 			ps.setSupplierLanguage(supplierLanguage);
+			
 
 			projectSupplierService.saveOrUpdate(ps);
 

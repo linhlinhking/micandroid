@@ -15,6 +15,8 @@ public class Project extends BaseEntity{
 	
 	private String projectName ;
 	
+	private String poNumber ;
+	
 	private Date startDate ;
 	
 	private Date endDate ;
@@ -84,5 +86,13 @@ public class Project extends BaseEntity{
 		this.userId = userId;
 	}
 
+	public String getPoNumber() {
+		return poNumber;
+	}
 
+	public void setPoNumber(String poNumber) {
+		this.poNumber = poNumber;
+	}
+
+	
 }

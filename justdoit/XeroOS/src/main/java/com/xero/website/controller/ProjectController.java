@@ -34,9 +34,9 @@ public class ProjectController extends BaseController {
 
 	@Resource
 	private ProjectService projectService;
-	
+
 	@Resource
-	private ProjectSupplierService projectSupplierService ;
+	private ProjectSupplierService projectSupplierService;
 
 	@RequestMapping(value = "/project", method = RequestMethod.GET)
 	public ModelAndView index(HttpServletRequest request) {
@@ -74,14 +74,14 @@ public class ProjectController extends BaseController {
 			@RequestParam("endDate") String endDate,
 			@RequestParam(required = false, value = "supplierId") String supplierId,
 			@RequestParam("supplierName") String supplierName,
-			@RequestParam("supplierLang")String supplierLanguage) {
+			@RequestParam("supplierLang") String supplierLanguage) {
 		ResponseEntity<Project> res = new ResponseEntity<Project>(false);
 		try {
 
 			Project p = new Project();
 			p.setProjectName(proName);
 			p.setCustomerId(customerId);
-			p.setCustomerName(customerName) ;
+			p.setCustomerName(customerName);
 			p.setCreateDateTime(new Date());
 			Date sDate = (startDate != null) ? DateUtil.strToEnDate(startDate)
 					: null;
@@ -89,18 +89,18 @@ public class ProjectController extends BaseController {
 					: null;
 			p.setStartDate(sDate);
 			p.setEndDate(eDate);
-			p.setStatus(ProjectType.ACTIVE.toString()) ;
+			p.setStatus(ProjectType.ACTIVE.toString());
 
 			p = projectService.saveOrUpdate(p);
-			
-			Integer projectId = p.getId() ;
-			ProjectSupplier ps = new ProjectSupplier() ;
-			ps.setProjectId(projectId) ;
-			ps.setSupplierId(supplierId) ;
-			ps.setSupplierName(supplierName) ;
-			ps.setSupplierLanguage(supplierLanguage) ;
-			
-			projectSupplierService.saveOrUpdate(ps) ;
+
+			Integer projectId = p.getId();
+			ProjectSupplier ps = new ProjectSupplier();
+			ps.setProjectId(projectId);
+			ps.setSupplierId(supplierId);
+			ps.setSupplierName(supplierName);
+			ps.setSupplierLanguage(supplierLanguage);
+
+			projectSupplierService.saveOrUpdate(ps);
 
 			res.setResult(true);
 			res.setData(p);
@@ -110,18 +110,19 @@ public class ProjectController extends BaseController {
 		}
 		return res;
 	}
-	
+
 	@RequestMapping(value = "/project-list", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseCollection<Project> getAllProject(HttpServletRequest request){
-		return projectService.getAllProject() ;
+	public ResponseCollection<Project> getAllProject(
+			HttpServletRequest request, @RequestParam("userId") Integer userId) {
+		return projectService.getProjectsById(userId);
 	}
-	
+
 	@RequestMapping(value = "/project-detail", method = RequestMethod.GET)
-	public ModelAndView toProject(HttpServletRequest request){
-		ModelAndView model = new ModelAndView() ;
-		model.setViewName("/project_detail") ;
-		return model ;
+	public ModelAndView toProject(HttpServletRequest request) {
+		ModelAndView model = new ModelAndView();
+		model.setViewName("/project_detail");
+		return model;
 	}
-	
+
 }

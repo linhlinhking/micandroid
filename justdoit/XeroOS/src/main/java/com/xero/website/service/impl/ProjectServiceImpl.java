@@ -32,13 +32,14 @@ public class ProjectServiceImpl extends BaseServiceImpl<Project, Integer>
 		super(projectDao);
 	}
 
-	public ResponseCollection<Project> getAllProject() throws ServiceException {
+	public ResponseCollection<Project> getProjectsById(Integer userId)
+			throws ServiceException {
 		ResponseCollection<Project> res = new ResponseCollection<Project>();
 		try {
-			List<Project> lists = projectDao.getAllProject() ;
-			res.setData(lists) ;
-			res.setResult(true) ;
-			res.setMessage("OK") ;
+			List<Project> lists = projectDao.getProjectsById(userId);
+			res.setData(lists);
+			res.setResult(true);
+			res.setMessage("OK");
 
 		} catch (DaoException ex) {
 			logger.error("Get All Project Error On Service", ex);

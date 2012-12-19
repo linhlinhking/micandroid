@@ -7,5 +7,5 @@ import com.xero.website.bean.Project;
 
 public interface ProjectService extends BaseService<Project, Integer> {
 
-	public ResponseCollection<Project> getAllProject() throws ServiceException;
+	public ResponseCollection<Project> getProjectsById(Integer userId) throws ServiceException;
 }

@@ -21,11 +21,11 @@ public class ProjectDaoImpl extends BaseDaoImpl<Project, Integer> implements
 		super(Project.class);
 	}
 
-	public List<Project> getAllProject() throws DaoException {
+	public List<Project> getProjectsById(Integer userId) throws DaoException {
 		List<Project> lists = null ;
 		try {
-			String hql = "from Project as p where 1=1 and p.deleted = 0 ";
-			lists = findByHql(hql);
+			String hql = "from Project as p where 1=1 and p.deleted = 0 and p.userId = ? ";
+			lists = findByHql(hql,userId);
 		} catch (Exception ex) {
 			logger.error("Get All Project Error.", ex) ;
 		}

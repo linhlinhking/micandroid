@@ -25,6 +25,8 @@ public class Project extends BaseEntity{
 	
 	private String status ;
 	
+	private Integer userId ;
+	
 	
 	public String getProjectName() {
 		return projectName;
@@ -72,6 +74,14 @@ public class Project extends BaseEntity{
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 
 

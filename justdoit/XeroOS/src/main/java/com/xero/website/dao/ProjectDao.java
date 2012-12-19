@@ -8,5 +8,5 @@ import com.xero.website.bean.Project;
 
 public interface ProjectDao extends BaseDao<Project, Integer>{
 
-	public List<Project> getAllProject() throws DaoException;
+	public List<Project> getProjectsById(Integer userId) throws DaoException;
 }

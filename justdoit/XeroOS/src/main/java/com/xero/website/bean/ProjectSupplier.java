@@ -16,6 +16,8 @@ public class ProjectSupplier extends BaseEntity{
 	private String supplierId ;
 	
 	private String supplierName ;
+	
+	private String supplierLanguage ;
 
 	public Integer getProjectId() {
 		return projectId;
@@ -40,6 +42,16 @@ public class ProjectSupplier extends BaseEntity{
 	public void setSupplierName(String supplierName) {
 		this.supplierName = supplierName;
 	}
+
+	public String getSupplierLanguage() {
+		return supplierLanguage;
+	}
+
+	public void setSupplierLanguage(String supplierLanguage) {
+		this.supplierLanguage = supplierLanguage;
+	}
+	
+	
 	
 	
 }

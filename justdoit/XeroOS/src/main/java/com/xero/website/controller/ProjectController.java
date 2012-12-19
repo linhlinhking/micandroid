@@ -71,9 +71,10 @@ public class ProjectController extends BaseController {
 			@RequestParam("customerId") String customerId,
 			@RequestParam("customerName") String customerName,
 			@RequestParam("startDate") String startDate,
-			@RequestParam("startDate") String endDate,
+			@RequestParam("endDate") String endDate,
 			@RequestParam(required = false, value = "supplierId") String supplierId,
-			@RequestParam("supplierName") String supplierName) {
+			@RequestParam("supplierName") String supplierName,
+			@RequestParam("supplierLang")String supplierLanguage) {
 		ResponseEntity<Project> res = new ResponseEntity<Project>(false);
 		try {
 
@@ -97,6 +98,7 @@ public class ProjectController extends BaseController {
 			ps.setProjectId(projectId) ;
 			ps.setSupplierId(supplierId) ;
 			ps.setSupplierName(supplierName) ;
+			ps.setSupplierLanguage(supplierLanguage) ;
 			
 			projectSupplierService.saveOrUpdate(ps) ;
 
@@ -114,4 +116,12 @@ public class ProjectController extends BaseController {
 	public ResponseCollection<Project> getAllProject(HttpServletRequest request){
 		return projectService.getAllProject() ;
 	}
+	
+	@RequestMapping(value = "/project-detail", method = RequestMethod.GET)
+	public ModelAndView toProject(HttpServletRequest request){
+		ModelAndView model = new ModelAndView() ;
+		model.setViewName("/project_detail") ;
+		return model ;
+	}
+	
 }

@@ -23,6 +23,7 @@ import com.xero.admin.util.DateUtil;
 import com.xero.core.Response.ResponseCollection;
 import com.xero.core.Response.ResponseEntity;
 import com.xero.core.Response.ResponseMessage;
+import com.xero.core.controller.BaseController;
 import com.xero.core.security.MD5Util;
 import com.xero.core.web.WebConstants;
 import com.xero.website.bean.Company;
@@ -31,7 +32,7 @@ import com.xero.website.service.CompanyService;
 import com.xero.website.service.CompanyUserService;
 
 @Controller
-public class SystemUserController {
+public class SystemUserController extends BaseController {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -215,7 +216,8 @@ public class SystemUserController {
 	@ResponseBody
 	public ResponseMessage updateUserPlan(
 			@RequestParam(value = "planId", required = true) Integer planId,
-			@RequestParam(value = "companyId", required = true) Integer companyId) {
+			@RequestParam(value = "companyId", required = true) Integer companyId,
+			HttpServletRequest request) {
 		ResponseMessage msg = new ResponseMessage();
 		try {
 			ResponseCollection<SystemUser> res = systemUserService
@@ -225,11 +227,11 @@ public class SystemUserController {
 
 				if (null != lists && lists.size() > 0) {
 					int j = lists.size();
-					if(planId == 2 && j > 5){
+					if (planId == 2 && j > 5) {
 						msg.setResult(false);
 						msg.setStatusCode(403);
 						msg.setUrl("/payment");
-					}else{
+					} else {
 						for (int i = 0; i < j; i++) {
 							SystemUser u = lists.get(i);
 							u.setPlanId(planId);
@@ -238,13 +240,14 @@ public class SystemUserController {
 						msg.setResult(true);
 						msg.setStatusCode(200);
 						msg.setUrl("/payment");
+
+						invalidateSession(request);
 					}
-				}else{
+				} else {
 					msg.setResult(true);
 					msg.setStatusCode(600);
 					msg.setUrl("/payment");
 				}
-				
 
 			} else {
 				msg.setResult(false);

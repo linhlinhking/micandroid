@@ -16,6 +16,10 @@ public interface SystemUserService extends BaseService<SystemUser, Integer> {
 
 	public ResponseCollection<SystemUser> getAllUser() throws ServiceException;
 
-	public ResponseCollection<SystemUser> getUsersByPlanId(Integer planId,Integer companyId)
+	public ResponseCollection<SystemUser> getUsersByPlanId(Integer planId,
+			Integer companyId) throws ServiceException;
+
+	public ResponseCollection<SystemUser> getUsersByCompanyId(Integer companyId)
 			throws ServiceException;
+
 }

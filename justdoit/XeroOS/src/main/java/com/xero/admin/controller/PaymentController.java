@@ -2,6 +2,7 @@ package com.xero.admin.controller;
 
 import java.util.Date;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -13,10 +14,14 @@ import org.springframework.web.servlet.ModelAndView;
 import com.xero.admin.bean.SystemUser;
 import com.xero.admin.util.DateUtil;
 import com.xero.core.web.WebConstants;
+import com.xero.website.bean.Company;
+import com.xero.website.service.CompanyService;
 
 @Controller
 public class PaymentController {
 
+	@Resource
+	private CompanyService companyService;
 	
 	@RequestMapping(value=("/payment"), method = RequestMethod.GET)
 	public ModelAndView index(HttpServletRequest request){
@@ -28,9 +33,19 @@ public class PaymentController {
 		}
 		SystemUser sysUser = (SystemUser) session
 				.getAttribute(WebConstants.XERO_USER_SESSION);
+		
+		
 		if (null != session && null != sysUser) {
+			Company cmp = companyService.getCompanyByUserId(sysUser.getId());
+			Integer companyId = 0;
+			if (null != cmp) {
+				companyId = cmp.getId();
+				model.addObject("currentCompany", companyId);
+			}
+			
 			Date ep = sysUser.getExpiredDateTime();
-			if (ep.before(new Date())) {
+			Integer pId = sysUser.getPlanId() ;
+			if (ep.before(new Date()) && pId == 1) {
 				model.setViewName("redirect:/");
 			} else {
 				int leftDays = DateUtil.daysOfTwoDate(new Date(), ep);

@@ -50,7 +50,8 @@ public class ProjectController extends BaseController {
 				.getAttribute(WebConstants.XERO_USER_SESSION);
 		if (null != sysUser) {
 			Date ep = sysUser.getExpiredDateTime();
-			if (ep.before(new Date())) {
+			Integer pId = sysUser.getPlanId() ;
+			if (ep.before(new Date()) && pId == 1) {
 				model.setViewName("redirect:/");
 			} else {
 				int leftDays = DateUtil.daysOfTwoDate(new Date(), ep);

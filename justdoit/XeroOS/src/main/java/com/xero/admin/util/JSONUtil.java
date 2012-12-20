@@ -6,22 +6,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
-import net.sf.json.util.JSONUtils;
-
-import com.xero.core.util.JsonUtil;
 
 public class JSONUtil {  
 	  
-    /**页面传至后台时，json数据在request的参数名称*/  
-    public final static String JSON_ATTRIBUTE = "json";  
-    public final static String JSON_ATTRIBUTE1 = "json1";  
-    public final static String JSON_ATTRIBUTE2 = "json2";  
-    public final static String JSON_ATTRIBUTE3 = "json3";  
-    public final static String JSON_ATTRIBUTE4 = "json4";  
       
     /** 
      * 从一个JSON 对象字符格式中得到一个java对象，形如： 
@@ -30,7 +20,7 @@ public class JSONUtil {
      * @param clazz 
      * @return 
      */  
-    public static Object getDTO(String jsonString, Class clazz){  
+    public static Object getDTO(String jsonString, Class<?> clazz){  
         JSONObject jsonObject = null;  
         try{  
             setDataFormat2JAVA();   

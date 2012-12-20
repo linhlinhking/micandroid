@@ -193,15 +193,15 @@ public class SystemUserController {
 			if (null != sysUser) {
 				SystemUser currentSignUser = (SystemUser) session
 						.getAttribute(WebConstants.XERO_USER_SESSION);
-				if(sysUser.getId().equals(currentSignUser.getId())){
-					res.setResult(true) ;
-					res.setStatusCode(600) ;
-				}else{
+				if (sysUser.getId().equals(currentSignUser.getId())) {
+					res.setResult(true);
+					res.setStatusCode(600);
+				} else {
 					sysUser.setDeleted(true);
 					systemUserService.saveOrUpdate(sysUser);
 					res.setResult(true);
 				}
-			}else{
+			} else {
 				res.setResult(false);
 			}
 			res.setUrl("/user");
@@ -209,6 +209,57 @@ public class SystemUserController {
 			logger.error("Delete User Error.User'Id is" + id, ex);
 		}
 		return res;
+	}
+
+	@RequestMapping(value = "/user-plan", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseMessage updateUserPlan(
+			@RequestParam(value = "planId", required = true) Integer planId,
+			@RequestParam(value = "companyId", required = true) Integer companyId) {
+		ResponseMessage msg = new ResponseMessage();
+		try {
+			ResponseCollection<SystemUser> res = systemUserService
+					.getUsersByCompanyId(companyId);
+			if (res.getResult()) {
+				List<SystemUser> lists = res.getData();
+
+				if (null != lists && lists.size() > 0) {
+					int j = lists.size();
+					if(planId == 2 && j > 5){
+						msg.setResult(false);
+						msg.setStatusCode(403);
+						msg.setUrl("/payment");
+					}else{
+						for (int i = 0; i < j; i++) {
+							SystemUser u = lists.get(i);
+							u.setPlanId(planId);
+							systemUserService.saveOrUpdate(u);
+						}
+						msg.setResult(true);
+						msg.setStatusCode(200);
+						msg.setUrl("/payment");
+					}
+				}else{
+					msg.setResult(true);
+					msg.setStatusCode(600);
+					msg.setUrl("/payment");
+				}
+				
+
+			} else {
+				msg.setResult(false);
+				msg.setStatusCode(601);
+				msg.setUrl("/payment");
+			}
+
+		} catch (Exception ex) {
+			logger.error("Add User Error.", ex);
+			msg.setResult(false);
+			msg.setStatusCode(500);
+			msg.setUrl("/payment");
+		}
+
+		return msg;
 	}
 
 }

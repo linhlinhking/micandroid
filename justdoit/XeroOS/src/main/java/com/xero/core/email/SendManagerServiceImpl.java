@@ -27,7 +27,6 @@ public class SendManagerServiceImpl implements SendManagerService {
 
 	public void sendHtmlMail(final String email, final String username,
 			final String userId, final String key) {
-
 		MimeMessage mimeMessage = mailSender.createMimeMessage();
 		MimeMessageHelper helper;
 		try {

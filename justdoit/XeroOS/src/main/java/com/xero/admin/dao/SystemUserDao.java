@@ -14,6 +14,8 @@ public interface SystemUserDao extends BaseDao<SystemUser, Integer> {
 	public boolean checkEmail(String uemail) throws DaoException;
 
 	public List<SystemUser> getAllUser() throws DaoException;
+	
+	public List<SystemUser> getUsersByCompanyId(Integer companyId) throws DaoException;
 
 	public List<SystemUser> getUsersByPlanId(Integer planId, Integer companyId)
 			throws DaoException;

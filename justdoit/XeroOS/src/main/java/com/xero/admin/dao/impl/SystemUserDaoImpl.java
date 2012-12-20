@@ -67,4 +67,16 @@ public class SystemUserDaoImpl extends BaseDaoImpl<SystemUser, Integer>
 		}
 		return lists;
 	}
+
+	public List<SystemUser> getUsersByCompanyId(Integer companyId)
+			throws DaoException {
+		List<SystemUser> lists = null;
+		try {
+			String hql = "select u.* from tb_user as u INNER JOIN tb_company_user as c where 1=1 and u.id = c.userId and c.companyId = ? and u.deleted = 0 ";
+			lists = findByNativeSql(hql,companyId);
+		} catch (DaoException ex) {
+			logger.error("Get All User Error.", ex);
+		}
+		return lists;
+	}
 }

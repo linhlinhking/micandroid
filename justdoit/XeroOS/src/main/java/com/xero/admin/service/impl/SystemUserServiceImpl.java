@@ -94,4 +94,20 @@ public class SystemUserServiceImpl extends BaseServiceImpl<SystemUser, Integer>
 		}
 		return res;
 	}
+
+	public ResponseCollection<SystemUser> getUsersByCompanyId(Integer companyId)
+			throws ServiceException {
+		ResponseCollection<SystemUser> res = new ResponseCollection<SystemUser>(
+				false);
+		try {
+			List<SystemUser> lists = systemUserDao.getUsersByCompanyId(companyId) ;
+			res.setResult(true);
+			res.setData(lists);
+		} catch (ServiceException se) {
+			logger.error("Get All User Error On Service", se);
+			res.setResult(false);
+			res.setData(null);
+		}
+		return res;
+	}
 }

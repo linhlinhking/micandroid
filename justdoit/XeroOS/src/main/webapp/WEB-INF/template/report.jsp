@@ -48,8 +48,15 @@
       <span>Global Design &amp; Production</span>
       <ul>
         <li><a href="/logout">Sign Out</a></li>
-        <li><a href="#">Manage Users</a></li>
-        <li><a href="#">27 Days Remaining</a></li>
+        <li><a href="/user">Manage Users</a></li>
+        <li>
+        	<c:if test="${xeroUser.planId == 1}">
+        		<a href="/payment">${leftDays} Days Remaining</a>
+        	</c:if>
+        	<c:if test="${xeroUser.planId != 1}">
+        		<a href="/payment">My Account</a>
+        	</c:if>
+        </li>
       </ul>
     </div>
     <div class="contact_content report_content">

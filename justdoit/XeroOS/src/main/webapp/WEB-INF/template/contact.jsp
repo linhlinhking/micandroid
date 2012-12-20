@@ -9,7 +9,9 @@
 <title>Contact</title>
 <link href="/css/GDP-common.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="/js/json2.js"></script>
 <script type="text/javascript" src="/js/placeholder.js"></script>
+<script type="text/javascript" src="/js/localStorage.js"></script>
 <script type="text/javascript" src="/js/contact.js"></script>
 
 </head>
@@ -45,18 +47,19 @@ filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='
     background:url(../images/reports_icon.jpg) no-repeat 0 5px;
 }
 </style>
-
 <![endif]-->
 <body>
 <div class="mask_area"></div>
 <div class="add_cus_bg">
-  <div class="add_cus_content">
+  <div class="add_cus_content" style="height:350px;">
     <div class="add_cus_title dividing_line"><span>Add a new customer</span></div>
     <div class="border_row dividing_line"><input type="text" placeholder="Company Name" name="companyName"></div>
     <div class="border_row dividing_line"><input type="email" placeholder="Email Address" name="uemail"></div>
     <div class="border_row dividing_line"><input type="text" placeholder="Telephone" name="telephone"></div>
-    <input type="hidden" name="groupId" value="2"/>
+    <input type="hidden" name="groupId"/>
     <input type="hidden" name="userId" value="${xeroUser.id}"/>
+    <input type="hidden" name="isLinkXero" value="${isLinkXero}"/>
+    
     <div class="cancel_button"><span>CANCEL</span></div>
     <div class="add_button"><span>ADD CONTACT</span></div>
   </div>
@@ -67,8 +70,15 @@ filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='
       <span>Global Design &amp; Production</span>
       <ul>
         <li><a href="/logout">Sign Out</a></li>
-        <li><a href="#">Manage Users</a></li>
-        <li><a href="#">${leftDays} Days Remaining</a></li>
+        <li><a href="/user">Manage Users</a></li>
+        <li>
+        	<c:if test="${xeroUser.planId == 1}">
+        		<a href="/payment">${leftDays} Days Remaining</a>
+        	</c:if>
+        	<c:if test="${xeroUser.planId != 1}">
+        		<a href="/payment">My Account</a>
+        	</c:if>
+        </li>
       </ul>
     </div>
     <div class="contact_content">
@@ -88,10 +98,10 @@ filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='
           </div>
           <div class="c_type_bg">
             <div class="c_type">
+              <div class="plus_field">+</div>
+              <div class="sup_field">Suppliers</div>
               <div class="cus_field">Customers</div>
-              <div class="plus_field"></div>
-              <div class="sup_field selected_field">Suppliers</div>
-              <div class="selected_bg"></div>
+              <div class="all_field selected_field">All</div>
             </div>
           </div>
         </div>
@@ -101,7 +111,9 @@ filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='
             <span class="e_area">Email</span>
             <span class="n_area">Name<strong></strong></span>
           </div>
+          <input type="hidden" name="jsonResult" id="jsonResult"/>
           <ul class="c_details_content">
+          
           <!-- 
             <li class="li_defalut">
               <div class="info_area p_info">012345 6789</div>

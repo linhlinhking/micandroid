@@ -9,4 +9,5 @@ import com.xero.website.bean.Contact;
 public interface ContactDao extends BaseDao<Contact, Integer> {
 
 	public List<Contact> queryContactById(Integer groupId,Integer userId) throws DaoException;
+	
 }

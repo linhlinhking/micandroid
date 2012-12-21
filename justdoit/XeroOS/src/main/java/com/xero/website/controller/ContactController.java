@@ -28,6 +28,7 @@ import org.springframework.web.context.request.WebRequest;
 import com.xero.admin.util.XeroApiURLContants;
 import com.xero.core.Response.ResponseCollection;
 import com.xero.core.Response.ResponseEntity;
+import com.xero.core.Response.ResponseMessage;
 import com.xero.core.api.SessionAttributes;
 import com.xero.core.api.XeroXmlParam;
 import com.xero.core.api.server.OAuthServiceProvider;
@@ -67,19 +68,13 @@ public class ContactController extends BaseController {
 						SessionAttributes.ATTR_OAUTH_ACCESS_TOKEN,
 						SCOPE_SESSION);
 				if (null != accessToken) {
-					String xmlValue = XeroXmlParam.postContactXml(cId,
-							companyName, uemail, telephone);
+					String xmlValue = XeroXmlParam.postContactXml(companyName,
+							uemail, telephone);
 					// If the AccessToken Exists.Get Authorization Service.
 					OAuthService service = xeroServiceProvider.getService();
 					// Send post request to xero.
-					OAuthRequest oauthRequest = null;
-					if (null == cId) {
-						oauthRequest = new OAuthRequest(Verb.POST,
-								XeroApiURLContants.CONTACTS);
-					} else {
-						oauthRequest = new OAuthRequest(Verb.PUT,
-								XeroApiURLContants.CONTACTS);
-					}
+					OAuthRequest oauthRequest = new OAuthRequest(Verb.POST,
+							XeroApiURLContants.CONTACTS);
 
 					// Accept Response Type by JSON
 					oauthRequest.addHeader("Accept", "application/json");
@@ -95,7 +90,7 @@ public class ContactController extends BaseController {
 			} else {
 				Contact contact = null;
 				/** do Edit Contact by Local database. */
-				if (cId != null && StringUtils.isNumeric(cId)) {
+				if ("" != cId && null != cId && StringUtils.isNumeric(cId)) {
 					contact = contactService.get(Integer.valueOf(cId));
 					if (null != contact) {
 						contact.setUpdateDateTime(new Date());
@@ -157,4 +152,33 @@ public class ContactController extends BaseController {
 
 		return res;
 	}
+
+	@RequestMapping(value = "/contact-delete", method = RequestMethod.POST, produces = { "application/json" })
+	@ResponseBody
+	public ResponseMessage removeContactsById(
+			@RequestParam("contactId") Integer id) {
+		ResponseMessage msg = new ResponseMessage();
+		try {
+			Contact c = contactService.get(id);
+			if(null != c){
+				c.setDeleted(true) ;
+				c = contactService.saveOrUpdate(c) ;
+				msg.setResult(true) ;
+				msg.setStatusCode(200) ;
+				
+			}else{
+				msg.setResult(false) ;
+				msg.setStatusCode(601) ;
+			}
+			
+		} catch (Exception ex) {
+			logger.error("Remove Contact Error.Id is " + id, ex);
+			msg.setResult(false) ;
+			msg.setStatusCode(500) ;
+		}
+		msg.setUrl("/contact") ;
+		
+		return msg;
+	}
+
 }

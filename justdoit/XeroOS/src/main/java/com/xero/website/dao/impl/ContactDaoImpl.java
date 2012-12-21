@@ -23,11 +23,11 @@ public class ContactDaoImpl extends BaseDaoImpl<Contact, Integer> implements
 		String hql = "";
 		List<Contact> list = new ArrayList<Contact>();
 		if (null == groupId) {
-			hql = "from Contact as c where 1=1 and c.userId = ? order by c.companyName asc ,c.id desc ";
+			hql = "from Contact as c where 1=1 and c.userId = ? and c.deleted=0 order by c.companyName asc ,c.id desc ";
 			list = findByHql(hql,userId);
 			
 		} else {
-			hql = "from Contact as c where 1=1 and c.groupId = ? and c.userId = ? order by c.companyName asc ,c.id desc ";
+			hql = "from Contact as c where 1=1 and c.groupId = ? and c.userId = ? and c.deleted=0 order by c.companyName asc ,c.id desc ";
 			list = findByHql(hql, groupId,userId);
 		}
 		return list;

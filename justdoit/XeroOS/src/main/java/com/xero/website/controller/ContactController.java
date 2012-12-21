@@ -7,6 +7,7 @@ import java.util.Date;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
 import org.scribe.model.Token;
@@ -31,7 +32,6 @@ import com.xero.core.api.SessionAttributes;
 import com.xero.core.api.XeroXmlParam;
 import com.xero.core.api.server.OAuthServiceProvider;
 import com.xero.core.controller.BaseController;
-import com.xero.core.web.SessionHandler;
 import com.xero.website.bean.Contact;
 import com.xero.website.service.ContactService;
 
@@ -56,6 +56,7 @@ public class ContactController extends BaseController {
 			@RequestParam("userId") Integer userId,
 			@RequestParam("groupId") Integer groupId,
 			@RequestParam(value = "isXero", required = false) Integer isXero,
+			@RequestParam(value = "contactId", required = false) String cId,
 			WebRequest request) {
 		ResponseEntity<Contact> res = new ResponseEntity<Contact>(false);
 		try {
@@ -66,13 +67,20 @@ public class ContactController extends BaseController {
 						SessionAttributes.ATTR_OAUTH_ACCESS_TOKEN,
 						SCOPE_SESSION);
 				if (null != accessToken) {
-					String xmlValue = XeroXmlParam.postContactXml(companyName,
-							uemail, telephone);
+					String xmlValue = XeroXmlParam.postContactXml(cId,
+							companyName, uemail, telephone);
 					// If the AccessToken Exists.Get Authorization Service.
 					OAuthService service = xeroServiceProvider.getService();
 					// Send post request to xero.
-					OAuthRequest oauthRequest = new OAuthRequest(Verb.POST,
-							XeroApiURLContants.CONTACTS);
+					OAuthRequest oauthRequest = null;
+					if (null == cId) {
+						oauthRequest = new OAuthRequest(Verb.POST,
+								XeroApiURLContants.CONTACTS);
+					} else {
+						oauthRequest = new OAuthRequest(Verb.PUT,
+								XeroApiURLContants.CONTACTS);
+					}
+
 					// Accept Response Type by JSON
 					oauthRequest.addHeader("Accept", "application/json");
 					// Add POST's parameter to xero api.
@@ -85,15 +93,32 @@ public class ContactController extends BaseController {
 				res.setResult(true);
 				res.setJson(jsonString);
 			} else {
-				Contact contact = new Contact();
-				contact.setCompanyName(companyName);
-				contact.setTelephone(telephone);
-				contact.setUemail(uemail);
-				contact.setGroupId(groupId);
-				contact.setUserId(userId);
-				contact.setCreateDateTime(new Date());
-				contact = contactService.saveOrUpdate(contact);
-				
+				Contact contact = null;
+				/** do Edit Contact by Local database. */
+				if (cId != null && StringUtils.isNumeric(cId)) {
+					contact = contactService.get(Integer.valueOf(cId));
+					if (null != contact) {
+						contact.setUpdateDateTime(new Date());
+						contact.setCompanyName(companyName);
+						contact.setTelephone(telephone);
+						contact.setUemail(uemail);
+						contact = contactService.saveOrUpdate(contact);
+					} else {
+						logger.error("No Exists Contact,Contact's ID is " + cId);
+						contact = new Contact();
+					}
+
+				} else {
+					/** do Add Contact by Local database. */
+					contact = new Contact();
+					contact.setCompanyName(companyName);
+					contact.setTelephone(telephone);
+					contact.setUemail(uemail);
+					contact.setGroupId(groupId);
+					contact.setUserId(userId);
+					contact.setCreateDateTime(new Date());
+					contact = contactService.saveOrUpdate(contact);
+				}
 				res.setResult(true);
 				res.setData(contact);
 			}
@@ -120,15 +145,15 @@ public class ContactController extends BaseController {
 	@ResponseBody
 	public ResponseCollection<Contact> getContactsById(
 			@RequestParam("groupId") Integer groupId,
-			@RequestParam("userId") Integer userId,
-			HttpServletRequest request) {
-		ResponseCollection<Contact> res = contactService.queryContactById(groupId,userId);
-		//if (SessionHandler.verifySession(request)) {
-		//	return res;
-		//}
-		//res.setData(null);
-		//res.setResult(false);
-		//res.setMessage("Authorization Error.");
+			@RequestParam("userId") Integer userId, HttpServletRequest request) {
+		ResponseCollection<Contact> res = contactService.queryContactById(
+				groupId, userId);
+		// if (SessionHandler.verifySession(request)) {
+		// return res;
+		// }
+		// res.setData(null);
+		// res.setResult(false);
+		// res.setMessage("Authorization Error.");
 
 		return res;
 	}

@@ -1,3 +1,4 @@
+
 package com.xero.admin.controller;
 
 import java.util.Date;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.xero.admin.bean.SystemUser;
 import com.xero.admin.bean.type.JoinUsType;
+import com.xero.admin.bean.type.PlanType;
 import com.xero.admin.service.SystemUserService;
 import com.xero.admin.util.DateUtil;
 import com.xero.core.Response.ResponseMessage;
@@ -25,6 +27,7 @@ import com.xero.website.bean.Company;
 import com.xero.website.bean.CompanyUser;
 import com.xero.website.service.CompanyService;
 import com.xero.website.service.CompanyUserService;
+
 
 @Controller
 public class RegisterController extends BaseController {
@@ -59,8 +62,9 @@ public class RegisterController extends BaseController {
 
 			cmp.setCompanyName(companyName);
 			cmp.setCreateDateTime(new Date());
+			cmp.setPlanId(PlanType.FREE.getId()) ;
 			Integer companyId = companyService.save(cmp);
-
+			
 			SystemUser tmp = systemUserService.get(SystemUser.UEMAIL, uemail);
 			if (null != tmp) {
 				resMsg.setResult(false);
@@ -96,6 +100,7 @@ public class RegisterController extends BaseController {
 			link.setCompanyId(companyId);
 			link.setUserId(userId);
 			link.setCreateDateTime(new Date());
+			
 			companyUserService.save(link);
 
 			setSession(request, sysUser, false);

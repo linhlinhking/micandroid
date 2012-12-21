@@ -12,6 +12,8 @@ public class Company extends BaseEntity{
 	private static final long serialVersionUID = -521724015309535182L;
 	
 	private String companyName ;
+	
+	private Integer planId ;
 
 	public String getCompanyName() {
 		return companyName;
@@ -20,6 +22,13 @@ public class Company extends BaseEntity{
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
 	}
-	
+
+	public Integer getPlanId() {
+		return planId;
+	}
+
+	public void setPlanId(Integer planId) {
+		this.planId = planId;
+	}
 	
 }

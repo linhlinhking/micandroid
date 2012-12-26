@@ -18,12 +18,17 @@ import com.xero.admin.util.DateUtil;
 import com.xero.core.util.CookieUtil;
 import com.xero.core.util.encode.EncodeUtil;
 import com.xero.core.web.WebConstants;
+import com.xero.website.bean.Company;
+import com.xero.website.service.CompanyService;
 
 @Controller
 public class MainController {
 
 	@Resource
 	private SystemUserService systemUserService;
+	
+	@Resource
+	private CompanyService companyService ;
 
 	@RequestMapping(value = ("/contact"), method = RequestMethod.GET)
 	public ModelAndView contact(HttpServletRequest request) {
@@ -37,13 +42,19 @@ public class MainController {
 				.getAttribute(WebConstants.XERO_USER_SESSION);
 		if (null != session && null != sysUser) {
 			Date ep = sysUser.getExpiredDateTime();
-			Integer pId = sysUser.getPlanId() ;
+			Company cmp = companyService.getCompanyByUserId(sysUser.getId()) ;
+			Integer pId = 0 ;
+			if(null != cmp){
+				pId = cmp.getId() ;
+			}
+			
 			if (ep.before(new Date()) && pId == 1) {
 				model.setViewName("redirect:/");
 			} else {
 				int leftDays = DateUtil.daysOfTwoDate(new Date(), ep);
 				model.addObject("leftDays", leftDays);
 				model.addObject("isLinkXero", sysUser.getLinkXero());
+				model.addObject("planId", pId);
 				model.setViewName("/contact");
 			}
 		} else {

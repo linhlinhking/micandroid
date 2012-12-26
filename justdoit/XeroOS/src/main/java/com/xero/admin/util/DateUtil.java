@@ -15,6 +15,9 @@ public class DateUtil {
 	public final static String FORMAT_YYYY_N_MM_Y_MM_R = "yyyy年MM月dd日";
 
 	public final static String FORMAT_MM_DD_YYYY = "MM/dd/yyyy";
+	
+	public final static String FORMAT_DD_MM_YYYY = "dd/MM/yyyy";
+	
 
 	private DateUtil() {
 		super();
@@ -62,7 +65,12 @@ public class DateUtil {
 	 * @return Date
 	 */
 	public static Date strToEnDate(String dateStr) {
-		return strToDate(dateStr, FORMAT_MM_DD_YYYY);
+		return strToDate(dateStr,FORMAT_DD_MM_YYYY);
+	}
+	
+	public static String dateToString(Date d){
+		SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT_DD_MM_YYYY);
+		return dateFormat.format(d) ;
 	}
 
 	/**

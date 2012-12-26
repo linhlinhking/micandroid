@@ -43,30 +43,9 @@
 <![endif]-->
 <body>
   <div class="login_container">
-    <div class="header login_header">
-      <a href="/"><img src="/images/gdp_logo.png" alt="GDP_logo"></a>
-      <span>Global Design &amp; Production</span>
-      <ul>
-        <li><a href="/logout">Sign Out</a></li>
-        <li><a href="/user">Manage Users</a></li>
-        <li>
-        	<c:if test="${xeroUser.planId == 1}">
-        		<a href="/payment">${leftDays} Days Remaining</a>
-        	</c:if>
-        	<c:if test="${xeroUser.planId != 1}">
-        		<a href="/payment">My Account</a>
-        	</c:if>
-        </li>
-      </ul>
-    </div>
+    <c:import url="/header-common" />
     <div class="contact_content report_content">
-      <div class="left_section">
-        <ul>
-          <li class="ie_f"><a href="/contact">Contacts</a></li>
-          <li class="ie_s"><a href="/project">Projects</a></li>
-          <li class="ie_t selected"><a href="/report">Reports</a></li>
-        </ul>
-      </div>
+     <%@ include file="/common/leftMenu.jsp"%>
       
       <div class="right_section">
         <div class="report_title">

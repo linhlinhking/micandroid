@@ -51,7 +51,7 @@ filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='
 <body>
 <div class="mask_area"></div>
 
-<div class="add_cus_bg" style="margin: -250px 0 0 -305px;">
+<div class="add_cus_bg with_cus" style="margin: -250px 0 0 -305px;">
   <div class="add_cus_content">
     <div class="add_pro_title dividing_line"><span>Add a new project</span></div>
     <div class="border_row dividing_line"><input type="text" placeholder="Project Name" id="project_name"></div>
@@ -62,7 +62,7 @@ filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='
     </div>
     <div class="border_row dividing_line"><input type="text" placeholder="Start Date" id="start_day"></div>
     <div class="border_row dividing_line"><input type="text" placeholder="End Date" id="end_day"></div>
-    <div class="add_sup_line for_plus">
+    <div class="add_sup_line for_select">
       <span class="plus_btn"></span>
       <div class="input_div">
         <input class="sup_input" type="text" placeholder="Supplier" >
@@ -72,7 +72,7 @@ filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='
       </div>
       <div class="input_div" style="margin:10px 0 0 38px;">
         <input class="lan_input"  type="text" placeholder="Language">
-        <ul class="lan_content" style="height:150px;overflow:auto;"></ul>
+        <ul class="lan_content"></ul>
       </div>
       <span class="cross_btn"></span>
     </div>
@@ -83,31 +83,18 @@ filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='
   </div>
 </div>
 
+<div class="add_cus_bg without_cus" style="margin: -43px 0 0 -305px;">
+  <div class="add_cus_content">
+    <div class="add_pro_title dividing_line"><span>You need one customer and one supply at least</span><div class="close_btn"></div></div>
+  </div>
+</div>
+
   <div class="login_container">
-    <div class="header login_header">
-      <a href="/"><img src="/images/gdp_logo.png" alt="GDP_logo"></a>
-      <span>Global Design &amp; Production</span>
-      <ul>
-        <li><a href="/logout">Sign Out</a></li>
-        <li><a href="/user">Manage Users</a></li>
-        <li>
-        	<c:if test="${xeroUser.planId == 1}">
-        		<a href="/payment">${leftDays} Days Remaining</a>
-        	</c:if>
-        	<c:if test="${xeroUser.planId != 1}">
-        		<a href="/payment">My Account</a>
-        	</c:if>
-        </li>
-      </ul>
-    </div>
+ 	<c:import url="/header-common" />
     <div class="contact_content project_content">
-      <div class="left_section">
-        <ul>
-          <li class="ie_f"><a href="/contact">Contacts</a></li>
-          <li class="ie_s selected"><a href="/project">Projects</a></li>
-          <li class="ie_t"><a href="/report">Reports</a></li>
-        </ul>
-      </div>
+      <%@ include file="/common/leftMenu.jsp"%>
+      
+      
       <div class="right_section">
         <div class="project_title">
           <span>Projects</span>

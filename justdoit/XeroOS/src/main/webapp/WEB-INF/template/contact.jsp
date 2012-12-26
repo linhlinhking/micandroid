@@ -14,8 +14,6 @@
 <script type="text/javascript" src="/js/localStorage.js"></script>
 <script type="text/javascript" src="/js/contact.js"></script>
 
-
-
 </head>
 <!--[if lte IE 8]>
 
@@ -69,31 +67,10 @@ filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='
   </div>
 </div>
   <div class="login_container">
-    <div class="header login_header">
-      <a href="/"><img src="/images/gdp_logo.png" alt="GDP_logo"></a>
-      <span>Global Design &amp; Production</span>
-      <ul>
-        <li><a href="/logout">Sign Out</a></li>
-        <li><a href="/user">Manage Users</a></li>
-        <li>
-        	<c:if test="${planId == 1}">
-        		<a href="/payment">${leftDays} Days Remaining</a>
-        	</c:if>
-        	<c:if test="${planId != 1}">
-        		<a href="/payment">My Account</a>
-        	</c:if>
-        </li>
-      </ul>
-    </div>
+   	<c:import url="/header-common" />
     <div class="contact_content">
-      <div class="left_section">
-        <ul>
-          <li class="selected ie_f"><a href="/contact">Contacts</a></li>
-          <li class="ie_s"><a href="/project">Projects</a></li>
-          <li class="ie_t"><a href="/report">Reports</a></li>
-        </ul>
-      </div>
-      
+     <%@ include file="/common/leftMenu.jsp"%>
+     
       <div class="right_section">
         <div class="contact_title">
           <span>Contacts</span>
@@ -120,6 +97,17 @@ filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='
           
        
           </ul>
+        </div>
+        <div class="adv_box">
+          <div class="adv_title">
+            <span>Let's add some contacts!</span>
+          </div>
+          <p>Contacts is a general term for Suppliers or Customers. To add a contact go ahead and click the +
+button above.</p>
+          <p>If you want to add a contact to the customers tab, first click Customers then click the + to add a new contact to the Customers tab, they will also apear in the all tab.</p>
+          <p>If you want to add a contact to the Suppliers tab, first click Suppliers then click the + to add a new contact to the Suppliers tab, they will also apear in the all tab.</p>
+          <p>You need to add atleast one contact to be able to add a project, as a project needs a Customer and
+a supplier.</p>
         </div>
       </div>
     

@@ -13,6 +13,8 @@ public class Project extends BaseEntity{
 
 	private static final long serialVersionUID = -2407424834738966387L;
 	
+	public static final String PO_NUMBER = "poNumber" ;
+	
 	private String projectName ;
 	
 	private String poNumber ;

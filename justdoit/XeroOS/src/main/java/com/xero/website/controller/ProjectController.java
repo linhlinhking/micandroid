@@ -4,26 +4,23 @@ import java.util.Date;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.xero.admin.bean.SystemUser;
 import com.xero.admin.util.DateUtil;
 import com.xero.core.Response.ResponseCollection;
 import com.xero.core.Response.ResponseEntity;
 import com.xero.core.controller.BaseController;
-import com.xero.core.web.WebConstants;
 import com.xero.website.bean.Project;
 import com.xero.website.bean.ProjectSupplier;
 import com.xero.website.bean.type.ProjectType;
+import com.xero.website.service.CompanyService;
 import com.xero.website.service.ProjectService;
 import com.xero.website.service.ProjectSupplierService;
 
@@ -38,29 +35,13 @@ public class ProjectController extends BaseController {
 	@Resource
 	private ProjectSupplierService projectSupplierService;
 
+	@Resource
+	private CompanyService companyService;
+
 	@RequestMapping(value = "/project", method = RequestMethod.GET)
 	public ModelAndView index(HttpServletRequest request) {
 		ModelAndView model = new ModelAndView();
-		HttpSession session = request.getSession(false);
-		if (null == session) {
-			model.setViewName("redirect:/");
-			return model;
-		}
-		SystemUser sysUser = (SystemUser) session
-				.getAttribute(WebConstants.XERO_USER_SESSION);
-		if (null != sysUser) {
-			Date ep = sysUser.getExpiredDateTime();
-			Integer pId = sysUser.getPlanId() ;
-			if (ep.before(new Date()) && pId == 1) {
-				model.setViewName("redirect:/");
-			} else {
-				int leftDays = DateUtil.daysOfTwoDate(new Date(), ep);
-				model.addObject("leftDays", leftDays);
-				model.setViewName("/project");
-			}
-		} else {
-			model.setViewName("redirect:/");
-		}
+		model.setViewName("/project");
 		return model;
 	}
 
@@ -69,7 +50,7 @@ public class ProjectController extends BaseController {
 	public ResponseEntity<Project> doProject(
 			HttpServletRequest request,
 			@RequestParam("proName") String proName,
-			@RequestParam("poNumber")String poNumber,
+			@RequestParam("poNumber") String poNumber,
 			@RequestParam("customerId") String customerId,
 			@RequestParam("customerName") String customerName,
 			@RequestParam("startDate") String startDate,
@@ -93,8 +74,8 @@ public class ProjectController extends BaseController {
 			p.setStartDate(sDate);
 			p.setEndDate(eDate);
 			p.setStatus(ProjectType.ACTIVE.toString());
-			p.setUserId(userId) ;
-			p.setPoNumber(poNumber) ;
+			p.setUserId(userId);
+			p.setPoNumber(poNumber);
 
 			p = projectService.saveOrUpdate(p);
 
@@ -104,7 +85,6 @@ public class ProjectController extends BaseController {
 			ps.setSupplierId(supplierId);
 			ps.setSupplierName(supplierName);
 			ps.setSupplierLanguage(supplierLanguage);
-			
 
 			projectSupplierService.saveOrUpdate(ps);
 
@@ -124,9 +104,25 @@ public class ProjectController extends BaseController {
 		return projectService.getProjectsById(userId);
 	}
 
-	@RequestMapping(value = "/project-detail", method = RequestMethod.GET)
-	public ModelAndView toProject(HttpServletRequest request) {
+	@RequestMapping(value = "/project-detail/{poNumber}", method = RequestMethod.GET)
+	public ModelAndView toProject(HttpServletRequest request,
+			@PathVariable("poNumber") String poNumber) {
 		ModelAndView model = new ModelAndView();
+		Project pro = projectService.get(Project.PO_NUMBER, poNumber);
+		if (null != pro) {
+			Date tempSDate = pro.getStartDate() ;
+			Date tempEDate = pro.getEndDate() ;
+			tempSDate = (tempSDate == null) ? new Date():tempSDate ;
+			tempEDate = (tempEDate == null) ? new Date():tempEDate ;
+			
+			String sDate = DateUtil.dateToString(tempSDate);
+			String eDate = DateUtil.dateToString(tempEDate);
+
+			model.addObject("sDate", sDate);
+			model.addObject("eDate", eDate);
+			model.addObject("project", pro);
+
+		}
 		model.setViewName("/project_detail");
 		return model;
 	}

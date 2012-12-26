@@ -1,58 +1,40 @@
 $(function(){
-	$(".cus_field").click(function(){
-		$(".selected_bg").css({
-		'-webkit-transform':'rotate(-180deg)',
-        '-moz-transform':'rotate(-180deg)',
-        '-ms-transform':'rotate(-180deg)',
-        '-o-transform':'rotate(-180deg)',
-        'transform':'rotate(-180deg)'
-		});
-		$(".sup_field").removeClass("selected_field");
-		$(".cus_field").addClass("selected_field");
-	});
-	
-	$(".sup_field").click(function(){
-		$(".selected_bg").css({
-		'-webkit-transform':'rotate(0deg)',
-        '-moz-transform':'rotate(0deg)',
-        '-ms-transform':'rotate(0deg)',
-        '-o-transform':'rotate(0deg)',
-        'transform':'rotate(0deg)'
-		});
-		$(".cus_field").removeClass("selected_field");
-		$(".sup_field").addClass("selected_field");
-	});
-	
-	$(".ed_area").toggle(function(){
-		$(".ed_area strong").css("background-position","0 -8px");
-	},function(){
-		$(".ed_area strong").css("background-position","0 0");
-	});
-	$(".sd_area").toggle(function(){
-		$(".sd_area strong").css("background-position","0 -8px");
-	},function(){
-		$(".sd_area strong").css("background-position","0 0");
-	});
-	$(".pn_area").toggle(function(){
-		$(".pn_area strong").css("background-position","0 -8px");
-	},function(){
-		$(".pn_area strong").css("background-position","0 0");
-	});
-	$(".na_area").toggle(function(){
-		$(".na_area strong").css("background-position","0 -8px");
-	},function(){
-		$(".na_area strong").css("background-position","0 0");
-	});
 	
 	$(".plus_field").click(function(){
 		$(".mask_area").fadeIn('fast', function () {
-            $(".add_cus_bg").fadeIn('fast');
+            //$(".add_cus_bg").fadeIn('fast');
         });
+        var userId = $("#userId").val();
+        $.getJSON("/contact-list",{groupId:'',userId:userId}, function(d){
+			if(d.result == 'true' || d.result == true){
+				json_t = d.data;
+				
+				(d.data != '') ? $(".with_cus").fadeIn('fast') : $(".without_cus").fadeIn('fast');
+			}
+		});
+        
 	});
-	// supplier = 1 customer = 2
+	
+	$("#start_day").datepicker({
+		changeMonth : true,
+		changeYear : true,
+		dateFormat :'dd/mm/yy'
+	});
+	
+
+	$("#end_day").datepicker({
+		changeMonth : true,
+		changeYear : true,
+		dateFormat :'dd/mm/yy'
+	});﻿
 	$(".mask_area, .cancel_button").click(function(){
 		$(".add_cus_bg").fadeOut('fast', function () {
             $(".mask_area").fadeOut('fast');
+            
+            $(".cus_content").hide();
+			$(".sup_content").hide();
+			$(".lan_content").hide();
+
         });
         $(".add_cus_bg input").each(function(i){
 			$(this).val('');
@@ -78,23 +60,8 @@ $(function(){
 	var className;
 	$(".sup_input, .lan_input, #customerName").focus(function(){
 		className = $(this).attr("class")
-		var userId = $("#userId").val();
-		var customerId = $("#customerId").val();
-		var supplierId = $("#supplierId").val();
-		if(className == "typing"){
-			$.getJSON("http://dev.globaldesign.co.nz/contact-list",{groupId:customerId,userId:userId}, function(d){
-				if(d.result == 'true' || d.result == true){
-					json_t = d.data;
-				}
-			});
-		}else if(className == "sup_input"){
-			$.getJSON("http://dev.globaldesign.co.nz/contact-list",{groupId:supplierId,userId:userId}, function(d){
-				if(d.result == 'true' || d.result == true){
-					json_t = d.data;
-				}
-			});
-		}else if(className == "lan_input"){
-			$.getJSON("http://dev.globaldesign.co.nz/language",function(d){
+		if(className == "lan_input"){
+			$.getJSON("/language",function(d){
 	        	if(d.result == 'true' || d.result == true){
 	        		json_t = d.data;
 	        	}
@@ -104,31 +71,19 @@ $(function(){
 		var value = $(this).val();
 		if(className == "typing"){
 			hideOrShow(".cus_content",".lan_content", ".sup_content");
-			searchData(value, json_t, temp_json.data, 'companyName');
-			(e.which || e.keyCode)==13 ? dataShow(temp_json, ".cus_content", "#customerName", "companyName", true, false) : dataShow(temp_json, ".cus_content", "#customerName", "companyName", false, false);
+			searchData(value, json_t, temp_json.data, 'companyName', '');
+			dataShow(temp_json, ".cus_content", "#customerName", "companyName", "", false, false);
 		}else if(className == "sup_input"){
 			hideOrShow(".sup_content",".lan_content", ".cus_content");
-			searchData(value, json_t, temp_json.data, 'uemail');
-			(e.which || e.keyCode) == 13? dataShow(temp_json, ".sup_content", ".sup_input", "uemail",true, false):dataShow(temp_json, ".sup_content", ".sup_input", "uemail",false, false);
+			searchData(value, json_t, temp_json.data, 'companyName', '');
+			dataShow(temp_json, ".sup_content", ".sup_input", "companyName", '', false, false);
 		}else if(className == "lan_input"){
 			hideOrShow(".lan_content",".cus_content", ".sup_content");
 			searchData_lang(value, json_t, temp_json.data);
-			(e.which || e.keyCode)==13 ? dataShow(temp_json, ".lan_content", ".lan_input", "language", true, true) : dataShow(temp_json, ".lan_content", ".lan_input", "language", false, true);
+			dataShow(temp_json, ".lan_content", ".lan_input", "language", '', false, true);
 		}
-	});
-	
-	$("#start_day").datepicker({
-		changeMonth : true,
-		changeYear : true
-	});
-	
 
-	$("#end_day").datepicker({
-		changeMonth : true,
-		changeYear : true
-	});﻿	
-	
-	
+	});
 	$(".add_button").click(function(){
 		var project_name = $("#project_name").val();
 		var po_number = $("#po_number").val();
@@ -152,17 +107,19 @@ $(function(){
 				$(".add_cus_bg").fadeOut('fast', function () {
 		            $(".mask_area").fadeOut('fast');
 		        });
+				
+				window.top.location.href = "/project";
 			}
 		});
-		
 		$(".add_cus_bg input").each(function(i){
 			$(this).val('');
 		});
 		
-		$(".c_details_content li").die().live("click",function(){
-				window.top.location.href="/project-detail" ;
-		});
+		
+	});
 	
+	$(".c_details_content li").die().live("click",function(){
+		window.top.location.href="/project-detail" ;
 	});
 	
 	$(".add_cus_bg:not(#customerName, .sup_input, .lan_input)").click(function(){
@@ -182,26 +139,40 @@ $(function(){
 		$(this).removeClass("typing");
 	});
 	
-});
 
 	var session = window.sessionStorage;
-	function dataShow(f, t, inp, type, n, lang){// 显示供应商名 f:数据源 inp:输入框对象
+	function dataShow(f, t, inp, type, type2, n, lang){// 显示供应商名 f:数据源 inp:输入框对象
 												// t:显示的位置 type:类型 n:是否按下回车键
 		$(t).empty();
+		var customerId = $("#customerId").val();
+		var supplierId = $("#supplierId").val();
+		// supplier = 1 customer = 2
 		for(var i = 0; i < f.data.length; i ++){
-			$(t).append('<li>'+ handleJSON(f.data[i], type) +'</li>');
-			if(lang) {session.setItem(f.data[i].language, f.data[i].languageCode);}
-			if(n){
-				$(inp).val(handleJSON(f.data[0], type));
-				$(".lan_content, .cus_content, .sup_content").hide();
-				if(lang){
-					$("#language_type").val(session.getItem(f.data[0].language));
-				}
+			if(className == "typing"){
+				$(t).append('<li>'+ handleJSON(f.data[i], type) +'</li>');
+				
+			}else if(className == "sup_input"){
+				$(t).append('<li>'+ handleJSON(f.data[i], type) +'</li>');
+			}else if(className == "lan_input"){
+				$(t).append('<li>'+ handleJSON(f.data[i], type) +'</li>');
 			}
+			
+			
+			if(className == "lan_input") {
+				session.setItem(f.data[i].language, f.data[i].languageCode);
+			}else {
+				session.setItem(f.data[i][type], f.data[i].id);
+			}
+			
 		};
 		$(t + " li").live('click', function(){
 			$(inp).val($(this).html());
 			if(lang) {$("#language_type").val(session.getItem($(this).html()));}
+			if(className == "typing"){
+				$("#customerId").val(session.getItem($(this).html()));
+			}else if(className == "sup_input"){
+				$("#supplierId").val(session.getItem($(this).html()));
+			}
 			$(t).hide();
 		})
 	}
@@ -209,23 +180,26 @@ $(function(){
 	function searchData_lang(v, d, t){// 键盘按下时搜索 v:搜索值 d:直接对比数据源 t:重新构建的临时数据源
 										// type:搜索类型
 		t.length = 0;
+		
 		for(var i = 0; i < d.length; i ++){
-			if(d[i].language.toLowerCase().indexOf(v.toLowerCase()) > -1){
+			if(d[i].language.toLowerCase().substring(0,v.length).indexOf(v.toLowerCase()) > -1){
 				var temp_arr = {"language" : d[i].language,"languageCode" : d[i].languageCode};
 				t.push(temp_arr);
 			}
 		}
 	}
 	
-	function searchData(v,d,t,type){// 键盘按下时搜索 v:搜索值 d:直接对比数据源 t:重新构建的临时数据源
+	function searchData(v,d,t,type,type2){// 键盘按下时搜索 v:搜索值 d:直接对比数据源 t:重新构建的临时数据源
 		t.length = 0;
 		for(var i = 0; i < d.length; i ++){
-			(handleJSON(d[i], type).toLowerCase().indexOf(v.toLowerCase()) > -1)?t.push(eval("("+"{'" + type + "' :'" + handleJSON(d[i], type) + "'}"+")")):null;
+			var temp_arr = '{"'+type+'":"'+handleJSON(d[i], type)+'","'+type2+'":"' +  handleJSON(d[i], type2) + '","id":"'+handleJSON(d[i], "id")+'", "groupId" : "' + handleJSON(d[i], "groupId") +'"}';
+			
+			(handleJSON(d[i], type).toLowerCase().substring(0,v.length).indexOf(v.toLowerCase()) > -1)?t.push(eval("("+temp_arr+")")):null;
 		}
 	}
 	
-	function handleJSON(json, prototypeName){
-		return json[prototypeName];
+	function handleJSON(j, prototypeName){
+		return j[prototypeName];
 	}
 	
 	function hideOrShow(show, hide1, hide2){
@@ -233,16 +207,7 @@ $(function(){
 		$(hide1 + ", " + hide2).hide();
 	}
 	
-
-
-
-
-
-
-
-
-
-
+});
 
 
 

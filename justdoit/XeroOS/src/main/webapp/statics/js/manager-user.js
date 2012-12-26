@@ -1,5 +1,7 @@
 $(function() {
 
+	var  loginUserId = $("input[name='_current_login_userId']").val();
+	
 	$(".add_manage_btn").click(function() {
 		$("input[name='_current_userId']").val("");
 		$(".add_manage_title span").text("Add a new user");
@@ -30,6 +32,7 @@ $(function() {
 	$(".mask_area, .cancel_button").click(function() {
 		$(".add_cus_bg").fadeOut('fast', function() {
 			$(".mask_area").fadeOut('fast');
+			$(".c_details_content li").removeClass("li_selected").addClass("li_defalut");
 		});
 	});
 
@@ -62,7 +65,16 @@ $(function() {
 		$(this).removeClass("li_defalut").addClass("li_selected");
 
 		var _current_userId = this.id;
-		$(".del_button").css("display","block");
+		
+		if(loginUserId == _current_userId){
+			$(".del_button").css("display","none");
+			$(".add_button").css("right","172px");
+		}else{
+			$(".del_button").css("display","block");
+			$(".add_button").css("right","329px");
+			
+		}
+		
 		$("input[name='_current_userId']").val(_current_userId);
 		$(".add_manage_title span").text("Edit a user");
 		$(".add_button span").text("EDIT USER");
@@ -80,7 +92,7 @@ $(function() {
 
 	$(".del_button").click(function() {
 		$.ajax({
-			url : '/user-delete?random=' + (+new Date()),
+			url : '/user-delete?random=' + (new Date()),
 			type : 'POST',
 			dataType : 'json',
 			data : {

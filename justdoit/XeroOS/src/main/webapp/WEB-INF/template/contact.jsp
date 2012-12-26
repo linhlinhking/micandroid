@@ -14,6 +14,8 @@
 <script type="text/javascript" src="/js/localStorage.js"></script>
 <script type="text/javascript" src="/js/contact.js"></script>
 
+
+
 </head>
 <!--[if lte IE 8]>
 
@@ -59,9 +61,11 @@ filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='
     <input type="hidden" name="groupId"/>
     <input type="hidden" name="userId" value="${xeroUser.id}"/>
     <input type="hidden" name="isLinkXero" value="${isLinkXero}"/>
+    <input type="hidden" name="_current_contactId"/>
     
     <div class="cancel_button"><span>CANCEL</span></div>
-    <div class="add_button"><span>ADD CONTACT</span></div>
+    <div class="del_button"><span>DELETE</span></div>
+    <div class="add_button" style="right:329px;"><span>ADD CONTACT</span></div>
   </div>
 </div>
   <div class="login_container">
@@ -72,10 +76,10 @@ filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='
         <li><a href="/logout">Sign Out</a></li>
         <li><a href="/user">Manage Users</a></li>
         <li>
-        	<c:if test="${xeroUser.planId == 1}">
+        	<c:if test="${planId == 1}">
         		<a href="/payment">${leftDays} Days Remaining</a>
         	</c:if>
-        	<c:if test="${xeroUser.planId != 1}">
+        	<c:if test="${planId != 1}">
         		<a href="/payment">My Account</a>
         	</c:if>
         </li>
@@ -94,7 +98,7 @@ filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='
         <div class="contact_title">
           <span>Contacts</span>
           <div class="search_bg">
-            <input type="text" placeholder="Search">
+            <input id="search" type="text" placeholder="Search">
           </div>
           <div class="c_type_bg">
             <div class="c_type">
@@ -114,23 +118,7 @@ filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='
           <input type="hidden" name="jsonResult" id="jsonResult"/>
           <ul class="c_details_content">
           
-          <!-- 
-            <li class="li_defalut">
-              <div class="info_area p_info">012345 6789</div>
-              <div class="info_area e_info">test@test.com</div>
-              <div class="info_area n_info">Company Name</div>
-            </li>
-            <li class="li_defalut">
-              <div class="info_area p_info">012345 6789</div>
-              <div class="info_area e_info">test@test.com</div>
-              <div class="info_area n_info">Company Name</div>
-            </li>
-            <li class="li_defalut">
-              <div class="info_area p_info">012345 6789</div>
-              <div class="info_area e_info">test@test.com</div>
-              <div class="info_area n_info">Company Name</div>
-            </li>
-            -->
+       
           </ul>
         </div>
       </div>

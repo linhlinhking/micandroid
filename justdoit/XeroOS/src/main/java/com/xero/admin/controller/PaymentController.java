@@ -37,15 +37,17 @@ public class PaymentController {
 		
 		if (null != session && null != sysUser) {
 			Company cmp = companyService.getCompanyByUserId(sysUser.getId());
-			Integer companyId = 0;
+			Integer companyId = 0,planId = 0;
 			if (null != cmp) {
 				companyId = cmp.getId();
+				planId = cmp.getPlanId() ;
 				model.addObject("currentCompany", companyId);
+				model.addObject("planId", planId);
 			}
 			
 			Date ep = sysUser.getExpiredDateTime();
-			Integer pId = sysUser.getPlanId() ;
-			if (ep.before(new Date()) && pId == 1) {
+			
+			if (ep.before(new Date()) && planId == 1) {
 				model.setViewName("redirect:/");
 			} else {
 				int leftDays = DateUtil.daysOfTwoDate(new Date(), ep);

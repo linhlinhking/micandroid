@@ -60,29 +60,28 @@ public class SystemUserController extends BaseController {
 			if (ep.before(new Date())) {
 				model.setViewName("redirect:/");
 			} else {
-				Integer planId = sysUser.getPlanId();
 				Integer userId = sysUser.getId();
 				Date expiredDate = sysUser.getExpiredDateTime();
-
+				
 				Company cmp = companyService.getCompanyByUserId(userId);
-				Integer companyId = 0;
+				Integer companyId = 0,planId=0;
 				if (null != cmp) {
 					companyId = cmp.getId();
+					planId = cmp.getPlanId();
 					model.addObject("currentCompany", companyId);
+					model.addObject("planId", planId);
 				}
-
+				
 				ResponseCollection<SystemUser> resLists = systemUserService
-						.getUsersByPlanId(planId, companyId);
+						.getUsersByCompanyId(companyId);
 				List<SystemUser> listUsers = resLists.getData();
-
+					
 				if (null != listUsers) {
 					int numberUsers = listUsers.size();
 					model.addObject("allowsRegisteredUsers", numberUsers);
-					model.addObject("planId", planId);
 					model.addObject("expiredDate", expiredDate);
 
 				}
-
 				int leftDays = DateUtil.daysOfTwoDate(new Date(), ep);
 				model.addObject("leftDays", leftDays);
 				model.setViewName("/manage-user");
@@ -220,48 +219,23 @@ public class SystemUserController extends BaseController {
 			HttpServletRequest request) {
 		ResponseMessage msg = new ResponseMessage();
 		try {
-			ResponseCollection<SystemUser> res = systemUserService
-					.getUsersByCompanyId(companyId);
-			if (res.getResult()) {
-				List<SystemUser> lists = res.getData();
-
-				if (null != lists && lists.size() > 0) {
-					int j = lists.size();
-					if (planId == 2 && j > 5) {
-						msg.setResult(false);
-						msg.setStatusCode(403);
-						msg.setUrl("/payment");
-					} else {
-						for (int i = 0; i < j; i++) {
-							SystemUser u = lists.get(i);
-							u.setPlanId(planId);
-							systemUserService.saveOrUpdate(u);
-						}
-						msg.setResult(true);
-						msg.setStatusCode(200);
-						msg.setUrl("/payment");
-
-						invalidateSession(request);
-					}
-				} else {
-					msg.setResult(true);
-					msg.setStatusCode(600);
-					msg.setUrl("/payment");
-				}
-
-			} else {
-				msg.setResult(false);
-				msg.setStatusCode(601);
-				msg.setUrl("/payment");
+			Company cmp = companyService.get(companyId) ;
+			if(null != cmp && null != planId){
+				cmp.setPlanId(planId) ;
+				cmp = companyService.saveOrUpdate(cmp) ;
+				msg.setResult(true) ;
+				msg.setStatusCode(200); 
+			}else{
+				msg.setResult(false) ;
+				msg.setStatusCode(600); 
 			}
 
 		} catch (Exception ex) {
 			logger.error("Add User Error.", ex);
 			msg.setResult(false);
 			msg.setStatusCode(500);
-			msg.setUrl("/payment");
 		}
-
+		msg.setUrl("/payment");
 		return msg;
 	}
 

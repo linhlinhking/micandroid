@@ -62,20 +62,20 @@ public class SystemUserController extends BaseController {
 			} else {
 				Integer userId = sysUser.getId();
 				Date expiredDate = sysUser.getExpiredDateTime();
-				
+
 				Company cmp = companyService.getCompanyByUserId(userId);
-				Integer companyId = 0,planId=0;
+				Integer companyId = 0, planId = 0;
 				if (null != cmp) {
 					companyId = cmp.getId();
 					planId = cmp.getPlanId();
 					model.addObject("currentCompany", companyId);
 					model.addObject("planId", planId);
 				}
-				
+
 				ResponseCollection<SystemUser> resLists = systemUserService
 						.getUsersByCompanyId(companyId);
 				List<SystemUser> listUsers = resLists.getData();
-					
+
 				if (null != listUsers) {
 					int numberUsers = listUsers.size();
 					model.addObject("allowsRegisteredUsers", numberUsers);
@@ -219,15 +219,29 @@ public class SystemUserController extends BaseController {
 			HttpServletRequest request) {
 		ResponseMessage msg = new ResponseMessage();
 		try {
-			Company cmp = companyService.get(companyId) ;
-			if(null != cmp && null != planId){
-				cmp.setPlanId(planId) ;
-				cmp = companyService.saveOrUpdate(cmp) ;
-				msg.setResult(true) ;
-				msg.setStatusCode(200); 
-			}else{
-				msg.setResult(false) ;
-				msg.setStatusCode(600); 
+			Company cmp = companyService.get(companyId);
+			if (null != cmp && null != planId) {
+				ResponseCollection<SystemUser> res = systemUserService
+						.getUsersByCompanyId(companyId);
+				List<SystemUser> lists = res.getData();
+				Integer userNumber = 0;
+				if (null != lists) {
+					userNumber = lists.size();
+				}
+
+				if (planId == 3 || (planId == 2 && userNumber <= 5)) {
+					cmp.setPlanId(planId);
+					cmp = companyService.saveOrUpdate(cmp);
+					msg.setResult(true);
+					msg.setStatusCode(200);
+				} else {
+					msg.setResult(false);
+					msg.setStatusCode(603);
+				}
+
+			} else {
+				msg.setResult(false);
+				msg.setStatusCode(600);
 			}
 
 		} catch (Exception ex) {

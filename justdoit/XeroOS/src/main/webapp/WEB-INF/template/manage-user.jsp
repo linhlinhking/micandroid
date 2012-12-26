@@ -55,9 +55,13 @@ filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='
     <input type="hidden" name="planId" value="${planId}"/>
     <input type="hidden" name="expiredDate" value="${xeroUser.expiredDateTime}"/>
     <input type="hidden" name="_current_userId"/>
+    <input type="hidden" name="_current_login_userId" value="${xeroUser.id}"/>
     <div class="cancel_button"><span>CANCEL</span></div>
     <div class="del_button"><span>DELETE</span></div>
     <div class="add_button" style="right:329px;"><span>ADD USER</span></div>
+    <span class="check_name">Name should not be null</span>
+    <span class="check_email">Email is not correct</span>
+    <span class="check_pawo">Password should be 6 ～ 12</span>
   </div>
 </div>
   <div class="login_container">
@@ -68,10 +72,10 @@ filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='
         <li><a href="/logout">Sign Out</a></li>
         <li><a style="color:#000; font-weight:bold;" href="/user">Manage Users</a></li>
         <li>
-        	<c:if test="${xeroUser.planId == 1}">
+        	<c:if test="${planId == 1}">
         		<a href="/payment">${leftDays} Days Remaining</a>
         	</c:if>
-        	<c:if test="${xeroUser.planId != 1}">
+        	<c:if test="${planId != 1}">
         		<a href="/payment">My Account</a>
         	</c:if>
         </li>
@@ -109,26 +113,6 @@ filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='
             <span class="nam_area">Name<strong id="nam_area"></strong></span>
           </div>
           <ul class="c_details_content">
-          <!-- 
-            <li class="li_defalut">
-              <div class="info_area dad_info">9/11/2011</div>
-              <div class="info_area lse_info">1/10/2012</div>
-              <div class="info_area ema_info">testemail@gmail.com</div>
-              <div class="info_area nam_info">User Name</div>
-            </li>
-            <li class="li_defalut">
-              <div class="info_area dad_info">9/11/2011</div>
-              <div class="info_area lse_info">1/10/2012</div>
-              <div class="info_area ema_info">testemail@gmail.com</div>
-              <div class="info_area nam_info">User Name</div>
-            </li>
-            <li class="li_defalut">
-              <div class="info_area dad_info">9/11/2011</div>
-              <div class="info_area lse_info">1/10/2012</div>
-              <div class="info_area ema_info">testemail@gmail.com</div>
-              <div class="info_area nam_info">User Name</div>
-            </li>
-             -->
              
           </ul>
         </div>

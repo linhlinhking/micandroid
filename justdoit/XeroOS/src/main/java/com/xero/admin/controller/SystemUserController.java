@@ -104,7 +104,7 @@ public class SystemUserController extends BaseController {
 		// res.setData(null);
 		// res.setMessage("No Authorization.") ;
 		// }else{
-		res = systemUserService.getUsersByPlanId(planId, companyId);
+		res = systemUserService.getUsersByCompanyId(companyId);
 		// }
 		return res;
 	}

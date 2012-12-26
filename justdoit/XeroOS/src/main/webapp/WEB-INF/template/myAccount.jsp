@@ -10,36 +10,8 @@
 <link href="/css/GDP-common.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="/js/placeholder.js"></script>
+<script type="text/javascript" src="/js/account.js"></script>
 
-<script>
-$(function(){
-	$(".each_box .buy_status").click(function() {
-		if($(this).hasClass('not_buy')){
-			$(this).removeClass("not_buy").addClass("con_buy");
-		}else{
-			$(this).removeClass("con_buy").addClass("not_buy");
-		}
-	});
-	
-	$(".con_buy").click(function(){
-		$(".mask_area").fadeIn('fast', function () {
-            $(".cancel_show").fadeIn('fast');
-        });
-	});
-	
-	$(".not_buy").click(function(){
-		$(".mask_area").fadeIn('fast', function () {
-            $(".pay_show").fadeIn('fast');
-        });
-	});
-	
-	$(".mask_area, .cancel_button").click(function(){
-		$(".pay_show, .cancel_show").fadeOut('fast', function () {
-            $(".mask_area").fadeOut('fast');
-        });
-	});
-});
-</script>
 </head>
 <!--[if lte IE 8]>
 
@@ -98,7 +70,7 @@ filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='
     <div class="add_payment_title dividing_line"><span>Cancel Account</span></div>
     <div class="can_acc_info"><textarea placeholder="Feedback"></textarea></div>
     <p>Your Account Is Active Untill 12/21/2012</p>
-    <div class="cancel_button"><span>CANCEL</span></div>
+    <div class="del_button"><span>REMOVE&nbsp;&nbsp;ACCOUNT</span></div>
   </div>
 </div>
   <div class="login_container">
@@ -109,14 +81,17 @@ filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='
         <li><a href="/logout">Sign Out</a></li>
         <li><a href="/user">Manage Users</a></li>
         <li>
-        	<c:if test="${xeroUser.planId == 1}">
+        	<c:if test="${planId == 1}">
         		<a href="/payment">${leftDays} Days Remaining</a>
         	</c:if>
-        	<c:if test="${xeroUser.planId != 1}">
+        	<c:if test="${planId != 1}">
         		<a href="/payment">My Account</a>
         	</c:if>
         </li>
+       
       </ul>
+       <input type="hidden" name="current_company" value="${currentCompany}"/>
+       <input type="hidden" name="current_planId" value="${planId}"/>
     </div>
     <div class="contact_content account_content">
       <div class="left_section">
@@ -132,22 +107,30 @@ filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='
         </div>
         <div class="pay_area_bg">
           <div class="pay_box">
-            <div class="pay_title"><span>FREE 30 DAYS</span><span>CORPORATE</span><span>ENTERPRISE</span></div>
+            <div class="pay_title">
+            	<span>FREE 30 DAYS</span>
+            	<span>CORPORATE</span>
+            	<span>ENTERPRISE</span>
+            </div>
+            <!-- 
+            	not_buy : buy
+            	con_buy : cancel
+             -->
             <div class="pay_content">
-              <div class="each_box border_box">
+              <div class="each_box border_box" id="freeUser">
                 <p class="ie_p1">1 User</p>
                 <p class="ie_p2">Free for 30 Days</p>
-                <span class="buy_status con_buy"></span>
+                <span class="buy_status not_buy" id="1"></span>
               </div>
-              <div class="each_box border_box">
+              <div class="each_box border_box" id="fiveUsers">
                 <p class="ie_p1">0 - 5 User's</p>
                 <p class="ie_p2">39.99 NZD Monthly</p>
-                <span class="buy_status not_buy"></span>
+                <span class="buy_status not_buy" id="2"></span>
               </div>
-              <div class="each_box">
+              <div class="each_box" id="unlimitedUser">
                 <p class="ie_p1">Unlimited</p>
                 <p class="ie_p2">49.99 NZD Monthly</p>
-                <span class="buy_status not_buy"></span>
+                <span class="buy_status not_buy" id="3"></span>
               </div>
             </div>
           </div>

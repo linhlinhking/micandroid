@@ -1,5 +1,7 @@
 package com.xero.website.bean;
 
+import java.util.Date;
+
 import com.xero.core.bean.BaseEntity;
 
 public class ProjectNote extends BaseEntity{
@@ -12,6 +14,8 @@ public class ProjectNote extends BaseEntity{
 	private boolean showCustomer ;
 	
 	private String content ;
+	
+	private Date landmarkDate ;
 	
 	private Integer userId ;
 	
@@ -46,6 +50,14 @@ public class ProjectNote extends BaseEntity{
 
 	public void setUserId(Integer userId) {
 		this.userId = userId;
+	}
+
+	public Date getLandmarkDate() {
+		return landmarkDate;
+	}
+
+	public void setLandmarkDate(Date landmarkDate) {
+		this.landmarkDate = landmarkDate;
 	}
 	
 	

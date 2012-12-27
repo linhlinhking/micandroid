@@ -2,23 +2,26 @@ package com.xero.website.bean;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 import com.xero.core.bean.BaseEntity;
 
-public class ProjectNote extends BaseEntity{
+@Entity
+@Table(name = "tb_project_note")
+public class ProjectNote extends BaseEntity {
 
-	
 	private static final long serialVersionUID = -5767672521591170321L;
 
-	private Integer projectId ;
-	
-	private boolean showCustomer ;
-	
-	private String content ;
-	
-	private Date landmarkDate ;
-	
-	private Integer userId ;
-	
+	private Integer projectId;
+
+	private boolean showCustomer;
+
+	private String content;
+
+	private Date landmarkDate;
+
+	private Integer userId;
 
 	public Integer getProjectId() {
 		return projectId;
@@ -59,7 +62,5 @@ public class ProjectNote extends BaseEntity{
 	public void setLandmarkDate(Date landmarkDate) {
 		this.landmarkDate = landmarkDate;
 	}
-	
-	
-	
+
 }

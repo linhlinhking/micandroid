@@ -28,7 +28,6 @@ public class ProjectNoteController {
 	private ProjectNoteService projectNoteService;
 	
 	
-	
 	@RequestMapping(value = "/note-add", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<ProjectNote> doAdd(HttpServletRequest request,

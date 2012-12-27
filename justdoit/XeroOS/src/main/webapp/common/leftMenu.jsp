@@ -7,3 +7,13 @@
 		<li class="ie_t"><a href="/report">Reports</a></li>
 	</ul>
 </div>
+<script>
+$(function(){
+	$(".left_section ul li").click(function(){
+		_this = this ;
+		$(".left_section ul li").removeClass("selected");
+		$(_this).addClass("selected");
+	});
+	
+});
+</script>

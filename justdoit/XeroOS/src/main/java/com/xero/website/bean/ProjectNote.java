@@ -22,7 +22,10 @@ public class ProjectNote extends BaseEntity {
 	private Date landmarkDate;
 
 	private Integer userId;
-
+	
+	private Integer supplierId ;
+	
+	
 	public Integer getProjectId() {
 		return projectId;
 	}
@@ -62,5 +65,15 @@ public class ProjectNote extends BaseEntity {
 	public void setLandmarkDate(Date landmarkDate) {
 		this.landmarkDate = landmarkDate;
 	}
+
+	public Integer getSupplierId() {
+		return supplierId;
+	}
+
+	public void setSupplierId(Integer supplierId) {
+		this.supplierId = supplierId;
+	}
+	
+	
 
 }

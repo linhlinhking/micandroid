@@ -50,4 +50,23 @@ public class ProjectServiceImpl extends BaseServiceImpl<Project, Integer>
 		}
 		return res;
 	}
+
+	public ResponseCollection<Project> getActiveProjects()
+			throws ServiceException {
+		ResponseCollection<Project> res = new ResponseCollection<Project>();
+		try {
+			List<Project> lists = projectDao.getActiveProjects() ;
+			res.setData(lists);
+			res.setResult(true);
+			res.setMessage("OK");
+
+		} catch (DaoException ex) {
+			logger.error("Get All Project Error On Service", ex);
+			res.setData(null);
+			res.setResult(false);
+			res.setMessage("ERROR");
+
+		}
+		return res;
+	}
 }

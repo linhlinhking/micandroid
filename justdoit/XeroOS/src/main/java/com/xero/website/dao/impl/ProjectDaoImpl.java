@@ -15,20 +15,33 @@ import com.xero.website.dao.ProjectDao;
 public class ProjectDaoImpl extends BaseDaoImpl<Project, Integer> implements
 		ProjectDao {
 
-	private Logger logger = LoggerFactory.getLogger(getClass()) ;
+	private Logger logger = LoggerFactory.getLogger(getClass());
+
 	
 	public ProjectDaoImpl() {
 		super(Project.class);
 	}
 
 	public List<Project> getProjectsById(Integer userId) throws DaoException {
-		List<Project> lists = null ;
+		List<Project> lists = null;
 		try {
 			String hql = "from Project as p where 1=1 and p.deleted = 0 and p.userId = ? ";
-			lists = findByHql(hql,userId);
+			lists = findByHql(hql, userId);
 		} catch (Exception ex) {
-			logger.error("Get All Project Error.", ex) ;
+			logger.error("Get All Project Error.", ex);
 		}
-		return lists ;
+		return lists;
+	}
+
+	public List<Project> getActiveProjects() throws DaoException {
+		List<Project> lists = null;
+		try {
+			String hql = " select p.* from tb_project as p where 1=1 and p.startDate < NOW() and p.endDate > NOW() and p.status = 'ACTIVE' and p.deleted = 0 ";
+			lists = findByNativeSql(hql);
+		} catch (Exception ex) {
+			logger.error("Get All Project By Date Error.", ex);
+		}
+		return lists;
+
 	}
 }

@@ -8,4 +8,8 @@ import com.xero.website.bean.Project;
 public interface ProjectService extends BaseService<Project, Integer> {
 
 	public ResponseCollection<Project> getProjectsById(Integer userId) throws ServiceException;
+	
+	public ResponseCollection<Project> getActiveProjects() throws ServiceException;
+	
+	
 }

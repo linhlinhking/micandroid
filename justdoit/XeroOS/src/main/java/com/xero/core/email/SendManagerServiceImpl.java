@@ -25,23 +25,25 @@ public class SendManagerServiceImpl implements SendManagerService {
 	private JavaMailSender mailSender;
 	private SimpleMailMessage message;
 
-	public void sendHtmlMail(final String email, final String username,
-			final String userId, final String key) {
+	public void sendHtmlMail(final String email, final String companyName,
+			final  String poNumber, final String linkUrl) {
 		MimeMessage mimeMessage = mailSender.createMimeMessage();
 		MimeMessageHelper helper;
 		try {
-			helper = new MimeMessageHelper(mimeMessage, true, "GBK");
+			helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 			helper.setTo(new InternetAddress(email));
 			helper.setFrom(new InternetAddress(message.getFrom()));
 			helper.setSubject(message.getSubject());
-			helper.setText(getContentHtml(username, userId, key), true);
+			helper.setText(getContentHtml(companyName, poNumber, linkUrl), true);
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		}
 		mailSender.send(mimeMessage);
 	}
 
-	private String getContentHtml(String username, String userId, String key) {
+	
+	/**1)template do the param 2)Map do the param*/
+	private String getContentHtml(String companyName, String poNumber, String linkUrl) {
 		String htmlText = "";
 		freeMarker = (FreeMarkerConfigurer) ApplicationContextUtil.getContext()
 				.getBean("freeMarker");
@@ -49,10 +51,10 @@ public class SendManagerServiceImpl implements SendManagerService {
 			Template tpl = null;
 			Map<String, String> map = new HashMap<String, String>();
 
-			tpl = freeMarker.getConfiguration().getTemplate("send_html.ftl");
-			map.put("username", username);
-			map.put("userId", userId);
-			map.put("key", key);
+			tpl = freeMarker.getConfiguration().getTemplate("supplier_email.ftl");
+			map.put("companyName", companyName);
+			map.put("poNumber", poNumber);
+			map.put("linkUrl", linkUrl);
 
 			htmlText = FreeMarkerTemplateUtils.processTemplateIntoString(tpl,
 					map);

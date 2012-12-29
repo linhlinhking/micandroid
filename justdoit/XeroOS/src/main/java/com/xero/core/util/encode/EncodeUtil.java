@@ -63,14 +63,25 @@ public abstract class EncodeUtil {
 	 */
 
 	public static void main(String[] args) {
-		String tmep = "1:leyxan.nb@gmail.com";
+		//String tmep = "1:2:po123:testProject:12/12/2012:18/12/2012";
+		StringBuffer buff = new StringBuffer();
+		buff.append(1).append(":").append(2).append(":").append("testProject")
+				.append(":").append("12/12/2012").append(":")
+				.append("18/12/2012");
+		
 		String tempEncode;
 		try {
-			tempEncode = base64UrlSafeEncode(tmep.getBytes());
+			tempEncode = base64UrlSafeEncode(buff.toString().getBytes());
 			System.out.println(tempEncode);
 
 			byte[] byteArry = base64Decode(tempEncode);
 			System.out.println(new String(byteArry));
+			
+			String newString = new String(byteArry);
+			String[] strArry = newString.split(":") ;
+			for(String s : strArry){
+				System.out.println(s) ;
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

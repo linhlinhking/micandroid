@@ -33,9 +33,17 @@
 		<jetty-version>6.1.26</jetty-version>
 		<imgscalr-version>4.2</imgscalr-version>
 		<standard-version>1.1.2</standard-version>
+		<commons-codec-version>1.7</commons-codec-version>
+
 	</properties>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>${commons-codec-version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>ch.qos.logback</groupId>

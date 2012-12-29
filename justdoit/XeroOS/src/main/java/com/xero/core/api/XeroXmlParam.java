@@ -12,7 +12,5 @@ public class XeroXmlParam {
 		return xml;
 	}
 	
-	 
-
 	private final static String CONTACT_XML = "<Contacts><Contact><Name>%s</Name><EmailAddress>%s</EmailAddress><Phones><Phone><PhoneType>DEFAULT</PhoneType><PhoneNumber>%s</PhoneNumber></Phone></Phones></Contact></Contacts>";
 }

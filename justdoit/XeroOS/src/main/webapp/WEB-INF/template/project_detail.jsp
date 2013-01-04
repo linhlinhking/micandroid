@@ -12,6 +12,9 @@
 <script type="text/javascript" src="/js/placeholder.js"></script>
 <script type="text/javascript" src="/js/mootools.js"></script>
 <script type="text/javascript" src="/js/slider.js"></script>
+<script type="text/javascript" src="/js/project-detail.js"></script>
+
+
 <script>
 jQuery(function(){
 	jQuery(".show_icon").toggle(function() {
@@ -65,10 +68,12 @@ jQuery(function(){
     <div class="contact_content project_content">
    	<%@ include file="/common/leftMenu.jsp"%>
    
-   
       <div class="right_section">
         <div class="project_title">
-          <span>Project Name / PO234234</span>
+          <span>${project.projectName} / ${project.poNumber}</span>
+          <input type="hidden" name="current_user_id" value="${xeroUser.id}">
+          <input type="hidden" name="current_project_id" value="${project.id}">
+          <input type="hidden" name="rate_value" value="${project.rate}">
         </div>
         <div class="project_schedule" id="project_schedule_f">
           <span class="percent_span" >0%</span>
@@ -82,8 +87,8 @@ jQuery(function(){
           <span class="percent_span" >80%</span>
           <span class="percent_span" >90%</span>
           <span class="percent_span" >100%</span>
-          <span class="start_date">04/12/2012</span>
-          <span class="end_date">24/12/2012</span>
+          <span class="start_date">${sDate}</span>
+          <span class="end_date">${eDate}</span>
           <div class="slider_btn" id="slider_btn_t">
             <div class="t_part"></div>
             <div class="b_part"><span id="action_num">0%</span></div>

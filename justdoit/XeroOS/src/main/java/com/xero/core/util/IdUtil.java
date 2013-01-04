@@ -29,4 +29,8 @@ public class IdUtil {
 	public static String randomBase62() {
 		return EncodeUtil.base62Encode(random.nextLong());
 	}
+	
+	public static void main(String args[]){
+		System.out.println(uuid()) ;
+	}
 }

@@ -15,6 +15,7 @@ public interface SystemUserDao extends BaseDao<SystemUser, Integer> {
 
 	public List<SystemUser> getAllUser() throws DaoException;
 	
+	@Deprecated
 	public List<SystemUser> getUsersByCompanyId(Integer companyId) throws DaoException;
 
 	public List<SystemUser> getUsersByPlanId(Integer planId, Integer companyId)

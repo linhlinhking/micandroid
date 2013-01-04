@@ -9,4 +9,6 @@ import com.xero.website.bean.ProjectNote;
 public interface ProjectNoteDao extends BaseDao<ProjectNote, Integer> {
 
 	public List<ProjectNote> getNotesByProjectId(Integer projectId) throws DaoException;
+	
+	//public boolean isSendNoteBySupplier() throws DaoException ;
 }

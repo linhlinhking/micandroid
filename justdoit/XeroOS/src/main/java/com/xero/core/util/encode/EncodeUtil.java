@@ -74,7 +74,7 @@ public abstract class EncodeUtil {
 			tempEncode = base64UrlSafeEncode(buff.toString().getBytes());
 			System.out.println(tempEncode);
 
-			byte[] byteArry = base64Decode(tempEncode);
+			byte[] byteArry = base64Decode("OToz");
 			System.out.println(new String(byteArry));
 			
 			String newString = new String(byteArry);

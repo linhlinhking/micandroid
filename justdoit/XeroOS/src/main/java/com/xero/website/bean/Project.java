@@ -31,6 +31,8 @@ public class Project extends BaseEntity{
 	
 	private Integer userId ;
 	
+	private double rate ;
+	
 	
 	public String getProjectName() {
 		return projectName;
@@ -94,6 +96,14 @@ public class Project extends BaseEntity{
 
 	public void setPoNumber(String poNumber) {
 		this.poNumber = poNumber;
+	}
+
+	public double getRate() {
+		return rate;
+	}
+
+	public void setRate(double rate) {
+		this.rate = rate;
 	}
 
 	

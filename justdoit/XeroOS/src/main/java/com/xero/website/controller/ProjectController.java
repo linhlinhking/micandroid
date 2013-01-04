@@ -145,7 +145,6 @@ public class ProjectController extends BaseController {
 			String sDate = DateUtil.dateToString(tempSDate);
 			String eDate = DateUtil.dateToString(tempEDate);
 
-			System.out.println(pro.getRate()) ;
 			model.addObject("sDate", sDate);
 			model.addObject("eDate", eDate);
 			model.addObject("project", pro);

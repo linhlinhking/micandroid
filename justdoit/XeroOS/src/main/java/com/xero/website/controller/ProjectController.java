@@ -45,6 +45,33 @@ public class ProjectController extends BaseController {
 		return model;
 	}
 
+	@RequestMapping(value = "/slide-add", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<Project> updateSlide(HttpServletRequest request,
+			@RequestParam("projectId") Integer projectId,
+			@RequestParam("rateValue") String rateValue) {
+		ResponseEntity<Project> res = new ResponseEntity<Project>(false);
+		try {
+			Project p = projectService.get(projectId);
+			if (null == rateValue || rateValue.length() < 0) {
+				rateValue = "0.0";
+			}
+			p.setRate(Double.valueOf(rateValue));
+			p.setUpdateDateTime(new Date());
+			p = projectService.saveOrUpdate(p);
+
+			res.setResult(true);
+			res.setData(p);
+		} catch (Exception ex) {
+			logger.error("Save Slide Error,current projectId is " + projectId,
+					ex);
+			res.setData(null);
+			res.setResult(false);
+		}
+
+		return res;
+	}
+
 	@RequestMapping(value = "/project-add", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<Project> doProject(
@@ -110,14 +137,15 @@ public class ProjectController extends BaseController {
 		ModelAndView model = new ModelAndView();
 		Project pro = projectService.get(Project.PO_NUMBER, poNumber);
 		if (null != pro) {
-			Date tempSDate = pro.getStartDate() ;
-			Date tempEDate = pro.getEndDate() ;
-			tempSDate = (tempSDate == null) ? new Date():tempSDate ;
-			tempEDate = (tempEDate == null) ? new Date():tempEDate ;
-			
+			Date tempSDate = pro.getStartDate();
+			Date tempEDate = pro.getEndDate();
+			tempSDate = (tempSDate == null) ? new Date() : tempSDate;
+			tempEDate = (tempEDate == null) ? new Date() : tempEDate;
+
 			String sDate = DateUtil.dateToString(tempSDate);
 			String eDate = DateUtil.dateToString(tempEDate);
 
+			System.out.println(pro.getRate()) ;
 			model.addObject("sDate", sDate);
 			model.addObject("eDate", eDate);
 			model.addObject("project", pro);

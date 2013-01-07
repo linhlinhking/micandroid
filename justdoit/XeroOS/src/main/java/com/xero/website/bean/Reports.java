@@ -16,6 +16,8 @@ public class Reports implements Serializable {
 
 	private String telephone;
 
+	private String supplierEmail;
+
 	public String getSupplier() {
 		return supplier;
 	}
@@ -55,7 +57,14 @@ public class Reports implements Serializable {
 	public void setTelephone(String telephone) {
 		this.telephone = telephone;
 	}
-	
+
+	public String getSupplierEmail() {
+		return supplierEmail;
+	}
+
+	public void setSupplierEmail(String supplierEmail) {
+		this.supplierEmail = supplierEmail;
+	}
 	
 	
 

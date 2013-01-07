@@ -26,6 +26,8 @@ public class EmailRecord implements Serializable {
 	private Date sendDate;
 	
 	private boolean status ;
+	
+	private boolean reply ;
 
 	public Integer getId() {
 		return id;
@@ -66,7 +68,14 @@ public class EmailRecord implements Serializable {
 	public void setProjectId(Integer projectId) {
 		this.projectId = projectId;
 	}
-	
+
+	public boolean isReply() {
+		return reply;
+	}
+
+	public void setReply(boolean reply) {
+		this.reply = reply;
+	}
 	
 
 }

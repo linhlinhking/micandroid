@@ -15,9 +15,8 @@ public class DateUtil {
 	public final static String FORMAT_YYYY_N_MM_Y_MM_R = "yyyy年MM月dd日";
 
 	public final static String FORMAT_MM_DD_YYYY = "MM/dd/yyyy";
-	
+
 	public final static String FORMAT_DD_MM_YYYY = "dd/MM/yyyy";
-	
 
 	private DateUtil() {
 		super();
@@ -53,6 +52,18 @@ public class DateUtil {
 		return days;
 	}
 
+	public static int daysBetweenDate(Date firstDate,Date secondDate) {
+		Calendar aCalendar = Calendar.getInstance();
+		aCalendar.setTime(firstDate);
+		// 计算此日期是一年中的哪一天
+		int day1 = aCalendar.get(Calendar.DAY_OF_YEAR);
+		aCalendar.setTime(secondDate);
+		int day2 = aCalendar.get(Calendar.DAY_OF_YEAR);
+		// 求出两日期相隔天数
+		int days = day2 - day1;
+		return days;
+	}
+
 	public static int getNowYear() {
 		return Calendar.getInstance().get(Calendar.YEAR);
 	}
@@ -65,12 +76,12 @@ public class DateUtil {
 	 * @return Date
 	 */
 	public static Date strToEnDate(String dateStr) {
-		return strToDate(dateStr,FORMAT_DD_MM_YYYY);
+		return strToDate(dateStr, FORMAT_DD_MM_YYYY);
 	}
-	
-	public static String dateToString(Date d){
+
+	public static String dateToString(Date d) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT_DD_MM_YYYY);
-		return dateFormat.format(d) ;
+		return dateFormat.format(d);
 	}
 
 	/**
@@ -106,11 +117,6 @@ public class DateUtil {
 		calendar.setTimeInMillis(Long.valueOf(v));
 		System.out.println(now + " = " + formatter.format(calendar.getTime()));
 		
-		String email = "leyxan.nb@gmail.com" ;
-		String[] arry = email.split("@") ;
-		System.out.println(arry[0]) ;
 	}
-	
-	
 
 }

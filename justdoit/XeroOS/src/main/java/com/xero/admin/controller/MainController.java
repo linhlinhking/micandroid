@@ -26,9 +26,9 @@ public class MainController {
 
 	@Resource
 	private SystemUserService systemUserService;
-	
+
 	@Resource
-	private CompanyService companyService ;
+	private CompanyService companyService;
 
 	@RequestMapping(value = ("/contact"), method = RequestMethod.GET)
 	public ModelAndView contact(HttpServletRequest request) {
@@ -42,16 +42,16 @@ public class MainController {
 				.getAttribute(WebConstants.XERO_USER_SESSION);
 		if (null != session && null != sysUser) {
 			Date ep = sysUser.getExpiredDateTime();
-			Company cmp = companyService.getCompanyByUserId(sysUser.getId()) ;
-			Integer pId = 0 ;
-			if(null != cmp){
-				pId = cmp.getId() ;
+			Company cmp = companyService.getCompanyByUserId(sysUser.getId());
+			Integer pId = 0;
+			if (null != cmp) {
+				pId = cmp.getId();
 			}
-			
+
 			if (ep.before(new Date()) && pId == 1) {
 				model.setViewName("redirect:/");
 			} else {
-				int leftDays = DateUtil.daysOfTwoDate(new Date(), ep);
+				int leftDays = DateUtil.daysBetweenDate(new Date(), ep);
 				model.addObject("leftDays", leftDays);
 				model.addObject("isLinkXero", sysUser.getLinkXero());
 				model.addObject("planId", pId);

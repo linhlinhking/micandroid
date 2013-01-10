@@ -60,15 +60,26 @@ public class TranslateUtil {
 			String toLang) {
 		GoogleAPI.setHttpReferrer(GOOGLE_TRANSLATE_API_REFERRER);
 		GoogleAPI.setKey(GOOGLE_TRANSLATE_API_KEY);
+		if(null == fromLang || "" == fromLang){
+			fromLang = Language.ENGLISH.toString() ;
+		}
+		if(null == toLang || "" == toLang){
+			toLang = Language.ENGLISH.toString() ;
+		}
+		
+		
 		String temp = null;
 		try {
 			temp = Translate.DEFAULT.execute(content,
 					Language.fromString(fromLang), Language.fromString(toLang));
 		} catch (GoogleAPIException e) {
 			e.printStackTrace();
+			return content ;
 		}
 		return temp;
 	}
+	
+	
 
 	public static void main(String args[]) {
 		System.out.println(Locale.CHINA) ;

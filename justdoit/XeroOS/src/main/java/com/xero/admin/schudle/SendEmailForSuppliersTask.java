@@ -47,7 +47,7 @@ public class SendEmailForSuppliersTask {
 	 * 
 	 * (cron="0 0 6 ? * Tue")
 	 */
-	// @Scheduled(cron = "0/20 * *  * * ? ")
+	//@Scheduled(cron = "0/20 * *  * * ? ")
 	public void doSomethingWithDelay() {
 		ResponseCollection<Project> resProjects = projectService
 				.getActiveProjects();
@@ -58,8 +58,9 @@ public class SendEmailForSuppliersTask {
 				for (int i = 0, j = listProject.size(); i < j; i++) {
 					Project itemProject = listProject.get(i);
 					Integer pId = itemProject.getId();
+					String customerName = itemProject.getCustomerName() ;
 					String pNumber = itemProject.getPoNumber();
-
+					
 					ResponseCollection<ProjectSupplier> resSuppliers = projectSupplierService
 							.getSuppliersByProjectId(pId);
 					if (resSuppliers.getResult()) {
@@ -73,32 +74,43 @@ public class SendEmailForSuppliersTask {
 										.getSupplierId();
 								Integer tmpId = (supplierId == null) ? 0
 										: Integer.valueOf(supplierId);
+								String language = itemSupplier.getSupplierLanguage() ;
 								Contact c = contactService.get(tmpId);
 								if (null != c) {
 									String supplierEmail = c.getUemail();
 									String companyName = c.getCompanyName();
 
+									/** Send and Save Email Records */
+									EmailRecord er = new EmailRecord();
+									er.setReply(false);
+									er = emailRecordService.saveOrUpdate(er);
+
+									/**
+									 * email'id Trace the supplier write note or
+									 * not
+									 */
+									Integer emailId = er.getId();
+
 									StringBuffer buffer = new StringBuffer();
 									buffer.append(supplierId).append(":")
-											.append(pId);
+											.append(pId).append(":")
+											.append(emailId);
 									String dataEncode = EncodeUtil
 											.base64UrlSafeEncode(buffer
 													.toString().getBytes());
 
-									String linkUrl = "http://dev.globaldesign.co.nz/supplier/"
-											+ dataEncode;
-
 									// String linkUrl =
-									// "http://localhost:9000/supplier/"
+									// "http://dev.globaldesign.co.nz/supplier/"
 									// + dataEncode;
+
+									String linkUrl = "http://localhost:9000/supplier/"
+											+ dataEncode;
 
 									System.out.println(supplierEmail);
 									boolean flag = sendMgrService.sendHtmlMail(
-											supplierEmail, companyName,
-											pNumber, linkUrl);
+											supplierEmail, customerName,companyName,
+											pNumber, linkUrl,language);
 
-									/** Send and Save Email Records */
-									EmailRecord er = new EmailRecord();
 									er.setProjectId(pId);
 									er.setSendDate(new Date());
 									er.setSupplierId(supplierId);

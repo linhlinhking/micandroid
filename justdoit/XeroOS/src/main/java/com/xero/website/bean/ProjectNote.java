@@ -23,6 +23,8 @@ public class ProjectNote extends BaseEntity {
 
 	private Integer userId;
 	
+	private String creator ;
+	
 	private Integer supplierId ;
 	
 	
@@ -72,6 +74,14 @@ public class ProjectNote extends BaseEntity {
 
 	public void setSupplierId(Integer supplierId) {
 		this.supplierId = supplierId;
+	}
+
+	public String getCreator() {
+		return creator;
+	}
+
+	public void setCreator(String creator) {
+		this.creator = creator;
 	}
 	
 	

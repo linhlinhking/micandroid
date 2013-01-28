@@ -31,6 +31,8 @@ public class Project extends BaseEntity{
 	
 	private Integer userId ;
 	
+	private Integer companyId ;
+	
 	private double rate ;
 	
 	
@@ -104,6 +106,14 @@ public class Project extends BaseEntity{
 
 	public void setRate(double rate) {
 		this.rate = rate;
+	}
+
+	public Integer getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(Integer companyId) {
+		this.companyId = companyId;
 	}
 
 	

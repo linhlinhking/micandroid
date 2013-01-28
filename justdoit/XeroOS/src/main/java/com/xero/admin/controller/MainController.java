@@ -33,7 +33,7 @@ public class MainController {
 	@RequestMapping(value = ("/contact"), method = RequestMethod.GET)
 	public ModelAndView contact(HttpServletRequest request) {
 		ModelAndView model = new ModelAndView();
-		HttpSession session = request.getSession(false);
+	/*	HttpSession session = request.getSession(false);
 		if (null == session) {
 			model.setViewName("redirect:/");
 			return model;
@@ -43,24 +43,24 @@ public class MainController {
 		if (null != session && null != sysUser) {
 			Date ep = sysUser.getExpiredDateTime();
 			Company cmp = companyService.getCompanyByUserId(sysUser.getId());
-			Integer pId = 0;
+			Integer planId = 0;
 			if (null != cmp) {
-				pId = cmp.getId();
+				planId = cmp.getPlanId() ;
 			}
 
-			if (ep.before(new Date()) && pId == 1) {
+			if (ep.before(new Date()) && planId == 1) {
 				model.setViewName("redirect:/");
 			} else {
 				int leftDays = DateUtil.daysBetweenDate(new Date(), ep);
 				model.addObject("leftDays", leftDays);
 				model.addObject("isLinkXero", sysUser.getLinkXero());
-				model.addObject("planId", pId);
+				model.addObject("planId", planId);
 				model.setViewName("/contact");
 			}
 		} else {
 			model.setViewName("redirect:/");
-		}
-
+		}*/
+		model.setViewName("/contact");
 		return model;
 	}
 

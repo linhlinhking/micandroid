@@ -48,6 +48,7 @@ public class HeaderCommonController {
 				int leftDays = DateUtil.daysOfTwoDate(new Date(), ep);
 				model.addObject("leftDays", leftDays);
 				model.addObject("planId", planId);
+				model.addObject("isLinkXero", sysUser.getLinkXero());
 				model.addObject("companyId", companyId);
 				model.setViewName("/header");
 			}

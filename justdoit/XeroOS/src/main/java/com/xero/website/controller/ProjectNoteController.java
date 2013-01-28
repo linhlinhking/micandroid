@@ -78,6 +78,7 @@ public class ProjectNoteController {
 			HttpServletRequest request,
 			@RequestParam("projectId") Integer projectId,
 			@RequestParam("userId") Integer userId,
+			@RequestParam("creator") String creator,
 			@RequestParam("content") String noteContent,
 			@RequestParam("landmarkDate") String landmarkDate,
 			@RequestParam("showCustomer") Integer showCustomer,
@@ -96,6 +97,7 @@ public class ProjectNoteController {
 			pNote.setContent(noteContent);
 			pNote.setProjectId(projectId);
 			pNote.setUserId(userId);
+			pNote.setCreator(creator) ;
 			pNote.setLandmarkDate(tempDate);
 			pNote.setShowCustomer(isShowCustomer);
 			pNote.setCreateDateTime(new Date());

@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -85,7 +87,8 @@ public class ProjectController extends BaseController {
 			@RequestParam(required = false, value = "supplierId") String supplierId,
 			@RequestParam("supplierName") String supplierName,
 			@RequestParam("supplierLang") String supplierLanguage,
-			@RequestParam("userId") Integer userId) {
+			@RequestParam("userId") Integer userId,
+			@RequestParam("companyId") Integer companyId) {
 		ResponseEntity<Project> res = new ResponseEntity<Project>(false);
 		try {
 
@@ -103,6 +106,10 @@ public class ProjectController extends BaseController {
 			p.setStatus(ProjectType.ACTIVE.toString());
 			p.setUserId(userId);
 			p.setPoNumber(poNumber);
+			companyId = (null != companyId && StringUtils.isNumeric(String
+					.valueOf(companyId))) ? companyId : Integer.valueOf(0);
+			
+			p.setCompanyId(companyId);
 
 			p = projectService.saveOrUpdate(p);
 

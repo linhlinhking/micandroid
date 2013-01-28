@@ -25,7 +25,8 @@ public class ProjectDaoImpl extends BaseDaoImpl<Project, Integer> implements
 	public List<Project> getProjectsById(Integer userId) throws DaoException {
 		List<Project> lists = null;
 		try {
-			String hql = "from Project as p where 1=1 and p.deleted = 0 and p.userId = ? ";
+			//String hql = "from Project as p where 1=1 and p.deleted = 0 and p.userId = ? ";
+			String hql = "from Project as p where 1=1 and p.deleted = 0 and p.companyId = ? ";
 			lists = findByHql(hql, userId);
 		} catch (Exception ex) {
 			logger.error("Get All Project Error.", ex);

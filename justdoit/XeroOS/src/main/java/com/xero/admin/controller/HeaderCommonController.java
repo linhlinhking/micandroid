@@ -45,7 +45,7 @@ public class HeaderCommonController {
 			if (ep.before(new Date()) && planId == 1) {
 				model.setViewName("redirect:/");
 			} else {
-				int leftDays = DateUtil.daysOfTwoDate(new Date(), ep);
+				int leftDays = DateUtil.daysBetweenDate(new Date(), ep);
 				model.addObject("leftDays", leftDays);
 				model.addObject("planId", planId);
 				model.addObject("isLinkXero", sysUser.getLinkXero());

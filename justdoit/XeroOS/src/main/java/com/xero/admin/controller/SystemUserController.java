@@ -1,7 +1,9 @@
 package com.xero.admin.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -18,13 +20,16 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.xero.admin.bean.SystemUser;
 import com.xero.admin.bean.type.JoinUsType;
+import com.xero.admin.bean.type.MailType;
 import com.xero.admin.service.SystemUserService;
 import com.xero.admin.util.DateUtil;
 import com.xero.core.Response.ResponseCollection;
 import com.xero.core.Response.ResponseEntity;
 import com.xero.core.Response.ResponseMessage;
 import com.xero.core.controller.BaseController;
+import com.xero.core.email.SendManagerService;
 import com.xero.core.security.MD5Util;
+import com.xero.core.util.ApplicationContextUtil;
 import com.xero.core.web.WebConstants;
 import com.xero.website.bean.Company;
 import com.xero.website.bean.CompanyUser;
@@ -44,6 +49,9 @@ public class SystemUserController extends BaseController {
 
 	@Resource
 	private CompanyService companyService;
+
+	private SendManagerService sendMgrService = (SendManagerService) ApplicationContextUtil
+			.getContext().getBean("sendMail");
 
 	@RequestMapping(value = "/user", method = RequestMethod.GET)
 	public ModelAndView index(HttpServletRequest request) {
@@ -168,6 +176,23 @@ public class SystemUserController extends BaseController {
 				link.setCreateDateTime(new Date());
 
 				companyUserService.save(link);
+
+				Company c = companyService.get(companyId);
+				Map<String, Object> params = new HashMap<String, Object>();
+				params.put("username", username);
+				params.put("uPassword", password);
+				if (null != c) {
+					String cmpName = c.getCompanyName();
+					params.put("uCompany", cmpName);
+				}
+
+				try {
+					sendMgrService.sendHtmlMail(MailType.MAILNEWUSER,
+							uemail, null, params);
+				} catch (Exception ex) {
+					logger.error("Mail New User Error.User's Email is "
+							+ uemail, ex);
+				}
 
 				res.setData(user);
 				res.setResult(true);

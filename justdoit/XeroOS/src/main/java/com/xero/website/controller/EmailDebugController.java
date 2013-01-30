@@ -119,7 +119,7 @@ public class EmailDebugController {
 												.base64UrlSafeEncode(buffer
 														.toString().getBytes());
 
-										String linkUrl = "http://gdp.nalike.com/supplier/"
+										String linkUrl = "http://dev.globaldesign.co.nz/supplier/"
 												+ dataEncode;
 
 										System.out.println(supplierEmail);

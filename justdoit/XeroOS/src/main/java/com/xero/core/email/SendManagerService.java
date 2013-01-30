@@ -1,8 +1,12 @@
 package com.xero.core.email;
 
+import java.util.Map;
+
+import com.xero.admin.bean.type.MailType;
 
 public interface SendManagerService {
-	
-	public boolean sendHtmlMail(String email,String customerName,String username,String userId,String key,String language);
-	
+
+
+	public boolean sendHtmlMail(MailType type, String email,
+			String lanugage, Map<String, Object> params);
 }

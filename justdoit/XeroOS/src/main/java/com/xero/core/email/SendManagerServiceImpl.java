@@ -17,6 +17,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
+import com.xero.admin.bean.type.MailType;
 import com.xero.core.util.ApplicationContextUtil;
 import com.xero.core.util.TranslateUtil;
 import com.xero.website.bean.EmailFields;
@@ -36,9 +37,16 @@ public class SendManagerServiceImpl implements SendManagerService {
 	@Resource
 	private EmailFieldsService emailFieldsService;
 
-	public boolean sendHtmlMail(final String email, final String customerName,
-			final String supplierCompanyName, final String poNumber,
-			final String linkUrl, final String language) {
+
+
+	/**
+	 * 
+	 * @param type @see com.xero.admin.bean.type.MailType
+	 * @param email 
+	 * @param params. 
+	 * 
+	 */
+	public boolean sendHtmlMail(MailType type, String email,String language,Map<String, Object> params) {
 		boolean flag = true;
 		try {
 			MimeMessage mimeMessage = mailSender.createMimeMessage();
@@ -47,30 +55,60 @@ public class SendManagerServiceImpl implements SendManagerService {
 			helper.setTo(new InternetAddress(email));
 			helper.setFrom(new InternetAddress(message.getFrom()));
 			helper.setSubject(message.getSubject());
-			helper.setText(
-					getContentHtml(customerName, supplierCompanyName, poNumber,
-							linkUrl, language), true);
+			Integer value = type.getValue();
+			switch (value) {
+			case 1:
+				helper.setText(mailNewUserHtml(params),true) ;
+				break;
+			case 2:
+				helper.setText(mailSuppliersHtml(params,language),true) ;
+				break;
+			}
+			
 			mailSender.send(mimeMessage);
 		} catch (MessagingException e) {
 			logger.error(
-					"Send Email Error.Please check this email. email Address is :"
-							+ email, e);
+					"Send Email Error.Please check this email. email Address is :" + email);
 			flag = false;
 		}
 		return flag;
 	}
-
-	/** 1)template do the param 2)Map do the param */
-	private String getContentHtml(String customerName,
-			String supplierCompanyName, String poNumber, String linkUrl,
-			String language) {
-		String htmlText = "";
+	
+	
+	private String mailNewUserHtml(Map<String,Object> params){
+		String htmlText = "" ;
+		if(null == params){
+			params = new HashMap<String,Object>() ;
+		}
 		freeMarker = (FreeMarkerConfigurer) ApplicationContextUtil.getContext()
 				.getBean("freeMarker");
 		try {
 			Template tpl = null;
-			Map<String, String> map = new HashMap<String, String>();
-
+			
+			tpl = freeMarker.getConfiguration().getTemplate(
+					"new_user_email.ftl");
+			htmlText = FreeMarkerTemplateUtils.processTemplateIntoString(tpl,
+					params);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (TemplateException e) {
+			e.printStackTrace();
+		}
+		return htmlText;
+	}
+	
+	
+	
+	private String mailSuppliersHtml(Map<String,Object> params,String language){
+		String htmlText = "" ;
+		if(null == params){
+			params = new HashMap<String,Object>() ;
+		}
+		freeMarker = (FreeMarkerConfigurer) ApplicationContextUtil.getContext()
+				.getBean("freeMarker");
+		try {
+			Template tpl = null;
+			
 			tpl = freeMarker.getConfiguration().getTemplate(
 					"supplier_email.ftl");
 			EmailFields fd = emailFieldsService.get(1);
@@ -104,32 +142,35 @@ public class SendManagerServiceImpl implements SendManagerService {
 				threeNoteCnt = TranslateUtil.translationContent(threeNoteCnt,
 						null, language);
 
-				map.put("companyName", cName);
-				map.put("projectInfor", pInfor);
-				map.put("stepName", stepName);
+				params.put("companyName", cName);
+				params.put("projectInfor", pInfor);
+				params.put("stepName", stepName);
 
-				map.put("stepTwoText", twoTxt);
-				map.put("stepOneBtnText", oneBtnTxt);
-				map.put("stepOneText", oneTxt);
-				map.put("stepThreeText", threeTxt);
-				map.put("stepThreeNoteTitle", threeNoteTitle);
-				map.put("stepThreeNoteContent", threeNoteCnt);
+				params.put("stepTwoText", twoTxt);
+				params.put("stepOneBtnText", oneBtnTxt);
+				params.put("stepOneText", oneTxt);
+				params.put("stepThreeText", threeTxt);
+				params.put("stepThreeNoteTitle", threeNoteTitle);
+				params.put("stepThreeNoteContent", threeNoteCnt);
 
 			}
-			map.put("customerCompanyName", customerName) ;
-			map.put("supplierCompanyName", supplierCompanyName);
-			map.put("poNumber", poNumber);
-			map.put("linkUrl", linkUrl);
+		
+			//map.put("customerCompanyName", "");
+			//map.put("supplierCompanyName", "");
+			//map.put("poNumber", "");
+			//map.put("linkUrl", "");
 
 			htmlText = FreeMarkerTemplateUtils.processTemplateIntoString(tpl,
-					map);
+					params);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (TemplateException e) {
 			e.printStackTrace();
 		}
 		return htmlText;
+		
 	}
+
 
 	public JavaMailSender getMailSender() {
 		return mailSender;

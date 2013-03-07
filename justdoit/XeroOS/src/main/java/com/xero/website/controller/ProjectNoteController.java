@@ -20,9 +20,11 @@ import com.xero.admin.util.DateUtil;
 import com.xero.core.Response.ResponseCollection;
 import com.xero.core.Response.ResponseEntity;
 import com.xero.core.util.encode.EncodeUtil;
+import com.xero.website.bean.Contact;
 import com.xero.website.bean.EmailRecord;
 import com.xero.website.bean.Project;
 import com.xero.website.bean.ProjectNote;
+import com.xero.website.service.ContactService;
 import com.xero.website.service.EmailRecordService;
 import com.xero.website.service.ProjectNoteService;
 import com.xero.website.service.ProjectService;
@@ -40,6 +42,9 @@ public class ProjectNoteController {
 
 	@Resource
 	private EmailRecordService emailRecordService;
+
+	@Resource
+	private ContactService contactService;
 
 	@RequestMapping(value = "/update-customer", method = RequestMethod.POST)
 	@ResponseBody
@@ -97,13 +102,13 @@ public class ProjectNoteController {
 			pNote.setContent(noteContent);
 			pNote.setProjectId(projectId);
 			pNote.setUserId(userId);
-			pNote.setCreator(creator) ;
+			pNote.setCreator(creator);
 			pNote.setLandmarkDate(tempDate);
 			pNote.setShowCustomer(isShowCustomer);
 			pNote.setCreateDateTime(new Date());
 			pNote.setSupplierId(supplierId);
 
-			/**if the supplier add note .modify the emailrecord*/
+			/** if the supplier add note .modify the emailrecord */
 			pNote = projectNoteService.saveOrUpdate(pNote);
 			if (null != emailId && emailId != 0) {
 				EmailRecord record = emailRecordService.get(emailId);
@@ -148,8 +153,8 @@ public class ProjectNoteController {
 				String newData = new String(data);
 				String[] dataArry = newData.split(":");
 				if (null != dataArry && dataArry.length > 0) {
-					model.addObject("supplierId", dataArry[0]);
 
+					String tempSupplierId = dataArry[0];
 					String tempProId = dataArry[1];
 					String tmpEmailId = dataArry[2];
 
@@ -161,6 +166,18 @@ public class ProjectNoteController {
 							.isNumeric(tmpEmailId)) ? 0 : Integer
 							.valueOf(tmpEmailId);
 
+					Integer supplierId = (tempSupplierId == null || !StringUtils
+							.isNumeric(tempSupplierId)) ? 0 : Integer
+							.valueOf(tempSupplierId);
+					
+					Contact c = contactService.get(supplierId) ;
+					String supplierName = "" ;
+					if(null != c){
+						 supplierName = c.getUemail() ;
+					}
+
+					model.addObject("supplierId", supplierId);
+					model.addObject("supplierName", supplierName) ;
 					Project p = projectService.get(projectId);
 					if (null != p) {
 						Date tempSDate = p.getStartDate();

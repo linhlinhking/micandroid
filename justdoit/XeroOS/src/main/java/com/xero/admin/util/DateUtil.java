@@ -110,13 +110,9 @@ public class DateUtil {
 	}
 
 	public static void main(String args[]) {
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-		long now = System.currentTimeMillis();
-		String v = "1357269821000";
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTimeInMillis(Long.valueOf(v));
-		System.out.println(now + " = " + formatter.format(calendar.getTime()));
-		
+		int ds = daysBetweenDate(strToEnDate("31/01/2013"),strToEnDate("01/03/2013")) ;
+		System.out.println(String.valueOf(System.currentTimeMillis()));
+		System.out.println(ds) ;
 	}
 
 }

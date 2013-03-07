@@ -22,42 +22,43 @@ public class PaymentController {
 
 	@Resource
 	private CompanyService companyService;
-	
-	@RequestMapping(value=("/payment"), method = RequestMethod.GET)
-	public ModelAndView index(HttpServletRequest request){
+
+	@RequestMapping(value = ("/payment"), method = RequestMethod.GET)
+	public ModelAndView index(HttpServletRequest request) {
 		ModelAndView model = new ModelAndView();
 		HttpSession session = request.getSession(false);
-		if(null == session){
+		if (null == session) {
 			model.setViewName("redirect:/");
-			return model ;
+			return model;
 		}
 		SystemUser sysUser = (SystemUser) session
 				.getAttribute(WebConstants.XERO_USER_SESSION);
-		
-		
+
 		if (null != session && null != sysUser) {
 			Company cmp = companyService.getCompanyByUserId(sysUser.getId());
-			Integer companyId = 0,planId = 0;
+			Integer companyId = 0, planId = 0;
 			if (null != cmp) {
 				companyId = cmp.getId();
-				planId = cmp.getPlanId() ;
+				planId = cmp.getPlanId();
 				model.addObject("currentCompany", companyId);
 				model.addObject("planId", planId);
 			}
-			
+
 			Date ep = sysUser.getExpiredDateTime();
-			
+
 			if (ep.before(new Date()) && planId == 1) {
 				model.setViewName("redirect:/");
 			} else {
 				int leftDays = DateUtil.daysOfTwoDate(new Date(), ep);
+				model.addObject("txnId",
+						String.valueOf(System.currentTimeMillis()));
 				model.addObject("leftDays", leftDays);
 				model.setViewName("/myAccount");
 			}
 		} else {
 			model.setViewName("redirect:/");
 		}
-		
+
 		return model;
 	}
 }

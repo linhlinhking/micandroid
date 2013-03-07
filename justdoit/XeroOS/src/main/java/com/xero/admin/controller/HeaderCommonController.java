@@ -35,7 +35,8 @@ public class HeaderCommonController {
 				.getAttribute(WebConstants.XERO_USER_SESSION);
 		if (null != session && null != sysUser) {
 			Date ep = sysUser.getExpiredDateTime();
-			Company cmp = companyService.getCompanyByUserId(sysUser.getId()) ;
+			Integer userId = sysUser.getId() ;
+			Company cmp = companyService.getCompanyByUserId(userId) ;
 			Integer planId = 0,companyId = 0;
 			if(null != cmp){
 				planId = cmp.getPlanId() ;
@@ -50,6 +51,7 @@ public class HeaderCommonController {
 				model.addObject("planId", planId);
 				model.addObject("isLinkXero", sysUser.getLinkXero());
 				model.addObject("companyId", companyId);
+				model.addObject("currency_user_id", userId) ;
 				model.setViewName("/header");
 			}
 		} else {

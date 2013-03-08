@@ -5,6 +5,8 @@ import java.util.Date;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,12 +28,15 @@ import com.xero.payment.service.TransactionLoggerService;
 
 @Controller
 public class PxPaymentController {
+	
+	private Logger logger = LoggerFactory.getLogger(getClass()) ;
 
 	@Resource
 	private PxParam pxParamConfig;
 
 	@Resource
 	private TransactionLoggerService transactionLoggerService;
+	
 
 	@RequestMapping(value = "/auth/index", method = RequestMethod.GET)
 	public ModelAndView toPayment() {
@@ -98,15 +103,20 @@ public class PxPaymentController {
 		// System.out.println(xmlResponse);
 		PxPostResponse postRes = PxPostPay.pareseResponseXml(xml, postUrl);
 		if (null != postRes) {
-			// Save Transaction Log
-			String resXml = postRes.getResponseXml();
-			TransactionLogger transLogger = new TransactionLogger();
-			transLogger.setTxn(resXml);
-			transLogger.setUserId(userId);
-			transLogger.setCompanyId(companyId);
-			transLogger.setCreateDateTime(new Date());
+			try{
+				// Save Transaction Log
+				String resXml = postRes.getResponseXml();
+				TransactionLogger transLogger = new TransactionLogger();
+				transLogger.setTxn(resXml);
+				transLogger.setUserId(userId);
+				transLogger.setCompanyId(companyId);
+				transLogger.setCreateDateTime(new Date());
 
-			transactionLoggerService.saveOrUpdate(transLogger);
+				transactionLoggerService.saveOrUpdate(transLogger);
+			}catch(Exception ex){
+				logger.error("Save Transaction Log Error.",ex) ;
+			}
+			
 
 			resMsg.setData(postRes);
 			resMsg.setResult(true);

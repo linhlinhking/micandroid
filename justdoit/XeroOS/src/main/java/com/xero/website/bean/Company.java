@@ -1,5 +1,7 @@
 package com.xero.website.bean;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -14,6 +16,8 @@ public class Company extends BaseEntity{
 	private String companyName ;
 	
 	private Integer planId ;
+	
+	private Date expiredDate ;
 
 	public String getCompanyName() {
 		return companyName;
@@ -30,5 +34,15 @@ public class Company extends BaseEntity{
 	public void setPlanId(Integer planId) {
 		this.planId = planId;
 	}
+
+	public Date getExpiredDate() {
+		return expiredDate;
+	}
+
+	public void setExpiredDate(Date expiredDate) {
+		this.expiredDate = expiredDate;
+	}
+	
+	
 	
 }

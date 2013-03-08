@@ -187,8 +187,8 @@ public class SystemUserController extends BaseController {
 				}
 
 				try {
-					sendMgrService.sendHtmlMail(MailType.MAILNEWUSER,
-							uemail, null, params);
+					sendMgrService.sendHtmlMail(MailType.MAILNEWUSER, uemail,
+							null, params);
 				} catch (Exception ex) {
 					logger.error("Mail New User Error.User's Email is "
 							+ uemail, ex);
@@ -256,6 +256,7 @@ public class SystemUserController extends BaseController {
 
 				if (planId == 3 || (planId == 2 && userNumber <= 5)) {
 					cmp.setPlanId(planId);
+					cmp.setExpiredDate(DateUtil.addDate(new Date(), 30));
 					cmp = companyService.saveOrUpdate(cmp);
 					msg.setResult(true);
 					msg.setStatusCode(200);

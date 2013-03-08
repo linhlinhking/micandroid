@@ -43,6 +43,7 @@ public class LoginController extends BaseController {
 			if (null == sysUser) {
 				return "false";
 			}
+			
 			if (null != remember_me && remember_me.equals("1")) {
 				flag = true;
 			}

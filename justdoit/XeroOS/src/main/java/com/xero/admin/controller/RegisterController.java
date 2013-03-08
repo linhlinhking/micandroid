@@ -59,10 +59,13 @@ public class RegisterController extends BaseController {
 		ResponseMessage resMsg = new ResponseMessage();
 		try {
 			Company cmp = new Company();
-
+			Date expiredDate = DateUtil.addDate(new Date(), 30);
+			
 			cmp.setCompanyName(companyName);
 			cmp.setCreateDateTime(new Date());
 			cmp.setPlanId(PlanType.FREE.getId()) ;
+			cmp.setExpiredDate(expiredDate) ;
+			
 			Integer companyId = companyService.save(cmp);
 			
 			SystemUser tmp = systemUserService.get(SystemUser.UEMAIL, uemail);
@@ -79,7 +82,7 @@ public class RegisterController extends BaseController {
 			SystemUser sysUser = new SystemUser();
 			String username = "";
 
-			Date expiredDate = DateUtil.addDate(new Date(), 30);
+			
 
 			if ("" != uemail && uemail != null) {
 				String temp[] = uemail.split("@");

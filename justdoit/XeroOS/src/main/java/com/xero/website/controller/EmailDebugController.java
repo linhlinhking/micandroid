@@ -8,13 +8,13 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.xero.admin.bean.type.MailType;
 import com.xero.admin.service.SystemUserService;
 import com.xero.core.Response.ResponseCollection;
@@ -61,8 +61,7 @@ public class EmailDebugController {
 		try {
 			ResponseCollection<Project> resProjects = projectService
 					.getActiveProjects();
-			System.out.println("resProjects:"
-					+ String.valueOf(resProjects.getResult()));
+
 			if (resProjects.getResult()) {
 				List<Project> listProject = resProjects.getData();
 
@@ -76,8 +75,8 @@ public class EmailDebugController {
 						ResponseCollection<ProjectSupplier> resSuppliers = projectSupplierService
 								.getSuppliersByProjectId(pId);
 
-						System.out.println("resSuppliers:"
-								+ String.valueOf(resSuppliers.getResult()));
+						// System.out.println("resSuppliers:"
+						// + String.valueOf(resSuppliers.getResult()));
 						if (resSuppliers.getResult()) {
 							List<ProjectSupplier> listSupplier = resSuppliers
 									.getData();
@@ -88,12 +87,14 @@ public class EmailDebugController {
 									String supplierId = itemSupplier
 											.getSupplierId();
 
-									System.out.println("supplierId:"
-											+ supplierId);
-									Integer tmpId = (supplierId == null) ? 0
+									Integer tmpId = (supplierId == null || !StringUtils
+											.isNumeric(supplierId)) ? 0
 											: Integer.valueOf(supplierId);
 									String language = itemSupplier
 											.getSupplierLanguage();
+
+									Integer linkID = itemSupplier.getId();
+
 									Contact c = contactService.get(tmpId);
 									if (null != c) {
 										String supplierEmail = c.getUemail();
@@ -114,12 +115,14 @@ public class EmailDebugController {
 										StringBuffer buffer = new StringBuffer();
 										buffer.append(supplierId).append(":")
 												.append(pId).append(":")
-												.append(emailId);
+												.append(emailId).append(":")
+												.append(linkID);
+										
 										String dataEncode = EncodeUtil
 												.base64UrlSafeEncode(buffer
 														.toString().getBytes());
 
-										String linkUrl = "http://dev.globaldesign.co.nz/supplier/"
+										String linkUrl = "https://globaldesign.co.nz/supplier/"
 												+ dataEncode;
 
 										System.out.println(supplierEmail);

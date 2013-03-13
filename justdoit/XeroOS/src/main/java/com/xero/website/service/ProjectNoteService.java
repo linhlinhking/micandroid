@@ -7,6 +7,6 @@ import com.xero.website.bean.ProjectNote;
 
 public interface ProjectNoteService extends BaseService<ProjectNote, Integer> {
 
-	public ResponseCollection<ProjectNote> getNotesByProjectId(Integer projectId)
+	public ResponseCollection<ProjectNote> getNotesByProjectId(Integer projectId,boolean showCustomer)
 			throws ServiceException;
 }

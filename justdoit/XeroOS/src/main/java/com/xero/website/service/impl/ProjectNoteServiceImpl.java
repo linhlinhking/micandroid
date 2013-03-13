@@ -32,13 +32,11 @@ public class ProjectNoteServiceImpl extends
 		super(projectNoteDao);
 	}
 
-	public ResponseCollection<ProjectNote> getNotesByProjectId(Integer projectId)
+	public ResponseCollection<ProjectNote> getNotesByProjectId(Integer projectId,boolean showCustomer)
 			throws ServiceException {
 		ResponseCollection<ProjectNote> res = new ResponseCollection<ProjectNote>();
 		try {
-			List<ProjectNote> lists = projectNoteDao
-					.getNotesByProjectId(projectId);
-
+			List<ProjectNote> lists = projectNoteDao.getNotesByProjectId(projectId,showCustomer);
 			res.setData(lists);
 			res.setResult(true);
 

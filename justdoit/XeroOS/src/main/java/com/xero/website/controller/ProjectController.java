@@ -82,13 +82,16 @@ public class ProjectController extends BaseController {
 			@RequestParam("poNumber") String poNumber,
 			@RequestParam("customerId") String customerId,
 			@RequestParam("customerName") String customerName,
+			@RequestParam("customerEmail")String customerEmail,
 			@RequestParam("startDate") String startDate,
 			@RequestParam("endDate") String endDate,
 			@RequestParam(required = false, value = "supplierId") String supplierId,
 			@RequestParam("supplierName") String supplierName,
+			@RequestParam("supplierEmail") String supplierEmail,
 			@RequestParam("supplierLang") String supplierLanguage,
 			@RequestParam("userId") Integer userId,
-			@RequestParam("companyId") Integer companyId) {
+			@RequestParam("companyId") Integer companyId,
+			@RequestParam("linkToXero") Integer linkToXero) {
 		ResponseEntity<Project> res = new ResponseEntity<Project>(false);
 		try {
 
@@ -96,6 +99,7 @@ public class ProjectController extends BaseController {
 			p.setProjectName(proName);
 			p.setCustomerId(customerId);
 			p.setCustomerName(customerName);
+			p.setCustomerEmail(customerEmail) ;
 			p.setCreateDateTime(new Date());
 			Date sDate = (startDate != null) ? DateUtil.strToEnDate(startDate)
 					: null;
@@ -106,6 +110,13 @@ public class ProjectController extends BaseController {
 			p.setStatus(ProjectType.ACTIVE.toString());
 			p.setUserId(userId);
 			p.setPoNumber(poNumber);
+			p.setCustomerEmail(customerEmail) ;
+			if(linkToXero == 1){
+				p.setLinkXero(true) ;
+			}else{
+				p.setLinkXero(false) ;
+			}
+			
 			companyId = (null != companyId && StringUtils.isNumeric(String
 					.valueOf(companyId))) ? companyId : Integer.valueOf(0);
 			
@@ -118,6 +129,7 @@ public class ProjectController extends BaseController {
 			ps.setProjectId(projectId);
 			ps.setSupplierId(supplierId);
 			ps.setSupplierName(supplierName);
+			ps.setSupplierEmail(supplierEmail) ;
 			ps.setSupplierLanguage(supplierLanguage);
 
 			projectSupplierService.saveOrUpdate(ps);

@@ -9,4 +9,5 @@ public interface SendManagerService {
 
 	public boolean sendHtmlMail(MailType type, String email,
 			String lanugage, Map<String, Object> params);
+	
 }

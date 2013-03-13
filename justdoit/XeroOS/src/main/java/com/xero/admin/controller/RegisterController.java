@@ -17,12 +17,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.xero.admin.bean.SystemUser;
 import com.xero.admin.bean.type.JoinUsType;
+import com.xero.admin.bean.type.MailType;
 import com.xero.admin.bean.type.PlanType;
 import com.xero.admin.service.SystemUserService;
 import com.xero.admin.util.DateUtil;
 import com.xero.core.Response.ResponseMessage;
 import com.xero.core.controller.BaseController;
+import com.xero.core.email.SendManagerService;
 import com.xero.core.security.MD5Util;
+import com.xero.core.util.ApplicationContextUtil;
 import com.xero.website.bean.Company;
 import com.xero.website.bean.CompanyUser;
 import com.xero.website.service.CompanyService;
@@ -42,6 +45,9 @@ public class RegisterController extends BaseController {
 
 	@Resource
 	private CompanyUserService companyUserService;
+	
+	private SendManagerService sendMgrService = (SendManagerService) ApplicationContextUtil
+			.getContext().getBean("sendMail");
 
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public ModelAndView toRegister(HttpServletRequest request) throws Exception {
@@ -107,9 +113,16 @@ public class RegisterController extends BaseController {
 			companyUserService.save(link);
 
 			setSession(request, sysUser, false);
-
 			resMsg.setResult(true);
 			resMsg.setUrl("contact");
+			
+			try {
+				sendMgrService.sendHtmlMail(MailType.MAILNEWUSER, uemail,
+						null, null);
+			} catch (Exception ex) {
+				logger.error("Mail to Register Error.Register's Email is "
+						+ uemail, ex);
+			}
 		} catch (Exception ex) {
 			logger.error("Current " + uemail + "Registe Error.", ex);
 			resMsg.setResult(false);

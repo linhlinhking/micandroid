@@ -27,11 +27,15 @@ public class Project extends BaseEntity{
 	
 	private String customerName ;
 	
+	private String customerEmail ;
+	
 	private String status ;
 	
 	private Integer userId ;
 	
 	private Integer companyId ;
+	
+	private boolean linkXero ;
 	
 	private double rate ;
 	
@@ -115,6 +119,23 @@ public class Project extends BaseEntity{
 	public void setCompanyId(Integer companyId) {
 		this.companyId = companyId;
 	}
+
+	public String getCustomerEmail() {
+		return customerEmail;
+	}
+
+	public void setCustomerEmail(String customerEmail) {
+		this.customerEmail = customerEmail;
+	}
+
+	public boolean isLinkXero() {
+		return linkXero;
+	}
+
+	public void setLinkXero(boolean linkXero) {
+		this.linkXero = linkXero;
+	}
+	
 
 	
 }

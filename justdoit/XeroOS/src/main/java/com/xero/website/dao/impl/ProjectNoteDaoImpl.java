@@ -21,11 +21,16 @@ public class ProjectNoteDaoImpl extends BaseDaoImpl<ProjectNote, Integer>
 		super(ProjectNote.class);
 	}
 
-	public List<ProjectNote> getNotesByProjectId(Integer projectId)
+	public List<ProjectNote> getNotesByProjectId(Integer projectId,boolean showCustomer)
 			throws DaoException {
 		List<ProjectNote> lists = null;
+		String hql = "" ;
 		try {
-			String hql = "from ProjectNote as p where 1=1 and p.projectId = ? order by p.landmarkDate asc,p.id desc ";
+			if(showCustomer){
+				hql = "from ProjectNote as p where 1=1 and p.projectId = ? and p.showCustomer=1 order by p.landmarkDate asc,p.id desc ";
+			}else{
+				hql = "from ProjectNote as p where 1=1 and p.projectId = ? order by p.landmarkDate asc,p.id desc ";
+			}
 			lists = findByHql(hql, projectId);
 		} catch (DaoException x) {
 			logger.error("Get List Notes by projectId Error.Project'id is "

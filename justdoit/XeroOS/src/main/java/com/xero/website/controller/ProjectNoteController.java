@@ -1,6 +1,9 @@
 package com.xero.website.controller;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -16,18 +19,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.xero.admin.bean.type.MailType;
 import com.xero.admin.util.DateUtil;
 import com.xero.core.Response.ResponseCollection;
 import com.xero.core.Response.ResponseEntity;
+import com.xero.core.email.SendManagerService;
+import com.xero.core.util.ApplicationContextUtil;
 import com.xero.core.util.encode.EncodeUtil;
 import com.xero.website.bean.Contact;
 import com.xero.website.bean.EmailRecord;
 import com.xero.website.bean.Project;
 import com.xero.website.bean.ProjectNote;
+import com.xero.website.bean.ProjectSupplier;
 import com.xero.website.service.ContactService;
 import com.xero.website.service.EmailRecordService;
 import com.xero.website.service.ProjectNoteService;
 import com.xero.website.service.ProjectService;
+import com.xero.website.service.ProjectSupplierService;
 
 @Controller
 public class ProjectNoteController {
@@ -45,6 +53,12 @@ public class ProjectNoteController {
 
 	@Resource
 	private ContactService contactService;
+
+	@Resource
+	private ProjectSupplierService projectSupplierService;
+
+	private SendManagerService sendMgrService = (SendManagerService) ApplicationContextUtil
+			.getContext().getBean("sendMail");
 
 	@RequestMapping(value = "/update-customer", method = RequestMethod.POST)
 	@ResponseBody
@@ -133,7 +147,7 @@ public class ProjectNoteController {
 			@RequestParam("projectId") Integer projectId) {
 		ResponseCollection<ProjectNote> res = new ResponseCollection<ProjectNote>();
 		try {
-			res = projectNoteService.getNotesByProjectId(projectId);
+			res = projectNoteService.getNotesByProjectId(projectId, false);
 		} catch (Exception ex) {
 			logger.error("Save Project Note Error On Controller", ex);
 			res.setResult(false);
@@ -157,6 +171,7 @@ public class ProjectNoteController {
 					String tempSupplierId = dataArry[0];
 					String tempProId = dataArry[1];
 					String tmpEmailId = dataArry[2];
+					String tmpLinkID = dataArry[3] ;
 
 					Integer projectId = (tempProId == null || !StringUtils
 							.isNumeric(tempProId)) ? 0 : Integer
@@ -170,14 +185,21 @@ public class ProjectNoteController {
 							.isNumeric(tempSupplierId)) ? 0 : Integer
 							.valueOf(tempSupplierId);
 					
-					Contact c = contactService.get(supplierId) ;
-					String supplierName = "" ;
-					if(null != c){
-						 supplierName = c.getUemail() ;
+					Integer linkID = (tmpLinkID == null || !StringUtils
+							.isNumeric(tmpLinkID)) ? 0 : Integer
+							.valueOf(tmpLinkID);
+
+					Contact c = contactService.get(supplierId);
+					String supplierName = "";
+					if (null != c) {
+						supplierName = c.getUemail();
+					}else{
+						ProjectSupplier ps = projectSupplierService.get(linkID) ;
+						supplierName = ps.getSupplierName() ;
 					}
 
 					model.addObject("supplierId", supplierId);
-					model.addObject("supplierName", supplierName) ;
+					model.addObject("supplierName", supplierName);
 					Project p = projectService.get(projectId);
 					if (null != p) {
 						Date tempSDate = p.getStartDate();
@@ -203,5 +225,160 @@ public class ProjectNoteController {
 		}
 		model.setViewName("/project_detail_supply");
 		return model;
+	}
+
+	@RequestMapping(value = "/report/{projectId}/supplier", method = RequestMethod.GET)
+	@ResponseBody
+	public boolean mailToSupplier(HttpServletRequest request,
+			@PathVariable("projectId") Integer projectId) {
+		boolean flag = false;
+		try {
+			// Get Current Project.
+			Project p = projectService.get(projectId);
+			String poNumber = "";
+			String supplierEmail = "";
+			String companyName = "";
+			String customerName = "";
+
+			boolean linkXero = false;
+
+			if (null != p) {
+				projectId = p.getId();
+				linkXero = p.isLinkXero();
+				poNumber = p.getPoNumber();
+				customerName = p.getProjectName();
+			}
+
+			ResponseCollection<ProjectSupplier> resSuppliers = projectSupplierService
+					.getSuppliersByProjectId(projectId);
+			if (resSuppliers.getResult()) {
+				List<ProjectSupplier> listSupplier = resSuppliers.getData();
+				if (null != listSupplier && listSupplier.size() > 0) {
+					for (int n = 0, m = listSupplier.size(); n < m; n++) {
+						ProjectSupplier itemSupplier = listSupplier.get(n);
+						String supplierId = itemSupplier.getSupplierId();
+
+						Integer tmpId = (supplierId == null || !StringUtils
+								.isNumeric(supplierId)) ? 0 : Integer
+								.valueOf(supplierId);
+
+						Integer linkID = 0;
+
+						String language = itemSupplier.getSupplierLanguage();
+						// Send Email report to.
+						EmailRecord er = new EmailRecord();
+						if (linkXero) {
+							er.setReply(false);
+							er = emailRecordService.saveOrUpdate(er);
+							supplierEmail = itemSupplier.getSupplierEmail();
+							companyName = itemSupplier.getSupplierName();
+							linkID = itemSupplier.getId();
+						} else {
+							Contact c = contactService.get(tmpId);
+							if (null != c) {
+								companyName = c.getCompanyName();
+								supplierEmail = c.getUemail();
+								er.setReply(false);
+								er = emailRecordService.saveOrUpdate(er);
+							} else {
+								// TODO:Contact No Exists.
+								// return false;
+							}
+						}
+						// link xero supplierId = 0
+						Integer emailId = er.getId();
+						StringBuffer buffer = new StringBuffer();
+						buffer.append(supplierId).append(":").append(projectId)
+								.append(":").append(emailId).append(":")
+								.append(linkID);
+						
+						String dataEncode = EncodeUtil
+								.base64UrlSafeEncode(buffer.toString()
+										.getBytes());
+
+						String linkUrl = "https://globaldesign.co.nz/supplier/"
+								+ dataEncode;
+						Map<String, Object> params = new HashMap<String, Object>();
+						params.put("customerCompanyName", customerName);
+						params.put("supplierCompanyName", companyName);
+						params.put("poNumber", poNumber);
+						params.put("linkUrl", linkUrl);
+						flag = sendMgrService.sendHtmlMail(
+								MailType.MAILSUPPLIERS, supplierEmail,
+								language, params);
+
+						er.setProjectId(projectId);
+						er.setSendDate(new Date());
+						er.setSupplierId(supplierId);
+
+						if (flag) {
+							er.setStatus(true);
+						} else {
+							er.setStatus(false);
+						}
+						emailRecordService.saveOrUpdate(er);
+					}
+				} else {
+					// TODO:No Supplier Data.
+					logger.error("No Supplier Data.");
+					flag = false;
+				}
+			} else {
+				// TODO:Get Supplier Error.
+				logger.error("Get Supplier Error");
+				flag = false;
+			}
+
+		} catch (Exception ex) {
+			logger.error("Project'ID is not number Or No Exists.", ex);
+			flag = false;
+		}
+
+		return flag;
+	}
+
+	@RequestMapping(value = "/report/{projectId}/customer", method = RequestMethod.GET)
+	@ResponseBody
+	public boolean mailToCustomer(HttpServletRequest request,
+			@PathVariable("projectId") Integer projectId) {
+		boolean flag = false;
+		ResponseCollection<ProjectNote> res = new ResponseCollection<ProjectNote>();
+		try {
+			// Get Current Project.
+			Project p = projectService.get(projectId);
+			String customerEmail = "";
+			String projectName = "";
+			if (null != p) {
+				customerEmail = p.getCustomerEmail();
+				projectId = p.getId();
+				projectName = p.getProjectName();
+			}
+
+			res = projectNoteService.getNotesByProjectId(projectId, true);
+			if (res.getResult()) {
+				List<ProjectNote> notes = res.getData();
+				if (null != notes && notes.size() > 0) {
+					Map<String, Object> params = new HashMap<String, Object>();
+					if ("" != customerEmail) {
+						params.put("projectName", projectName);
+						params.put("projectNotes", notes);
+						sendMgrService.sendHtmlMail(MailType.MAILCUSTOMER,
+								customerEmail, null, params);
+						// sendMgrService.sendHtmlCollectionMail(MailType.MAILCUSTOMER,
+						// customerEmail, params);
+						flag = true;
+					} else {
+						logger.error("Send Email to Customer Error.The Email is Error.Email is "
+								+ customerEmail);
+					}
+
+				}
+			}
+		} catch (Exception ex) {
+			logger.error("Project'ID is not number Or No Exists.", ex);
+			flag = false;
+		}
+
+		return flag;
 	}
 }

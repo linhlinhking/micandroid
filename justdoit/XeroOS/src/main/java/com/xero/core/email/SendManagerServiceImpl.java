@@ -18,6 +18,7 @@ import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import com.xero.admin.bean.type.MailType;
+import com.xero.core.Constants;
 import com.xero.core.util.ApplicationContextUtil;
 import com.xero.core.util.TranslateUtil;
 import com.xero.website.bean.EmailFields;
@@ -58,10 +59,19 @@ public class SendManagerServiceImpl implements SendManagerService {
 			Integer value = type.getValue();
 			switch (value) {
 			case 1:
-				helper.setText(mailNewUserHtml(params),true) ;
+				//Send Email To Add User
+				helper.setText(commonHtmlMail(params,Constants.EMAIL_NEW_USER),true) ;
 				break;
 			case 2:
-				helper.setText(mailSuppliersHtml(params,language),true) ;
+				helper.setText(commonHtmlMail(getEmailContent(params,language),Constants.EMAIL_SUPPLIER),true) ;
+				break;
+			case 3:
+				//Send Email to Customer's Notes
+				helper.setText(commonHtmlMail(params,Constants.EMAIL_CUSTOMER_NOTES), true) ;
+				break;
+			case 4:
+				//Send Email To register User
+				helper.setText(commonHtmlMail(params,Constants.EMAIL_REGISTER), true) ;
 				break;
 			}
 			
@@ -74,9 +84,9 @@ public class SendManagerServiceImpl implements SendManagerService {
 		return flag;
 	}
 	
-	
-	private String mailNewUserHtml(Map<String,Object> params){
+	private String commonHtmlMail(Map<String,Object> params,String template){
 		String htmlText = "" ;
+		
 		if(null == params){
 			params = new HashMap<String,Object>() ;
 		}
@@ -85,8 +95,7 @@ public class SendManagerServiceImpl implements SendManagerService {
 		try {
 			Template tpl = null;
 			
-			tpl = freeMarker.getConfiguration().getTemplate(
-					"new_user_email.ftl");
+			tpl = freeMarker.getConfiguration().getTemplate(template);
 			htmlText = FreeMarkerTemplateUtils.processTemplateIntoString(tpl,
 					params);
 		} catch (IOException e) {
@@ -94,23 +103,17 @@ public class SendManagerServiceImpl implements SendManagerService {
 		} catch (TemplateException e) {
 			e.printStackTrace();
 		}
-		return htmlText;
+		
+		return htmlText ;
+		
 	}
-	
-	
-	
-	private String mailSuppliersHtml(Map<String,Object> params,String language){
-		String htmlText = "" ;
+
+
+	private Map<String,Object> getEmailContent(Map<String,Object> params,String language){
 		if(null == params){
 			params = new HashMap<String,Object>() ;
 		}
-		freeMarker = (FreeMarkerConfigurer) ApplicationContextUtil.getContext()
-				.getBean("freeMarker");
-		try {
-			Template tpl = null;
-			
-			tpl = freeMarker.getConfiguration().getTemplate(
-					"supplier_email.ftl");
+		try{
 			EmailFields fd = emailFieldsService.get(1);
 			if (null != fd) {
 				String cName = fd.getCompanyName();
@@ -155,21 +158,13 @@ public class SendManagerServiceImpl implements SendManagerService {
 
 			}
 		
-			//map.put("customerCompanyName", "");
-			//map.put("supplierCompanyName", "");
-			//map.put("poNumber", "");
-			//map.put("linkUrl", "");
-
-			htmlText = FreeMarkerTemplateUtils.processTemplateIntoString(tpl,
-					params);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (TemplateException e) {
-			e.printStackTrace();
+		}catch(Exception ex){
+			logger.error("Translate Email Content Error.", ex) ;
 		}
-		return htmlText;
 		
+		return params ;
 	}
+	
 
 
 	public JavaMailSender getMailSender() {

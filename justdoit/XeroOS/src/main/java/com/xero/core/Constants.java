@@ -39,5 +39,16 @@ public class Constants {
 	 * url中的jsessionid名称
 	 */
 	public static final String JSESSION_URL = "jsessionid";
+	
+	
+	public static final String EMAIL_SUPPLIER = "supplier_email.ftl" ;
+	
+	public static final String EMAIL_CUSTOMER_NOTES = "customer_notes_email.ftl" ;
+	
+	public static final String EMAIL_REGISTER = "register_email.ftl" ;
+	
+	public static final String EMAIL_NEW_USER = "new_user_email.ftl" ;
+	
+	
 
 }

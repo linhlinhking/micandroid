@@ -1,13 +1,16 @@
 package com.xero.admin.schudle;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.xero.admin.bean.type.MailType;
 import com.xero.admin.service.SystemUserService;
 import com.xero.core.Response.ResponseCollection;
 import com.xero.core.email.SendManagerService;
@@ -47,7 +50,7 @@ public class SendEmailForSuppliersTask {
 	 * 
 	 * (cron="0 0 6 ? * Tue")
 	 */
-	//@Scheduled(cron = "0/20 * *  * * ? ")
+	// @Scheduled(cron = "0/20 * *  * * ? ")
 	public void doSomethingWithDelay() {
 		ResponseCollection<Project> resProjects = projectService
 				.getActiveProjects();
@@ -58,9 +61,9 @@ public class SendEmailForSuppliersTask {
 				for (int i = 0, j = listProject.size(); i < j; i++) {
 					Project itemProject = listProject.get(i);
 					Integer pId = itemProject.getId();
-					String customerName = itemProject.getCustomerName() ;
+					String customerName = itemProject.getCustomerName();
 					String pNumber = itemProject.getPoNumber();
-					
+
 					ResponseCollection<ProjectSupplier> resSuppliers = projectSupplierService
 							.getSuppliersByProjectId(pId);
 					if (resSuppliers.getResult()) {
@@ -74,7 +77,11 @@ public class SendEmailForSuppliersTask {
 										.getSupplierId();
 								Integer tmpId = (supplierId == null) ? 0
 										: Integer.valueOf(supplierId);
-								String language = itemSupplier.getSupplierLanguage() ;
+
+								Integer linkID = itemSupplier.getId();
+
+								String language = itemSupplier
+										.getSupplierLanguage();
 								Contact c = contactService.get(tmpId);
 								if (null != c) {
 									String supplierEmail = c.getUemail();
@@ -94,7 +101,10 @@ public class SendEmailForSuppliersTask {
 									StringBuffer buffer = new StringBuffer();
 									buffer.append(supplierId).append(":")
 											.append(pId).append(":")
-											.append(emailId);
+											.append(emailId).append(":")
+											.append(linkID);
+									
+									
 									String dataEncode = EncodeUtil
 											.base64UrlSafeEncode(buffer
 													.toString().getBytes());
@@ -103,13 +113,21 @@ public class SendEmailForSuppliersTask {
 									// "http://dev.globaldesign.co.nz/supplier/"
 									// + dataEncode;
 
-									String linkUrl = "http://localhost:9000/supplier/"
+									String linkUrl = "https://globaldesign.co.nz/supplier/"
 											+ dataEncode;
 
 									System.out.println(supplierEmail);
+									Map<String, Object> params = new HashMap<String, Object>();
+									params.put("customerCompanyName",
+											customerName);
+									params.put("supplierCompanyName",
+											companyName);
+									params.put("poNumber", pNumber);
+									params.put("linkUrl", linkUrl);
+
 									boolean flag = sendMgrService.sendHtmlMail(
-											supplierEmail, customerName,companyName,
-											pNumber, linkUrl,language);
+											MailType.MAILSUPPLIERS,
+											supplierEmail, language, params);
 
 									er.setProjectId(pId);
 									er.setSendDate(new Date());

@@ -117,7 +117,7 @@ public class RegisterController extends BaseController {
 			resMsg.setUrl("contact");
 			
 			try {
-				sendMgrService.sendHtmlMail(MailType.MAILNEWUSER, uemail,
+				sendMgrService.sendHtmlMail(MailType.MAILREGISTER, uemail,
 						null, null);
 			} catch (Exception ex) {
 				logger.error("Mail to Register Error.Register's Email is "

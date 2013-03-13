@@ -10,7 +10,7 @@
 <link href="/css/GDP-common.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="/js/placeholder.js"></script>
-
+<script type="text/javascript" src="/js/verification.js"></script>
 </head>
 <!--[if lte IE 8]>
 
@@ -77,7 +77,7 @@ filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='
           </div>
           
          <c:if test="${planId == 3 || (planId == 2 && allowsRegisteredUsers < 5)}">
-          	 <a class="add_manage_btn"></a>
+          	 <a href="javascript:void(0)" class="add_manage_btn" id="add_manage_btn"></a>
           </c:if>
           
           <c:if test="${planId == 1 || (planId == 2 && allowsRegisteredUsers == 5)}">

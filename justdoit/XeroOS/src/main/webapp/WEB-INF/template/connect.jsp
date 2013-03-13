@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Connect</title>
-<link href="../css/GDP-common.css" rel="stylesheet" type="text/css">
+<link href="/css/GDP-common.css" rel="stylesheet" type="text/css">
 </head>
 <!--[if lte IE 8]>
 
@@ -32,7 +32,7 @@
         <p>It wont take long, go ahead and click Connect!</p>
         <div class="button_field">
           <div class="skip_button"><a href="/contact">SKIP THIS</a></div>
-          <div class="connect_button"><a href="/oauth/xero">CONNECT</a></div>
+          <div class="connect_button" id="connect_button"><a href="/oauth/xero">CONNECT</a></div>
         </div>
       </div>
       <div class="right_section">
@@ -41,4 +41,12 @@
     </div>
   </div>
 </body>
+<script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
+<script>
+	$(function(){
+		$("#connect_button").click(function(){
+			$(".connect_button").addClass("loading_btn");
+		});
+	});
+</script>
 </html>

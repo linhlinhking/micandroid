@@ -19,4 +19,6 @@
 	
 	<input type="hidden" name="current_company_id" value="${companyId}"/>
     <input type="hidden" name="current_planId" value="${planId}"/>
+    <input type="hidden" name="isLinkXero" value="${isLinkXero}"/>
+    <input type="hidden" name="currency_user_id" value="${currency_user_id}">
 </div>

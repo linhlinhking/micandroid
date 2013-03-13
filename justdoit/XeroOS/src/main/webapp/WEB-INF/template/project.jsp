@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <title>Project</title>
+
 <link href="/css/GDP-common.css" rel="stylesheet" type="text/css">
 <link href="/js/ui/south-street/jquery-ui-1.9.2.custom.min.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
@@ -65,13 +66,13 @@ filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='
     <div class="add_sup_line for_select">
       <span class="plus_btn"></span>
       <div class="input_div">
-        <input class="sup_input" type="text" placeholder="Supplier" >
+        <input class="sup_input" type="text" placeholder="Supplier" id="supplier">
         
         <ul class="sup_content"></ul>
       
       </div>
       <div class="input_div" style="margin:10px 0 0 38px;">
-        <input class="lan_input"  type="text" placeholder="Language">
+        <input class="lan_input"  type="text" placeholder="Language" id="language">
         <ul class="lan_content"></ul>
       </div>
       <span class="cross_btn"></span>
@@ -80,6 +81,12 @@ filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='
       <div class="cancel_button"><span>CANCEL</span></div>
       <div class="add_button"><span>ADD PROJECT</span></div>
     </div>
+    <span class="check_name">Project Name should not be null</span>
+    <span class="check_pon">PO Number should not be null</span>
+    <span class="check_cname">Customer Name should not be null</span>
+    <span class="check_sdate">Start Date should not be null</span>
+    <span class="check_edate">End Date should not be null</span>
+    <span class="check_sula">Supplier and Language should not be null</span>
   </div>
 </div>
 
@@ -92,9 +99,14 @@ filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='
   <div class="login_container">
  	<c:import url="/header-common" />
     <div class="contact_content project_content">
-      <%@ include file="/common/leftMenu.jsp"%>
-      
-      
+    	
+     <div class="left_section">
+		<ul>
+			<li class="ie_f"><a href="/contact">Contacts</a></li>
+			<li class="selected ie_s"><a href="/project">Projects</a></li>
+			<li class="ie_t"><a href="/report">Reports</a></li>
+		</ul>
+	  </div>
       <div class="right_section">
         <div class="project_title">
           <span>Projects</span>
@@ -114,7 +126,7 @@ filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='
           <div class="c_details_head">
             <span class="ed_area">End Date<strong id="ed_area"></strong></span>
             <span class="sd_area">Start Date<strong id="sd_area"></strong></span>
-            <span class="cn_area">Customer Name</span>
+            <span class="cn_area">Customer Name<strong id="cn_area"></strong></span>
             <span class="pn_area">PO Number<strong id="pn_area"></strong></span>
             <span class="na_area">Name<strong id="na_area"></strong></span>
           </div>
@@ -122,14 +134,29 @@ filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='
       		
           </ul>
         </div>
+        <div class="adv_box" style="display:none">
+          <div class="adv_title">
+            <span>Let's add some projects!</span>
+          </div>
+          <p>Contacts is a general term for Suppliers or Customers. To add a contact go ahead and click the +
+button above.</p>
+          <p>If you want to add a contact to the customers tab, first click Customers then click the + to add a new contact to the Customers tab, they will also apear in the all tab.</p>
+          <p>If you want to add a contact to the Suppliers tab, first click Suppliers then click the + to add a new contact to the Suppliers tab, they will also apear in the all tab.</p>
+          <p>You need to add atleast one contact to be able to add a project, as a project needs a Customer and
+a supplier.</p>
+        </div>
       </div>
     </div>
   </div>
   <input type="hidden" value="project" id="type_page"/>
   <input type="hidden" value="${xeroUser.id}" name="userId" id="userId"/>
   <input type="hidden"  name="supplierId" id="supplierId"/>
+  <input type="hidden"  name="supplierEmail" id="supplierEmail"/>
   <input type="hidden"  name="customerId" id="customerId"/>
+  <input type="hidden"  name="customerEmail" id="customerEmail"/>
+  
   <input type="hidden" name="language_type" id="language_type"/>
+
   
 </body>
 <script type="text/javascript" src="/js/orderBy.js"></script>

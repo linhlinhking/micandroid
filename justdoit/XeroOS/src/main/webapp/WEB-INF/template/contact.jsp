@@ -13,6 +13,7 @@
 <script type="text/javascript" src="/js/placeholder.js"></script>
 <script type="text/javascript" src="/js/localStorage.js"></script>
 <script type="text/javascript" src="/js/contact.js"></script>
+<script type="text/javascript" src="/js/contact-order.js"></script>
 
 </head>
 <!--[if lte IE 8]>
@@ -58,18 +59,27 @@ filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='
     <div class="border_row dividing_line"><input type="text" placeholder="Telephone" name="telephone"></div>
     <input type="hidden" name="groupId"/>
     <input type="hidden" name="userId" value="${xeroUser.id}"/>
-    <input type="hidden" name="isLinkXero" value="${isLinkXero}"/>
+    <!--<input type="hidden" name="isLinkXero" value="${isLinkXero}"/>-->
     <input type="hidden" name="_current_contactId"/>
     
     <div class="cancel_button"><span>CANCEL</span></div>
     <div class="del_button"><span>DELETE</span></div>
     <div class="add_button" style="right:329px;"><span>ADD CONTACT</span></div>
+    <span class="check_name">Company Name should not be null</span>
+    <span class="check_email">Email is not correct</span>
+    <span class="check_tel">Telephone should not be null</span>
   </div>
 </div>
   <div class="login_container">
    	<c:import url="/header-common" />
     <div class="contact_content">
-     <%@ include file="/common/leftMenu.jsp"%>
+     <div class="left_section">
+		<ul>
+			<li class="selected ie_f"><a href="/contact">Contacts</a></li>
+			<li class="ie_s"><a href="/project">Projects</a></li>
+			<li class="ie_t"><a href="/report">Reports</a></li>
+		</ul>
+	</div>
      
       <div class="right_section">
         <div class="contact_title">
@@ -98,7 +108,7 @@ filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='
        
           </ul>
         </div>
-        <div class="adv_box">
+        <div class="adv_box" style="display: none">
           <div class="adv_title">
             <span>Let's add some contacts!</span>
           </div>

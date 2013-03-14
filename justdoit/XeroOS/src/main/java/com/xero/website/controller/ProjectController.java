@@ -146,8 +146,8 @@ public class ProjectController extends BaseController {
 	@RequestMapping(value = "/project-list", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseCollection<Project> getAllProject(
-			HttpServletRequest request, @RequestParam("userId") Integer userId) {
-		return projectService.getProjectsById(userId);
+			HttpServletRequest request, @RequestParam("companyId") Integer companyId) {
+		return projectService.getActiveProjectsByCompany(companyId);
 	}
 
 	@RequestMapping(value = "/project-detail/{poNumber}", method = RequestMethod.GET)

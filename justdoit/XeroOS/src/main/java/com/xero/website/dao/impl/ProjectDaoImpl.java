@@ -34,15 +34,28 @@ public class ProjectDaoImpl extends BaseDaoImpl<Project, Integer> implements
 		return lists;
 	}
 
-	public List<Project> getActiveProjects() throws DaoException {
+	public List<Project> getActiveProjectsByCompany(Integer companyId,boolean isActive) throws DaoException {
 		List<Project> lists = null;
+		String hql = "" ;
 		try {
-			String hql = " select p.* from tb_project as p where 1=1 and p.startDate < NOW() and p.endDate > NOW() and p.status = 'ACTIVE' and p.deleted = 0 ";
-			lists = findByNativeSql(hql);
+			if(null == companyId){
+				if(isActive){
+					hql = " select p.* from tb_project as p where 1=1 and p.startDate < NOW() and p.endDate > NOW() and p.status = 'ACTIVE' and p.deleted = 0 ";
+				}else{
+					hql = " select p.* from tb_project as p where 1=1 and p.endDate < NOW() and p.status = 'CLOSED' and p.deleted = 0 " ;
+				}
+				lists = findByNativeSql(hql);
+			}else{
+				hql = " select p.* from tb_project as p where 1=1 and p.startDate < NOW() and p.endDate > NOW() and p.status = 'ACTIVE' and p.companyId = ? and p.deleted = 0 ";
+				lists = findByNativeSql(hql,companyId);
+			}
+			
 		} catch (Exception ex) {
 			logger.error("Get All Project By Date Error.", ex);
 		}
 		return lists;
 
 	}
+
+	
 }

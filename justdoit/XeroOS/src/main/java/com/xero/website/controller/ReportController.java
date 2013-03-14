@@ -61,10 +61,10 @@ public class ReportController {
 	@ResponseBody
 	public ResponseCollection<Reports> getAllReports(
 			HttpServletRequest request,
-			@RequestParam("current_userId") Integer userId) {
+			@RequestParam("companyId") Integer companyId) {
 		ResponseCollection<Reports> res = new ResponseCollection<Reports>();
 		try {
-			res.setData(getReportsByUserId(userId));
+			res.setData(getReportsByCompany(companyId));
 			res.setResult(true);
 		} catch (Exception ex) {
 			logger.error("Get Reports Error.", ex);
@@ -74,12 +74,12 @@ public class ReportController {
 		return res;
 	}
 
-	private List<Reports> getReportsByUserId(Integer userId) {
+	private List<Reports> getReportsByCompany(Integer companyId) {
 		List<Reports> reps = new ArrayList<Reports>();
 
 		/** Get projects by current user */
 		ResponseCollection<Project> resProject = projectService
-				.getProjectsById(userId);
+				.getActiveProjectsByCompany(companyId);
 
 		if (resProject.getResult()) {
 			List<Project> listProject = resProject.getData();

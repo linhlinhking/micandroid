@@ -32,7 +32,7 @@ public class ProjectServiceImpl extends BaseServiceImpl<Project, Integer>
 		super(projectDao);
 	}
 
-	public ResponseCollection<Project> getProjectsById(Integer userId)
+	public ResponseCollection<Project> getProjectsByIds(Integer userId)
 			throws ServiceException {
 		ResponseCollection<Project> res = new ResponseCollection<Project>();
 		try {
@@ -55,7 +55,27 @@ public class ProjectServiceImpl extends BaseServiceImpl<Project, Integer>
 			throws ServiceException {
 		ResponseCollection<Project> res = new ResponseCollection<Project>();
 		try {
-			List<Project> lists = projectDao.getActiveProjects() ;
+			List<Project> lists = projectDao.getActiveProjectsByCompany(null,
+					true);
+			res.setData(lists);
+			res.setResult(true);
+			res.setMessage("OK");
+
+		} catch (DaoException ex) {
+			logger.error("Get All Project Error On Service", ex);
+			res.setData(null);
+			res.setResult(false);
+			res.setMessage("ERROR");
+
+		}
+		return res;
+	}
+
+	public ResponseCollection<Project> getActiveProjectsByCompany(
+			Integer companyId) throws ServiceException {
+		ResponseCollection<Project> res = new ResponseCollection<Project>();
+		try {
+			List<Project> lists = projectDao.getActiveProjectsByCompany(companyId,true);
 			res.setData(lists);
 			res.setResult(true);
 			res.setMessage("OK");

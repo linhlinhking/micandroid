@@ -38,63 +38,73 @@ public class SendManagerServiceImpl implements SendManagerService {
 	@Resource
 	private EmailFieldsService emailFieldsService;
 
-
-
 	/**
 	 * 
-	 * @param type @see com.xero.admin.bean.type.MailType
-	 * @param email 
-	 * @param params. 
+	 * @param type
+	 *            @see com.xero.admin.bean.type.MailType
+	 * @param email
+	 * @param params
+	 *            .
 	 * 
 	 */
-	public boolean sendHtmlMail(MailType type, String email,String language,Map<String, Object> params) {
+	public boolean sendHtmlMail(MailType type, String email, String language,
+			Map<String, Object> params) {
 		boolean flag = true;
 		try {
 			MimeMessage mimeMessage = mailSender.createMimeMessage();
 			MimeMessageHelper helper;
 			helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 			helper.setTo(new InternetAddress(email));
-			helper.setFrom(new InternetAddress(message.getFrom()));
+			helper.setFrom(new InternetAddress(Constants.EMAIL_NICKNAME + " <"
+					+ message.getFrom() + ">"));
 			helper.setSubject(message.getSubject());
+			// msg.setFrom(new InternetAddress(nick+" <"+from+">"));
 			Integer value = type.getValue();
 			switch (value) {
 			case 1:
-				//Send Email To Add User
-				helper.setText(commonHtmlMail(params,Constants.EMAIL_NEW_USER),true) ;
+				// Send Email To Add User
+				helper.setText(
+						commonHtmlMail(params, Constants.EMAIL_NEW_USER), true);
 				break;
 			case 2:
-				helper.setText(commonHtmlMail(getEmailContent(params,language),Constants.EMAIL_SUPPLIER),true) ;
+				helper.setText(
+						commonHtmlMail(getEmailContent(params, language),
+								Constants.EMAIL_SUPPLIER), true);
 				break;
 			case 3:
-				//Send Email to Customer's Notes
-				helper.setText(commonHtmlMail(params,Constants.EMAIL_CUSTOMER_NOTES), true) ;
+				// Send Email to Customer's Notes
+				helper.setText(
+						commonHtmlMail(params, Constants.EMAIL_CUSTOMER_NOTES),
+						true);
 				break;
 			case 4:
-				//Send Email To register User
-				helper.setText(commonHtmlMail(params,Constants.EMAIL_REGISTER), true) ;
+				// Send Email To register User
+				helper.setSubject(Constants.EMAIL_SUBJECT_WELCOME);
+				helper.setText(
+						commonHtmlMail(params, Constants.EMAIL_REGISTER), true);
 				break;
 			}
-			
+
 			mailSender.send(mimeMessage);
 		} catch (MessagingException e) {
-			logger.error(
-					"Send Email Error.Please check this email. email Address is :" + email);
+			logger.error("Send Email Error.Please check this email. email Address is :"
+					+ email);
 			flag = false;
 		}
 		return flag;
 	}
-	
-	private String commonHtmlMail(Map<String,Object> params,String template){
-		String htmlText = "" ;
-		
-		if(null == params){
-			params = new HashMap<String,Object>() ;
+
+	private String commonHtmlMail(Map<String, Object> params, String template) {
+		String htmlText = "";
+
+		if (null == params) {
+			params = new HashMap<String, Object>();
 		}
 		freeMarker = (FreeMarkerConfigurer) ApplicationContextUtil.getContext()
 				.getBean("freeMarker");
 		try {
 			Template tpl = null;
-			
+
 			tpl = freeMarker.getConfiguration().getTemplate(template);
 			htmlText = FreeMarkerTemplateUtils.processTemplateIntoString(tpl,
 					params);
@@ -103,17 +113,17 @@ public class SendManagerServiceImpl implements SendManagerService {
 		} catch (TemplateException e) {
 			e.printStackTrace();
 		}
-		
-		return htmlText ;
-		
+
+		return htmlText;
+
 	}
 
-
-	private Map<String,Object> getEmailContent(Map<String,Object> params,String language){
-		if(null == params){
-			params = new HashMap<String,Object>() ;
+	private Map<String, Object> getEmailContent(Map<String, Object> params,
+			String language) {
+		if (null == params) {
+			params = new HashMap<String, Object>();
 		}
-		try{
+		try {
 			EmailFields fd = emailFieldsService.get(1);
 			if (null != fd) {
 				String cName = fd.getCompanyName();
@@ -157,15 +167,13 @@ public class SendManagerServiceImpl implements SendManagerService {
 				params.put("stepThreeNoteContent", threeNoteCnt);
 
 			}
-		
-		}catch(Exception ex){
-			logger.error("Translate Email Content Error.", ex) ;
-		}
-		
-		return params ;
-	}
-	
 
+		} catch (Exception ex) {
+			logger.error("Translate Email Content Error.", ex);
+		}
+
+		return params;
+	}
 
 	public JavaMailSender getMailSender() {
 		return mailSender;

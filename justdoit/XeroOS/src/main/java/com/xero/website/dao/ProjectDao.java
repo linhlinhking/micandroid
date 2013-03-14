@@ -10,5 +10,6 @@ public interface ProjectDao extends BaseDao<Project, Integer>{
 
 	public List<Project> getProjectsById(Integer userId) throws DaoException;
 	
-	public List<Project> getActiveProjects() throws DaoException;
+	public List<Project> getActiveProjectsByCompany(Integer companyId,boolean isActive) throws DaoException;
+	
 }

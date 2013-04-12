@@ -44,6 +44,7 @@ public class SystemUserDaoImpl extends BaseDaoImpl<SystemUser, Integer>
 		}
 		return flag;
 	}
+	
 
 	public List<SystemUser> getAllUser() {
 		List<SystemUser> lists = null;

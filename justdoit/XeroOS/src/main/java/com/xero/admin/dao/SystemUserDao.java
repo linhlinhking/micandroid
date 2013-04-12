@@ -20,4 +20,5 @@ public interface SystemUserDao extends BaseDao<SystemUser, Integer> {
 
 	public List<SystemUser> getUsersByPlanId(Integer planId, Integer companyId)
 			throws DaoException;
+	
 }

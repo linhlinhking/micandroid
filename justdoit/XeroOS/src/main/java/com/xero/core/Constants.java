@@ -49,7 +49,12 @@ public class Constants {
 	
 	public static final String EMAIL_NEW_USER = "new_user_email.ftl" ;
 	
+	public static final String EMAIL_FORGOT_PASSWORD = "forgot_password.ftl" ;
+	
 	public static final String EMAIL_SUBJECT_WELCOME = "Welcome To Globaldesign." ;
+	
+	public static final String EMAIL_SUBJECT_FORGOT_PASSWORD = "Forgot Your Password." ;
+	
 	
 	public static final String EMAIL_NICKNAME = "Globaldesign Team" ;
 	

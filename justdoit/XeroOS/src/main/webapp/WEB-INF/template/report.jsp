@@ -58,7 +58,6 @@ filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='
   </div>
   <div class="login_container">
     <c:import url="/header-common" />
-    <input type="hidden" name="current_userId" value="${xeroUser.id}"/>
     <div class="contact_content report_content">
     <div class="left_section">
 		<ul>

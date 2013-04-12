@@ -85,7 +85,8 @@ $('.password_show').focus(function(){
         </div>
         <div class="right_area_bg shake_box">
           <div class="signin_box">
-            <div class="signin_title"><span>SIGN IN</span></div>
+            <div class="signin_title">
+            	<span>SIGN IN</span><a href="/forgot/password" class="title_right">FORGOT PASSWORD?</a></div>
             <div class="signin_content">
               <div class="border_row"><input type="email" placeholder="Email" name="uemail"></div>
               <div class="border_row"><input id="password_ie" type="password" placeholder="Password" name="password"><input class="password_show" type="text" placeholder="Password"></div>

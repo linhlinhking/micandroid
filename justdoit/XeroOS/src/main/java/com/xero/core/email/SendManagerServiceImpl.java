@@ -83,6 +83,10 @@ public class SendManagerServiceImpl implements SendManagerService {
 				helper.setText(
 						commonHtmlMail(params, Constants.EMAIL_REGISTER), true);
 				break;
+			case 5:
+				helper.setSubject(Constants.EMAIL_SUBJECT_FORGOT_PASSWORD) ;
+				helper.setText(commonHtmlMail(params,Constants.EMAIL_FORGOT_PASSWORD), true) ;
+				break ;
 			}
 
 			mailSender.send(mimeMessage);

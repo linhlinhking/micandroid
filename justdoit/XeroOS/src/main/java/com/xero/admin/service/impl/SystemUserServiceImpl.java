@@ -62,7 +62,8 @@ public class SystemUserServiceImpl extends BaseServiceImpl<SystemUser, Integer>
 		}
 		return res;
 	}
-
+	
+	
 	public ResponseCollection<SystemUser> getAllUser() {
 		ResponseCollection<SystemUser> res = new ResponseCollection<SystemUser>(
 				false);

@@ -296,7 +296,7 @@ public class ProjectNoteController {
 								.base64UrlSafeEncode(buffer.toString()
 										.getBytes());
 
-						String linkUrl = "https://globaldesign.co.nz/supplier/"
+						String linkUrl = "https://globalproduction.co.nz/supplier/"
 								+ dataEncode;
 						Map<String, Object> params = new HashMap<String, Object>();
 						params.put("customerCompanyName", customerName);
@@ -316,6 +316,8 @@ public class ProjectNoteController {
 						} else {
 							er.setStatus(false);
 						}
+						//make sure  reply=0 record unique.
+						
 						emailRecordService.saveOrUpdate(er);
 					}
 				} else {

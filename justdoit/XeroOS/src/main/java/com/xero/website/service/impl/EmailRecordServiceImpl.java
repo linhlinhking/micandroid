@@ -46,4 +46,7 @@ public class EmailRecordServiceImpl extends
 		}
 		return res;
 	}
+	
+	
+	
 }

@@ -272,6 +272,19 @@ body {
 	padding-left:15px;
 	line-height:35px;
 }
+
+.container .index_content .right_section .right_area_bg .signin_box .signin_title .title_right {
+	float:right;
+	padding:0 15px 0 0;
+	color:#fff;
+	font-size:9px;
+	font-weight:bold;
+	text-shadow:0 1px 0 rgba(0,0,0,.3);
+	padding-left:15px;
+	line-height:35px;
+	text-decoration:none;
+}
+
 .container .index_content .right_section .right_area_bg .signin_box .signin_content {
 	height:180px;
 	border-top:1px solid #d7d7d7;
@@ -2716,6 +2729,94 @@ body {
 	display:inline-block;
 	vertical-align:middle;
 	margin:11px 5px 0;
+}
+
+/* password.html */
+.for_password {
+	width:280px;
+	margin:0 auto;
+}
+.password_form {
+	margin-top:20px;
+	text-align:center;
+}
+.password_form h1 {
+	font-size:20px;
+	color:#4e4e4f;
+	margin-bottom:20px;
+}
+.password_form p {
+	color:#747474;
+	font-size:15px;
+	line-height:21px;
+}
+.password_form p .green_strong {
+	color:#78b440;
+	font-size:13px;
+}
+.password_form .type_field {
+	width:376px;
+	margin:20px auto 0;
+	padding-bottom:8px;
+	border-bottom:1px dotted #999;
+}
+
+.password_form .type_field .email_error {
+	display:none;
+	font-size:12px;
+	padding-bottom:5px;
+	background:url(../images/error.png) no-repeat 90px 5px;
+}
+
+.password_form .type_field .email_accept {
+	display:none;
+	font-size:12px;
+	padding-bottom:5px;
+	background:url(../images/accept.png) no-repeat 90px 5px;
+}
+
+
+.password_form .type_field label {
+	color:#4e4e4f;
+	font-size:15px;
+	padding-right:5px;
+}
+.password_form .type_field input {
+	width:240px;
+	height:20px;
+	font-size:12px;
+	font-family:Arial, Helvetica, sans-serif;
+	color:#7d7d7d;
+	outline:none;
+}
+.password_form button {
+	display:block;
+	width:140px;
+	height:30px;
+	margin:10px auto 0;
+	border-width:1px;
+	border-style:solid;
+	border-color:#72aa49 #689d43 #5d8e3d;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-khtml-border-radius: 4px;
+	border-radius: 4px;
+	-webkit-box-shadow:0 2px 2px #fff, 0 1px 0 rgba(255, 255, 255, 0.13) inset;
+	-moz-box-shadow:0 2px 2px #fff, 0 1px 0 rgba(255, 255, 255, 0.13) inset;
+	box-shadow:0 2px 2px #fff, 0 1px 0 rgba(255, 255, 255, 0.13) inset;
+	background: rgb(158,201,129);
+	background: -moz-linear-gradient(top,  rgba(158,201,129,1) 0%, rgba(115,172,75,1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(158,201,129,1)), color-stop(100%,rgba(115,172,75,1)));
+	background: -webkit-linear-gradient(top,  rgba(158,201,129,1) 0%,rgba(115,172,75,1) 100%);
+	background: -o-linear-gradient(top,  rgba(158,201,129,1) 0%,rgba(115,172,75,1) 100%);
+	background: -ms-linear-gradient(top,  rgba(158,201,129,1) 0%,rgba(115,172,75,1) 100%);
+	background: linear-gradient(to bottom,  rgba(158,201,129,1) 0%,rgba(115,172,75,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9ec981', endColorstr='#73ac4b',GradientType=0 );
+	cursor:pointer;
+	font-size:12px;
+	font-family:Arial, Helvetica, sans-serif;
+	font-weight:bold;
+	color:#fff;
 }
 
 

@@ -5,7 +5,6 @@ import java.util.Date;
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +17,6 @@ import com.xero.admin.util.DateUtil;
 import com.xero.core.util.CookieUtil;
 import com.xero.core.util.encode.EncodeUtil;
 import com.xero.core.web.WebConstants;
-import com.xero.website.bean.Company;
 import com.xero.website.service.CompanyService;
 
 @Controller

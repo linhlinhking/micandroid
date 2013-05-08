@@ -5,6 +5,7 @@
 	<a href="/"><img src="/images/gdp_logo.png" alt="GDP_logo"></a> <span>Global
 		Design &amp; Production</span>
 	<ul>
+		<li><a href="/contactUs">Contact Us</a></li>
 		<li><a href="/logout">Sign Out</a></li>
 		<li><a href="/user">Manage Users</a></li>
 		<li>

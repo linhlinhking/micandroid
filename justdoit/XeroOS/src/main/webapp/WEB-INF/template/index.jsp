@@ -52,6 +52,11 @@ $('.password_show').focus(function(){
     <div class="header">
       <a href="/"><img src="/images/gdp_logo.png" alt="GDP_logo"></a>
       <span>Global Design &amp; Production</span>
+       <ul>
+        <li>
+          <a href="javascript:void(0)" class="contact_us_li">Contact Us</a>
+        </li>
+      </ul>
     </div>
     <div class="index_content">
       <div class="left_section">

@@ -66,33 +66,32 @@ public class SystemUserController extends BaseController {
 		if (null != sysUser) {
 			Date ep = sysUser.getExpiredDateTime();
 			if (ep.before(new Date())) {
-				model.setViewName("redirect:/");
+				model.setViewName("redirect:/payment");
 			} else {
 				Integer userId = sysUser.getId();
-				Date expiredDate = sysUser.getExpiredDateTime();
-
 				Company cmp = companyService.getCompanyByUserId(userId);
-				Integer companyId = 0, planId = 0;
 				if (null != cmp) {
-					companyId = cmp.getId();
-					planId = cmp.getPlanId();
+					Integer companyId = cmp.getId();
+					Integer planId = cmp.getPlanId();
+					ResponseCollection<SystemUser> resLists = systemUserService
+							.getUsersByCompanyId(companyId);
+					List<SystemUser> listUsers = resLists.getData();
+					Integer numberUsers = 1;
+					if (null != listUsers && listUsers.size() > 0) {
+						numberUsers = listUsers.size();
+					}
+					int leftDays = DateUtil.daysOfTwoDate(new Date(), ep);
+					model.addObject("allowsRegisteredUsers", numberUsers);
+					model.addObject("expiredDate", ep);
+					model.addObject("leftDays", leftDays);
 					model.addObject("currentCompany", companyId);
 					model.addObject("planId", planId);
+					model.setViewName("/manage-user");
+
+				} else {
+					model.setViewName("redirect:/");
 				}
 
-				ResponseCollection<SystemUser> resLists = systemUserService
-						.getUsersByCompanyId(companyId);
-				List<SystemUser> listUsers = resLists.getData();
-
-				if (null != listUsers) {
-					int numberUsers = listUsers.size();
-					model.addObject("allowsRegisteredUsers", numberUsers);
-					model.addObject("expiredDate", expiredDate);
-
-				}
-				int leftDays = DateUtil.daysOfTwoDate(new Date(), ep);
-				model.addObject("leftDays", leftDays);
-				model.setViewName("/manage-user");
 			}
 		} else {
 			model.setViewName("redirect:/");

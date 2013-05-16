@@ -16,5 +16,12 @@ public class HomeController {
 		return model ;
 	}
 	
+	@RequestMapping(value=("/contact-us"), method = RequestMethod.GET)
+	public ModelAndView contactUs(){
+		ModelAndView model = new ModelAndView();
+		model.setViewName("contact-index");
+		return model ;
+	}
+	
 
 }

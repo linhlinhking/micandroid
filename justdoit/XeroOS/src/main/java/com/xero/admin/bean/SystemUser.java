@@ -44,6 +44,8 @@ public class SystemUser extends BaseEntity {
 	@JsonIgnore
 	@Column(name = "join_in_type")
 	private String joinInType;
+	
+	private Boolean isRemind = false ;
 
 	public String getUemail() {
 		return uemail;
@@ -132,7 +134,14 @@ public class SystemUser extends BaseEntity {
 	public void setLinkXero(Integer linkXero) {
 		this.linkXero = linkXero;
 	}
-	
+
+	public Boolean getIsRemind() {
+		return isRemind;
+	}
+
+	public void setIsRemind(Boolean isRemind) {
+		this.isRemind = isRemind;
+	}
 	
 	
 	

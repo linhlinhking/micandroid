@@ -27,6 +27,13 @@ public class MainController {
 
 	@Resource
 	private CompanyService companyService;
+	
+	@RequestMapping(value = ("/contactUs"), method = RequestMethod.GET)
+	public ModelAndView contactUs(){
+		ModelAndView model = new ModelAndView();
+		model.setViewName("/contact-back") ;
+		return model ;
+	}
 
 	@RequestMapping(value = ("/contact"), method = RequestMethod.GET)
 	public ModelAndView contact(HttpServletRequest request) {

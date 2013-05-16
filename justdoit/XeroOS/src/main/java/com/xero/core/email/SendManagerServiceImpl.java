@@ -11,6 +11,7 @@ import javax.mail.internet.MimeMessage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -38,10 +39,26 @@ public class SendManagerServiceImpl implements SendManagerService {
 	@Resource
 	private EmailFieldsService emailFieldsService;
 
+	@Resource
+	private TaskExecutor taskExecutor;
+
+	// Add Email Task.
+	public void addSendMailTasks(final MimeMessage mimeMessage) {
+		try {
+			taskExecutor.execute(new Runnable() {
+				public void run() {
+					mailSender.send(mimeMessage);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * 
 	 * @param type
-	 *            @see com.xero.admin.bean.type.MailType
+	 * @see com.xero.admin.bean.type.MailType
 	 * @param email
 	 * @param params
 	 *            .
@@ -84,12 +101,20 @@ public class SendManagerServiceImpl implements SendManagerService {
 						commonHtmlMail(params, Constants.EMAIL_REGISTER), true);
 				break;
 			case 5:
-				helper.setSubject(Constants.EMAIL_SUBJECT_FORGOT_PASSWORD) ;
-				helper.setText(commonHtmlMail(params,Constants.EMAIL_FORGOT_PASSWORD), true) ;
-				break ;
+				helper.setSubject(Constants.EMAIL_SUBJECT_FORGOT_PASSWORD);
+				helper.setText(
+						commonHtmlMail(params, Constants.EMAIL_FORGOT_PASSWORD),
+						true);
+				break;
+			case 6:
+				helper.setSubject(Constants.EMAIL_SUBJECT_REMIND);
+				helper.setText(
+						commonHtmlMail(params, Constants.EMAIL_REMIND_CUSTOMER),
+						true);
+				break;
 			}
-
-			mailSender.send(mimeMessage);
+			addSendMailTasks(mimeMessage);
+			// mailSender.send(mimeMessage);
 		} catch (MessagingException e) {
 			logger.error("Send Email Error.Please check this email. email Address is :"
 					+ email);

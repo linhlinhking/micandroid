@@ -34,7 +34,7 @@ var Slider = new Class({
 		for(var i = 0; i < document.getElementsByClassName("percent_span").length; i ++){
 			document.getElementsByClassName("percent_span")[i].addEvent('click', this.clickedElement.bindWithEvent(this),false);
 		}
-		//document.getElementsByName("percent_span")[0].addEvent('click', this.clickedElement.bindWithEvent(this),false);
+		//document.getElementsByClassName("note_point_field")[0].addEvent('click', this.clickedElement.bindWithEvent(this),false);
 		var mod, offset;
 		switch(this.options.mode){
 			case 'horizontal':

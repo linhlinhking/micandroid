@@ -4,101 +4,61 @@ var currentCustomers = [];
 var currentSuppliers = [];
 /** Store All Contacts to Localstorage */
 var currentAllContacts = [];
+
 var xeroStorage = new XeroStorage();
+
 
 $(function() {
 	var currentUserId = $("input[name='userId']").val();
 	var isXero = $("input[name='isLinkXero']").val();
-	$(".check_name, .check_email, .check_tel").hide();
-	$("input[name='companyName'],input[name='uemail'],input[name='telephone']")
-			.focusout(function() {
-				var id = $(this).attr("name");
-				if ($(this).val() == '') {
-					switch (id) {
-					case "companyName":
-						$(".check_name").show();
-						break;
-					case "uemail":
-						$(".check_email").show();
-						break;
-					case "telephone":
-						$(".check_tel").show();
-						break;
-					}
-				} else {
-					switch (id) {
-					case "companyName":
-						$(".check_name").hide();
-						break;
-					case "uemail":
-						$(".check_email").hide();
-						break;
-					case "telephone":
-						$(".check_tel").hide();
-						break;
-					}
-				}
-			});
 
-	$(".add_button").click(
-			function() {
+	$(".add_button").click(function() {
+		
+		var Name = $("input[name='companyName']").val();
+		var EmailAddress = $("input[name='uemail']").val();
+		var DefaultNumber = $("input[name='telephone']").val();
+		var groupId = $("input[name='groupId']").val();
+		var contactId = $("input[name='_current_contactId']").val();
 
-				var Name = $("input[name='companyName']").val();
-				var EmailAddress = $("input[name='uemail']").val();
-				var DefaultNumber = $("input[name='telephone']").val();
-				var groupId = $("input[name='groupId']").val();
-				var contactId = $("input[name='_current_contactId']").val();
-
-				(Name == '') ? $(".check_name").show() : $(".check_name")
-						.hide();
-				(EmailAddress == '') ? $(".check_email").show() : $(
-						".check_email").hide();
-				(DefaultNumber == '') ? $(".check_tel").show()
-						: $(".check_tel").hide();
-
-				if (Name != '' && EmailAddress != '' && DefaultNumber != '') {
-					$.ajax({
-						url : '/contact-add?random=' + (new Date()),
-						type : 'POST',
-						dataType : 'json',
-						data : {
-							"Name" : Name,
-							"EmailAddress" : EmailAddress,
-							"DefaultNumber" : DefaultNumber,
-							"userId" : currentUserId,
-							"groupId" : groupId,
-							"isXero" : isXero,
-							"contactId" : contactId
-						},
-						success : function(res) {
-							if (res.result) {
-								clearContact();
-								$(".add_cus_bg").fadeOut('fast', function() {
-									$(".mask_area").fadeOut('fast');
-								});
-
-								window.top.location.href = "/contact";
-							} else {
-								alert("Connection TimeOut.");
-							}
-						}
-					});
-				}
-
-			});
-
-	$(".del_button").click(function() {
-		var cId = $("input[name='_current_contactId']").val();
 		$.ajax({
+			url : '/contact-add?random=' + (new Date()),
 			type : 'POST',
-			url : '/contact-delete?random=' + (new Date()),
 			dataType : 'json',
 			data : {
-				"contactId" : cId
+				"Name" : Name,
+				"EmailAddress" : EmailAddress,
+				"DefaultNumber" : DefaultNumber,
+				"userId" : currentUserId,
+				"groupId" : groupId,
+				"isXero" : isXero,
+				"contactId" : contactId
 			},
 			success : function(res) {
 				if (res.result) {
+					clearContact();
+					$(".add_cus_bg").fadeOut('fast', function() {
+						$(".mask_area").fadeOut('fast');
+					});
+
 					window.top.location.href = "/contact";
+				} else {
+					alert("Connection TimeOut.");
+				}
+			}
+		});
+	});
+	
+	$(".del_button").click(function(){
+		var cId = $("input[name='_current_contactId']").val();
+		$.ajax({
+			type:'POST',
+			url:'/contact-delete?random=' + (new Date()),
+			dataType:'json',
+			data:{
+				"contactId":cId
+			},success:function(res){
+				if(res.result){
+					window.top.location.href = "/contact" ;
 				}
 			}
 		});
@@ -137,46 +97,44 @@ $(function() {
 		$(".del_button").css("display", "none");
 		$(".add_button").css("right", "172px");
 		$("input[name='_current_contactId']").val("");
-		$(".add_cus_title span").text("Add a "+getTypeText()+" Contact");
+		$(".add_cus_title span").text("Add a New Contact");
 		$(".add_button span").text("ADD CONTACT");
-
+		
 		$(".mask_area").fadeIn('fast', function() {
 			$(".add_cus_bg").fadeIn('fast');
 			clearContact();
 		});
 	});
 
-	$(".mask_area, .cancel_button").click(
-			function() {
-				$(".add_cus_bg").fadeOut(
-						'fast',
-						function() {
-							$(".mask_area").fadeOut('fast');
-							$(".c_details_content li").removeClass(
-									"li_selected").addClass("li_defalut");
-							clearContact();
-						});
-				$(".check_name, .check_email, .check_tel").hide();
-			});
+	$(".mask_area, .cancel_button").click(function() {
+		$(".add_cus_bg").fadeOut('fast', function() {
+			$(".mask_area").fadeOut('fast');
+			$(".c_details_content li").removeClass("li_selected").addClass("li_defalut");
+			clearContact();
+		});
+	});
 
+	
+	
 	selLoadingWay(isXero, currentUserId);
 
 	$(".c_details_content li").die().live('click', function() {
 		removeContainAttr();
 		$(this).removeClass("li_defalut").addClass("li_selected");
-
+		
 		var _current_contactId = this.id;
-
-		if (isXero == 1) {
+		
+		if(isXero == 1){
 			$(".add_button").css("display", "none");
 			$(".del_button").css("display", "none");
-		} else {
+		}else{
 			$(".del_button").css("display", "block");
 			$(".add_button").css("right", "329px");
 			$("input[name='_current_contactId']").val(_current_contactId);
 		}
 		
-		$(".add_cus_title span").text("Edit a "+getTypeText()+" Contact");
+		
+		$(".add_cus_title span").text("Edit a Contact");
 		$(".add_button span").text("EDIT CONTACT");
 		var p = $(this).find('.p_info').text();
 		var e = $(this).find('.e_info').text();
@@ -190,34 +148,7 @@ $(function() {
 			$(".add_cus_bg").fadeIn('fast');
 		});
 	});
-	
-	
-	//Loading Remind Customer to pay.
-	remindPayment();
-	
-	$(".accept_icon").bind("click",function(){
-		window.top.location.href = "/payment" ;
-	});
-	
-	$(".cancel_icon").bind("click",function(){
-		$(".pay_pop").fadeOut();
-		xeroStorage.set("_isremind_","1") ;
-	});
 });
-
-
-function remindPayment(){
-	var restDays = $("input[name='left_days']").val();
-	var isRemind = xeroStorage.get("_isremind_");
-	if(isRemind == 1){
-		//don't do anything.
-	}else{
-		if(restDays <= 5){
-			$(".pay_pop").fadeIn();
-		}
-	}
-	
-}
 
 /**
  * @param id
@@ -263,7 +194,7 @@ function getContactsByXero(url) {
 				window.top.location.href = "/oauth/xero";
 			} else {
 				xeroStorage.removeAll();
-
+				
 				var jsonTxt = JSON.stringify(res);
 				// $("#jsonResult").val(jsonTxt);
 				if (res.Status == 'OK') {
@@ -278,7 +209,7 @@ function getContactsByXero(url) {
 						var n = item.Name;
 						var e = item.EmailAddress;
 						var t = item.Phones[1].PhoneNumber;
-						var cId = item.ContactID;
+						var cId = item.ContactID ;
 						var _e = (e == "") ? '--' : e;
 						var _t = (t == "") ? '--' : t;
 
@@ -288,7 +219,7 @@ function getContactsByXero(url) {
 						if (item.IsSupplier) {
 							currentSuppliers.push(itemTxt);
 						}
-						showAddContact(_t, _e, n, cId);
+						showAddContact(_t, _e, n,cId);
 					}
 					xeroStorage.set("currentCustomers", currentCustomers);
 					xeroStorage.set("currentSuppliers", currentSuppliers);
@@ -363,12 +294,12 @@ function getDataByType(lists) {
 		var n = item.Name;
 		var e = item.EmailAddress;
 		var t = item.Phones[1].PhoneNumber;
-		var cId = item.ContactID;
-
+		var cId = item.ContactID ;
+		
 		var _e = (e == "") ? '--' : e;
 		var _t = (t == "") ? '--' : t;
 
-		showAddContact(_t, _e, n, cId);
+		showAddContact(_t, _e, n,cId);
 
 	}
 }
@@ -390,11 +321,11 @@ function getLocalDataByType(lists) {
 		var n = item.companyName;
 		var e = item.uemail;
 		var t = item.telephone;
-		var cId = item.id;
+		var cId = item.id ;
 		var _e = (e == "") ? '--' : e;
 		var _t = (t == "") ? '--' : t;
 
-		showAddContact(_t, _e, n, cId);
+		showAddContact(_t, _e, n,cId);
 
 	}
 }
@@ -422,17 +353,17 @@ function getContactsByItem(url, userId) {
 	});
 }
 
+
 /**
  * @param res
  *            Response from Server.
  * @Description Set localStorage data.
  */
 function showCurrentContacts(res) {
-
 	if (res.result) {
 		$(".c_details_content li").remove();
 		xeroStorage.removeAll();
-
+		
 		var json = res.data;
 		var jsonList = JSON.stringify(json);
 		xeroStorage.set("currentAllContacts", jsonList);
@@ -445,7 +376,7 @@ function showCurrentContacts(res) {
 				var t = temp.telephone;
 				var e = temp.uemail;
 				var n = temp.companyName;
-				var cId = temp.id;
+				var cId = temp.id ;
 
 				if (temp.groupId == 1) {
 					currentCustomers.push(itemTxt);
@@ -454,12 +385,12 @@ function showCurrentContacts(res) {
 					currentSuppliers.push(itemTxt);
 				}
 
-				showAddContact(t, e, n, cId);
+				showAddContact(t, e, n,cId);
 			}
 			xeroStorage.set("currentCustomers", currentCustomers);
 			xeroStorage.set("currentSuppliers", currentSuppliers);
-		} else {
-			$(".adv_box").css("display", "block");
+		}else{
+			$(".adv_box").css("display":"block");
 		}
 
 	} else {
@@ -467,10 +398,9 @@ function showCurrentContacts(res) {
 	}
 }
 
-function showAddContact(t, e, n, cId) {
+function showAddContact(t, e, n,cId) {
 	$(".c_details_content:first").append(
-			"<li class='li_defalut' id='" + cId
-					+ "'><div class='info_area p_info'>" + t
+			"<li class='li_defalut' id='"+cId+"'><div class='info_area p_info'>" + t
 					+ "</div><div class='info_area e_info'>" + e
 					+ "</div><div class='info_area n_info'>" + n
 					+ "</div></li>");
@@ -493,21 +423,4 @@ function removeContainAttr() {
 			$(this).removeClass("li_selected").addClass("li_defalut");
 		}
 	});
-}
-
-function getTypeText() {
-	var txt = $("div.c_type").find(".selected_field").text();
-	var temp = "";
-	switch (txt) {
-	case 'Customers':
-		temp = "Customer";
-		break;
-	case 'Suppliers':
-		temp = "Supplier" ;
-		break;
-	case 'All' :
-		break ;
-	}
-	
-	return temp ;
 }

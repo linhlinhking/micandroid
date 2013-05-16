@@ -2,7 +2,7 @@ $(function() {
 
 	var  loginUserId = $("input[name='_current_login_userId']").val();
 	
-	$(".add_manage_btn").click(function() {
+	$("#add_manage_btn").click(function() {
 		$("input[name='_current_userId']").val("");
 		$(".add_manage_title span").text("Add a new user");
 		$(".add_button span").text("ADD USER");
@@ -37,27 +37,33 @@ $(function() {
 	});
 
 	$(".add_button").click(function() {
-		$.ajax({
+		var name = $("input[name='name']").val();
+		var uemail = $("input[name='uemail']").val();
+		var password = $("input[name='password']").val()
+		if(name !='' && uemail != '' &&password != ''){
+			$.ajax({
 			url : '/user-add?random=' + (+new Date()),
-			type : 'POST',
-			dataType : 'json',
-			data : {
-				"name" : $("input[name='name']").val(),
-				"uemail" : $("input[name='uemail']").val(),
-				"password" : $("input[name='password']").val(),
-				"userId" : $("input[name='_current_userId']").val(),
-				"expiredDate" : $("input[name='expiredDate']").val(),
-				"planId" : $("input[name='planId']").val(),
+				type : 'POST',
+				dataType : 'json',
+				data : {
+					"name" : name,
+					"uemail" : uemail,
+					"password" : password,
+					"userId" : $("input[name='_current_userId']").val(),
+					"expiredDate" : $("input[name='expiredDate']").val(),
+						"planId" : $("input[name='planId']").val(),
 				"companyId" : $("input[name='companyId']").val()
-			},
-			success : function(res) {
-				if (res.result) {
-					window.top.location.href = "/user";
-				} else {
-					alert("Connection Timeout.");
+				},
+				success : function(res) {
+					if (res.result) {
+						window.top.location.href = "/user";
+					} else {
+						alert("Connection Timeout.");
+					}
 				}
-			}
-		});
+			});
+		}
+		
 	});
 
 	$(".c_details_content li").die().live('click', function() {
